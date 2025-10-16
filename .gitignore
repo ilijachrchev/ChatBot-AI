@@ -15,23 +15,17 @@
 
 # next.js
 /.next/
+# static export
 /out/
 
-# production
+# production/build
 /build
+/.turbo
+/dist
 
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
+# env files
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +33,22 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prisma (keep schema & migrations tracked)
+# Ignore custom-generated client if you use it:
+# (You already have this line)
+/src/generated/prisma
+
+# misc / OS / IDE
+.DS_Store
+Thumbs.db
+*.pem
+.vscode/
+.idea/
+.eslintcache
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
