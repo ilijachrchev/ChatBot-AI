@@ -68,26 +68,45 @@ const DomainMenu = ({ domains, min }: Props) => {
         </AppDrawer>
       </div>
       <div className="flex flex-col gap-1 text-ironside font-medium">
-        {domains &&
-          domains.map((domain) => (
-            <Link
-              href={`/settings/${domain.name.split('.')[0]}`}
-              key={domain.id}
-              className={cn(
-                'flex gap-3 hover:bg-white rounded-full transition duration-100 ease-in-out cursor-pointer ',
-                !min ? 'p-2' : 'py-2',
-                domain.name.split('.')[0] == isDomain && 'bg-white'
-              )}
-            >
-              <Image
-                src={`https://ucarecdn.com/${domain.icon}/`}
-                alt="logo"
-                width={20}
-                height={20}
-              />
-              {!min && <p className="text-sm">{domain.name}</p>}
-            </Link>
-          ))}
+{domains &&
+  domains.map((domain) => {
+    const raw = (domain.icon ?? '').trim();
+    const empty = !raw || raw === 'null' || raw === 'undefined';
+
+    // Use full URL if stored; otherwise treat as Uploadcare UUID
+    const ucUrl = empty
+      ? ''
+      : raw.startsWith('http')
+        ? raw
+        : `https://ucarecdn.com/${raw}/-/preview/`;
+
+    const iconSrc = ucUrl || '/favicon.ico';
+
+    return (
+      <Link
+        href={`/settings/${domain.name.split('.')[0]}`}
+        key={domain.id}
+        className={cn(
+          'flex gap-3 items-center justify-center hover:bg-white rounded-full transition duration-100 ease-in-out cursor-pointer',
+          !min ? 'p-2' : 'py-2',
+          domain.name.split('.')[0] == isDomain && 'bg-white'
+        )}
+      >
+        <img
+          src={iconSrc}
+          alt={`${domain.name} logo`}
+          width={20}
+          height={20}
+          className="shrink-0 rounded"
+          onError={(e) => { e.currentTarget.src = '/favicon.ico'; }}
+        />
+        {!min && <p className="text-sm">{domain.name}</p>}
+      </Link>
+    );
+  })}
+
+
+
       </div>
     </div>
   )

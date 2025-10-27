@@ -1,17 +1,41 @@
 "use client"
+import useSideBar from '@/context/use-sidebar'
 import React from 'react'
+import { Loader } from '../loader'
+import { Switch } from '@radix-ui/react-switch'
 
 type Props = {}
 
 const BreadCrumb = (props: Props) => {
-    //WIP ::: SET UP use side bar hook for reakl time chat and chat bot stuff
+    const { 
+      chatRoom,
+      expand,
+      loading,
+      onActivateRealtime,
+      onExpand,
+      page,
+      onSignOut,
+      realtime,
+    } = useSideBar()
   return (
     <div className='flex flex-col'>
         <div className='flex gap-5 items-center'>
             <h2 className='text-3xl font-bold capitalize'>Title</h2>
+            {page === 'conversation' && chatRoom && (
+              <Loader 
+              loading={loading}
+              className='p-0 inline'
+              >
+                <Switch 
+                  defaultChecked={realtime}
+                  onClick={(e) => onActivateRealtime(e)}
+                  className='data-[state=checked]:bg-orange data-[state=unchecked]:bg-peach'
+                />
+              </Loader>
+            )}
         </div>
         <p className='text-gray-500 text-sm'>
-            {/* {page == 'settings' 
+            { page == 'settings' 
             ? 'Manage your account settings, preferences and integrations' 
             : page == 'dashboard'
             ? 'A detailed overview of your metrics, usage, customers and more'
@@ -20,9 +44,9 @@ const BreadCrumb = (props: Props) => {
             : page == 'email-marketing'
             ? 'Send bulk emails to your customers'
             : page == 'integrations'
-            ? 'Connect third-party applications into SendWise-AI' */}
-             Modify domain settings, change chatbot options, enter sales questions and train your bot to do waht you want it to!
-            {/* } */}
+            ? 'Connect third-party applications into SendWise-AI' 
+            : 'Modify domain settings, change chatbot options, enter sales questions and train your bot to do waht you want it to!'
+            }
         </p>
     </div>
   )
