@@ -4,6 +4,7 @@ import { TabsContent } from '@radix-ui/react-tabs'
 import { DraftModeProvider } from 'next/dist/server/async-storage/draft-mode-provider'
 import React from 'react'
 import HelpDesk from './help-desk'
+import FilterQuestions from './filter-questions'
 
 type Props = {
     id: string
@@ -30,7 +31,7 @@ const BotTrainingForm = ({ id }: Props) => {
             <HelpDesk id={id} />
           </TabsContent>
           <TabsContent value='questions'>
-            {/* <FilterQuestions id={id} /> */}
+            <FilterQuestions id={id} />
           </TabsContent>
         </TabsMenu>
     </div>

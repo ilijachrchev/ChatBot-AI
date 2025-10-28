@@ -90,9 +90,8 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
         <div className='flex gap-5 justify-end'>
             <Button 
             onClick={onDeleteDomain}
-            variant="destructive"
             type='button'
-            className='px-10 h-[50px]'
+            className='px-10 h-[50px] bg-red-600'
             >
                 <Loader loading={deleting}>Delete Domain</Loader>
             </Button>
