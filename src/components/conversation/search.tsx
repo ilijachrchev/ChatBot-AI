@@ -21,7 +21,7 @@ const ConversationSearch = ({ register, domains }: Props) => {
             <select
                 {...register("domain")}
                 className='px-3 py-4 text-sm border-[1px] rounded-lg mr-5'>
-                    <option disabled selected>
+                    <option disabled value="selected">
                         Domain Name
                     </option>
                     {domains?.map((domain) => (
