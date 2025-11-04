@@ -7,6 +7,7 @@ import { clerkClient } from "@clerk/nextjs"
 import { onMailer } from "../mailer"
 import { ChartTooltip } from "@/components/ui/chart"
 import OpenAi from "openai"
+import { create } from "domain"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
@@ -26,8 +27,10 @@ export const onStoreConversations = async (
                 create: {
                     message,
                     role,
+                    seen: false,
                 },
             },
+            updatedAt: new Date(),
         },
     })
 }
@@ -61,7 +64,6 @@ export const onGetCurrentChatBot = async (id: string) => {
     }
 }
 
-let customerEmail: string | undefined
 
 export const onAiChatBotAssistant = async (
     id: string,
@@ -86,11 +88,9 @@ export const onAiChatBotAssistant = async (
                 },
             },
         })
-        if (chatBotDomain) {
-            const extractedEmail = extractEmailsFromString(message)
-            if (extractedEmail) {
-                customerEmail = extractedEmail[0]
-            }
+        if (!chatBotDomain) return
+        const extractedEmail = extractEmailsFromString(message)
+        const customerEmail = extractedEmail ? extractedEmail[0] : undefined
 
             if (customerEmail) {
                 const checkCustomer = await client.domain.findUnique({
@@ -145,13 +145,37 @@ export const onAiChatBotAssistant = async (
                         },
                     })
                     if (newCustomer) {
-                        console.log('new customer made')
-                        const response = {
-                            role: 'assistant',
-                            content: `Welcome aboard ${customerEmail.split('@')[0]}!
-                            I am glad to connect with you. Is there anything you need help with?`,
+                        const created = await client.domain.findUnique({
+                          where: {
+                            id,
+                          },
+                          select: {
+                            customer: {
+                              where: {
+                                email: {
+                                  startsWith: customerEmail!,
+                                },
+                              },
+                              select: {
+                                chatRoom: {
+                                  select: {
+                                    id: true,
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        })
+                        const roomId = created?.customer?.[0]?.chatRoom?.[0]?.id
+                        if (roomId) {
+                          await onStoreConversations(roomId, message, 'user')
+
+                          const welcome = `Welcome aboard ${customerEmail.split('@')[0]}! I am glad to connect with you. Is there anything you need help with?`
+
+                          await onStoreConversations(roomId, welcome, 'assistant')
+
+                          return { response: { role: 'assistant', content: welcome }}
                         }
-                        return { response }
                     }
                 }
                 if (checkCustomer && checkCustomer.customer[0].chatRoom[0].live) {
@@ -364,7 +388,6 @@ export const onAiChatBotAssistant = async (
 
         return { response }
       }
-    }
   } catch (error) {
     console.log(error)
   }

@@ -2,7 +2,6 @@
 
 import { client } from '@/lib/prisma'
 import { pusherServer } from '@/lib/utils'
-// import { pusherServer } from '@/lib/utils'
 
 
 export const onToggleRealtime = async (id: string, state: boolean) => {
@@ -62,6 +61,7 @@ export const onGetDomainChatRooms = async (id: string) => {
           select: {
             email: true,
             chatRoom: {
+              orderBy: { updatedAt: 'desc' },
               select: {
                 createdAt: true,
                 id: true,
@@ -169,8 +169,10 @@ export const onOwnerSendMessage = async (
           create: {
             message,
             role,
+            seen: false,
           },
         },
+        updatedAt: new Date(),
       },
       select: {
         message: {

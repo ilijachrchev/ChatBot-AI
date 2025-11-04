@@ -114,6 +114,10 @@ model ChatRoom {
   mailed     Boolean   @default(false)
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+
+  Domain     Domain?   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  domainId   String?   @db.Uuid
+
   Customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId String?   @db.Uuid
 

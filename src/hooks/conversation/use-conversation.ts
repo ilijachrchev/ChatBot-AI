@@ -35,6 +35,7 @@ export const useConversation = () => {
     const [loading, setLoading] = useState<boolean>(false)
     useEffect(() => {
         const search = watch(async (value) => {
+          if (!value.domain) return
             setLoading(true)
              try {
             const rooms = await onGetDomainChatRooms(value.domain!)
@@ -51,8 +52,10 @@ export const useConversation = () => {
 
     const onGetActiveChatMessages = async (id: string) => {
         try {
+          setChatRoom(id)
             loadMessages(true)
             const messages = await onGetChatMessages(id)
+            const msgs = messages?.[0]?.message ?? []
             if (messages) {
                 setChatRoom(id)
                 loadMessages(false)
