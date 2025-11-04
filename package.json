@@ -50,6 +50,8 @@
     "lucide-react": "^0.545.0",
     "next": "15.5.5",
     "next-themes": "^0.4.6",
+    "nodemailer": "^7.0.10",
+    "openai": "^6.8.0",
     "prisma": "^6.17.1",
     "pusher": "^5.2.0",
     "pusher-js": "^8.4.0",
@@ -62,11 +64,12 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.3.1",
     "vaul": "^1.1.2",
-    "zod": "^4.1.12"
+    "zod": "4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.21",
