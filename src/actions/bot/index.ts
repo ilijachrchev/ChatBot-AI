@@ -5,13 +5,20 @@ import { extractEmailsFromString, extractURLfromString } from "@/lib/utils"
 import { onRealTimeChat } from "../conversation"
 import { clerkClient } from "@clerk/nextjs"
 import { onMailer } from "../mailer"
-import { ChartTooltip } from "@/components/ui/chart"
 import OpenAi from "openai"
-import { create } from "domain"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
 })
+
+const ensureChatRoom = async (chatroomId: string) => {
+  return client.chatRoom.upsert({
+    where: { id: chatroomId },
+    update: {},
+    create: { id: chatroomId },
+    select: { id: true, live: true, mailed: true },
+  });
+};
 
 export const onStoreConversations = async (
     id: string,
@@ -69,9 +76,15 @@ export const onAiChatBotAssistant = async (
     id: string,
     chat: { role: 'assistant' | 'user'; content: string}[],
     author: 'user',
-    message: string
+    message: string,
+    chatroomId?: string,
 ) => {
     try {
+      if (!chatroomId) {
+        chatroomId = crypto.randomUUID();
+      }
+      const room = await ensureChatRoom(chatroomId);
+
         const chatBotDomain = await client.domain.findUnique({
             where: {
                 id,
@@ -126,104 +139,81 @@ export const onAiChatBotAssistant = async (
                     },
                 })
                 if (checkCustomer && !checkCustomer.customer.length) {
-                    const newCustomer = await client.domain.update({
+                    const createdCustomer = await client.customer.create({
+                        data: {
+                            email: customerEmail,
+                            domainId: id,
+                            questions: {
+                              create: chatBotDomain.filterQuestions.map(f => ({
+                                question: f.question,
+                              })),
+                            },
+                          },
+                        select: {
+                            id: true,
+                        },
+                    });
+
+                    await client.chatRoom.update({
                         where: {
-                            id,
+                            id: chatroomId!,
                         },
                         data: {
-                            customer: {
-                                create: {
-                                    email: customerEmail,
-                                    questions: {
-                                        create: chatBotDomain.filterQuestions,
-                                    },
-                                    chatRoom: {
-                                        create: {},
-                                    },
-                                },
-                            },
+                            customerId: createdCustomer.id,
                         },
-                    })
-                    if (newCustomer) {
-                        const created = await client.domain.findUnique({
-                          where: {
-                            id,
-                          },
-                          select: {
-                            customer: {
-                              where: {
-                                email: {
-                                  startsWith: customerEmail!,
-                                },
-                              },
-                              select: {
-                                chatRoom: {
-                                  select: {
-                                    id: true,
-                                  },
-                                },
-                              },
-                            },
-                          },
-                        })
-                        const roomId = created?.customer?.[0]?.chatRoom?.[0]?.id
-                        if (roomId) {
-                          await onStoreConversations(roomId, message, 'user')
+                      });
+                      await onStoreConversations(chatroomId!, message, 'user');
 
-                          const welcome = `Welcome aboard ${customerEmail.split('@')[0]}! I am glad to connect with you. Is there anything you need help with?`
+                      const welcome = `Welcome aboard ${customerEmail.split('@')[0]}! I am glad to connect with you! Is there anything you need help with?`;
 
-                          await onStoreConversations(roomId, welcome, 'assistant')
+                      await onStoreConversations(
+                        chatroomId!,
+                        welcome,
+                        'assistant'
+                      );
 
-                          return { response: { role: 'assistant', content: welcome }}
-                        }
+                      const response = {
+                        role: 'assistant' as const,
+                        content: welcome,
+                      };
+
+                    return { 
+                        response,
+                        live: true,
+                        chatRoom: room.id,
                     }
                 }
-                if (checkCustomer && checkCustomer.customer[0].chatRoom[0].live) {
-                    await onStoreConversations(
-                        checkCustomer?.customer[0].chatRoom[0].id!,
-                        message,
-                        author
-                    )
-                    // WIP: SETUP Real time mode
-                    // onRealTimeChat(
-                    //     checkCustomer.customer[0].chatRoom[0].id,
-                    //     message,
-                    //     'user',
-                    //     author
-                    // )
 
-                    if (!checkCustomer.customer[0].chatRoom[0].mailed) {
-                        const user = await clerkClient.users.getUser(
-                            checkCustomer.User?.clerkId!
-                        )
+                if (checkCustomer && room.live ) {
 
-                        onMailer(user.emailAddresses[0].emailAddress)
+                  await onStoreConversations(
+                    room.id as string,
+                    message,
+                    author
+                  );
 
-                        // update mail status to prevent spamming
-                        const mailed = await client.chatRoom.update({
-                            where: {
-                                id: checkCustomer.customer[0].chatRoom[0].id,
-                            },
-                            data: {
-                                mailed: true
-                            },
-                        })
+                  if (!room.mailed) {
+                    const user = await clerkClient.users.getUser(
+                      checkCustomer.User?.clerkId!
+                    );
+                    onMailer(user.emailAddresses[0].emailAddress);
 
-                        if (mailed) {
-                            return {
-                                live: true,
-                                chatRoom: checkCustomer.customer[0].chatRoom[0].id,
-                            }
-                        }
-                    }
+                    await client.chatRoom.update({
+                      where: { id: room.id },
+                      data: { mailed: true },
+                    });
+
                     return {
-                        live: true,
-                        chatRoom: checkCustomer.customer[0].chatRoom[0].id
-                    }
+                      live: true,
+                      chatRoom: room.id,
+                    };
+                  }
+
+                  return { live: true, chatRoom: room.id };
                 }
 
                 await onStoreConversations(
-                    checkCustomer?.customer[0].chatRoom[0].id!,
+                    room.id as string,
                     message,
                     author
                 )
@@ -269,47 +259,45 @@ export const onAiChatBotAssistant = async (
         })
 
         if (chatCompletion.choices[0].message.content?.includes('(realtime)')) {
-          const realtime = await client.chatRoom.update({
-            where: {
-              id: checkCustomer?.customer[0].chatRoom[0].id,
-            },
-            data: {
-              live: true,
-            },
-          })
+          await client.chatRoom.update({
+            where: { id: room.id },
+            data: { live: true },
+          });
 
-          if (realtime) {
-            const response = {
-              role: 'assistant',
-              content: chatCompletion.choices[0].message.content.replace(
-                '(realtime)',
-                ''
-              ),
-            }
+          const response = {
+            role: 'assistant',
+            content: chatCompletion.choices[0].message.content.replace('(realtime)', ''),
+          };
 
-            await onStoreConversations(
-              checkCustomer?.customer[0].chatRoom[0].id!,
-              response.content,
-              'assistant'
-            )
+          await onStoreConversations(
+            room.id as string,
+            response.content,
+            'assistant'
+          );
 
-            return { response }
-          }
+          return { 
+            response,
+            live: true,
+            chatRoom: room.id,
+           };
         }
-        if (chat[chat.length - 1].content.includes('(complete)')) {
-          const firstUnansweredQuestion =
-            await client.customerResponses.findFirst({
-              where: {
-                customerId: checkCustomer?.customer[0].id,
-                answered: null,
-              },
-              select: {
-                id: true,
-              },
-              orderBy: {
-                question: 'asc',
-              },
-            })
+
+        if (chat[chat.length - 1].content.includes('(complete)') && checkCustomer?.customer[0]?.id) {
+          const customerId = checkCustomer.customer[0].id;
+
+          const firstUnansweredQuestion = await client.customerResponses.findFirst({
+            where: {
+              customerId,
+              answered: null,
+            },
+            select: {
+              id: true,
+            },
+            orderBy: {
+              question: 'asc'
+            },
+          });
+
           if (firstUnansweredQuestion) {
             await client.customerResponses.update({
               where: {
@@ -318,7 +306,7 @@ export const onAiChatBotAssistant = async (
               data: {
                 answered: message,
               },
-            })
+            });
           }
         }
 
@@ -336,7 +324,7 @@ export const onAiChatBotAssistant = async (
             }
 
             await onStoreConversations(
-              checkCustomer?.customer[0].chatRoom[0].id!,
+              room.id as string,
               `${response.content} ${response.link}`,
               'assistant'
             )
@@ -350,7 +338,7 @@ export const onAiChatBotAssistant = async (
           }
 
           await onStoreConversations(
-            checkCustomer?.customer[0].chatRoom[0].id!,
+            room.id as string,
             `${response.content}`,
             'assistant'
           )
@@ -385,6 +373,17 @@ export const onAiChatBotAssistant = async (
           role: 'assistant',
           content: chatCompletion.choices[0].message.content,
         }
+
+        await onStoreConversations(
+          room.id as string,
+          message,
+          author
+        );
+        await onStoreConversations(
+          room.id as string,
+          `${response.content}`,
+          'assistant'
+        );
 
         return { response }
       }

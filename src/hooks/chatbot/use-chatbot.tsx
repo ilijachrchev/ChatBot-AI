@@ -102,6 +102,8 @@ export const useChatBot = () => {
 
     const onStartChatting = handleSubmit(async (values) => {
         reset()
+        const chatroomId = getOrCreateChatroomId();
+
         if(values.image.length) {
             const uploaded = await upload.uploadFile(values.image[0])
             setOnChats((prev: any) => [
@@ -112,11 +114,13 @@ export const useChatBot = () => {
                 },
             ])
             setOnAiTyping(true)
+
             const response = await onAiChatBotAssistant(
                 currentBotId!,
                 onChats,
                 'user',
-                uploaded.uuid
+                uploaded.uuid,
+                chatroomId,
             )
 
             if (response) {
@@ -147,8 +151,10 @@ export const useChatBot = () => {
                 currentBotId!,
                 onChats,
                 'user',
-                values.content
+                values.content,
+                chatroomId,
             )
+            
             if (response) {
                 setOnAiTyping(false)
                 if (response.live) {
@@ -163,6 +169,15 @@ export const useChatBot = () => {
             }
         }
     })
+
+    const getOrCreateChatroomId = () => {
+        let chatroomId = localStorage.getItem('chatroomId')
+        if (!chatroomId) {
+            chatroomId = crypto.randomUUID()
+            localStorage.setItem('chatroomId', chatroomId)
+        }
+        return chatroomId
+    };
 
     return {
         botOpened,

@@ -54,12 +54,34 @@ export const useConversation = () => {
         try {
           setChatRoom(id)
             loadMessages(true)
+
             const messages = await onGetChatMessages(id)
             const msgs = messages?.[0]?.message ?? []
+
             if (messages) {
                 setChatRoom(id)
                 loadMessages(false)
                 setChats(messages[0].message)
+
+                await onViewUnReadMessages(id)
+
+                setChatRooms(prev =>
+                (prev || []).map(r => {
+                  if (r.chatRoom?.[0]?.id === id) return r
+                  const firstMsg = r.chatRoom[0]?.message?.[0]
+                  return {
+                    ...r,
+                    chatRoom: [
+                      {
+                        ...r.chatRoom[0],
+                        message: firstMsg
+                          ? [{...firstMsg, seen: true}]
+                          : [],
+                      },
+                    ],
+                  }
+                }
+              ))
             }
         } catch (error) {
             console.log(error)
@@ -97,22 +119,20 @@ export const useChatTime = (createdAt: Date, roomId: string) => {
     }
   }
 
-  const onSeenChat = async () => {
-    if (chatRoom == roomId && urgent) {
-      await onViewUnReadMessages(roomId)
-      setUrgent(false)
-    }
-  }
-
   useEffect(() => {
-    onSeenChat()
-  }, [chatRoom])
+    const markSeen = async () => {
+      if (chatRoom == roomId) {
+        await onViewUnReadMessages(roomId)
+      }
+    }
+    markSeen()
+  }, [chatRoom, roomId])
 
   useEffect(() => {
     onSetMessageRecievedDate()
   }, [])
 
-  return { messageSentAt, urgent, onSeenChat }
+  return { messageSentAt, urgent }
 }
   
 export const useChatWindow = () => {
