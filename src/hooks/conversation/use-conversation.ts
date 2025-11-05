@@ -55,13 +55,13 @@ export const useConversation = () => {
           setChatRoom(id)
             loadMessages(true)
 
-            const messages = await onGetChatMessages(id)
-            const msgs = messages?.[0]?.message ?? []
+            const room = await onGetChatMessages(id)
+            const msgs = room?.message ?? []
 
-            if (messages) {
+            if (room) {
                 setChatRoom(id)
                 loadMessages(false)
-                setChats(messages[0].message)
+                setChats(msgs)
 
                 await onViewUnReadMessages(id)
 
@@ -172,14 +172,14 @@ export const useChatWindow = () => {
   const onHandleSentMessage = handleSubmit(async (values) => {
     try {
       reset()
-      const message = await onOwnerSendMessage(
+      const saved = await onOwnerSendMessage(
         chatRoom!,
         values.content ?? "",
         'assistant'
       )
       //WIP: Remove this line
-      if (message) {
-        setChats((prev) => [...prev, message.message[0]])
+      if (saved) {
+        setChats((prev) => [...prev, saved])
         //remove this
         // setChats((prev) => [...prev, message.message[0]])
 

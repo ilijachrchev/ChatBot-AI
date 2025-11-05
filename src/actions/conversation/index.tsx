@@ -94,7 +94,7 @@ export const onGetDomainChatRooms = async (id: string) => {
 
 export const onGetChatMessages = async (id: string) => {
   try {
-    const messages = await client.chatRoom.findMany({
+    const room = await client.chatRoom.findUnique({
       where: {
         id,
       },
@@ -116,9 +116,7 @@ export const onGetChatMessages = async (id: string) => {
       },
     })
 
-    if (messages) {
-      return messages
-    }
+      return room
   } catch (error) {
     console.log(error)
   }
@@ -189,11 +187,9 @@ export const onOwnerSendMessage = async (
           take: 1,
         },
       },
-    })
+    });
 
-    if (chat) {
-      return chat
-    }
+      return chat?.message?.[0] ?? null;
   } catch (error) {
     console.log(error)
   }

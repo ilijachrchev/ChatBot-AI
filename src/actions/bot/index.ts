@@ -15,7 +15,11 @@ const ensureChatRoom = async (chatroomId: string) => {
   return client.chatRoom.upsert({
     where: { id: chatroomId },
     update: {},
-    create: { id: chatroomId },
+    create: {
+       id: chatroomId ,
+       live: false,
+       mailed: false,
+      },
     select: { id: true, live: true, mailed: true },
   });
 };
@@ -160,6 +164,7 @@ export const onAiChatBotAssistant = async (
                         },
                         data: {
                             customerId: createdCustomer.id,
+                            live: false,
                         },
                       });
                       await onStoreConversations(chatroomId!, message, 'user');
@@ -179,44 +184,54 @@ export const onAiChatBotAssistant = async (
 
                     return { 
                         response,
-                        live: true,
+                        live: false,
                         chatRoom: room.id,
                     }
                 }
 
                 if (checkCustomer && room.live ) {
-
+                  const existingCustomerId = checkCustomer.customer[0]?.id;
+                  if (existingCustomerId) {
+                    await client.chatRoom.update({
+                      where: {
+                        id: chatroomId!,
+                      },
+                      data: {
+                          customerId: existingCustomerId,
+                          live: false,
+                      },
+                    });
+                  }
                   await onStoreConversations(
                     room.id as string,
                     message,
                     author
+                );
+
+                if (!room.mailed) {
+                  const user = await clerkClient.users.getUser(
+                    checkCustomer.User?.clerkId!
+                  );
+                  onMailer(
+                    user.emailAddresses[0].emailAddress,
                   );
 
-                  if (!room.mailed) {
-                    const user = await clerkClient.users.getUser(
-                      checkCustomer.User?.clerkId!
-                    );
-                    onMailer(user.emailAddresses[0].emailAddress);
-
-                    await client.chatRoom.update({
-                      where: { id: room.id },
-                      data: { mailed: true },
-                    });
-
-                    return {
-                      live: true,
-                      chatRoom: room.id,
-                    };
+                  await client.chatRoom.update({
+                    where: { id: room.id },
+                    data: { mailed: true },
+                  });
+                  return {
+                    live: false,
+                    chatRoom: room.id,
                   }
-
-                  return { live: true, chatRoom: room.id };
                 }
 
-                await onStoreConversations(
-                    room.id as string,
-                    message,
-                    author
-                )
+                return {
+                  live: true,
+                  chatRoom: room.id,
+                }
+              }
+
              const chatCompletion = await openai.chat.completions.create({
           messages: [
             {
