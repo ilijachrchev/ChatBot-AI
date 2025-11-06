@@ -58,23 +58,25 @@ const ConversationMenu = ({ domains }: Props) => {
     <div className="flex flex-col">
       <Loader loading={loading}>
         {rows?.length ? (
-          rows.map((row, idx) => {
-            const room0 = row.chatRoom?.[0];
-            if (!room0) return null;
+          rows.flatMap((row: any, rowIdx: any) => {
+            const rooms = row.chatRoom ?? [];
+            if (!rooms.length) return [];
 
-            const msg0 = room0.message?.[0];
+            return rooms.map((room0: any, idx: number) => {
+              const msg0 = room0.message?.[0];
 
-            return (
-              <ChatCard
-                key={room0.id ?? `chat-${idx}`}
-                id={room0.id}
-                onChat={() => onGetActiveChatMessages(room0.id)}
-                seen={!!msg0?.seen}
-                createdAt={msg0?.createdAt ?? room0.createdAt}
-                title={row.email ?? ''}
-                description={msg0?.message ?? ''}
-              />
-            );
+              return (
+                <ChatCard
+                  key={room0.id ?? `chat-${rowIdx}-${idx}`}
+                  id={room0.id}
+                  onChat={() => onGetActiveChatMessages(room0.id)}
+                  seen={!!msg0?.seen}
+                  createdAt={msg0?.createdAt ?? room0.createdAt}
+                  title={row.email ?? ''}
+                  description={msg0?.message ?? ''}
+                />
+              );
+            });
           })
         ) : (
           <CardDescription>{emptyText}</CardDescription>

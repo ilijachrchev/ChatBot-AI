@@ -187,12 +187,18 @@ export const useChatBot = () => {
     })
 
     const getOrCreateChatroomId = () => {
-        let chatroomId = localStorage.getItem('chatroomId')
-        if (!chatroomId) {
-            chatroomId = crypto.randomUUID()
-            localStorage.setItem('chatroomId', chatroomId)
+        if (onChats.length === 0) {
+            const id = crypto.randomUUID();
+            try { localStorage.setItem('chatroomId', id); } catch {}
+            return id;
         }
-        return chatroomId
+
+        let chatroomId = localStorage.getItem('chatroomId');
+        if (!chatroomId) {
+            chatroomId = crypto.randomUUID();
+            try { localStorage.setItem('chatroomId', chatroomId); } catch {}
+        }
+        return chatroomId;
     };
 
     const startNewChat = () => {
