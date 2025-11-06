@@ -82,9 +82,10 @@ export const onAiChatBotAssistant = async (
     author: 'user',
     message: string,
     chatroomId?: string,
+    newThread?: boolean,
 ) => {
     try {
-      if (!chatroomId) {
+      if (!chatroomId || newThread) {
         chatroomId = crypto.randomUUID();
       }
       const room = await ensureChatRoom(chatroomId);
@@ -344,7 +345,10 @@ export const onAiChatBotAssistant = async (
               'assistant'
             )
 
-            return { response }
+            return { 
+              response,
+              chatRoom: room.id,
+             }
           }
 
           const response = {
@@ -358,7 +362,10 @@ export const onAiChatBotAssistant = async (
             'assistant'
           )
 
-          return { response }
+          return { 
+            response,
+            chatRoom: room.id,
+          }
         }
       }
       console.log('No customer')
@@ -400,7 +407,10 @@ export const onAiChatBotAssistant = async (
           'assistant'
         );
 
-        return { response }
+        return { 
+          response,
+          chatRoom: room.id,
+        }
       }
   } catch (error) {
     console.log(error)

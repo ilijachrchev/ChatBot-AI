@@ -58,7 +58,7 @@ const ConversationMenu = ({ domains }: Props) => {
     <div className="flex flex-col">
       <Loader loading={loading}>
         {rows?.length ? (
-          rows.map((row) => {
+          rows.map((row, idx) => {
             const room0 = row.chatRoom?.[0];
             if (!room0) return null;
 
@@ -66,7 +66,7 @@ const ConversationMenu = ({ domains }: Props) => {
 
             return (
               <ChatCard
-                key={room0.id}
+                key={room0.id ?? `chat-${idx}`}
                 id={room0.id}
                 onChat={() => onGetActiveChatMessages(room0.id)}
                 seen={!!msg0?.seen}
@@ -81,7 +81,6 @@ const ConversationMenu = ({ domains }: Props) => {
         )}
       </Loader>
     </div>
-
   )
 
   return (

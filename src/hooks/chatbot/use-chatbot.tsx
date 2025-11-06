@@ -99,9 +99,23 @@ export const useChatBot = () => {
             setLoading(false)
         }
     }
+    
+        const setChatroomId = (id?: string) => {
+            if (!id) return;
+            try {
+                localStorage.setItem('chatroomId', id!)
+            } catch {}
+        };
+
+        const clearChatroomId = () => {
+            try {
+                localStorage.removeItem('chatroomId')
+            } catch {}
+        };
 
     const onStartChatting = handleSubmit(async (values) => {
         reset()
+
         const chatroomId = getOrCreateChatroomId();
 
         if(values.image.length) {
@@ -124,6 +138,7 @@ export const useChatBot = () => {
             )
 
             if (response) {
+                if (response.chatRoom) setChatroomId(response.chatRoom);
                 setOnAiTyping(false)
                 if (response.live) {
                     setOnRealTime((prev) => ({
@@ -156,6 +171,7 @@ export const useChatBot = () => {
             )
             
             if (response) {
+                if (response.chatRoom) setChatroomId(response.chatRoom);
                 setOnAiTyping(false)
                 if (response.live) {
                     setOnRealTime((prev) => ({
@@ -179,6 +195,12 @@ export const useChatBot = () => {
         return chatroomId
     };
 
+    const startNewChat = () => {
+        clearChatroomId();
+        setOnChats([]);
+        setOnRealTime(undefined);
+    };
+
     return {
         botOpened,
         onOpenChatBot,
@@ -191,6 +213,7 @@ export const useChatBot = () => {
         loading,
         setOnChats,
         onRealTime,
+        startNewChat,
     }
 }
 
