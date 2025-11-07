@@ -7,9 +7,9 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
-const SignInPage = () => {
+const SignInPage = async () => {
 
-  const { userId } = auth()
+  const { userId } = await auth()
   if (userId) redirect("/")
 
   return (

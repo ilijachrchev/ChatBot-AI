@@ -1,6 +1,41 @@
 'use server'
 import { client } from '@/lib/prisma'
-import { clerkClient, currentUser } from '@clerk/nextjs'
+import { clerkClient, currentUser } from '@clerk/nextjs/server'
+
+async function ensureUserRow() {
+  const cu = await currentUser()
+  if (!cu) return null;
+
+  const user = await client.user.upsert({
+    where: { clerkId: cu.id },
+    create: {
+      clerkId: cu.id,
+      fullname: cu.firstName || 'User',
+      type: 'OWNER',
+    },
+    update: {
+      fullname: cu.firstName || 'User',
+    },
+    select: {
+      id: true,
+      clerkId: true,
+    },
+  });
+  return user;
+}
+
+function getPlanLimits(plan: string | null | undefined) {
+  switch (plan) {
+    case 'STANDARD':
+      return 1;
+    case 'PRO':
+      return 5;
+    case 'ULTIMATE':
+      return 10;
+    default:
+      return 0;
+  }
+}
 
 export const onIntegrateDomain = async (domain: string, icon: string) => {
   const user = await currentUser()
@@ -144,7 +179,10 @@ export const onUpdatePassword = async (password: string) => {
     const user = await currentUser()
 
     if (!user) return null
-    const update = await clerkClient.users.updateUser(user.id, { password })
+    // const update = await clerkClient.users.updateUser(user.id, { password })
+    const client = await clerkClient()
+    const update = await client.users.updateUser(user.id, { password })
+    
     if (update) {
       return { status: 200, message: 'Password updated' }
     }

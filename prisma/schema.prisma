@@ -14,7 +14,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   fullname  String
@@ -47,6 +46,8 @@ model Domain {
   userId     String?    @db.Uuid
   Campaign   Campaign?  @relation(fields: [campaignId], references: [id])
   campaignId String?    @db.Uuid
+
+  chatRooms ChatRoom[] @relation("DomainToChatRoooms")
 }
 
 model ChatBot {
@@ -96,7 +97,7 @@ model CustomerResponses {
 
 model Customer {
   id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email String? 
+  email String?
 
   questions CustomerResponses[]
 
@@ -109,14 +110,14 @@ model Customer {
 }
 
 model ChatRoom {
-  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  live       Boolean   @default(false)
-  mailed     Boolean   @default(false)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  live      Boolean  @default(false)
+  mailed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  Domain     Domain?   @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  domainId   String?   @db.Uuid
+  Domain   Domain? @relation("DomainToChatRoooms", fields: [domainId], references: [id], onDelete: Cascade)
+  domainId String? @db.Uuid
 
   Customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
   customerId String?   @db.Uuid

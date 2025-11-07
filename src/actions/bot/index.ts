@@ -1,9 +1,9 @@
 "use server"
 
-import { client } from "@/lib/prisma"
+import { client as db } from "@/lib/prisma"
 import { extractEmailsFromString, extractURLfromString } from "@/lib/utils"
 import { onRealTimeChat } from "../conversation"
-import { clerkClient } from "@clerk/nextjs"
+import { clerkClient } from "@clerk/nextjs/server"
 import { onMailer } from "../mailer"
 import OpenAi from "openai"
 
@@ -12,7 +12,7 @@ const openai = new OpenAi({
 })
 
 const ensureChatRoom = async (chatroomId: string) => {
-  return client.chatRoom.upsert({
+  return db.chatRoom.upsert({
     where: { id: chatroomId },
     update: {},
     create: {
@@ -29,7 +29,7 @@ export const onStoreConversations = async (
     message: string,
     role: 'assistant' | 'user'
 ) => {
-    await client.chatRoom.update({
+    await db.chatRoom.update({
         where: {
             id,
         },
@@ -48,7 +48,7 @@ export const onStoreConversations = async (
 
 export const onGetCurrentChatBot = async (id: string) => {
     try {
-        const chatbot = await client.domain.findUnique({
+        const chatbot = await db.domain.findUnique({
             where: {
                 id,
             },
@@ -90,7 +90,7 @@ export const onAiChatBotAssistant = async (
       }
       const room = await ensureChatRoom(chatroomId);
 
-        const chatBotDomain = await client.domain.findUnique({
+        const chatBotDomain = await db.domain.findUnique({
             where: {
                 id,
             },
@@ -111,7 +111,7 @@ export const onAiChatBotAssistant = async (
         const customerEmail = extractedEmail ? extractedEmail[0] : undefined
 
             if (customerEmail) {
-                const checkCustomer = await client.domain.findUnique({
+                const checkCustomer = await db.domain.findUnique({
                     where: {
                         id,
                     },
@@ -144,7 +144,7 @@ export const onAiChatBotAssistant = async (
                     },
                 })
                 if (checkCustomer && !checkCustomer.customer.length) {
-                    const createdCustomer = await client.customer.create({
+                    const createdCustomer = await db.customer.create({
                         data: {
                             email: customerEmail,
                             domainId: id,
@@ -159,7 +159,7 @@ export const onAiChatBotAssistant = async (
                         },
                     });
 
-                    await client.chatRoom.update({
+                    await db.chatRoom.update({
                         where: {
                             id: chatroomId!,
                         },
@@ -193,7 +193,7 @@ export const onAiChatBotAssistant = async (
                 if (checkCustomer && room.live ) {
                   const existingCustomerId = checkCustomer.customer[0]?.id;
                   if (existingCustomerId) {
-                    await client.chatRoom.update({
+                    await db.chatRoom.update({
                       where: {
                         id: chatroomId!,
                       },
@@ -210,14 +210,28 @@ export const onAiChatBotAssistant = async (
                 );
 
                 if (!room.mailed) {
-                  const user = await clerkClient.users.getUser(
-                    checkCustomer.User?.clerkId!
-                  );
-                  onMailer(
-                    user.emailAddresses[0].emailAddress,
-                  );
+                  const client = await clerkClient();
+                  const clerkId = checkCustomer.User?.clerkId;
 
-                  await client.chatRoom.update({
+                  if (!clerkId) {
+                    await db.chatRoom.update({
+                      where: { id: room.id },
+                      data: { mailed: true },
+                    });
+                    return {
+                      live: false,
+                      chatRoom: room.id,
+                    };
+                  }
+                  const clerk = await clerkClient();
+                  const user = await clerk.users.getUser(clerkId);
+
+                  const to = user.emailAddresses[0]?.emailAddress;
+                  if (to) {
+                    onMailer(to);
+                  }
+
+                  await db.chatRoom.update({
                     where: { id: room.id },
                     data: { mailed: true },
                   });
@@ -275,7 +289,7 @@ export const onAiChatBotAssistant = async (
         })
 
         if (chatCompletion.choices[0].message.content?.includes('(realtime)')) {
-          await client.chatRoom.update({
+          await db.chatRoom.update({
             where: { id: room.id },
             data: { live: true },
           });
@@ -301,7 +315,7 @@ export const onAiChatBotAssistant = async (
         if (chat[chat.length - 1].content.includes('(complete)') && checkCustomer?.customer[0]?.id) {
           const customerId = checkCustomer.customer[0].id;
 
-          const firstUnansweredQuestion = await client.customerResponses.findFirst({
+          const firstUnansweredQuestion = await db.customerResponses.findFirst({
             where: {
               customerId,
               answered: null,
@@ -315,7 +329,7 @@ export const onAiChatBotAssistant = async (
           });
 
           if (firstUnansweredQuestion) {
-            await client.customerResponses.update({
+            await db.customerResponses.update({
               where: {
                 id: firstUnansweredQuestion.id,
               },

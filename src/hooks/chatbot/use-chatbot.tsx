@@ -2,7 +2,7 @@ import { onAiChatBotAssistant, onGetCurrentChatBot } from "@/actions/bot"
 import { postToParent, pusherClient } from "@/lib/utils"
 import { ChatBotMessageProps, ChatBotMessageSchema } from "@/schemas/conversation.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useEffect, useEffectEvent, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { string } from "zod"
 import { UploadClient } from '@uploadcare/upload-client'
