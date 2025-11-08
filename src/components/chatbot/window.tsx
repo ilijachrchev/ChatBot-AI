@@ -22,7 +22,7 @@ type Props = {
   chats: { role: 'assistant' | 'user'; content: string; link?: string }[]
   onChat(): void
   onResponding: boolean
-  domainName: string
+  domainName?: string
   theme?: string | null
   textColor?: string | null
   help?: boolean
@@ -32,7 +32,7 @@ type Props = {
         mode: boolean
       }
     | undefined
-  helpdesk: {
+  helpdesk?: {
     id: string
     question: string
     answer: string
@@ -81,7 +81,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               <h3 className="text-lg font-bold leading-none">
                 Sales Rep - SendWise-AI
               </h3>
-              <p className="text-sm">{domainName.split('.com')[0]}</p>
+              <p className="text-sm">{(domainName ?? '').replace(/\.com$/, '') || 'ChatBot'}</p>
               {realtimeMode?.mode && (
                 <RealTimeMode
                   setChats={setChat}
@@ -162,7 +162,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               </div>
               <Separator orientation="horizontal" />
 
-              {helpdesk.map((desk) => (
+              {(helpdesk ?? []).map((desk) => (
                 <Accordion
                   key={desk.id}
                   trigger={desk.question}

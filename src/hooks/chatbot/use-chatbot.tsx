@@ -41,6 +41,7 @@ export const useChatBot = () => {
     const [botOpened, setBotOpened] = useState<boolean>(false)
     const onOpenChatBot = () => setBotOpened((prev) => !prev)
     const [loading, setLoading] = useState<boolean>(true)
+    const requestedRef = useRef(false);
     const [onChats, setOnChats] = useState<
         { role: 'assistant' | 'user'; content: string; link?: string }[]
     >([])
@@ -65,6 +66,15 @@ export const useChatBot = () => {
     useEffect(() => {
         postToParent(
             JSON.stringify({
+                width: 80,
+                height: 80,
+            })
+        )
+    }, [])
+
+    useEffect(() => {
+        postToParent(
+            JSON.stringify({
                 width: botOpened ? 550 : 80,
                 height: botOpened ? 800 : 80,
             })
@@ -73,15 +83,31 @@ export const useChatBot = () => {
 
     let limitRequest = 0;
 
+    // useEffect(() => {
+    //     window.addEventListener("message", (e) => {
+    //         const botid = e.data
+    //         if (limitRequest < 1 && typeof botid == 'string') {
+    //         onGetDomainChatBot(botid)
+    //         limitRequest++
+    //         }
+    //     }) 
+    // }, [])
+
     useEffect(() => {
-        window.addEventListener("message", (e) => {
+        const handler = (e: MessageEvent) => {
+            if (e.origin !== "http://localhost:3000") return;
+            if (requestedRef.current) return;
+
             const botid = e.data
-            if (limitRequest < 1 && typeof botid == 'string') {
-            onGetDomainChatBot(botid)
-            limitRequest++
+            if (typeof botid == 'string' && botid.length > 0) {
+                requestedRef.current = true;
+                onGetDomainChatBot(botid)
             }
-        })
-        
+        }
+        window.addEventListener("message", handler, false);
+        return () => {
+            window.removeEventListener("message", handler, false);
+        };
     }, [])
 
     const onGetDomainChatBot = async (id: string) => {
@@ -129,12 +155,14 @@ export const useChatBot = () => {
             ])
             setOnAiTyping(true)
 
+            const isIframe = typeof window !== 'undefined' && window.self !== window.top;
             const response = await onAiChatBotAssistant(
                 currentBotId!,
                 onChats,
                 'user',
                 uploaded.uuid,
                 chatroomId,
+                !isIframe,
             )
 
             if (response) {

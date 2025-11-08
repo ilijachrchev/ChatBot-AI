@@ -20,13 +20,12 @@ const isPublic = createRouteMatcher([
   "/auth(.*)",   
   "/portal(.*)",
   "/images(.*)",
-]);
-const isIgnored = createRouteMatcher([
-  "/chatbot",     
+  "/chatbot(.*)",
+  "api/widget(.*)",
 ]);
 
+
 export default clerkMiddleware(async (auth, req) => {
-  if (isIgnored(req)) return;    
 
   if (!isPublic(req)) {
     await auth.protect();          

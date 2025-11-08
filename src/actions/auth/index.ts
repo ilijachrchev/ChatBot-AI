@@ -38,9 +38,9 @@ export const onCompleteUserRegistration = async (
 export const onLoginUser = async () => {
   const user = await currentUser()
   if (!user) redirect('/auth/sign-in');
-  else {
+
     try {
-      const authenticated = await client.user.findUnique({
+      let authenticated = await client.user.findUnique({
         where: {
           clerkId: user.id,
         },
@@ -50,12 +50,29 @@ export const onLoginUser = async () => {
           type: true,
         },
       })
-      if (authenticated) {
-        const domains = await onGetAllAccountDomains()
-        return { status: 200, user: authenticated, domain: domains?.domains }
+      if (!authenticated) {
+        const fullname =
+          `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || user.emailAddresses?.[0]?.emailAddress || 'Unknown User';
+
+          authenticated = await client.user.create({
+            data: {
+              fullname,
+              clerkId: user.id,
+              type: 'STANDARD',
+              subscription: { create: {} }
+            },
+            select: {
+              fullname: true,
+              id: true,
+              type: true,
+            },
+          })
+        }
+        const acc = await onGetAllAccountDomains();
+        const domains = acc?.domains ?? []
+        return { status: 200, user: authenticated, domains }
+      } catch (error) {
+        console.log('onLoginUser error:', error);
+        return { status: 400 }
       }
-    } catch (error) {
-      return { status: 400 }
     }
-  }
-}

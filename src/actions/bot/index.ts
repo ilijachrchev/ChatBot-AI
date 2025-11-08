@@ -83,6 +83,7 @@ export const onAiChatBotAssistant = async (
     message: string,
     chatroomId?: string,
     newThread?: boolean,
+    useClerk?: boolean,
 ) => {
     try {
       if (!chatroomId || newThread) {
@@ -209,11 +210,27 @@ export const onAiChatBotAssistant = async (
                     author
                 );
 
-                if (!room.mailed) {
-                  const client = await clerkClient();
-                  const clerkId = checkCustomer.User?.clerkId;
+                if (useClerk && !room.mailed) {
+                  try {
+                    const clerkId = checkCustomer.User?.clerkId;
 
-                  if (!clerkId) {
+                    if (!clerkId) {
+                      await db.chatRoom.update({
+                        where: { id: room.id },
+                        data: { mailed: true },
+                      });
+                      return {
+                        live: false,
+                        chatRoom: room.id,
+                      };
+                    }
+
+                    const user = await (await clerkClient()).users.getUser(clerkId);
+                    const to = user.emailAddresses[0]?.emailAddress;
+                    if (to) {
+                      onMailer(to);
+                    }
+
                     await db.chatRoom.update({
                       where: { id: room.id },
                       data: { mailed: true },
@@ -222,28 +239,9 @@ export const onAiChatBotAssistant = async (
                       live: false,
                       chatRoom: room.id,
                     };
+                  } catch (error) {
+                    console.log('Error sending mail:', error);
                   }
-                  const clerk = await clerkClient();
-                  const user = await clerk.users.getUser(clerkId);
-
-                  const to = user.emailAddresses[0]?.emailAddress;
-                  if (to) {
-                    onMailer(to);
-                  }
-
-                  await db.chatRoom.update({
-                    where: { id: room.id },
-                    data: { mailed: true },
-                  });
-                  return {
-                    live: false,
-                    chatRoom: room.id,
-                  }
-                }
-
-                return {
-                  live: true,
-                  chatRoom: room.id,
                 }
               }
 
