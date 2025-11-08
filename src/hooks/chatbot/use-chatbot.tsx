@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { string } from "zod"
 import { UploadClient } from '@uploadcare/upload-client'
+import { is } from "date-fns/locale"
 
 const upload = new UploadClient({
     publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
@@ -21,7 +22,7 @@ export const useChatBot = () => {
         | {
             name: string
             chatBot: {
-                id: string | null
+                id: string
                 icon: string | null
                 welcomeMessage: string | null
                 background: string | null
@@ -99,6 +100,7 @@ export const useChatBot = () => {
             if (requestedRef.current) return;
 
             const botid = e.data
+            console.log('Received bot ID via postMessage:', botid);
             if (typeof botid == 'string' && botid.length > 0) {
                 requestedRef.current = true;
                 onGetDomainChatBot(botid)
@@ -112,16 +114,18 @@ export const useChatBot = () => {
 
     const onGetDomainChatBot = async (id: string) => {
         setCurrentBotId(id)
-        const chatbot = await onGetCurrentChatBot(id)
+        const chatbot = await onGetCurrentChatBot(id);
+        console.log('Fetched chatbot data:', chatbot);
         if (chatbot) {
+            const welcome = chatbot.chatBot?.welcomeMessage ?? `Hi! I am ${chatbot.name}. How can I assist you today?`;
             setOnChats((prev) => [
                 ...prev,
                 {
                     role: 'assistant',
-                    content: chatbot.chatBot?.welcomeMessage!,
-                },
-            ])
-            setCurrentBot(chatbot)
+                    content: welcome,
+                }
+            ]);
+            setCurrentBot(chatbot);
             setLoading(false)
         }
     }
