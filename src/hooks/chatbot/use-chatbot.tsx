@@ -4,9 +4,9 @@ import { ChatBotMessageProps, ChatBotMessageSchema } from "@/schemas/conversatio
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
-import { string } from "zod"
 import { UploadClient } from '@uploadcare/upload-client'
-import { is } from "date-fns/locale"
+import { set } from "zod"
+import { se } from "date-fns/locale"
 
 const upload = new UploadClient({
     publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
@@ -82,8 +82,6 @@ export const useChatBot = () => {
         )
     }, [botOpened])
 
-    let limitRequest = 0;
-
     // useEffect(() => {
     //     window.addEventListener("message", (e) => {
     //         const botid = e.data
@@ -94,41 +92,89 @@ export const useChatBot = () => {
     //     }) 
     // }, [])
 
-    useEffect(() => {
-        const handler = (e: MessageEvent) => {
-            if (e.origin !== "http://localhost:3000") return;
-            if (requestedRef.current) return;
+    // useEffect(() => {
+    //     const handler = (e: MessageEvent) => {
+    //         if (e.origin !== "http://localhost:3000") return;
+    //         if (requestedRef.current) return;
 
-            const botid = e.data
-            console.log('Received bot ID via postMessage:', botid);
-            if (typeof botid == 'string' && botid.length > 0) {
-                requestedRef.current = true;
-                onGetDomainChatBot(botid)
-            }
+    //         const botid = e.data
+    //         console.log('Received bot ID via postMessage:', botid);
+    //         if (typeof botid == 'string' && botid.length > 0) {
+    //             requestedRef.current = true;
+    //             onGetDomainChatBot(botid)
+    //         }
+    //     }
+    //     window.addEventListener("message", handler, false);
+    //     return () => {
+    //         window.removeEventListener("message", handler, false);
+    //     };
+    // }, [])
+
+    useEffect(() => {
+        const handleMessage = (e: MessageEvent) => {
+        if (e.source !== window.parent) return;
+
+        console.log('Received bot ID via postMessage:', e.data);
+        const botid = e.data;
+        if (typeof botid === 'string' && botid.length > 0 && !currentBotId) {
+            console.log('Fetching chatbot for ID:', botid);
+            setCurrentBotId(botid);
+            onGetDomainChatBot(botid);
         }
-        window.addEventListener("message", handler, false);
+    };
+        window.addEventListener('message', handleMessage);
+
+        if (window.parent !== window) {
+            console.log('Requesting bot ID from parent window...');
+            postToParent('ready');
+        }
         return () => {
-            window.removeEventListener("message", handler, false);
+            window.removeEventListener('message', handleMessage);
         };
-    }, [])
+    }, [currentBotId]);
+    
 
     const onGetDomainChatBot = async (id: string) => {
-        setCurrentBotId(id)
-        const chatbot = await onGetCurrentChatBot(id);
-        console.log('Fetched chatbot data:', chatbot);
-        if (chatbot) {
-            const welcome = chatbot.chatBot?.welcomeMessage ?? `Hi! I am ${chatbot.name}. How can I assist you today?`;
-            setOnChats((prev) => [
-                ...prev,
-                {
-                    role: 'assistant',
-                    content: welcome,
-                }
-            ]);
-            setCurrentBot(chatbot);
-            setLoading(false)
+        try {
+            console.log('Fetching chatbot for ID:', id);
+            const chatbot = await onGetCurrentChatBot(id);
+            console.log('Fetched chatbot data:', chatbot);
+
+            if (chatbot) {
+                const welcome = chatbot.chatBot?.welcomeMessage ?? `Hi! I am ${chatbot.name}. How can I assist you today?`;
+                setOnChats([
+                    {
+                        role: 'assistant',
+                        content: welcome,
+                    }
+                 ]);
+                 setCurrentBot(chatbot);
+                 setLoading(false);
+            } else {
+                console.error('No chatbot found for ID:', id);
+            }
+        } catch (error) {
+            console.error('Error fetching chatbot for ID:', id, error);
         }
     }
+
+    // const onGetDomainChatBot = async (id: string) => {
+    //     setCurrentBotId(id)
+    //     const chatbot = await onGetCurrentChatBot(id);
+    //     console.log('Fetched chatbot data:', chatbot);
+    //     if (chatbot) {
+    //         const welcome = chatbot.chatBot?.welcomeMessage ?? `Hi! I am ${chatbot.name}. How can I assist you today?`;
+    //         setOnChats((prev) => [
+    //             ...prev,
+    //             {
+    //                 role: 'assistant',
+    //                 content: welcome,
+    //             }
+    //         ]);
+    //         setCurrentBot(chatbot);
+    //         setLoading(false)
+    //     }
+    // }
     
         const setChatroomId = (id?: string) => {
             if (!id) return;
@@ -143,12 +189,90 @@ export const useChatBot = () => {
             } catch {}
         };
 
+    // const onStartChatting = handleSubmit(async (values) => {
+    //     reset()
+
+    //     const chatroomId = getOrCreateChatroomId();
+
+    //     if(values.image.length) {
+    //         const uploaded = await upload.uploadFile(values.image[0])
+    //         setOnChats((prev: any) => [
+    //             ...prev,
+    //             {
+    //                 role: 'user',
+    //                 content: uploaded.uuid,
+    //             },
+    //         ])
+    //         setOnAiTyping(true)
+
+    //         const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+    //         const response = await onAiChatBotAssistant(
+    //             currentBotId!,
+    //             onChats,
+    //             'user',
+    //             uploaded.uuid,
+    //             chatroomId,
+    //             !isIframe,
+    //         )
+
+    //         if (response) {
+    //             if (response.chatRoom) setChatroomId(response.chatRoom);
+    //             setOnAiTyping(false)
+    //             if (response.live) {
+    //                 setOnRealTime((prev) => ({
+    //                     ...prev,
+    //                     chatroom: response.chatRoom,
+    //                     mode: response.live,
+    //                 }))
+    //             } else {
+    //                 setOnChats((prev: any) => [...prev, response.response])
+    //             }
+    //         }
+    //     }
+
+    //     if (values.content) {
+    //         setOnChats((prev: any) => [
+    //             ...prev,
+    //             {
+    //                 role: 'user',
+    //                 content: values.content,
+    //             },
+    //         ])
+    //         setOnAiTyping(true)
+
+    //         const response = await onAiChatBotAssistant(
+    //             currentBotId!,
+    //             onChats,
+    //             'user',
+    //             values.content,
+    //             chatroomId,
+    //         )
+            
+    //         if (response) {
+    //             if (response.chatRoom) setChatroomId(response.chatRoom);
+    //             setOnAiTyping(false)
+    //             if (response.live) {
+    //                 setOnRealTime((prev) => ({
+    //                     ...prev,
+    //                     chatroom: response.chatRoom,
+    //                     mode: response.live,
+    //                 }))
+    //             } else {
+    //                 setOnChats((prev: any) => [...prev, response.response])
+    //             }
+    //         }
+    //     }
+    // })
+
     const onStartChatting = handleSubmit(async (values) => {
+        if (!currentBotId) {
+            console.error('Current bot ID is not set.');
+            return;
+        }
         reset()
 
         const chatroomId = getOrCreateChatroomId();
-
-        if(values.image.length) {
+        if (values.image && values.image.length) {
             const uploaded = await upload.uploadFile(values.image[0])
             setOnChats((prev: any) => [
                 ...prev,
@@ -159,26 +283,25 @@ export const useChatBot = () => {
             ])
             setOnAiTyping(true)
 
-            const isIframe = typeof window !== 'undefined' && window.self !== window.top;
             const response = await onAiChatBotAssistant(
-                currentBotId!,
+                currentBotId,
                 onChats,
                 'user',
                 uploaded.uuid,
                 chatroomId,
-                !isIframe,
+                false,
+                false,
             )
 
             if (response) {
                 if (response.chatRoom) setChatroomId(response.chatRoom);
                 setOnAiTyping(false)
                 if (response.live) {
-                    setOnRealTime((prev) => ({
-                        ...prev,
+                    setOnRealTime({
                         chatroom: response.chatRoom,
                         mode: response.live,
-                    }))
-                } else {
+                    })
+        } else if (response.response) {
                     setOnChats((prev: any) => [...prev, response.response])
                 }
             }
@@ -195,43 +318,61 @@ export const useChatBot = () => {
             setOnAiTyping(true)
 
             const response = await onAiChatBotAssistant(
-                currentBotId!,
+                currentBotId,
                 onChats,
                 'user',
                 values.content,
                 chatroomId,
+                false,
+                false,
             )
-            
+
             if (response) {
                 if (response.chatRoom) setChatroomId(response.chatRoom);
                 setOnAiTyping(false)
                 if (response.live) {
-                    setOnRealTime((prev) => ({
-                        ...prev,
+                    setOnRealTime({
                         chatroom: response.chatRoom,
                         mode: response.live,
-                    }))
-                } else {
+                    })
+                } else if (response.response) {
                     setOnChats((prev: any) => [...prev, response.response])
                 }
             }
         }
     })
 
-    const getOrCreateChatroomId = () => {
-        if (onChats.length === 0) {
-            const id = crypto.randomUUID();
-            try { localStorage.setItem('chatroomId', id); } catch {}
-            return id;
-        }
+    // const getOrCreateChatroomId = () => {
+    //     if (onChats.length === 0) {
+    //         const id = crypto.randomUUID();
+    //         try { localStorage.setItem('chatroomId', id); } catch {}
+    //         return id;
+    //     }
 
-        let chatroomId = localStorage.getItem('chatroomId');
+    //     let chatroomId = localStorage.getItem('chatroomId');
+    //     if (!chatroomId) {
+    //         chatroomId = crypto.randomUUID();
+    //         try { localStorage.setItem('chatroomId', chatroomId); } catch {}
+    //     }
+    //     return chatroomId;
+    // };
+
+    const getOrCreateChatroomId = () => {
+        let chatroomId: string | null = null;
+
+        try {
+            chatroomId = localStorage.getItem('chatroomId');
+        } catch {}
+
         if (!chatroomId) {
             chatroomId = crypto.randomUUID();
-            try { localStorage.setItem('chatroomId', chatroomId); } catch {}
-        }
+            try {
+                 localStorage.setItem('chatroomId', chatroomId); 
+                } catch {}
+    }
         return chatroomId;
     };
+
 
     const startNewChat = () => {
         clearChatroomId();

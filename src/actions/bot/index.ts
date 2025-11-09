@@ -86,6 +86,19 @@ export const onAiChatBotAssistant = async (
     useClerk?: boolean,
 ) => {
     try {
+
+      if (!id || id === 'undefined') {
+        console.error('Invalid bot Id provided:', id);
+        return {
+          response: {
+            role: 'assistant' as const,
+            content: 'Sorry, there was an error initializing the chatbot. Please refresh the page.',
+          },
+          chatRoom: chatroomId || crypto.randomUUID(),
+        };
+      }
+
+
       if (!chatroomId || newThread) {
         chatroomId = crypto.randomUUID();
       }
