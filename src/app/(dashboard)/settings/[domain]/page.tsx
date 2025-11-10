@@ -14,18 +14,21 @@ const DomainSettingsPage = async ({ params }: Props) => {
     if (!domain) redirect('/dashboard')
       const domainInfo = await onGetCurrentDomainInfo(domain)
 
-    if (!domainInfo) redirect('/dashboard')
+    if (!domainInfo || !domainInfo.domains || domainInfo.domains.length === 0) {
+      return redirect('/dashboard')
+    } 
+    const currentDomain = domainInfo.domains[0]
   return (
     <>
         <InfoBar />
         <div className='overflow-y-auto w-full chat-window flex-1 h-0'>
             <SettingsForm
                 plan={domainInfo.subscription?.plan!}
-                chatBot={domainInfo.domains[0].chatBot}
-                id={domainInfo.domains[0].id}
-                name={domainInfo.domains[0].name}
+                chatBot={currentDomain.chatBot}
+                id={currentDomain.id}
+                name={currentDomain.name}
             />
-            <BotTrainingForm id={domainInfo.domains[0].id} />
+            <BotTrainingForm id={currentDomain.id} />
         </div>
     </>
   )

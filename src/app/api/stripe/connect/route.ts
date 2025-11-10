@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 
-export async function GET(req: NextRequest) {
-  return NextResponse.json({ message: 'Stripe connect endpoint - coming soon' })
+export async function GET() {
+  return NextResponse.json({ message: 'Stripe connect endpoint' })
 }
