@@ -43,6 +43,7 @@
     "@radix-ui/react-tooltip": "^1.2.8",
     "@uploadcare/react-uploader": "^1.10.2",
     "@uploadcare/upload-client": "6.7.0",
+    "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -64,6 +65,7 @@
     "react-resizable-panels": "^3.0.6",
     "recharts": "^2.15.4",
     "sonner": "^2.0.7",
+    "stripe": "^19.3.0",
     "tailwind-merge": "^3.3.1",
     "vaul": "^1.1.2",
     "zod": "4.1.12"
