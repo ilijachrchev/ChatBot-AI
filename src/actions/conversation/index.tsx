@@ -2,6 +2,7 @@
 
 import { client } from '@/lib/prisma'
 import { pusherServer } from '@/lib/utils'
+import { success } from 'zod'
 
 
 export const onToggleRealtime = async (id: string, state: boolean) => {
@@ -137,20 +138,15 @@ export const onViewUnReadMessages = async (id: string) => {
   }
 }
 
-// export const onRealTimeChat = async (
-//   chatroomId: string,
-//   message: string,
-//   id: string,
-//   role: 'assistant' | 'user'
-// ) => {
-//   pusherServer.trigger(chatroomId, 'realtime-mode', {
-//     chat: {
-//       message,
-//       id,
-//       role,
-//     },
-//   })
-// }
+export const onRealTimeChat = async (
+  chatroomId: string,
+  message: string,
+  id: string,
+  role: 'assistant' | 'user'
+) => {
+  console.log('Realtime cchat called but pusher not made', { chatroomId, message, id, role })
+  return { success: false, message: 'Pusher not configured' }
+}
 
 export const onOwnerSendMessage = async (
   chatroom: string,
