@@ -2,7 +2,6 @@
 
 import { client } from '@/lib/prisma'
 import { pusherServer } from '@/lib/utils'
-import { success } from 'zod'
 
 
 export const onToggleRealtime = async (id: string, state: boolean) => {
