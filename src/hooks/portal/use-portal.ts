@@ -33,18 +33,29 @@ export const usePortal = (
   const onBookAppointment = handleSubmit(async (values) => {
     try {
         setLoading(true)
-        const booked = await onBookNewAppointment(
-            domainId,
-            customerId,
-            values.slot,
-            values.date,
-            email
-        )
 
-        if (booked && booked.status == 200) {
-            setLoading(false)
-          toast.success('Success,' + booked.message)
-          setStep(3)
+        const questions = Object.keys(values)
+          .filter((key) => key.startsWith('question'))
+          .reduce((obj: any, key) => {
+            obj[key.split('question-')[1]] = values[key]
+            return obj
+          }, {})
+
+        const savedAnswers = await saveAnswers(questions, customerId)
+
+        if (savedAnswers) {
+          const booked = await onBookNewAppointment(
+              domainId,
+              customerId,
+              values.slot,
+              values.date,
+              email
+          )
+          if (booked && booked.status == 200) {
+              setLoading(false)
+            toast.success('Success' + booked.message)
+            setStep(3)
+          }
         }
     } catch (error) {}
   })
