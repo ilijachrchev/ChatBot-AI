@@ -97,3 +97,61 @@ export const getUserPlanInfo = async () => {
         console.log(error)
     }
 }
+
+export const getUserTransaction = async () => {
+    try {
+        const user = await currentUser()
+        if (user) {
+            const connectedStripe = await client.user.findUnique({
+                where: {
+                    clerkId: user.id,
+                },
+                select: {
+                    stripeId: true,
+                },
+            })
+
+            if (connectedStripe) {
+                const transactions = await stripe.charges.list({
+                    stripeAccount: connectedStripe.stripeId!,
+                })
+                if (transactions) {
+                    return transactions
+                }
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+
+export const getUserTotalProductPrices = async () => {
+    try {
+        const user = await currentUser()
+        if (user) {
+            const products = await client.product.findMany({
+                where: {
+                    Domain: {
+                        User: {
+                            clerkId: user.id,
+                        },
+                    },
+                },
+                select: {
+                    price: true,
+                },
+            })
+
+            if (products) {
+                const total = products.reduce((total, next) => {
+                    return total + next.price
+                }, 0)
+
+                return total
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
