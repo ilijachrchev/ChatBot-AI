@@ -1,23 +1,21 @@
 'use client'
 import React from 'react'
-
 import { Button } from '../ui/button'
 import { Loader } from '../loader'
-import {
-  FieldErrors,
-  FieldValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from 'react-hook-form'
+import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { useEditEmail } from '@/hooks/email-marketing/use-marketing'
 import FormGenerator from '../forms/form-generator'
+
+type EmailTemplateFormData = {
+  description: string
+}
 
 type EditEmailProps = {
   id: string
   onCreate(): void
-  register: UseFormRegister<FieldValues>
-  errors: FieldErrors<FieldValues>
-  setDefault: UseFormSetValue<FieldValues>
+  register: UseFormRegister<EmailTemplateFormData>
+  errors: FieldErrors<EmailTemplateFormData>
+  setDefault: UseFormSetValue<EmailTemplateFormData>
 }
 
 export const EditEmail = ({
@@ -28,7 +26,13 @@ export const EditEmail = ({
   setDefault,
 }: EditEmailProps) => {
   const { loading, template } = useEditEmail(id)
-  setDefault('description', template ? JSON.parse(template) : '')
+  
+  React.useEffect(() => {
+    if (template) {
+      setDefault('description', JSON.parse(template))
+    }
+  }, [template, setDefault])
+
   return (
     <form
       onSubmit={onCreate}

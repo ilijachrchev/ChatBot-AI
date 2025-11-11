@@ -2,7 +2,10 @@ import React from 'react'
 
 type Props = {}
 
-const page = (props: Props) => {
+const page = async (props: Props) => {
+
+  // const clients = await getUserClients()
+
   return (
     <div>page</div>
   )

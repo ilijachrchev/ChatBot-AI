@@ -12,6 +12,18 @@ const upload = new UploadClient({
     publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
 })
 
+const helperGenerateUUID = (): string => {
+    if (typeof window !== 'undefined' && window.crypto && window.crypto.randomUUID) {
+        return window.crypto.randomUUID();
+    }
+
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+};
+
 export const useChatBot = () => {
     //WIP setup real time with pusher
     const { register, handleSubmit, reset } = 
@@ -365,7 +377,8 @@ export const useChatBot = () => {
         } catch {}
 
         if (!chatroomId) {
-            chatroomId = crypto.randomUUID();
+            // chatroomId = self.crypto.randomUUID();
+            chatroomId = helperGenerateUUID();
             try {
                  localStorage.setItem('chatroomId', chatroomId); 
                 } catch {}
