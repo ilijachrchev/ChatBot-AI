@@ -22,7 +22,6 @@ type Props = {
 }
 
 const ProductTable = ({ id, products }: Props) => {
-  // Add safety check and default to empty array
   const safeProducts = products || []
 
   return (
