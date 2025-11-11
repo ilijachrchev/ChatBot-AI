@@ -31,14 +31,19 @@ const PaymentCheckout = ({
 }: Props) => {
     const StripePromise = loadStripe(
         process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY!,
-        {
-            stripeAccount: stripeId!,
-        }
+        // {
+        //     stripeAccount: stripeId!,
+        // }
     )
     const {
         stripeSecret,
         loadForm
      } = useStripeCustomer(amount!, stripeId!)
+
+         console.log('stripeSecret:', stripeSecret)
+    console.log('loadForm:', loadForm)
+    console.log('StripePromise:', StripePromise)
+
   return (
     <Loader loading={loadForm}>
         <div className='flex flex-col gap-5 justify-center'>
@@ -56,7 +61,7 @@ const PaymentCheckout = ({
                             >
                                 <div className='w-2/12 aspect-square relative'>
                                     <Image
-                                        src={`https://jxx473cnu8.ucarecdn.net/${product.image}/-/preview/500x500/`}
+                                        src={`https://jxx473cnu8.ucarecd.net/${product.image}/-/preview/500x500/`}
                                         alt='product'
                                         fill
                                     />

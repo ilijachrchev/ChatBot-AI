@@ -19,7 +19,7 @@ export const onCreateCustomerPaymentIntentSecret = async (
                     enabled: true,
                 },
             },
-            { stripeAccount: stripeId }
+            // { stripeAccount: stripeId }
         )
 
         if (paymentIntent) {

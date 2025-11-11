@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'jxx473cnu8.ucarecd.net', 
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
