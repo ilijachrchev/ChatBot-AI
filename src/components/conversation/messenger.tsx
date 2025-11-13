@@ -53,30 +53,50 @@ const Messenger = (props: Props) => {
   return (
     <div className='flex-1 flex flex-col h-0 relative'>
       {chatRoom && (
-        <div className='flex items-center justify-between px-5 py-3 border-b bg-muted/50'>
+        <div className='flex items-center justify-between px-5 py-3 border-b bg-gradient-to-r from-background to-muted'>
           <div className='flex items-center gap-3'>
             <div className={cn(
-              'w-2 h-2 rounded-full',
-              isRealtime ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
+              'w-3 h-3 rounded-full',
+              isRealtime ? 'bg-green-500 animate-pulse shadow-lg shadow-green-500/50' : 'bg-gray-400'
             )} />
-            <span className='text-sm font-medium'>
-              {isRealtime ? 'Real-Time Mode' : 'AI Bot Mode'}
-            </span>
+            <div className='flex flex-col'>
+              <span className='text-sm font-semibold'>
+                {isRealtime ? 'Real-Time Mode' : 'AI Bot Mode'}
+              </span>
+              <span className='text-xs text-muted-foreground'>
+                {isRealtime ? 'You are chatting with customer' : 'Bot is handling responses'}
+              </span>
+            </div>
           </div>
           
-          <div className='flex items-center gap-2'>
-            <span className='text-xs text-muted-foreground'>
-              {isRealtime ? 'You are chatting' : 'Bot is responding'}
-            </span>
-            <Switch
-              checked={isRealtime}
-              onCheckedChange={handleToggleRealtime}
-              disabled={toggling}
-            />
-          </div>
+          <Button
+            size="sm"
+            type="button"
+            onClick={handleToggleRealtime}
+            disabled={toggling}
+            className={cn(
+              'shrink-0 font-medium px-4 py-2 rounded-md border',
+              isRealtime
+                ? 'bg-red-500 text-white hover:bg-red-600'
+                : 'bg-emerald-500 text-white hover:bg-emerald-600'
+            )}
+          >
+            {toggling ? (
+              'Switching...'
+            ) : isRealtime ? (
+              <>
+                <X className="w-4 h-4 mr-2" />
+                End Real-Time
+              </>
+            ) : (
+              <>
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Take Over
+              </>
+            )}
+          </Button>
         </div>
       )}
-
       <div className='flex-1 h-0 w-full flex flex-col'>
         <Loader loading={loading}>
           <div 
