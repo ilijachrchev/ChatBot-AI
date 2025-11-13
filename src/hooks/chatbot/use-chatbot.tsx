@@ -280,7 +280,6 @@ export const useChatBot = () => {
             console.error('Current bot ID is not set.');
             return;
         }
-        reset()
 
         const chatroomId = getOrCreateChatroomId();
         if (values.image && values.image.length) {
@@ -317,6 +316,7 @@ export const useChatBot = () => {
                 }
             }
         }
+        reset()
 
         if (values.content) {
             setOnChats((prev: any) => [

@@ -29,7 +29,7 @@ export const onStoreConversations = async (
     message: string,
     role: 'assistant' | 'user'
 ) => {
-    await db.chatRoom.update({
+    const result = await db.chatRoom.update({
         where: {
             id,
         },
@@ -43,7 +43,22 @@ export const onStoreConversations = async (
             },
             updatedAt: new Date(),
         },
+        select: {
+          message: {
+            orderBy: {
+              createdAt: 'desc',
+            },
+            take: 1,
+            select: {
+              id: true,
+              message: true,
+              role: true,
+            },
+          },
+        },
     })
+
+    return result.message[0];
 }
 
 export const onGetCurrentChatBot = async (id: string) => {
@@ -104,6 +119,22 @@ export const onAiChatBotAssistant = async (
       }
       const room = await ensureChatRoom(chatroomId);
 
+      if (room.live) {
+        await onStoreConversations(room.id, message, author);
+
+        await onRealTimeChat(
+          room.id,
+          message,
+          room.id,
+          'user'
+        );
+
+        return {
+          live: true,
+          chatRoom: room.id,
+        };
+      }
+
       const realtimeKeywords = [
         'manager', 'human', 'real person', 'speak to someone',
         'talk to someone', 'customer service', 'representatiive', 'agent', 'support', 'help me', 'assistance'
@@ -129,8 +160,36 @@ export const onAiChatBotAssistant = async (
           content: 'I understand you\'d like to speak with a real person. Let me connect you with one of our team members. They\'ll be with you shortly!' 
         };
 
-        await onStoreConversations(room.id, message, 'user');
-        await onStoreConversations(room.id, response.content, 'assistant');
+        // await onStoreConversations(room.id, message, 'user');
+        // await onStoreConversations(room.id, response.content, 'assistant');
+
+        // await onRealTimeChat(
+        //   room.id,
+        //   message,
+        //   room.id,
+        //   'user'
+        // );
+
+        const userMsg = await onStoreConversations(room.id, message, 'user');
+
+        const assistantMsg = await onStoreConversations(room.id, response.content, 'assistant');
+
+        if (userMsg) {
+          await onRealTimeChat(
+            room.id,
+            userMsg.message,
+            userMsg.id,
+            'user'
+          );
+        }
+        if (assistantMsg) {
+          await onRealTimeChat(
+            room.id,
+            assistantMsg.message,
+            assistantMsg.id,
+            'assistant'
+          );
+        }
 
         return {
           response,

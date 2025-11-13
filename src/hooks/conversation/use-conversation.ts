@@ -156,12 +156,15 @@ export const useChatWindow = () => {
 
   useEffect(() => {
     if (chatRoom) {
+      console.log('🔌 Subscribing to chatroom:', chatRoom)
       pusherClient.subscribe(chatRoom)
       pusherClient.bind('realtime-mode', (data: any) => {
+        console.log('📨 Dashboard received message:', data)
         setChats((prev) => [...prev, data.chat])
       })
 
       return () => {
+        console.log('🔌 Unsubscribing from chatroom:', chatRoom)
         pusherClient.unbind('realtime-mode')
         pusherClient.unsubscribe(chatRoom)
       }
