@@ -13,25 +13,20 @@ export const extractUUIDFromString = (url: string) => {
   )
 }
 
-//WIP: uncomment the pusher server
-export const pusherServer = {}
-// new PusherServer({
-//   appId: process.env.PUSHER_APP_ID as string,
-//   key: process.env.NEX_PUBLIC_PUSHER_APP_KEY as string,
-//   secret: process.env.PUSHER_APP_SECRET as string,
-//   cluster: 'mt1',
-//   useTLS: true,
-// })
+export const pusherServer = new PusherServer({
+  appId: process.env.PUSHER_APP_ID as string,
+  key: process.env.NEX_PUBLIC_PUSHER_APP_KEY as string,
+  secret: process.env.PUSHER_APP_SECRET as string,
+  cluster: 'mt1',
+  useTLS: true,
+})
 
-
-//WIP: uncomment the pusher server
-export const pusherClient = {}
-// new PusherClient(
-//   process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
-//   {
-//     cluster: 'mt1',
-//   }
-// )
+export const pusherClient = new PusherClient(
+  process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
+  {
+    cluster: 'mt1',
+  }
+)
 
 export const postToParent = (message: string) => {
   window.parent.postMessage(message, '*')

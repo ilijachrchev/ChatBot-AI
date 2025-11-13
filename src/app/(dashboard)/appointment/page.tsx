@@ -26,7 +26,7 @@ const Page = async (props: Props) => {
     }
     
     const bookingExistToday = domainBookings.bookings.filter((booking) => {
-        booking.date.getTime() === today.getTime()
+        return booking.date.getDate() === today.getDate()
     })
 
   return (

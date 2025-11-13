@@ -143,8 +143,13 @@ export const onRealTimeChat = async (
   id: string,
   role: 'assistant' | 'user'
 ) => {
-  console.log('Realtime cchat called but pusher not made', { chatroomId, message, id, role })
-  return { success: false, message: 'Pusher not configured' }
+  pusherServer.trigger(chatroomId, 'realtime-mode', {
+    chat: {
+      message,
+      id,
+      role,
+    },
+  })
 }
 
 export const onOwnerSendMessage = async (

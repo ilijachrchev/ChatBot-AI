@@ -154,41 +154,38 @@ export const useChatWindow = () => {
     onScrollToBottom()
   }, [chats, messageWindowRef])
 
-  // useEffect(() => {
-  //   if (chatRoom) {
-  //     pusherClient.subscribe(chatRoom)
-  //     pusherClient.bind('realtime-mode', (data: any) => {
-  //       setChats((prev) => [...prev, data.chat])
-  //     })
+  useEffect(() => {
+    if (chatRoom) {
+      pusherClient.subscribe(chatRoom)
+      pusherClient.bind('realtime-mode', (data: any) => {
+        setChats((prev) => [...prev, data.chat])
+      })
 
-  //     return () => {
-  //       pusherClient.unbind('realtime-mode')
-  //       pusherClient.unsubscribe(chatRoom)
-  //     }
-  //   }
-  // }, [chatRoom])
+      return () => {
+        pusherClient.unbind('realtime-mode')
+        pusherClient.unsubscribe(chatRoom)
+      }
+    }
+  }, [chatRoom])
 
 
   const onHandleSentMessage = handleSubmit(async (values) => {
     try {
       reset()
-      const saved = await onOwnerSendMessage(
+      const message = await onOwnerSendMessage(
         chatRoom!,
         values.content ?? "",
         'assistant'
       )
-      //WIP: Remove this line
-      if (saved) {
-        setChats((prev) => [...prev, saved])
-        //remove this
-        // setChats((prev) => [...prev, message.message[0]])
+      if (message) {
+        setChats((prev) => [...prev, message])
 
-        // await onRealTimeChat(
-        //   chatRoom!,
-        //   message.message[0].message,
-        //   message.message[0].id,
-        //   'assistant'
-        // )
+        await onRealTimeChat(
+          chatRoom!,
+          message.message,
+          message.id,
+          'assistant'
+        )
       }
     } catch (error) {
       console.log(error)

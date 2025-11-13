@@ -171,13 +171,11 @@ export async function GET() {
       )
     }
 
-    // Check if user already has a Stripe account
     const existingUser = await client.user.findUnique({
       where: { clerkId: user.id },
     })
 
     if (existingUser?.stripeId) {
-      // User already has an account, create account link
       const accountLink = await stripe.accountLinks.create({
         account: existingUser.stripeId,
         refresh_url: 'http://localhost:3000/callback/stripe/refresh',
@@ -188,7 +186,6 @@ export async function GET() {
       return NextResponse.json({ url: accountLink.url })
     }
 
-    // Create a simple Express account
     const account = await stripe.accounts.create({
       type: 'express',
       country: 'US',
@@ -201,13 +198,11 @@ export async function GET() {
 
     console.log('✅ Stripe Express account created:', account.id)
 
-    // Save account ID to database
     await client.user.update({
       where: { clerkId: user.id },
       data: { stripeId: account.id },
     })
 
-    // Create account link for onboarding
     const accountLink = await stripe.accountLinks.create({
       account: account.id,
       refresh_url: 'http://localhost:3000/callback/stripe/refresh',

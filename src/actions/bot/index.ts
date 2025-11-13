@@ -222,6 +222,13 @@ export const onAiChatBotAssistant = async (
                     message,
                     author
                 );
+                
+                onRealTimeChat(
+                  checkCustomer.customer[0].chatRoom[0].id,
+                  message,
+                  'user',
+                  author
+                )
 
                 if (useClerk && !room.mailed) {
                   try {
