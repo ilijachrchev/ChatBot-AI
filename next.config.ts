@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'jxx473cnu8.ucarecdn.net',  // Add your custom subdomain
+        hostname: 'jxx473cnu8.ucarecdn.net', 
         port: '',
         pathname: '/**',
       },

@@ -21,6 +21,9 @@ const AiChatBot = (props: Props) => {
         loading,
         onRealTime,
         setOnChats,
+        imagePreview,
+        onImageChange,
+        removeImage,
     } = useChatBot()
 
   return (
@@ -39,6 +42,9 @@ const AiChatBot = (props: Props) => {
                 register={register}
                 onChat={onStartChatting}
                 onResponding={onAiTyping}
+                imagePreview={imagePreview}
+                onImageChange={onImageChange}
+                removeImage={removeImage}
             />
         )}
     <div

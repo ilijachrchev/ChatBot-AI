@@ -47,6 +47,9 @@ type Props = {
       }[]
     >
   >
+  imagePreview: string | null
+  onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  removeImage: () => void
 }
 
 export const BotWindow = forwardRef<HTMLDivElement, Props>(
@@ -63,6 +66,9 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       textColor,
       theme,
       help,
+      imagePreview,
+      onImageChange,
+      removeImage,
     },
     ref
   ) => {
@@ -124,14 +130,40 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               </div>
               <form
                 onSubmit={onChat}
-                className="flex px-3 py-1 flex-col flex-1 bg-porcelain"
+                className="flex px-3 py-1 flex-col flex-1 bg-porcelain relative"
               >
-                <div className="flex justify-between">
-                  <Input
-                    {...register('content')}
-                    placeholder="Type your message..."
-                    className="focus-visible:ring-0 flex-1 p-0 focus-visible:ring-offset-0 bg-porcelain rounded-none outline-none border-none"
-                  />
+                <div className="flex justify-between items-end gap-2">
+                  <div className="flex-1 flex flex-col gap-2">
+                    {imagePreview && (
+                      <div className="relative w-16 h-16 rounded-md overflow-hidden border-2 border-gray-300">
+                        <img 
+                          src={imagePreview} 
+                          alt="preview" 
+                          className="w-full h-full object-cover"
+                        />
+                        <button
+                          type="button"
+                          onClick={removeImage}
+                          className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    )}
+                    
+                    <Input
+                      {...register('content')}
+                      placeholder="Type your message..."
+                      className="focus-visible:ring-0 p-0 focus-visible:ring-offset-0 bg-porcelain rounded-none outline-none border-none"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault()
+                          onChat(e)
+                        }
+                      }}
+                    />
+                  </div>
+                  
                   <Button
                     type="submit"
                     className="mt-3"
@@ -139,13 +171,16 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                     <Send />
                   </Button>
                 </div>
-                <Label htmlFor="bot-image">
-                  <Paperclip />
+                
+                <Label htmlFor="bot-image" className="cursor-pointer mt-2">
+                  <Paperclip className="text-muted-foreground hover:text-foreground transition-colors" />
                   <Input
                     {...register('image')}
                     type="file"
                     id="bot-image"
                     className="hidden"
+                    accept="image/*"
+                    onChange={onImageChange}
                   />
                 </Label>
               </form>

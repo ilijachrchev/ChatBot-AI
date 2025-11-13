@@ -48,29 +48,31 @@ const Bubble = ({ message, createdAt }: Props) => {
                         {createdAt.getDate()} {getMonthName(createdAt.getMonth())}
                     </p>
                     <p>
-                        {createdAt.getHours()}:{createdAt.getMinutes()}
-                        {createdAt.getHours() > 12 ? 'PM' : 'AM'}
+                        {createdAt.getHours()}:{createdAt.getMinutes().toString().padStart(2, '0')}
+                        {createdAt.getHours() >= 12 ? 'PM' : 'AM'}
                     </p>
                 </div>
             ) : (
                 <p className='text-xs'>
-                    {`${d.getHours()}:${d.getMinutes()} ${d.getHours() > 12 ? 'pm' : 'am'}`}
+                    {`${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() >= 12 ? 'pm' : 'am'}`}
                 </p>
             )}
-            {image ? (
-                <div className='relative aspect-square'>
+            {image && image[0] ? (
+                <div className='relative w-full h-[250px] rounded-md overflow-hidden bg-gray-100'>
                     <Image 
                         src={`https://ucarecdn.com/${image[0]}/`}
+                        alt="uploaded image"
                         fill
-                        alt="image"
+                        className='object-contain'
+                        sizes="(max-width: 400px) 100vw, 400px"
                     />
                 </div>
             ) : (
-                <p className='text-sm'>
+                <p className='text-sm break-words whitespace-pre-wrap'>
                     {message.content.replace('(complete)', '')}
                     {message.link && (
                         <Link
-                            className="underline font-bold pl-2"
+                            className="underline font-bold pl-2 text-blue-500 hover:text-blue-700"
                             href={message.link}
                             target='_blank'
                         >

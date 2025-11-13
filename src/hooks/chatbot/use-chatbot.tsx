@@ -25,7 +25,7 @@ const helperGenerateUUID = (): string => {
 };
 
 export const useChatBot = () => {
-    const { register, handleSubmit, reset } = 
+    const { register, handleSubmit, reset, setValue } = 
     useForm<ChatBotMessageProps>({
         resolver: zodResolver(ChatBotMessageSchema as any) as any,
     })
@@ -63,6 +63,8 @@ export const useChatBot = () => {
         { chatroom: string; mode: boolean } | undefined
     >(undefined)
 
+    const [imagePreview, setImagePreview] = useState<string | null>(null)
+
     const onScrollToBottom = () => {
         messageWindowRef.current?.scroll({
             top: messageWindowRef.current.scrollHeight,
@@ -92,34 +94,6 @@ export const useChatBot = () => {
             })
         )
     }, [botOpened])
-
-    // useEffect(() => {
-    //     window.addEventListener("message", (e) => {
-    //         const botid = e.data
-    //         if (limitRequest < 1 && typeof botid == 'string') {
-    //         onGetDomainChatBot(botid)
-    //         limitRequest++
-    //         }
-    //     }) 
-    // }, [])
-
-    // useEffect(() => {
-    //     const handler = (e: MessageEvent) => {
-    //         if (e.origin !== "http://localhost:3000") return;
-    //         if (requestedRef.current) return;
-
-    //         const botid = e.data
-    //         console.log('Received bot ID via postMessage:', botid);
-    //         if (typeof botid == 'string' && botid.length > 0) {
-    //             requestedRef.current = true;
-    //             onGetDomainChatBot(botid)
-    //         }
-    //     }
-    //     window.addEventListener("message", handler, false);
-    //     return () => {
-    //         window.removeEventListener("message", handler, false);
-    //     };
-    // }, [])
 
     useEffect(() => {
         const handleMessage = (e: MessageEvent) => {
@@ -281,9 +255,23 @@ export const useChatBot = () => {
             return;
         }
 
+        reset()
+        setImagePreview(null)
+
         const chatroomId = getOrCreateChatroomId();
         if (values.image && values.image.length) {
+            try {
             const uploaded = await upload.uploadFile(values.image[0])
+
+            if (!uploaded || !uploaded.uuid) {
+                console.error('Upload failed')
+                setOnAiTyping(false)
+                setImagePreview(null)
+                return
+            }
+
+            console.log('Uploaded image UUID:', uploaded.uuid)
+
             setOnChats((prev: any) => [
                 ...prev,
                 {
@@ -292,6 +280,7 @@ export const useChatBot = () => {
                 },
             ])
             setOnAiTyping(true)
+            setImagePreview(null)
 
             const response = await onAiChatBotAssistant(
                 currentBotId,
@@ -315,8 +304,20 @@ export const useChatBot = () => {
                     setOnChats((prev: any) => [...prev, response.response])
                 }
             }
+        } catch (error) {
+            console.error('Image upload error:', error)
+            setOnAiTyping(false)
+            setImagePreview(null)
+
+            setOnChats((prev: any) => [
+                ...prev,
+                {
+                    role: 'assistant',
+                    content: 'Sorry, there was an error uploading your image. Please try again.',
+                },
+            ])
         }
-        reset()
+    }
 
         if (values.content) {
             setOnChats((prev: any) => [
@@ -353,20 +354,21 @@ export const useChatBot = () => {
         }
     })
 
-    // const getOrCreateChatroomId = () => {
-    //     if (onChats.length === 0) {
-    //         const id = crypto.randomUUID();
-    //         try { localStorage.setItem('chatroomId', id); } catch {}
-    //         return id;
-    //     }
+    const onImageChange = (E: React.ChangeEvent<HTMLInputElement>) => {
+        const file = E.target.files?.[0]
+        if (file) {
+            const reader = new FileReader()
+            reader.onload = (event) => {
+                setImagePreview(event.target?.result as string)
+            }
+            reader.readAsDataURL(file)
+        }
+    }
+    const removeImage = () => {
+        setImagePreview(null)
+        setValue('image', null as any)
+    }
 
-    //     let chatroomId = localStorage.getItem('chatroomId');
-    //     if (!chatroomId) {
-    //         chatroomId = crypto.randomUUID();
-    //         try { localStorage.setItem('chatroomId', chatroomId); } catch {}
-    //     }
-    //     return chatroomId;
-    // };
 
     const getOrCreateChatroomId = () => {
         let chatroomId: string | null = null;
@@ -386,7 +388,7 @@ export const useChatBot = () => {
     };
 
 
-    const startNewChat = () => {
+    const startNewChat: () => void = () => {
         clearChatroomId();
         setOnChats([]);
         setOnRealTime(undefined);
@@ -405,6 +407,9 @@ export const useChatBot = () => {
         setOnChats,
         onRealTime,
         startNewChat,
+        imagePreview,
+        onImageChange,
+        removeImage,
     }
 }
 
