@@ -171,14 +171,14 @@ export const useChatWindow = () => {
 
   const onHandleSentMessage = handleSubmit(async (values) => {
     try {
+      if (!values.content?.trim()) return
       reset()
       const message = await onOwnerSendMessage(
         chatRoom!,
-        values.content ?? "",
+        values.content,
         'assistant'
       )
       if (message) {
-        setChats((prev) => [...prev, message])
 
         await onRealTimeChat(
           chatRoom!,
