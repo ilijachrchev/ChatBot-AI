@@ -104,9 +104,44 @@ export const onAiChatBotAssistant = async (
       }
       const room = await ensureChatRoom(chatroomId);
 
+      const realtimeKeywords = [
+        'manager', 'human', 'real person', 'speak to someone',
+        'talk to someone', 'customer service', 'representatiive', 'agent', 'support', 'help me', 'assistance'
+      ];
+
+      const messagelower = message.toLowerCase();
+      const needsRealtime = realtimeKeywords.some(keyword =>
+        messagelower.includes(keyword)
+      );
+
+      if (needsRealtime) {
+        await db.chatRoom.update({
+          where: {
+            id: room.id,
+          },
+          data: {
+            live: true,
+          },
+        });
+
+        const response = {
+          role: 'assistant' as const,
+          content: 'I understand you\'d like to speak with a real person. Let me connect you with one of our team members. They\'ll be with you shortly!' 
+        };
+
+        await onStoreConversations(room.id, message, 'user');
+        await onStoreConversations(room.id, response.content, 'assistant');
+
+        return {
+          response,
+          live: true,
+          chatRoom: room.id,
+        };
+      }
+
         const chatBotDomain = await db.domain.findUnique({
             where: {
-                id,
+              id,
             },
             select: {
                 name: true,
@@ -212,23 +247,23 @@ export const onAiChatBotAssistant = async (
                         id: chatroomId!,
                       },
                       data: {
-                          customerId: existingCustomerId,
-                          live: false,
+                          customerId: existingCustomerId
                       },
                     });
                   }
                   await onStoreConversations(
-                    room.id as string,
+                    room.id,
                     message,
                     author
                 );
                 
                 onRealTimeChat(
-                  checkCustomer.customer[0].chatRoom[0].id,
+                  room.id,
                   message,
+                  room.id,
                   'user',
-                  author
-                )
+                );
+
 
                 if (useClerk && !room.mailed) {
                   try {
@@ -263,6 +298,10 @@ export const onAiChatBotAssistant = async (
                     console.log('Error sending mail:', error);
                   }
                 }
+                return {
+                  live: true,
+                  chatRoom: room.id,
+                };
               }
 
              const chatCompletion = await openai.chat.completions.create({
@@ -384,7 +423,7 @@ export const onAiChatBotAssistant = async (
           }
 
           const response = {
-            role: 'assistant',
+            role: 'assistant' as const,
             content: chatCompletion.choices[0].message.content,
           }
 
