@@ -17,7 +17,7 @@ export default function Home() {
           An AI powered sales assistant ChatBot!
         </span>
         <Image
-          src="/images/corinna-ai-logo.png"
+          src="/images/fulllogo.png"
           width={500}
           height={100}
           alt="Logo"

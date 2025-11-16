@@ -13,7 +13,7 @@ const layout = async ({ children }: Props) => {
   return (
     <div className='h-screen flex w-full justify-center'>
         <div className='w-[600px] ld:w-full flex flex-col items-start p-6'>
-            <Image src="/images/logo.png" alt='LOGO' style={{
+            <Image src="/images/fulllogo.png" alt='LOGO' style={{
                 width: '20%',
                 height: 'auto'
              }}
