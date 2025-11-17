@@ -26,14 +26,9 @@ const MaxMenu = ({ current, domains, onExpand, onSignOut }: Props) => {
         <Image
           src="/images/fulllogo.png"
           alt="LOGO"
-          sizes="100vw"
           className="animate-fade-in opacity-0 delay-300 fill-mode-forwards"
-          style={{
-            width: '50%',
-            height: 'auto',
-          }}
-          width={0}
-          height={0}
+          width={140}
+          height={40}
         />
         <Menu
           className="cursor-pointer animate-fade-in opacity-0 delay-300 fill-mode-forwards"
