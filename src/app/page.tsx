@@ -8,7 +8,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
-  //WTP ::  challeng top put up a billing card
   return <main>
     <NavBar />
     <section>

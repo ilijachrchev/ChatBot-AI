@@ -159,17 +159,6 @@ export const onAiChatBotAssistant = async (
           role: 'assistant' as const,
           content: 'I understand you\'d like to speak with a real person. Let me connect you with one of our team members. They\'ll be with you shortly!' 
         };
-
-        // await onStoreConversations(room.id, message, 'user');
-        // await onStoreConversations(room.id, response.content, 'assistant');
-
-        // await onRealTimeChat(
-        //   room.id,
-        //   message,
-        //   room.id,
-        //   'user'
-        // );
-
         const userMsg = await onStoreConversations(room.id, message, 'user');
 
         const assistantMsg = await onStoreConversations(room.id, response.content, 'assistant');
