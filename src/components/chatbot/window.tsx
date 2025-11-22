@@ -158,7 +158,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault()
-                          onChat(e)
+                          onChat()
                         }
                       }}
                     />
@@ -175,7 +175,6 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 <Label htmlFor="bot-image" className="cursor-pointer mt-2">
                   <Paperclip className="text-muted-foreground hover:text-foreground transition-colors" />
                   <Input
-                    {...register('image')}
                     type="file"
                     id="bot-image"
                     className="hidden"

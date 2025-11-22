@@ -14,6 +14,29 @@ export type ChatBotMessageProps = {
 
 export type ConversationSearchForm = z.infer<typeof ConversationSearchSchema>;
 
+// export const ChatBotMessageSchema: ZodType<ChatBotMessageProps> = z
+//   .object({
+//     content: z
+//       .string()
+//       .min(1)
+//       .optional()
+//       .or(z.literal('').transform(() => undefined)),
+//     image: z.any().optional(),
+//   })
+//   .refine((schema) => {
+//     if (schema.image?.length) {
+//       if (
+//         ACCEPTED_FILE_TYPES.includes(schema.image?.[0].type!) &&
+//         schema.image?.[0].size <= MAX_UPLOAD_SIZE
+//       ) {
+//         return true
+//       }
+//     }
+//     if (!schema.image?.length) {
+//       return true
+//     }
+//   })
+
 export const ChatBotMessageSchema: ZodType<ChatBotMessageProps> = z
   .object({
     content: z
@@ -23,16 +46,30 @@ export const ChatBotMessageSchema: ZodType<ChatBotMessageProps> = z
       .or(z.literal('').transform(() => undefined)),
     image: z.any().optional(),
   })
-  .refine((schema) => {
-    if (schema.image?.length) {
-      if (
-        ACCEPTED_FILE_TYPES.includes(schema.image?.[0].type!) &&
-        schema.image?.[0].size <= MAX_UPLOAD_SIZE
-      ) {
-        return true
+  .refine(
+    (schema) => {
+      // If there's an image, validate it
+      if (schema.image?.length) {
+        return (
+          ACCEPTED_FILE_TYPES.includes(schema.image[0].type) &&
+          schema.image[0].size <= MAX_UPLOAD_SIZE
+        )
       }
-    }
-    if (!schema.image?.length) {
+      // If no image, it's valid
       return true
+    },
+    {
+      message: 'Invalid file type or size',
+      path: ['image'],
     }
-  })
+  )
+  .refine(
+    (schema) => {
+      // At least one of content or image must be present
+      return !!(schema.content || (schema.image && schema.image.length > 0))
+    },
+    {
+      message: 'Please provide either a message or an image',
+      path: ['content'],
+    }
+  )

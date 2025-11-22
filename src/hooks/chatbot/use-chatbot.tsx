@@ -156,15 +156,18 @@ export const useChatBot = () => {
         };
 
     const onStartChatting = handleSubmit(async (values) => {
+        console.log('✅ FORM VALID - Values:', values)
         if (!currentBotId) {
             console.error('Current bot ID is not set.');
             return;
         }
 
-        reset()
-        setImagePreview(null)
+        if ((!values.image || !values.image.length) && !values.content) {
+            return;
+        }
 
         const chatroomId = getOrCreateChatroomId();
+
         if (values.image && values.image.length) {
             try {
             const uploaded = await upload.uploadFile(values.image[0])
@@ -177,16 +180,19 @@ export const useChatBot = () => {
             }
 
             console.log('Uploaded image UUID:', uploaded.uuid)
+            
+            reset()
+            setImagePreview(null)
 
+            const imageUrl = `https://ucarecdn.com/${uploaded.uuid}/`
             setOnChats((prev: any) => [
                 ...prev,
                 {
                     role: 'user',
-                    content: uploaded.uuid,
+                    content: imageUrl,
                 },
             ])
             setOnAiTyping(true)
-            setImagePreview(null)
 
             const response = await onAiChatBotAssistant(
                 currentBotId,
@@ -210,6 +216,7 @@ export const useChatBot = () => {
                     setOnChats((prev: any) => [...prev, response.response])
                 }
             }
+            return;
         } catch (error) {
             console.error('Image upload error:', error)
             setOnAiTyping(false)
@@ -222,6 +229,7 @@ export const useChatBot = () => {
                     content: 'Sorry, there was an error uploading your image. Please try again.',
                 },
             ])
+            return;
         }
     }
 
@@ -233,6 +241,9 @@ export const useChatBot = () => {
                     content: values.content,
                 },
             ])
+
+            reset() 
+
             setOnAiTyping(true)
 
             const response = await onAiChatBotAssistant(
@@ -258,11 +269,16 @@ export const useChatBot = () => {
                 }
             }
         }
-    })
+    },
+(errors) => {
+    console.log('❌ FORM VALIDATION FAILED - Errors:', errors)
+  }
+)
 
     const onImageChange = (E: React.ChangeEvent<HTMLInputElement>) => {
         const file = E.target.files?.[0]
         if (file) {
+            setValue('image', E.target.files)
             const reader = new FileReader()
             reader.onload = (event) => {
                 setImagePreview(event.target?.result as string)
