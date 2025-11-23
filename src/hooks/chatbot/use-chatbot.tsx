@@ -105,30 +105,6 @@ export const useChatBot = () => {
             })
         )
     }, [botOpened])
-
-    // useEffect(() => {
-    //     const handleMessage = (e: MessageEvent) => {
-    //     if (e.source !== window.parent) return;
-
-    //     console.log('Received bot ID via postMessage:', e.data);
-    //     const botid = e.data;
-
-    //     if (typeof botid === 'string' && botid.length > 0 && !currentBotId) {
-    //         console.log('Fetching chatbot for ID:', botid);
-    //         setCurrentBotId(botid);
-    //         onGetDomainChatBot(botid);
-    //     }
-    // };
-    //     window.addEventListener('message', handleMessage);
-
-    //     if (window.parent !== window) {
-    //         console.log('Requesting bot ID from parent window...');
-    //         postToParent('ready');
-    //     }
-    //     return () => {
-    //         window.removeEventListener('message', handleMessage);
-    //     };
-    // }, [currentBotId]);
     
     useEffect(() => {
         const handleMessage = (e: MessageEvent) => {
@@ -207,6 +183,9 @@ export const useChatBot = () => {
 
     const onStartChatting = handleSubmit(async (values) => {
         console.log('✅ FORM VALID - Values:', values)
+        console.log('📋 Image:', values.image)
+        console.log('📋 Content:', values.content)
+        console.log('📋 Image length:', values.image?.length)
         if (!currentBotId) {
             console.error('Current bot ID is not set.');
             return;
@@ -220,21 +199,27 @@ export const useChatBot = () => {
 
         if (values.image && values.image.length) {
             try {
+                console.log('📤 Starting upload...', values.image[0])
             const uploaded = await upload.uploadFile(values.image[0])
 
+            console.log('📤 FULL UPLOAD RESPONSE:', JSON.stringify(uploaded, null, 2))
+            console.log('📁 UUID:', uploaded.uuid)
+            console.log('🔗 cdnUrl:', uploaded.cdnUrl)
+            
             if (!uploaded || !uploaded.uuid) {
-                console.error('Upload failed')
+                console.error('❌ Upload failed - no UUID')
                 setOnAiTyping(false)
                 setImagePreview(null)
                 return
             }
 
+            const imageUrl = uploaded.cdnUrl || `https://ucarecdn.com/${uploaded.uuid}/`
             console.log('Uploaded image UUID:', uploaded.uuid)
             
             reset()
             setImagePreview(null)
 
-            const imageUrl = `https://ucarecdn.com/${uploaded.uuid}/`
+            // const imageUrl = `https://ucarecdn.com/${uploaded.uuid}/`
             setOnChats((prev: any) => [
                 ...prev,
                 {
@@ -269,7 +254,7 @@ export const useChatBot = () => {
             }
             return;
         } catch (error) {
-            console.error('Image upload error:', error)
+            console.error('❌ Image upload error:', error)
             setOnAiTyping(false)
             setImagePreview(null)
 
@@ -283,6 +268,7 @@ export const useChatBot = () => {
             return;
         }
     }
+
 
         if (values.content) {
             setOnChats((prev: any) => [
