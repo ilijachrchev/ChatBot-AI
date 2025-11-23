@@ -1,8 +1,7 @@
-import { cn, extractUUIDFromString, getMonthName } from '@/lib/utils'
+import { cn, getMonthName } from '@/lib/utils'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import { Link, User } from 'lucide-react'
-import Image from 'next/image'
 
 type Props = {
     message: {
@@ -13,9 +12,14 @@ type Props = {
     createdAt?: Date
 }
 
+
+
 const Bubble = ({ message, createdAt }: Props) => {
     let d = new Date()
-    const image = extractUUIDFromString(message.content)
+
+    const isImageUrl = message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i) || 
+                        message.content.includes('/uploads/')
+
   return (
     <div className={cn(
         'flex gap-2 items-end',
@@ -57,14 +61,12 @@ const Bubble = ({ message, createdAt }: Props) => {
                     {`${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() >= 12 ? 'pm' : 'am'}`}
                 </p>
             )}
-            {image && image[0] ? (
+            {isImageUrl ? (
                 <div className='relative w-full h-[250px] rounded-md overflow-hidden bg-gray-100'>
-                    <Image 
-                        src={`https://ucarecdn.com/${image[0]}/`}
-                        alt="uploaded image"
-                        fill
-                        className='object-contain'
-                        sizes="(max-width: 400px) 100vw, 400px"
+                    <img 
+                        src={message.content}
+                        alt="Uploaded Image"
+                        className='w-full h-full object-contain'
                     />
                 </div>
             ) : (

@@ -182,10 +182,13 @@ export const useChatBot = () => {
         };
 
     const onStartChatting = handleSubmit(async (values) => {
+        console.log('========== FORM SUBMITTED ==========')
         console.log('✅ FORM VALID - Values:', values)
         console.log('📋 Image:', values.image)
-        console.log('📋 Content:', values.content)
         console.log('📋 Image length:', values.image?.length)
+        console.log('📋 Content:', values.content)
+        console.log('====================================')
+        
         if (!currentBotId) {
             console.error('Current bot ID is not set.');
             return;
@@ -200,74 +203,74 @@ export const useChatBot = () => {
         if (values.image && values.image.length) {
             try {
                 console.log('📤 Starting upload...', values.image[0])
-            const uploaded = await upload.uploadFile(values.image[0])
 
-            console.log('📤 FULL UPLOAD RESPONSE:', JSON.stringify(uploaded, null, 2))
-            console.log('📁 UUID:', uploaded.uuid)
-            console.log('🔗 cdnUrl:', uploaded.cdnUrl)
-            
-            if (!uploaded || !uploaded.uuid) {
-                console.error('❌ Upload failed - no UUID')
+                const formData = new FormData()
+                formData.append('file', values.image[0])
+
+                const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://localhost:4000'
+                const uploadResponse = await fetch(`${socketUrl}/api/upload`, {
+                    method: 'POST',
+                    body: formData,
+                })
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Upload failed')
+                }
+
+                const { url } = await uploadResponse.json()
+                console.log('✅ Upload complete:', url)
+
+                reset()
+                setImagePreview(null)
+
+                setOnChats((prev: any) => [
+                    ...prev,
+                    {
+                        role: 'user',
+                        content: url,
+                    },
+                ])
+                setOnAiTyping(true)
+
+                const response = await onAiChatBotAssistant(
+                    currentBotId,
+                    onChats,
+                    'user',
+                    url,
+                    chatroomId,
+                    false,
+                    false,
+                    true,
+                )
+
+                if (response) {
+                    if (response.chatRoom) setChatroomId(response.chatRoom);
+                    setOnAiTyping(false)
+                    if (response.live) {
+                        setOnRealTime({
+                            chatroom: response.chatRoom,
+                            mode: response.live,
+                        })
+                    } else if (response.response) {
+                        setOnChats((prev: any) => [...prev, response.response])
+                    }
+                }
+                return;
+            } catch (error) {
+                console.error('❌ Image upload error:', error)
                 setOnAiTyping(false)
                 setImagePreview(null)
-                return
+
+                setOnChats((prev: any) => [
+                    ...prev,
+                    {
+                        role: 'assistant',
+                        content: 'Sorry, there was an error uploading your image. Please try again.',
+                    },
+                ])
+                return;
             }
-
-            const imageUrl = uploaded.cdnUrl || `https://ucarecdn.com/${uploaded.uuid}/`
-            console.log('Uploaded image UUID:', uploaded.uuid)
-            
-            reset()
-            setImagePreview(null)
-
-            // const imageUrl = `https://ucarecdn.com/${uploaded.uuid}/`
-            setOnChats((prev: any) => [
-                ...prev,
-                {
-                    role: 'user',
-                    content: imageUrl,
-                },
-            ])
-            setOnAiTyping(true)
-
-            const response = await onAiChatBotAssistant(
-                currentBotId,
-                onChats,
-                'user',
-                imageUrl,
-                chatroomId,
-                false,
-                false,
-                true,
-            )
-
-            if (response) {
-                if (response.chatRoom) setChatroomId(response.chatRoom);
-                setOnAiTyping(false)
-                if (response.live) {
-                    setOnRealTime({
-                        chatroom: response.chatRoom,
-                        mode: response.live,
-                    })
-        } else if (response.response) {
-                    setOnChats((prev: any) => [...prev, response.response])
-                }
-            }
-            return;
-        } catch (error) {
-            console.error('❌ Image upload error:', error)
-            setOnAiTyping(false)
-            setImagePreview(null)
-
-            setOnChats((prev: any) => [
-                ...prev,
-                {
-                    role: 'assistant',
-                    content: 'Sorry, there was an error uploading your image. Please try again.',
-                },
-            ])
-            return;
         }
-    }
 
 
         if (values.content) {
