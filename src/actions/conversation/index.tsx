@@ -1,7 +1,6 @@
 'use server'
 
 import { client } from '@/lib/prisma'
-import { pusherServer } from '@/lib/utils'
 
 
 export const onToggleRealtime = async (id: string, state: boolean) => {
@@ -20,6 +19,22 @@ export const onToggleRealtime = async (id: string, state: boolean) => {
     })
 
     if (chatRoom) {
+      const socketUrl = process.env.SOCKET_SERVER_URL || 'http://localhost:4000'
+
+      await fetch(`${socketUrl}/api/trigger`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          chatroomId: id,
+          event: 'mode-change',
+          data: {
+            mode: state,
+          },
+        }),
+      })
+
       return {
         status: 200,
         message: chatRoom.live
@@ -143,13 +158,32 @@ export const onRealTimeChat = async (
   id: string,
   role: 'assistant' | 'user'
 ) => {
-  pusherServer.trigger(chatroomId, 'realtime-mode', {
-    chat: {
-      message,
-      id,
-      role,
-    },
-  })
+  try {
+    const socketUrl = process.env.SOCKET_sERVER_URL || 'http://localhost:4000'
+
+    const response = await fetch(`${socketUrl}/api/trigger`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        chatroomId,
+        event: 'realtime-mode',
+        data: {
+          chat: {
+            message,
+            id,
+            role,
+          },
+        },
+      }),
+    })
+    if (!response.ok) {
+      console.error('Failed to trigger Socket.IO event:', response.statusText)
+    }
+  } catch (error) {
+    console.error('Error triggering Socket.IO event:', error)
+  }
 }
 
 export const onOwnerSendMessage = async (

@@ -105,9 +105,9 @@ const Messenger = (props: Props) => {
              pl-5 py-5 chat-window overflow-y-auto'
             >
               {chats.length ? (
-                chats.map((chat) => (
+                chats.map((chat, index) => (
                   <Bubble
-                    key={chat.id}
+                    key={`${chat.id}-${index}`}
                     message={{
                       role: chat.role!,
                       content: chat.message,

@@ -1,17 +1,10 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import PusherClient from 'pusher-js'
-import PusherServer from 'pusher'
+import { io, Socket } from "socket.io-client"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-
-// export const extractUUIDFromString = (url: string) => {
-//   return url.match(
-//     /^[0-9a-f]{8}-?[0-9a-f]{4}-?[1-5][0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$/i
-//   )
-// }
 
 export const extractUUIDFromString = (url: string) => {
   return url.match(
@@ -19,20 +12,30 @@ export const extractUUIDFromString = (url: string) => {
   )
 }
 
-export const pusherServer = new PusherServer({
-  appId: process.env.PUSHER_APP_ID as string,
-  key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
-  secret: process.env.PUSHER_APP_SECRET as string,
-  cluster: process.env.PUSHER_APP_CLUSTER as string,
-  useTLS: true,
-})
+let socketClient: Socket | null = null
 
-export const pusherClient = new PusherClient(
-  process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
-  {
-    cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER as string,
+export const getSocketClient = () => {
+  if (!socketClient) {
+    socketClient = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000' , {
+      autoConnect: true,
+      reconnection: true,
+      reconnectionAttempts: 5,
+      reconnectionDelay: 1000,
+    })
+    socketClient.on('connect', () => {
+      console.log('✅ Connected to Socket.IO server:', socketClient?.id)
+    })
+
+    socketClient.on('disconnect', () => {
+      console.log('❌ Disconnected from Socket.IO server')
+    })
+
+    socketClient.on('connect_error', (error) => {
+      console.error('🔴 Socket.IO connection error:', error)
+    })
   }
-)
+  return socketClient
+}
 
 export const postToParent = (message: string) => {
   window.parent.postMessage(message, '*')

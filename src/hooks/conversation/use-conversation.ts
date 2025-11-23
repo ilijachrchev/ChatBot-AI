@@ -1,8 +1,8 @@
 "use client"
 import { onGetChatMessages, onGetDomainChatRooms, onOwnerSendMessage, onRealTimeChat, onViewUnReadMessages } from "@/actions/conversation"
 import { useChatContext } from "@/context/user-chat-context"
-import { getMonthName, pusherClient } from "@/lib/utils"
-import { ConversationSearchSchema, ConversationSearchForm, ChatBotMessageSchema } from "@/schemas/conversation.schema"
+import { getMonthName, getSocketClient } from "@/lib/utils"
+import { ConversationSearchSchema, ChatBotMessageSchema } from "@/schemas/conversation.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
@@ -156,17 +156,22 @@ export const useChatWindow = () => {
 
   useEffect(() => {
     if (chatRoom) {
+      const socket = getSocketClient()
+
       console.log('🔌 Subscribing to chatroom:', chatRoom)
-      pusherClient.subscribe(chatRoom)
-      pusherClient.bind('realtime-mode', (data: any) => {
+      socket.emit('join-chatroom', chatRoom)
+      socket.emit('join-chatroom', chatRoom)
+
+      const handleRealtimeMessage = (data: any) => {
         console.log('📨 Dashboard received message:', data)
         setChats((prev) => [...prev, data.chat])
-      })
+      }
 
+      socket.on('realtime-mode', handleRealtimeMessage)
       return () => {
-        console.log('🔌 Unsubscribing from chatroom:', chatRoom)
-        pusherClient.unbind('realtime-mode')
-        pusherClient.unsubscribe(chatRoom)
+      console.log('🔌 Unsubscribing from chatroom:', chatRoom)
+      socket.off('realtime-mode', handleRealtimeMessage)
+      socket.emit('leave-chatroom', chatRoom)
       }
     }
   }, [chatRoom])

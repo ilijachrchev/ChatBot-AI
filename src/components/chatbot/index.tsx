@@ -26,6 +26,8 @@ const AiChatBot = (props: Props) => {
         removeImage,
     } = useChatBot()
 
+    console.log('🔍 Chatbot - onRealTime:', onRealTime)
+
   return (
     <div className='h-screen flex flex-col justify-end items-end gap-4'>
         {botOpened && (

@@ -88,10 +88,11 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 Sales Rep - SendWise-AI
               </h3>
               <p className="text-sm">{(domainName ?? '').replace(/\.com$/, '') || 'ChatBot'}</p>
-              {realtimeMode?.mode && (
+              {realtimeMode?.chatroom && (
                 <RealTimeMode
                   setChats={setChat}
                   chatRoomId={realtimeMode.chatroom}
+                  showBadge={realtimeMode.mode}
                 />
               )}
             </div>

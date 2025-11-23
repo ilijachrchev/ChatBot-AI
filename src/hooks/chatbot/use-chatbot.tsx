@@ -1,12 +1,12 @@
 import { onAiChatBotAssistant, onGetCurrentChatBot } from "@/actions/bot"
-import { postToParent, pusherClient } from "@/lib/utils"
+import { getSocketClient, postToParent, } from "@/lib/utils"
 import { ChatBotMessageProps, ChatBotMessageSchema } from "@/schemas/conversation.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { UploadClient } from '@uploadcare/upload-client'
-import { set } from "zod"
-import { se } from "date-fns/locale"
+import { previousDay } from "date-fns"
+
 
 const upload = new UploadClient({
     publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
@@ -62,6 +62,17 @@ export const useChatBot = () => {
     const [onRealTime, setOnRealTime] = useState<
         { chatroom: string; mode: boolean } | undefined
     >(undefined)
+    useEffect(() => {
+        const existingChatroomId = getOrCreateChatroomId()
+        if (existingChatroomId && !onRealTime) {
+            setOnRealTime({
+                chatroom: existingChatroomId,
+                mode: false,
+            })
+        }
+    }, [])
+
+    
 
     const [imagePreview, setImagePreview] = useState<string | null>(null)
 
@@ -95,28 +106,67 @@ export const useChatBot = () => {
         )
     }, [botOpened])
 
+    // useEffect(() => {
+    //     const handleMessage = (e: MessageEvent) => {
+    //     if (e.source !== window.parent) return;
+
+    //     console.log('Received bot ID via postMessage:', e.data);
+    //     const botid = e.data;
+
+    //     if (typeof botid === 'string' && botid.length > 0 && !currentBotId) {
+    //         console.log('Fetching chatbot for ID:', botid);
+    //         setCurrentBotId(botid);
+    //         onGetDomainChatBot(botid);
+    //     }
+    // };
+    //     window.addEventListener('message', handleMessage);
+
+    //     if (window.parent !== window) {
+    //         console.log('Requesting bot ID from parent window...');
+    //         postToParent('ready');
+    //     }
+    //     return () => {
+    //         window.removeEventListener('message', handleMessage);
+    //     };
+    // }, [currentBotId]);
+    
     useEffect(() => {
         const handleMessage = (e: MessageEvent) => {
-        if (e.source !== window.parent) return;
+            if (e.source !== window.parent) return;
 
-        console.log('Received bot ID via postMessage:', e.data);
-        const botid = e.data;
-        if (typeof botid === 'string' && botid.length > 0 && !currentBotId) {
-            console.log('Fetching chatbot for ID:', botid);
-            setCurrentBotId(botid);
-            onGetDomainChatBot(botid);
+            console.log('Received bot ID vie postMessage:', e.data);
+            const data = e.data;
+
+            if (data === 'ready') return;
+
+            try {
+                const parsed = JSON.parse(data);
+                if (parsed.width && parsed.height) {
+                    return;
+                }
+            } catch {}
+
+            if (typeof data === 'string' && data.length > 0 && !currentBotId) {
+            const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+            if (uuidRegex.test(data)) {
+                console.log('Fetching chatbot for ID:', data);
+                setCurrentBotId(data);
+                onGetDomainChatBot(data);
+            }
         }
     };
-        window.addEventListener('message', handleMessage);
 
-        if (window.parent !== window) {
-            console.log('Requesting bot ID from parent window...');
-            postToParent('ready');
-        }
-        return () => {
-            window.removeEventListener('message', handleMessage);
-        };
-    }, [currentBotId]);
+    window.addEventListener('message', handleMessage);
+
+    if (window.parent !== window) {
+        console.log('Requesting bot ID from parent window...');
+        postToParent('ready');
+    }
+
+    return () => {
+        window.removeEventListener('message', handleMessage);
+    };
+}, [currentBotId]);
     
 
     const onGetDomainChatBot = async (id: string) => {
@@ -347,26 +397,38 @@ export const useRealTime = (
     >
   >
 ) => {
-  const counterRef = useRef(1)
+    useEffect(() => {
+        const socket = getSocketClient()
 
-  useEffect(() => {
-    pusherClient.subscribe(chatRoom)
-    pusherClient.bind('realtime-mode', (data: any) => {
-      console.log('✅', data)
-      if (counterRef.current !== 1) {
-        setChats((prev: any) => [
-          ...prev,
-          {
-            role: data.chat.role,
-            content: data.chat.message,
-          },
-        ])
-      }
-      counterRef.current += 1
-    })
-    return () => {
-      pusherClient.unbind('realtime-mode')
-      pusherClient.unsubscribe(chatRoom)
-    }
-  }, [])
+        socket.emit('join-chatroom', chatRoom)
+        console.log(' Joined chatroom:', chatRoom)
+
+        const handleRealtimeMessage = (data: any) => {
+            console.log('✅ Received message:', data)
+
+            setChats((prev: any) => {
+                const lastMessage = prev[prev.length - 1]
+                
+                if (lastMessage && 
+                    lastMessage.content === data.chat.message && 
+                    lastMessage.role === data.chat.role) {
+                console.log('⏭️ Duplicate of last message, skipping')
+                return prev
+            }
+                
+                return [...prev, {
+                    role: data.chat.role,
+                    content: data.chat.message,
+                }]
+            })
+        }
+
+        socket.on('realtime-mode', handleRealtimeMessage)
+
+        return () => {
+            socket.off('realtime-mode', handleRealtimeMessage)
+            socket.emit('leave-chatroom', chatRoom)
+            console.log('left chatroom:', chatRoom)
+        }
+    }, [chatRoom])
 }
