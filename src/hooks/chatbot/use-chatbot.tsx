@@ -248,10 +248,11 @@ export const useChatBot = () => {
                 currentBotId,
                 onChats,
                 'user',
-                uploaded.uuid,
+                imageUrl,
                 chatroomId,
                 false,
                 false,
+                true,
             )
 
             if (response) {

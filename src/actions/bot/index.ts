@@ -99,6 +99,7 @@ export const onAiChatBotAssistant = async (
     chatroomId?: string,
     newThread?: boolean,
     useClerk?: boolean,
+    isImage?: boolean,
 ) => {
     try {
 
@@ -118,6 +119,42 @@ export const onAiChatBotAssistant = async (
         chatroomId = crypto.randomUUID();
       }
       const room = await ensureChatRoom(chatroomId);
+
+      if (isImage) {
+        const imageUrl = message.startsWith('http') ? message : `https://ucarecdn.com/${message}/`;
+
+        const userMsg = await onStoreConversations(room.id, imageUrl, 'user');
+
+        if (userMsg) {
+          await onRealTimeChat(
+            room.id,
+            userMsg.message,
+            userMsg.id,
+            'user'
+          );
+        }
+
+        const response = {
+          role: 'assistant' as const,
+          content: 'I see you\'ve shared an image. How can I help you with that?',
+        };
+
+        const assistantMsg = await onStoreConversations(room.id, response.content, 'assistant');
+
+        if (assistantMsg) {
+          await onRealTimeChat(
+            room.id,
+            assistantMsg.message,
+            assistantMsg.id,
+            'assistant',
+          );
+        }
+
+        return {
+          response,
+          chatRoom: room.id,
+        };
+      }
 
       if (room.live) {
         await onStoreConversations(room.id, message, author);
