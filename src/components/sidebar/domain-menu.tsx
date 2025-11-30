@@ -8,7 +8,6 @@ import FormGenerator from '../forms/form-generator'
 import UploadButton from '../upload-button'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import Image from 'next/image'
 
 type Props = {
   min?: boolean
@@ -26,21 +25,36 @@ const DomainMenu = ({ domains, min }: Props) => {
   const { register, onAddDomain, loading, errors, isDomain } = useDomain()
 
   return (
-    <div className={cn('flex flex-col gap-3', min ? 'mt-6' : 'mt-3')}>
+    <div className={cn('flex flex-col gap-1.5 md:gap-2', min ? 'mt-2 md:mt-4' : 'mt-1.5 md:mt-2')}>
       <div className="flex justify-between w-full items-center">
-        {!min && <p className="text-xs text-gray-500">DOMAINS</p>}
+        {!min && (
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            Domains
+            </p>
+            )}
+
         <AppDrawer
-          description="add in your domain address to integrate your chatbot"
+          description="Add in your domain address to integrate your chatbot"
           title="Add your business domain"
           onOpen={
-            <div className="cursor-pointer text-gray-500 rounded-full border-2">
-              <Plus />
+            <div 
+              className={cn(
+                'group relative',
+                'flex items-center justify-center',
+                'w-8 h-8 rounded-lg',
+                'border-2 border-dashed border-slate-300 dark:border-slate-700',
+                'text-slate-400 dark:text-slate-600',
+                'hover:border-blue-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20',
+                'transition-all duration-200',
+                'cursor-pointer'
+              )}>
+                <Plus className='w-4 h-4' />
             </div>
           }
         >
           <Loader loading={loading}>
             <form
-              className="mt-3 w-6/12 flex flex-col gap-3"
+              className="mt-3 w-full flex flex-col gap-4"
               onSubmit={onAddDomain}
             >
               <FormGenerator
@@ -67,49 +81,148 @@ const DomainMenu = ({ domains, min }: Props) => {
           </Loader>
         </AppDrawer>
       </div>
-      <div className="flex flex-col gap-1 text-ironside font-medium">
-{domains &&
-  domains.map((domain) => {
-    const raw = (domain.icon ?? '').trim();
-    const empty = !raw || raw === 'null' || raw === 'undefined';
+      <div className="flex flex-col gap-1">
+        {domains &&
+          domains.map((domain) => {
+            const raw = (domain.icon ?? '').trim();
+            const empty = !raw || raw === 'null' || raw === 'undefined';
 
-    // Use full URL if stored; otherwise treat as Uploadcare UUID
-    const ucUrl = empty
-      ? ''
-      : raw.startsWith('http')
-        ? raw
-        : `https://ucarecdn.com/${raw}/-/preview/`;
+            // Use full URL if stored; otherwise treat as Uploadcare UUID
+            const ucUrl = empty
+              ? ''
+              : raw.startsWith('http')
+                ? raw
+                : `https://ucarecdn.com/${raw}/-/preview/`;
 
-    const iconSrc = ucUrl || '/favicon.ico';
+            const iconSrc = ucUrl || '/favicon.ico';
+            const isActive = domain.name.split('.')[0] === isDomain
 
-    return (
-      <Link
-        href={`/settings/${domain.name.split('.')[0]}`}
-        key={domain.id}
-        className={cn(
-          'flex gap-3 hover:bg-white rounded-full transition duration-100 ease-in-out cursor-pointer',
-          !min ? 'p-2' : 'py-2',
-          domain.name.split('.')[0] == isDomain && 'bg-white'
-        )}
-      >
-        <img
-          src={iconSrc}
-          alt={`${domain.name} logo`}
-          width={20}
-          height={20}
-          className="shrink-0 rounded"
-          onError={(e) => { e.currentTarget.src = '/favicon.ico'; }}
-        />
-        {!min && <p className="text-sm">{domain.name}</p>}
-      </Link>
-    );
-  })}
+            if (!min) {
+              return (
+                <Link
+                href={`/settings/${domain.name.split('.')[0]}`}
+                key={domain.id}
+                className={cn(
+                  'group relative',
+                  'flex items-center md:gap-3 gap-2 md:px-3 px-2 md:py-2.5 py-1.5 rounded-lg',
+                  'transition-all duration-200 ease-in-out',
+                  'overflow-hidden',
+                  
+                  // Active state
+                  isActive && [
+                    'bg-white dark:bg-slate-800',
+                    'font-semibold text-slate-900 dark:text-white',
+                    'shadow-sm',
+                    // Left accent border
+                    'before:absolute before:left-0 before:top-0 before:bottom-0',
+                    'before:w-1 before:bg-gradient-to-b before:from-blue-500 before:to-blue-600',
+                    'before:rounded-l-lg'
+                  ],
+                  
+                  // Inactive state
+                  !isActive && [
+                    'text-slate-600 dark:text-slate-400',
+                    'hover:bg-slate-50 dark:hover:bg-slate-800/50',
+                    'hover:text-slate-900 dark:hover:text-white'
+                  ]
+                )}
+              >
+                {/* Icon Container */}
+                <div className={cn(
+                  'relative flex-shrink-0',
+                  'md:w-8 md:h-8 w-7 h-7 rounded-lg overflow-hidden',
+                  'border-2 transition-all duration-200',
+                  'group-hover:scale-105',
+                  
+                  isActive 
+                    ? 'border-blue-200 dark:border-blue-800 shadow-sm' 
+                    : 'border-slate-200 dark:border-slate-700 group-hover:border-blue-300'
+                )}>
+                  <img
+                    src={iconSrc}
+                    alt={`${domain.name} logo`}
+                    className="w-full h-full object-cover"
+                    onError={(e) => { 
+                      e.currentTarget.src = '/favicon.ico'
+                    }}
+                  />
+                </div>
 
+                {/* Domain Name */}
+                <span className="text-sm truncate flex-1">
+                  {domain.name}
+                </span>
 
+                {/* Hover gradient overlay */}
+                {!isActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                )}
+              </Link>
+            )
+          }
 
+          // For minimized sidebar
+          return (
+            <Link
+              href={`/settings/${domain.name.split('.')[0]}`}
+              key={domain.id}
+              className={cn(
+                'group relative',
+                'flex flex-col items-center justify-center rounded-lg py-2.5',
+                'transition-all duration-200 ease-in-out',
+                
+                // Active state
+                isActive && [
+                  'bg-white dark:bg-slate-800',
+                  'shadow-sm',
+                ],
+                
+                // Inactive state
+                !isActive && [
+                  'hover:bg-slate-50 dark:hover:bg-slate-800/50',
+                ]
+              )}
+            >
+              {/* Icon Container */}
+              <div className={cn(
+                'relative flex-shrink-0',
+                'w-7 h-7 rounded-lg overflow-hidden',
+                'border-2 transition-all duration-200',
+                'group-hover:scale-110',
+                
+                isActive 
+                  ? 'border-blue-200 dark:border-blue-800' 
+                  : 'border-slate-200 dark:border-slate-700 group-hover:border-blue-300'
+              )}>
+                <img
+                  src={iconSrc}
+                  alt={`${domain.name} logo`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => { 
+                    e.currentTarget.src = '/favicon.ico'
+                  }}
+                />
+              </div>
+
+              {/* Bottom indicator line - only when active */}
+              {isActive && (
+                <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" />
+              )}
+
+              {/* Tooltip on hover - shows domain name */}
+              <div className={cn(
+                'absolute left-full ml-2 px-2 py-1 rounded-md',
+                'bg-slate-900 dark:bg-slate-700 text-white text-xs whitespace-nowrap',
+                'opacity-0 group-hover:opacity-100 pointer-events-none',
+                'transition-opacity duration-200 z-50'
+              )}>
+                {domain.name}
+              </div>
+            </Link>
+          )
+        })}
       </div>
     </div>
   )
 }
-
 export default DomainMenu

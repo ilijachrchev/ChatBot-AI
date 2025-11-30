@@ -21,7 +21,7 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
         <Link
           onClick={onSignOut}
           className={cn(
-            'flex items-center gap-3 px-3 py-2.5 rounded-lg my-0.5',
+            'flex items-center md:gap-3 gap-2 md:px-3 px-2 md:py-2.5 py-1.5 rounded-lg my-0.5',
             'transition-all duration-200 ease-in-out',
             'group relative overflow-hidden',
 
@@ -44,7 +44,7 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
           href={path ? `/${path}` : '#'}
         >
           <div className={cn(
-            'flex items-center justify-center w-5 h-5 transition-transform duration-200',
+            'flex items-center justify-center md:w-5 w-4 md:h-5 h-4 transition-transform duration-200',
             'group-hover:scale-110',
             isActive && 'text-blue-600 dark:text-blue-400'
           )}>
@@ -62,7 +62,7 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
         <Link
           onClick={onSignOut}
           className={cn(
-            'flex items-center justify-center rounded-lg py-3 my-1',
+            'flex items-center justify-center rounded-lg md:py-3 py-2 my-0.5 md:my-1',
             'transition-all duration-200 ease-in-out',
             'group relative',
             
@@ -87,7 +87,7 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
             {icon}
           </div>
           {isActive && (
-            <div className='absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full'></div>
+            <div className='absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full'></div>
           )}
         </Link>
       )
