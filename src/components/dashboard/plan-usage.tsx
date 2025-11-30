@@ -1,5 +1,5 @@
 import React from 'react'
-import { ProgressBar } from '../progress'
+import { ProgressBar } from './progress-bar'
 
 type PlanUsageProps = {
   plan: 'STANDARD' | 'PRO' | 'ULTIMATE'
@@ -14,9 +14,8 @@ export const PlanUsage = ({
   domains,
   clients,
 }: PlanUsageProps) => {
-  console.log(credits)
   return (
-    <div className="flex flex-col gap-5 py-5">
+    <div className="flex flex-col gap-4 md:gap-5 py-4 md:py-5">
       <ProgressBar
         end={plan == 'STANDARD' ? 10 : plan == 'PRO' ? 50 : 500}
         label="Email Credits"

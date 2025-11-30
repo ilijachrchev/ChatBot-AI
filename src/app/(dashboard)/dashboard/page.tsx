@@ -58,7 +58,13 @@ const page = async (props: Props) => {
             </p>
             <PlanUsage
               plan={plan?.plan! || 0}
-              credits={plan?.credits || 0}
+              credits={
+                plan?.plan === 'STANDARD' 
+                  ? 10 - (plan?.credits || 0)
+                  : plan?.plan === 'PRO'
+                  ? 50 - (plan?.credits || 0)
+                  : 500 - (plan?.credits || 0)
+              }
               domains={plan?.domains || 0}
               clients={clients || 0}
             />
