@@ -4,13 +4,13 @@ import { ChangePasswordProps, ChangePasswordSchema } from '@/schemas/auth.schema
 import { AddProductProps, AddProductSchema, DomainSettingsProps, DomainSettingsSchema, FilterQuestionsProps, FilterQuestionsSchema, HelpDeskQuestionsProps, HelpDeskQuestionsSchema } from '@/schemas/settings.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { UploadClient } from '@uploadcare/upload-client'
-import { id } from 'date-fns/locale'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useEffect } from 'react'
+import { uploadImageToNode } from '@/lib/upload'
 
 const upload = new UploadClient({
     publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
@@ -63,12 +63,28 @@ export const useSettings = (id: string) => {
         handleSubmit,
         formState: { errors },
         reset,
+        watch,
     } = useForm<DomainSettingsProps>({
         resolver: zodResolver(DomainSettingsSchema),
     })
     const router = useRouter()
     const [loading, setLoading] = useState<boolean>(false)
     const [deleting, setDeleting] = useState<boolean>(false)
+
+    const watchedIcon = watch('image')
+    const watchedWelcomeMessage = watch('welcomeMessage')
+    const [previewIcon, setPreviewIcon] = useState<string | null>(null)
+
+    useEffect(() => {
+        if (watchedIcon && watchedIcon[0]) {
+            const file = watchedIcon[0]
+            const objectUrl = URL.createObjectURL(file)
+            setPreviewIcon(objectUrl)
+            
+            return () => URL.revokeObjectURL(objectUrl)
+        }
+    }, [watchedIcon])
+
     const onUpdateSettings = handleSubmit(async (values) => {
         setLoading(true)
         if(values.domain) {
@@ -78,22 +94,26 @@ export const useSettings = (id: string) => {
             }
         }
         if (values.image[0]) {
-            const uploaded = await upload.uploadFile(values.image[0])
-            const image = await onChatBotImageUpdate(id, uploaded.uuid)
-            if (image) {
-                const isSuccess = image.status === 200
+            try {
+                const uploaded = await upload.uploadFile(values.image[0])
+                const image = await onChatBotImageUpdate(id, uploaded.uuid)
 
-                toast(isSuccess ? 'Success ✅' : 'Error ❌', {
-                    description: image.message,
-                    className: isSuccess
-                        ? 'bg-cream text-gray-700 border-l-4 border-cyan-400 shadow-md'
-                        : 'bg-rose-50 text-red-600 border-l-4 border-red-500 shadow-md',
-                    duration: 4000,
-                    position: 'top-right',
-                    style: { fontWeight: 500 },
-                })
+                if (image) {
+                    const isSuccess = image.status === 200
 
-                setLoading(false)
+                    toast(isSuccess ? 'Success ✅' : 'Error ❌', {
+                        description: image.message,
+                        className: isSuccess
+                            ? 'bg-cream text-gray-700 border-l-4 border-cyan-400 shadow-md'
+                            : 'bg-rose-50 text-red-600 border-l-4 border-red-500 shadow-md',
+                        duration: 4000,
+                        position: 'top-right',
+                        style: { fontWeight: 500 },
+                    })
+                }
+            } catch (error) {
+                toast.error('Failed to upload image')
+                console.error(error)
             }
         }
         if (values.welcomeMessage) {
@@ -126,6 +146,8 @@ export const useSettings = (id: string) => {
         loading,
         onDeleteDomain,
         deleting,
+        previewIcon,
+        watchedWelcomeMessage,
     }
 }
 
@@ -252,11 +274,11 @@ export const useProducts = (domainId: string) => {
     const onCreateNewProduct = handleSubmit(async (values) => {
         try {
             setLoading(true)
-            const uploaded = await upload.uploadFile(values.image[0])
+            const uploaded = await uploadImageToNode(values.image[0])
             const product = await onCreateNewDomainProduct(
                 domainId,
                 values.name,
-                uploaded.uuid,
+                uploaded,
                 values.price
             )
             if (product) {
