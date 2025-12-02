@@ -33,35 +33,63 @@ const ChangePassword = (props: Props) => {
         </div>
 
         <form onSubmit={onChangePassword} className="lg:col-span-3">
-          <div className="max-w-md flex flex-col gap-4">
-            <FormGenerator 
-              register={register}
-              errors={errors}
-              name='password'
-              placeholder='New Password'
-              type='password'
-              inputType='input'
-            />
-            <FormGenerator 
-              register={register}
-              errors={errors}
-              name='confirmPassword'
-              placeholder='Confirm Password'
-              type='password'
-              inputType='input'
-            />
-            <Button 
-              className={cn(
-                'bg-gradient-to-r from-blue-500 to-blue-600',
-                'hover:from-blue-600 hover:to-blue-700',
-                'text-white font-semibold',
-                'shadow-lg shadow-blue-500/30',
-                'transition-all duration-200',
-                'hover:shadow-xl hover:shadow-blue-500/40'
-              )}
-            >
-              <Loader loading={loading}>Change Password</Loader>
-            </Button>
+          <div className="max-w-md flex flex-col gap-5">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Current Password
+              </label>
+              <FormGenerator 
+                register={register}
+                errors={errors}
+                name='password'
+                placeholder=''
+                type='password'
+                inputType='input'
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                New Password
+              </label>
+              <FormGenerator 
+                register={register}
+                errors={errors}
+                name='password'
+                placeholder=''
+                type='password'
+                inputType='input'
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                Confirm New Password
+              </label>
+              <FormGenerator 
+                register={register}
+                errors={errors}
+                name='confirmPassword'
+                placeholder=''
+                type='password'
+                inputType='input'
+              />
+            </div>
+            
+            <div className="pt-2">
+              <Button 
+                className={cn(
+                  'bg-gradient-to-r from-blue-500 to-blue-600',
+                  'hover:from-blue-600 hover:to-blue-700',
+                  'text-white font-semibold',
+                  'shadow-lg shadow-blue-500/30',
+                  'transition-all duration-200',
+                  'hover:shadow-xl hover:shadow-blue-500/40'
+                )}
+              >
+                <Loader loading={loading}>Update Password</Loader>
+              </Button>
+            </div>
           </div>
         </form>
       </div>
