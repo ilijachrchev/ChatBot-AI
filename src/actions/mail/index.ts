@@ -118,19 +118,56 @@ export const onAddCustomersToEmail = async (
   id: string
 ) => {
   try {
-    console.log(customers, id)
+    const campaign = await client.campaign.findUnique({
+      where: { id },
+      select: { customers: true },
+    })
+
+    const existing = campaign?.customers ?? []
+
+    const updatedCustomers = Array.from(
+      new Set([...existing, ...customers])
+    )
+
     const customerAdd = await client.campaign.update({
       where: {
         id,
       },
       data: {
-        customers,
+        customers: updatedCustomers,
       },
     })
 
     if (customerAdd) {
       return { status: 200, message: 'Customer added to campaign' }
     }
+  } catch (error) {}
+}
+
+export const onRemoveCustomerFromCapaign = async (
+  campaignId: string,
+  email: string
+) => {
+  try {
+    const campaign = await client.campaign.findUnique({
+      where: { id: campaignId },
+      select: { customers: true }
+    })
+
+    if (!campaign) {
+      return { status: 404, message: 'Campaign not found!' }
+    }
+
+    const updatedCustomers = campaign.customers.filter(
+      (e) => e !== email
+    )
+
+    await client.campaign.update({
+      where: { id: campaignId },
+      data: { customers: updatedCustomers },
+    })
+
+    return { status: 200, message: 'Customer removed from campaign!' }
   } catch (error) {}
 }
 

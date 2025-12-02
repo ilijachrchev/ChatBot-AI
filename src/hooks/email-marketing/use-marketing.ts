@@ -5,6 +5,7 @@ import {
   onGetAllCustomerResponses,
   onGetEmailTemplate,
   onSaveEmailTemplate,
+  onRemoveCustomerFromCapaign,
 } from '@/actions/mail'
 import { EmailMarketingBodySchema, EmailMarketingSchema } from '@/schemas/marketing.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -86,6 +87,18 @@ export const useEmailMarketing = () => {
     }
   }
 
+  const onRemoveCustomer = async (campaignId: string, email: string) => {
+    try {
+      setProcessing(true)
+      const res = await onRemoveCustomerFromCapaign(campaignId, email)
+      if (res) {
+        toast.success(res.message)
+        setProcessing(false)
+        router.refresh()
+      }
+    } catch (error) {}
+  }
+
   const onSelectedEmails = (email: string) => {
     //add or remove
     const duplicate = isSelected.find((e) => e == email)
@@ -129,6 +142,7 @@ export const useEmailMarketing = () => {
     onCreateEmailTemplate,
     editing,
     setValue,
+    onRemoveCustomer,
   }
 }
 

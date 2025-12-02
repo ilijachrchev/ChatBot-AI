@@ -14,15 +14,25 @@ type DataTableProps = {
 
 export const DataTable = ({ headers, children }: DataTableProps) => {
   return (
-    <Table className="rounded-t-xl overflow-hidden">
+    <Table
+      className={cn(
+        "rounded-xl overflow-hidden border",
+        "border-slate-200 dark:border-slate-800/70",
+        "bg-white dark:bg-slate-950/40"
+      )}
+    >
       <TableHeader>
-        <TableRow className="bg-grandis">
+        <TableRow className="
+          bg-gradient-to-r from-blue-600 to-blue-700
+          dark:from-blue-500 dark:to-blue-600
+        ">
           {headers.map((header, key) => (
             <TableHead
               key={key}
               className={cn(
-                key == headers.length - 1 && 'text-right',
-                'text-black'
+                'px-4 py-3 text-xs font-semibold uppercase tracking-wide',
+                'text-slate-50',
+                key === headers.length - 1 && 'text-right'
               )}
             >
               {header}
@@ -30,6 +40,7 @@ export const DataTable = ({ headers, children }: DataTableProps) => {
           ))}
         </TableRow>
       </TableHeader>
+
       <TableBody>{children}</TableBody>
     </Table>
   )
