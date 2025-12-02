@@ -1,20 +1,14 @@
 "use client"
-import { onChatBotImageUpdate, onCreateFilterQuestions, onCreateHelpDeskQuestion, onCreateNewDomainProduct, onDeleteUserDomain, onGetAllFilterQuestions, onGetAllHelpDeskQuestions, onUpdateDomain, onUpdatePassword, onUpdateWelcomeMessage } from '@/actions/settings'
+import { onChatBotImageUpdate, onUpdateChatbotColor, onCreateFilterQuestions, onCreateHelpDeskQuestion, onCreateNewDomainProduct, onDeleteUserDomain, onGetAllFilterQuestions, onGetAllHelpDeskQuestions, onUpdateDomain, onUpdatePassword, onUpdateWelcomeMessage } from '@/actions/settings'
 import { ChangePasswordProps, ChangePasswordSchema } from '@/schemas/auth.schema'
 import { AddProductProps, AddProductSchema, DomainSettingsProps, DomainSettingsSchema, FilterQuestionsProps, FilterQuestionsSchema, HelpDeskQuestionsProps, HelpDeskQuestionsSchema } from '@/schemas/settings.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { UploadClient } from '@uploadcare/upload-client'
+import { uploadImageToNode } from '@/lib/upload'
 import { useTheme } from 'next-themes'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { useEffect } from 'react'
-import { uploadImageToNode } from '@/lib/upload'
-
-const upload = new UploadClient({
-    publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
-})
 
 export const useThemeMode = () => {
     const { setTheme, theme } = useTheme()
@@ -57,13 +51,14 @@ export const useChangePassword = () => {
     }
 }
 
-export const useSettings = (id: string) => {
+export const useSettings = (id: string, chatBotId: string) => {
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
         watch,
+        setValue,
     } = useForm<DomainSettingsProps>({
         resolver: zodResolver(DomainSettingsSchema),
     })
@@ -71,8 +66,13 @@ export const useSettings = (id: string) => {
     const [loading, setLoading] = useState<boolean>(false)
     const [deleting, setDeleting] = useState<boolean>(false)
 
+    useEffect(() => {
+        register('chatbotColor')
+    }, [register])
+    
     const watchedIcon = watch('image')
     const watchedWelcomeMessage = watch('welcomeMessage')
+    const watchedColor = watch('chatbotColor')
     const [previewIcon, setPreviewIcon] = useState<string | null>(null)
 
     useEffect(() => {
@@ -87,28 +87,24 @@ export const useSettings = (id: string) => {
 
     const onUpdateSettings = handleSubmit(async (values) => {
         setLoading(true)
+        
         if(values.domain) {
             const domain = await onUpdateDomain(id, values.domain)
             if (domain) {
                 toast('Success', { description: domain.message })
             }
         }
-        if (values.image[0]) {
+        
+        if (values.image && values.image[0]) {
             try {
-                const uploaded = await upload.uploadFile(values.image[0])
-                const image = await onChatBotImageUpdate(id, uploaded.uuid)
-
+                const imageUrl = await uploadImageToNode(values.image[0])
+                const image = await onChatBotImageUpdate(chatBotId, imageUrl)
+                
                 if (image) {
                     const isSuccess = image.status === 200
-
                     toast(isSuccess ? 'Success ✅' : 'Error ❌', {
                         description: image.message,
-                        className: isSuccess
-                            ? 'bg-cream text-gray-700 border-l-4 border-cyan-400 shadow-md'
-                            : 'bg-rose-50 text-red-600 border-l-4 border-red-500 shadow-md',
                         duration: 4000,
-                        position: 'top-right',
-                        style: { fontWeight: 500 },
                     })
                 }
             } catch (error) {
@@ -116,14 +112,25 @@ export const useSettings = (id: string) => {
                 console.error(error)
             }
         }
+        
         if (values.welcomeMessage) {
-            const message = await onUpdateWelcomeMessage(values.welcomeMessage,
-                id
-            );
+            const message = await onUpdateWelcomeMessage(values.welcomeMessage, id)
             if (message) {
                 toast('Success', { description: message.message })
             }
         }
+
+        if (values.chatbotColor) {
+            const color = await onUpdateChatbotColor(chatBotId, values.chatbotColor)
+            if (color) {
+                if (color.status === 200) {
+                    toast.success(color.message)
+                } else {
+                    toast.error(color.message)
+                }
+            }
+        }
+        
         reset()
         router.refresh()
         setLoading(false)
@@ -139,6 +146,7 @@ export const useSettings = (id: string) => {
             router.refresh()
         }
     }
+    
     return {
         register,
         onUpdateSettings,
@@ -148,6 +156,8 @@ export const useSettings = (id: string) => {
         deleting,
         previewIcon,
         watchedWelcomeMessage,
+        watchedColor,
+        setValue,
     }
 }
 

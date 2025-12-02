@@ -59,6 +59,7 @@ model ChatBot {
   helpdesk       Boolean @default(false)
   Domain         Domain? @relation(fields: [domainId], references: [id], onDelete: Cascade)
   domainId       String? @unique @db.Uuid
+  backgroundColor String? @default("#3B82F6")
 }
 
 model Billings {

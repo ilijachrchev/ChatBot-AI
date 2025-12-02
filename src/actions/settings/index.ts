@@ -221,6 +221,7 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 id: true,
                 welcomeMessage: true,
                 icon: true,
+                backgroundColor: true,
               },
             },
           },
@@ -237,7 +238,6 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
 
 export const onUpdateDomain = async (id: string, name: string) => {
   try {
-    //check if domain with name exists
     const domainExists = await client.domain.findFirst({
       where: {
         name: {
@@ -278,40 +278,60 @@ export const onUpdateDomain = async (id: string, name: string) => {
   }
 }
 
-export const onChatBotImageUpdate = async (id: string, icon: string) => {
-  const user = await currentUser()
-
-  if (!user) return
-
+export const onChatBotImageUpdate = async (id: string, imageUrl: string) => {
   try {
-    const domain = await client.domain.update({
-      where: {
-        id,
-      },
+    const chatbot = await client.chatBot.update({
+      where: { id },
       data: {
-        chatBot: {
-          update: {
-            data: {
-              icon,
-            },
-          },
-        },
+        icon: imageUrl,
       },
     })
 
-    if (domain) {
+    if (chatbot) {
       return {
         status: 200,
-        message: 'Domain updated',
+        message: 'Chatbot icon updated successfully',
       }
     }
 
     return {
       status: 400,
-      message: 'Oops something went wrong!',
+      message: 'Failed to update chatbot icon!',
     }
   } catch (error) {
     console.log(error)
+  }
+  return {
+    status: 500,
+    message: 'Internal server error!',
+  }
+}
+
+export const onUpdateChatbotColor = async (id: string, color: string) => {
+  try {
+    const chatbot = await client.chatBot.update({
+      where: { id },
+      data: {
+        backgroundColor: color,
+      }
+    })
+
+    if (chatbot) {
+      return {
+        status: 200,
+        message: 'Chatbot color updated successfully',
+      }
+    }
+    return {
+      status: 400,
+      message: 'Failed to update chatbot color',
+    }
+  } catch (error) {
+    console.error(error)
+    return {
+      status: 500,
+      message: 'Internal server error',
+    }
   }
 }
 

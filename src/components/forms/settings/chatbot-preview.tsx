@@ -8,15 +8,20 @@ type ChatbotPreviewProps = {
   icon: string | null | undefined
   welcomeMessage: string | null | undefined
   previewIcon: string | null
+  chatbotColor?: string
 }
 
-export const ChatbotPreview = ({ icon, welcomeMessage, previewIcon }: ChatbotPreviewProps) => {
-  const displayIcon = previewIcon || (icon ? `https://ucarecdn.com/${icon}/` : null)
+export const ChatbotPreview = ({ 
+  icon, 
+  welcomeMessage, 
+  previewIcon,
+  chatbotColor = '#3B82F6' 
+}: ChatbotPreviewProps) => {
+  const displayIcon = previewIcon || icon
   const displayMessage = welcomeMessage || "Hey there, have a question? Text us here"
 
   return (
     <div className="relative w-full max-w-md mx-auto">
-      {/* Live Badge */}
       <div className="absolute -top-3 right-4 z-10">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold shadow-lg">
           <span className="relative flex h-2 w-2">
@@ -27,13 +32,13 @@ export const ChatbotPreview = ({ icon, welcomeMessage, previewIcon }: ChatbotPre
         </div>
       </div>
 
-      {/* Chatbot Widget */}
       <div className="relative rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden">
-        {/* Header */}
-        <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4">
+        <div 
+          className="p-4"
+          style={{ background: `linear-gradient(135deg, ${chatbotColor} 0%, ${chatbotColor}dd 100%)` }}
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {/* Avatar */}
               <div className="relative">
                 <div className="h-12 w-12 rounded-full border-2 border-white overflow-hidden bg-white flex items-center justify-center">
                   {displayIcon ? (
@@ -45,18 +50,17 @@ export const ChatbotPreview = ({ icon, welcomeMessage, previewIcon }: ChatbotPre
                       className="object-cover"
                     />
                   ) : (
-                    <MessageSquare className="h-6 w-6 text-blue-500" />
+                    <MessageSquare className="h-6 w-6" style={{ color: chatbotColor }} />
                   )}
                 </div>
                 <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-400 border-2 border-white"></span>
               </div>
 
-              {/* Bot Info */}
               <div>
                 <h3 className="text-white font-semibold text-sm">
                   Sales Rep - You
                 </h3>
-                <p className="text-blue-100 text-xs">
+                <p className="text-white/90 text-xs">
                   Web Prodigies
                 </p>
               </div>
@@ -68,11 +72,12 @@ export const ChatbotPreview = ({ icon, welcomeMessage, previewIcon }: ChatbotPre
           </div>
         </div>
 
-        {/* Chat Messages */}
         <div className="p-4 space-y-4 min-h-[300px] max-h-[400px] overflow-y-auto bg-slate-50 dark:bg-slate-900/50">
-          {/* Bot Message */}
           <div className="flex items-start gap-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center flex-shrink-0">
+            <div 
+              className="h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ background: `linear-gradient(135deg, ${chatbotColor} 0%, ${chatbotColor}dd 100%)` }}
+            >
               {displayIcon ? (
                 <Image
                   src={displayIcon}
@@ -97,10 +102,12 @@ export const ChatbotPreview = ({ icon, welcomeMessage, previewIcon }: ChatbotPre
             </div>
           </div>
 
-          {/* Example User Message */}
           <div className="flex items-start gap-2 justify-end">
             <div className="flex-1">
-              <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl rounded-tr-sm p-3 shadow-sm max-w-[280px] ml-auto">
+              <div 
+                className="rounded-2xl rounded-tr-sm p-3 shadow-sm max-w-[280px] ml-auto"
+                style={{ background: `linear-gradient(135deg, ${chatbotColor} 0%, ${chatbotColor}dd 100%)` }}
+              >
                 <p className="text-sm text-white">
                   I want this
                 </p>
@@ -112,23 +119,27 @@ export const ChatbotPreview = ({ icon, welcomeMessage, previewIcon }: ChatbotPre
           </div>
         </div>
 
-        {/* Input Area */}
         <div className="p-4 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <input
               type="text"
               placeholder="Type your message..."
-              className="flex-1 px-4 py-2 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white placeholder:text-slate-400"
+              className="flex-1 px-4 py-2 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 text-slate-900 dark:text-white placeholder:text-slate-400"
+              style={{
+                '--tw-ring-color': chatbotColor,
+            } as React.CSSProperties}
               disabled
             />
-            <button className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50">
+            <button 
+              className="h-10 w-10 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50"
+              style={{ background: `linear-gradient(135deg, ${chatbotColor} 0%, ${chatbotColor}dd 100%)` }}
+            >
               <Send className="h-4 w-4" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Powered By */}
       <div className="text-center mt-3">
         <p className="text-xs text-slate-500 dark:text-slate-400">
           Powered by <span className="font-semibold">SendWise AI</span>

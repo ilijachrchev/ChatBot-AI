@@ -3,12 +3,6 @@ import { z } from 'zod'
 export const MAX_UPLOAD_SIZE = 1024 * 1024 * 2 // 2MB
 export const ACCEPTED_FILE_TYPES = ['image/png', 'image/jpg', 'image/jpeg']
 
-export type DomainSettingsProps = {
-  domain?: string
-  image?: any
-  welcomeMessage?: string
-}
-
 export type HelpDeskQuestionsProps = {
   question: string
   answer: string
@@ -61,6 +55,7 @@ export const DomainSettingsSchema = z
       .min(6, 'The message must be atleast 6 characters')
       .optional()
       .or(z.literal('').transform(() => undefined)),
+    chatbotColor: z.string().optional(),
   })
   .refine(
     (schema) => {
@@ -82,6 +77,8 @@ export const DomainSettingsSchema = z
       path: ['image'],
     }
   )
+
+  export type DomainSettingsProps = z.infer<typeof DomainSettingsSchema>
 
 export const HelpDeskQuestionsSchema = z.object({
   question: z.string().min(1, { message: 'Question cannot be left empty' }),
