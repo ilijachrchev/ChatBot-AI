@@ -100,7 +100,6 @@ export const useEmailMarketing = () => {
   }
 
   const onSelectedEmails = (email: string) => {
-    //add or remove
     const duplicate = isSelected.find((e) => e == email)
     if (duplicate) {
       setIsSelected(isSelected.filter((e) => e !== email))

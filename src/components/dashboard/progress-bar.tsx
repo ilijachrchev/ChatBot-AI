@@ -38,7 +38,6 @@ export const ProgressBar = ({
       </div>
       
       <div className="relative h-2.5 md:h-3 w-full overflow-hidden rounded-full bg-slate-100 dark:bg-slate-800">
-        {/* Background shimmer effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
         
         <div

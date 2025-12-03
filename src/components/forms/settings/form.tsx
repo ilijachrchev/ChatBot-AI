@@ -45,9 +45,7 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
 
   return (
     <form className='flex flex-col gap-6 pb-10 px-4 md:px-6' onSubmit={onUpdateSettings}>
-      {/* Domain Configuration & Embed Code */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
-        {/* Left Column: Domain Configuration */}
         <div className='space-y-6'>
           <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
             <div className='flex items-center gap-3 mb-4'>
@@ -71,7 +69,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
           </div>
         </div>
 
-        {/* Right Column: Embed Code */}
         <div className='space-y-6'>
           <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
             <div className='flex items-center gap-3 mb-4'>
@@ -92,7 +89,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
         </div>
       </div>
 
-      {/* Chatbot Settings */}
       <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
         <div className='flex items-center justify-between mb-6'>
           <div className='flex items-center gap-3'>
@@ -118,7 +114,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
           )}
         </div>
 
-        {/* Icon and Message */}
         <div className='space-y-6 mb-6'>
           <EditChatbotIcon
             register={register}
@@ -133,9 +128,7 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
           />
         </div>
 
-        {/* ✅ Color Picker + Preview Side by Side */}
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 items-start'>
-          {/* Left: Color Picker */}
           <div>
             <ColorPicker
               defaultColor={chatBot?.backgroundColor || '#3B82F6'}
@@ -143,7 +136,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
             />
           </div>
 
-          {/* Right: Preview */}
           <div className='flex justify-center'>
             <ChatbotPreview
               icon={chatBot?.icon}
@@ -155,7 +147,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
         </div>
       </div>
 
-      {/* Action Buttons */}
       <div className='flex gap-3 justify-end'>
         <Button 
           onClick={onDeleteDomain}

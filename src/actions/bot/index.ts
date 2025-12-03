@@ -77,6 +77,7 @@ export const onGetCurrentChatBot = async (id: string) => {
                         icon: true,
                         textColor: true,
                         background: true,
+                        backgroundColor: true,
                         helpdesk: true,
                     },
                 },

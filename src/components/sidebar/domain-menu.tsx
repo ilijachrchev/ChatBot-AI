@@ -87,7 +87,6 @@ const DomainMenu = ({ domains, min }: Props) => {
             const raw = (domain.icon ?? '').trim();
             const empty = !raw || raw === 'null' || raw === 'undefined';
 
-            // Use full URL if stored; otherwise treat as Uploadcare UUID
             const ucUrl = empty
               ? ''
               : raw.startsWith('http')
@@ -108,18 +107,15 @@ const DomainMenu = ({ domains, min }: Props) => {
                   'transition-all duration-200 ease-in-out',
                   'overflow-hidden',
                   
-                  // Active state
                   isActive && [
                     'bg-white dark:bg-slate-800',
                     'font-semibold text-slate-900 dark:text-white',
                     'shadow-sm',
-                    // Left accent border
                     'before:absolute before:left-0 before:top-0 before:bottom-0',
                     'before:w-1 before:bg-gradient-to-b before:from-blue-500 before:to-blue-600',
                     'before:rounded-l-lg'
                   ],
                   
-                  // Inactive state
                   !isActive && [
                     'text-slate-600 dark:text-slate-400',
                     'hover:bg-slate-50 dark:hover:bg-slate-800/50',
@@ -127,7 +123,6 @@ const DomainMenu = ({ domains, min }: Props) => {
                   ]
                 )}
               >
-                {/* Icon Container */}
                 <div className={cn(
                   'relative flex-shrink-0',
                   'md:w-8 md:h-8 w-7 h-7 rounded-lg overflow-hidden',
@@ -148,12 +143,10 @@ const DomainMenu = ({ domains, min }: Props) => {
                   />
                 </div>
 
-                {/* Domain Name */}
                 <span className="text-sm truncate flex-1">
                   {domain.name}
                 </span>
 
-                {/* Hover gradient overlay */}
                 {!isActive && (
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 )}
@@ -161,7 +154,6 @@ const DomainMenu = ({ domains, min }: Props) => {
             )
           }
 
-          // For minimized sidebar
           return (
             <Link
               href={`/settings/${domain.name.split('.')[0]}`}
@@ -171,19 +163,16 @@ const DomainMenu = ({ domains, min }: Props) => {
                 'flex flex-col items-center justify-center rounded-lg py-2.5',
                 'transition-all duration-200 ease-in-out',
                 
-                // Active state
                 isActive && [
                   'bg-white dark:bg-slate-800',
                   'shadow-sm',
                 ],
                 
-                // Inactive state
                 !isActive && [
                   'hover:bg-slate-50 dark:hover:bg-slate-800/50',
                 ]
               )}
             >
-              {/* Icon Container */}
               <div className={cn(
                 'relative flex-shrink-0',
                 'w-7 h-7 rounded-lg overflow-hidden',
@@ -204,12 +193,10 @@ const DomainMenu = ({ domains, min }: Props) => {
                 />
               </div>
 
-              {/* Bottom indicator line - only when active */}
               {isActive && (
                 <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" />
               )}
 
-              {/* Tooltip on hover - shows domain name */}
               <div className={cn(
                 'absolute left-full ml-2 px-2 py-1 rounded-md',
                 'bg-slate-900 dark:bg-slate-700 text-white text-xs whitespace-nowrap',

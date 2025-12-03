@@ -50,6 +50,7 @@ type Props = {
   imagePreview: string | null
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   removeImage: () => void
+  botIcon?: string
 }
 
 export const BotWindow = forwardRef<HTMLDivElement, Props>(
@@ -69,19 +70,31 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       imagePreview,
       onImageChange,
       removeImage,
+      botIcon,
     },
     ref
   ) => {
     return (
       <div className="h-[670px] w-[450px] flex flex-col bg-white rounded-xl mr-[80px] border-[1px] overflow-hidden">
-        <div className="flex justify-between px-4 pt-4">
+        <div className="flex justify-between px-4 pt-4 pb-4 items-center"
+        style={{
+          background: theme || '#7C3AED',
+          color: textColor || '#FFFFFF',
+        }}
+        >
           <div className="flex gap-2">
             <Avatar className="w-20 h-20">
-              <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="@shadcn"
-              />
-              <AvatarFallback>CN</AvatarFallback>
+              {botIcon ? (
+                <AvatarImage src={botIcon} alt="bot" />
+              ) : (
+                <>
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </>
+              )}
             </Avatar>
             <div className="flex items-start flex-col">
               <h3 className="text-lg font-bold leading-none">
@@ -114,20 +127,17 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
             <Separator orientation="horizontal" />
             <div className="flex flex-col h-full">
               <div
-                style={{
-                  background: theme || '',
-                  color: textColor || '',
-                }}
-                className="px-3 flex h-[400px] flex-col py-5 gap-3 chat-window overflow-y-auto"
+                className="px-3 flex h-[400px] flex-col py-5 gap-3 chat-window overflow-y-auto bg-white"
                 ref={ref}
               >
                 {chats.map((chat, key) => (
                   <Bubble
                     key={key}
                     message={chat}
+                    botIcon={botIcon}
                   />
                 ))}
-                {onResponding && <Responding />}
+                {onResponding && <Responding botIcon={botIcon} />}
               </div>
               <form
                 onSubmit={onChat}

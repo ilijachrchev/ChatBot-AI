@@ -7,15 +7,12 @@ import { LandingButton } from "../ui/button-landing";
 export const Hero = () => {
   return (
     <section className="relative overflow-hidden pt-24 pb-24">
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#020617] to-slate-950" />
 
-      {/* Glows */}
       <div className="pointer-events-none absolute -top-40 -left-20 h-72 w-72 rounded-full bg-sky-500/30 blur-3xl opacity-70" />
       <div className="pointer-events-none absolute top-0 right-[-80px] h-72 w-72 rounded-full bg-violet-500/30 blur-3xl opacity-70" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
-        {/* Left: copy */}
         <div className="flex-1 text-center lg:text-left space-y-6">
           <span className="inline-flex items-center gap-2 text-xs font-semibold text-sky-300 bg-sky-500/10 border border-sky-500/40 px-3 py-1 rounded-full">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
@@ -49,7 +46,6 @@ export const Hero = () => {
           </p>
         </div>
 
-        {/* Right: mockup */}
         <div className="flex-1 flex justify-center">
           <div className="relative w-[320px] sm:w-[380px]">
             <div className="absolute -inset-4 rounded-[2rem] bg-gradient-to-tr from-sky-500/40 via-transparent to-violet-500/40 blur-2xl" />

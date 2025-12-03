@@ -1,15 +1,21 @@
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
-export const Responding = () => {
+export const Responding = ({ botIcon }: { botIcon?: string | null }) => {
   return (
     <div className="self-start flex items-end gap-3">
       <Avatar className="w-5 h-5">
-        <AvatarImage
-          src="https://github.com/shadcn.png"
-          alt="@shadcn"
-        />
-        <AvatarFallback>CN</AvatarFallback>
+        {botIcon ? (
+          <AvatarImage src={botIcon} alt="bot" />
+        ) : (
+          <>
+            <AvatarImage
+              src="https://github.com/shadcn.png"
+              alt="@shadcn"
+            />
+            <AvatarFallback>CN</AvatarFallback>
+          </>
+        )}
       </Avatar>
       <div className="chat-bubble">
         <div className="typing">

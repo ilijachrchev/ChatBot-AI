@@ -57,7 +57,6 @@ export default function NavBar() {
           </span>
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden items-center gap-8 text-sm md:flex">
           {navLinks.map((link) => {
             const active =
@@ -82,7 +81,6 @@ export default function NavBar() {
           })}
         </nav>
 
-        {/* Right side actions */}
         <div className="hidden items-center gap-3 md:flex">
           <Link
             href="/sign-in"
@@ -99,7 +97,6 @@ export default function NavBar() {
           </LandingButton>
         </div>
 
-        {/* Mobile menu button */}
         <button
           className="inline-flex items-center justify-center rounded-md border border-border/60 bg-background/70 p-2 text-foreground shadow-sm backdrop-blur-md md:hidden"
           onClick={() => setOpen((prev) => !prev)}
@@ -109,7 +106,6 @@ export default function NavBar() {
         </button>
       </div>
 
-      {/* Mobile menu panel */}
       <div
         className={cn(
           "md:hidden transition-[max-height,opacity] duration-300 overflow-hidden",

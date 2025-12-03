@@ -21,7 +21,6 @@ const BillingSettings = async (props: Props) => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-      {/* Left: Section Label */}
       <div className="lg:col-span-2">
         <div className="flex items-start gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg">
@@ -38,9 +37,7 @@ const BillingSettings = async (props: Props) => {
         </div>
       </div>
 
-      {/* Right: Billing Content */}
       <div className="lg:col-span-3 space-y-6">
-        {/* Plan Card */}
         <div className="rounded-xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 p-6 border border-blue-200 dark:border-blue-800">
           <div className="flex items-center justify-between mb-6">
             <div>

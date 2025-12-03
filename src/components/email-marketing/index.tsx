@@ -288,7 +288,6 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
               </Card>
             ))
           ) : (
-            // Empty State
             <div className="text-center py-12 px-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800">
               <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
                 <Mail className="h-8 w-8 text-slate-400" />

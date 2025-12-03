@@ -1,7 +1,5 @@
-// src/schemas/auth.schema.ts
 import { z } from 'zod'
 
-// ---------- Registration ----------
 export const UserRegistrationSchema = z.object({
   type: z.string().min(1),
   fullname: z
@@ -33,7 +31,6 @@ export const UserRegistrationSchema = z.object({
 
 export type UserRegistrationProps = z.infer<typeof UserRegistrationSchema>
 
-// ---------- Login ----------
 export const UserLoginSchema = z.object({
   email: z.string().email({ message: 'You did not enter a valid email' }),
   password: z
@@ -46,7 +43,6 @@ export const UserLoginSchema = z.object({
 
 export type UserLoginProps = z.infer<typeof UserLoginSchema>
 
-// ---------- Change Password ----------
 export const ChangePasswordSchema = z.object({
   password: z
     .string()

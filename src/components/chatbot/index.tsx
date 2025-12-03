@@ -27,6 +27,13 @@ const AiChatBot = (props: Props) => {
     } = useChatBot()
 
     console.log('🔍 Chatbot - onRealTime:', onRealTime)
+    const themeColor =
+      currentBot?.chatBot?.backgroundColor ??
+      currentBot?.chatBot?.background ?? 
+      '#3B82F6'
+    const textColor = currentBot?.chatBot?.textColor || '#FFFFFF'
+
+    const botIcon = currentBot?.chatBot?.icon || undefined
 
   return (
     <div className='h-screen flex flex-col justify-end items-end gap-4'>
@@ -38,8 +45,8 @@ const AiChatBot = (props: Props) => {
                 domainName={currentBot?.name!}
                 ref={messageWindowRef}
                 help={currentBot?.chatBot?.helpdesk}
-                theme={currentBot?.chatBot?.background}
-                textColor={currentBot?.chatBot?.textColor}
+                theme={themeColor}
+                textColor={textColor}
                 chats={onChats}
                 register={register}
                 onChat={onStartChatting}
@@ -47,6 +54,7 @@ const AiChatBot = (props: Props) => {
                 imagePreview={imagePreview}
                 onImageChange={onImageChange}
                 removeImage={removeImage}
+                botIcon={botIcon}
             />
         )}
     <div
@@ -55,9 +63,9 @@ const AiChatBot = (props: Props) => {
         )}
         onClick={onOpenChatBot}
       >
-        {currentBot?.chatBot?.icon ? (
+        {botIcon ? (
           <Image
-            src={`https://ucarecdn.com/${currentBot.chatBot.icon}/`}
+            src={botIcon}
             alt="bot"
             fill
           />

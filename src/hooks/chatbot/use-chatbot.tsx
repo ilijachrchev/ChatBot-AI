@@ -37,6 +37,7 @@ export const useChatBot = () => {
                 icon: string | null
                 welcomeMessage: string | null
                 background: string | null
+                backgroundColor: string | null
                 textColor: string | null
                 helpdesk: boolean
             } | null
@@ -340,7 +341,6 @@ export const useChatBot = () => {
         } catch {}
 
         if (!chatroomId) {
-            // chatroomId = self.crypto.randomUUID();
             chatroomId = helperGenerateUUID();
             try {
                  localStorage.setItem('chatroomId', chatroomId); 

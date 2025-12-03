@@ -10,36 +10,43 @@ type Props = {
         link?: string
     }
     createdAt?: Date
+    botIcon?: string
 }
 
 
 
-const Bubble = ({ message, createdAt }: Props) => {
+const Bubble = ({ message, createdAt, botIcon }: Props) => {
     let d = new Date()
 
     const isImageUrl = message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i) || 
                         message.content.includes('/uploads/')
 
-  return (
+   return (
     <div className={cn(
-        'flex gap-2 items-end',
-        message.role == 'assistant' ? 'self-start' : 'self-end flex-row-reverse'
+      'flex gap-2 items-end',
+      message.role == 'assistant' ? 'self-start' : 'self-end flex-row-reverse'
     )}>
-        {message.role == 'assistant' ? (
-            <Avatar className='w-5 h-5'>
-                <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt='@shadcn'
-                />
-                <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-        ) : (
-            <Avatar className="w-5 h-5">
-                <AvatarFallback>
-                    <User />
-                </AvatarFallback>
-            </Avatar>
-        )}
+      {message.role == 'assistant' ? (
+        <Avatar className='w-5 h-5'>
+          {botIcon ? (
+            <AvatarImage src={botIcon} alt="bot" />
+          ) : (
+            <>
+              <AvatarImage
+                src="https://github.com/shadcn.png"
+                alt='@shadcn'
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </>
+          )}
+        </Avatar>
+      ) : (
+        <Avatar className="w-5 h-5">
+          <AvatarFallback>
+            <User />
+          </AvatarFallback>
+        </Avatar>
+      )}
         <div className={cn(
             'flex flex-col gap-3 min-w-[300px] p-4 rounded-t-md',
             message.role == 'assistant'

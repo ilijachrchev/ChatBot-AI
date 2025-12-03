@@ -64,7 +64,6 @@ const DashboardCard = ({
           )}
         </div>
 
-        {/* Value */}
         <div className="flex items-baseline gap-2">
           <p className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
             {sales && '$'}
