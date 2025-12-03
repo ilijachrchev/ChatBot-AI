@@ -24,7 +24,8 @@ export const useSignUpForm = () => {
             confirmPassword: "",
             otp: "",
         },
-        mode: 'onSubmit',
+        mode: 'onChange',
+        reValidateMode: 'onChange'
     })
     const onGenerateOTP = async (
     email: string,

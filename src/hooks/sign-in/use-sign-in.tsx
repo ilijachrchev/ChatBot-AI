@@ -21,27 +21,46 @@ export const useSignInForm = () => {
 
     try {
       setLoading(true)
+      
       const authenticated = await signIn.create({
         identifier: values.email,
         password: values.password,
       })
 
       if (authenticated.status === 'complete') {
+        toast.success('Welcome back! 🎉', {
+          description: 'Redirecting to dashboard...',
+        })
+        
         await setActive({ session: authenticated.createdSessionId })
-        toast.success('Welcome back!')
-        router.push('/dashboard')
+        
+        setTimeout(() => {
+          router.push('/dashboard')
+        }, 500)
       } else {
         toast.error('Sign-in not completed. Please try again.')
+        setLoading(false)
       }
     } catch (error: any) {
-      const code = error?.errors?.[0]?.code
-      if (code === 'form_password_incorrect') {
-        toast.error('Email or password is incorrect. Try again.')
-      } else {
-        toast.error('Something went wrong. Please try again.')
-      }
-    } finally {
       setLoading(false)
+      console.error('Sign-in error:', error)
+      
+      const code = error?.errors?.[0]?.code
+      const message = error?.errors?.[0]?.message
+      
+      if (code === 'form_password_incorrect') {
+        toast.error('Incorrect credentials', {
+          description: 'Email or password is incorrect. Try again.',
+        })
+      } else if (code === 'form_identifier_not_found') {
+        toast.error('Account not found', {
+          description: 'No account exists with this email.',
+        })
+      } else {
+        toast.error('Something went wrong', {
+          description: message || 'Please try again later.',
+        })
+      }
     }
   })
 

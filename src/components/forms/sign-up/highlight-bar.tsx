@@ -2,33 +2,28 @@
 import { useAuthContextHook } from '@/context/use-auth-context'
 import { cn } from '@/lib/utils'
 import React from 'react'
+import { motion } from 'framer-motion'
 
-type Props = {}
-
-const HighLightBar = (props: Props) => {
+const HighLightBar = () => {
     const { currentStep } = useAuthContextHook()
-
 
     return (
         <div className='grid grid-cols-3 gap-3'>
-            <div
-            className={cn(
-                'rounded-full h-2 col-span-1',
-                currentStep === 1 ? 'bg-orange' : 'bg-platinum'
-            )}
-            ></div>
-            <div
-            className={cn(
-                'rounded-full h-2 col-span-1',
-                currentStep === 2 ? 'bg-orange' : 'bg-platinum'
-            )}
-            ></div>
-            <div
-            className={cn(
-                'rounded-full h-2 col-span-1',
-                currentStep === 3 ? 'bg-orange' : 'bg-platinum'
-            )}
-            ></div>
+            {[1, 2, 3].map((step) => (
+                <motion.div
+                    key={step}
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.3, delay: step * 0.1 }}
+                    className={cn(
+                        'rounded-full h-2 transition-all duration-300',
+                        currentStep >= step 
+                            ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
+                            : 'bg-white/10'
+                    )}
+                    style={{ transformOrigin: 'left' }}
+                />
+            ))}
         </div>
     )
 }

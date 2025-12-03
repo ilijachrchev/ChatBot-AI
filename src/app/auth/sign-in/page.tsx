@@ -1,43 +1,31 @@
-
 import SignInFormProvider from '@/components/forms/sign-in/form-provider'
 import LoginForm from '@/components/forms/sign-in/login-form'
-import { Button } from '@/components/ui/button'
 import { auth } from '@clerk/nextjs/server'
-import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import React from 'react'
 
 const SignInPage = async () => {
-
   const { userId } = await auth()
-  if (userId) redirect("/")
+  if (userId) redirect("/dashboard")
 
   return (
-    <div className="flex-1 py-36 md:px-16 w-full">
-      <div className="flex flex-col h-full gap-3">
-        <SignInFormProvider>
-          <div className="flex flex-col gap-3">
-            <LoginForm />
-            <div className="w-full flex flex-col gap-3 items-center">
-              <Button
-                type="submit"
-                className="w-full"
-              >
-                Submit
-              </Button>
-              <p>
-                Don’t have an account?{' '}
-                <Link
-                  href="/auth/sign-up"
-                  className="font-bold"
-                >
-                  Create one
-                </Link>
-              </p>
-            </div>
+    <div className="w-full">
+      <SignInFormProvider>
+        <div className="space-y-6">
+          <div className='space-y-2'>
+            <h1 className='text-4xl font-bold text-white'>
+              Welcome back
+            </h1>
+            <p className='text-slate-400'>
+              Sign in to your account to continue
+            </p>
           </div>
-        </SignInFormProvider>
-      </div>
+
+          <div className='rounded-2xl bg-[#1A1F2E]/50 backdrop-blur-xl border border-white/10 p-8 shadow-2xl'>
+            <LoginForm />
+          </div>
+        </div>
+      </SignInFormProvider>
     </div>
   )
 }

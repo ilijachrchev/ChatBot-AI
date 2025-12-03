@@ -81,6 +81,9 @@ const config: Config = {
           600: '#D97706',
         },
         
+        'auth-bg': '#0A0F1E',
+        'auth-card': '#1A1F2E',
+        
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -130,6 +133,11 @@ const config: Config = {
         'card-hover': '0 8px 16px -4px rgb(0 0 0 / 0.12), 0 6px 12px -2px rgb(0 0 0 / 0.08)',
         'glow-blue': '0 0 20px rgb(59 130 246 / 0.4)',
         'glow-purple': '0 0 20px rgb(124 58 237 / 0.4)',
+        'auth-glow': '0 0 50px rgba(59, 130, 246, 0.3)',
+      },
+      
+      backgroundImage: {
+        'auth-gradient': 'radial-gradient(ellipse at 50% 50%, transparent 0%, #0A0F1E 70%)',
       },
       
       borderRadius: {
@@ -170,6 +178,15 @@ const config: Config = {
         'glow': {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.5' }
+        },
+        'float': {
+          '0%, 100%': { transform: 'translateY(0) translateX(0)' },
+          '50%': { transform: 'translateY(-20px) translateX(10px)' }
+        },
+        'orb-float': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(30px, -30px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' }
         }
       },
       
@@ -183,6 +200,8 @@ const config: Config = {
         'shimmer': 'shimmer 2s infinite',
         'shimmer-slow': 'shimmer 3s infinite',
         'glow': 'glow 2s ease-in-out infinite',
+        'float': 'float linear infinite',
+        'orb-float': 'orb-float 20s ease-in-out infinite',
       }
     }
   },
