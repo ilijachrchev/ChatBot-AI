@@ -4,13 +4,7 @@ import { ChatBotMessageProps, ChatBotMessageSchema } from "@/schemas/conversatio
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
-import { UploadClient } from '@uploadcare/upload-client'
-import { previousDay } from "date-fns"
 
-
-const upload = new UploadClient({
-    publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
-})
 
 const helperGenerateUUID = (): string => {
     if (typeof window !== 'undefined' && window.crypto && window.crypto.randomUUID) {

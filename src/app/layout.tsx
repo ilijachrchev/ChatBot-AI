@@ -4,7 +4,6 @@ import { Geist, Geist_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/provider/theme-provider";
-import '@uploadcare/react-uploader/core.css';
 import './globals.css';
 
 
