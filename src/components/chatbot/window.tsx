@@ -12,7 +12,7 @@ import Bubble from './bubble'
 import { Responding } from './responding'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { Paperclip, Send } from 'lucide-react'
+import { BotIcon, Paperclip, Send } from 'lucide-react'
 import { Label } from '../ui/label'
 import { CardDescription, CardTitle } from '../ui/card'
 import Accordion from '../accordian'
@@ -51,6 +51,7 @@ type Props = {
   onImageChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   removeImage: () => void
   botIcon?: string
+  plan?: 'STANDARD' | 'PRO' | 'ULTIMATE'
 }
 
 export const BotWindow = forwardRef<HTMLDivElement, Props>(
@@ -71,9 +72,11 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       onImageChange,
       removeImage,
       botIcon,
+      plan = 'STANDARD'
     },
     ref
   ) => {
+    const showPoweredBy = plan === 'STANDARD'
     return (
       <div className="h-[670px] w-[450px] flex flex-col bg-white rounded-xl mr-[80px] border-[1px] overflow-hidden">
         <div className="flex justify-between px-4 pt-4 pb-4 items-center"
@@ -83,19 +86,24 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
         }}
         >
           <div className="flex gap-2">
-            <Avatar className="w-20 h-20">
-              {botIcon ? (
-                <AvatarImage src={botIcon} alt="bot" />
-              ) : (
-                <>
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="@shadcn"
+            {botIcon ? (
+              <div className="w-20 h-20 flex items-center justify-center bg-white rounded-full p-2 overflow-hidden">
+                <div className="relative w-full h-full">
+                  <Image
+                    src={botIcon}
+                    alt="bot"
+                    fill
+                    className="object-contain"
                   />
-                  <AvatarFallback>CN</AvatarFallback>
-                </>
-              )}
-            </Avatar>
+                </div>
+              </div>
+            ) : (
+              <Avatar className="w-20 h-20">
+                <div className="w-full h-full flex items-center justify-center bg-white rounded-full">
+                  <BotIcon />
+                </div>
+              </Avatar>
+            )}
             <div className="flex items-start flex-col">
               <h3 className="text-lg font-bold leading-none">
                 Sales Rep - SendWise-AI
@@ -141,7 +149,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               </div>
               <form
                 onSubmit={onChat}
-                className="flex px-3 py-1 flex-col flex-1 bg-porcelain relative"
+                className="flex px-3 py-3.5 flex-col bg-porcelain "
               >
                 <div className="flex justify-between items-end gap-2">
                   <div className="flex-1 flex flex-col gap-2">
@@ -177,13 +185,13 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                   
                   <Button
                     type="submit"
-                    className="mt-3"
+                    className="h-10"
                   >
                     <Send />
                   </Button>
                 </div>
                 
-                <Label htmlFor="bot-image" className="cursor-pointer mt-2">
+                <Label htmlFor="bot-image" className="cursor-pointer mt-1">
                   <Paperclip className="text-muted-foreground hover:text-foreground transition-colors" />
                   <Input
                     type="file"
@@ -217,9 +225,11 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
             </div>
           </TabsContent>
         </TabsMenu>
-        <div className="flex justify-center ">
-          <p className="text-gray-400 text-xs">Powered By Ilija Chrchev</p>
-        </div>
+        {showPoweredBy && (
+          <div className="flex justify-center py-2">
+            <p className="text-gray-400 text-xs">Powered by SendWise AI</p>
+          </div>
+        )}
       </div>
     )
   }

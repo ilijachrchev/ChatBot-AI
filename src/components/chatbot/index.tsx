@@ -3,7 +3,6 @@ import { useChatBot } from '@/hooks/chatbot/use-chatbot'
 import React from 'react'
 import { BotWindow } from './window'
 import { cn } from '@/lib/utils'
-import Image from 'next/image'
 import { BotIcon } from '@/icons/bot-icon'
 
 type Props = {}
@@ -35,6 +34,8 @@ const AiChatBot = (props: Props) => {
 
     const botIcon = currentBot?.chatBot?.icon || undefined
 
+    const plan = currentBot?.subscription?.plan || 'STANDARD'
+
   return (
     <div className='h-screen flex flex-col justify-end items-end gap-4'>
         {botOpened && (
@@ -55,23 +56,17 @@ const AiChatBot = (props: Props) => {
                 onImageChange={onImageChange}
                 removeImage={removeImage}
                 botIcon={botIcon}
+                plan={plan}
             />
         )}
     <div
         className={cn(
-          'rounded-full relative cursor-pointer shadow-md w-20 h-20 flex items-center justify-center bg-grandis'
+          'rounded-full relative cursor-pointer shadow-md w-20 h-20 flex items-center justify-center'
         )}
+        style={{ backgroundColor: themeColor }}
         onClick={onOpenChatBot}
       >
-        {botIcon ? (
-          <Image
-            src={botIcon}
-            alt="bot"
-            fill
-          />
-        ) : (
           <BotIcon />
-        )}
       </div>
     </div>
   )

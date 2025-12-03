@@ -32,6 +32,9 @@ export const useChatBot = () => {
     const [currentBot, setCurrentBot] = useState<
         | {
             name: string
+            subscription: {
+                plan: 'STANDARD' | 'PRO' | 'ULTIMATE'
+            }
             chatBot: {
                 id: string
                 icon: string | null

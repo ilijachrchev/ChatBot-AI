@@ -81,10 +81,26 @@ export const onGetCurrentChatBot = async (id: string) => {
                         helpdesk: true,
                     },
                 },
+                User: {
+                  select: {
+                    subscription: {
+                      select: {
+                        plan: true,
+                      }
+                    }
+                  }
+                }
             },
         })
         if(chatbot) {
-            return chatbot
+          return {
+              name: chatbot.name,
+              chatBot: chatbot.chatBot,
+              helpdesk: chatbot.helpdesk,
+              subscription: {
+              plan: chatbot.User?.subscription?.plan || 'STANDARD',
+            },
+          }
         }
     } catch (error) {
         console.log(error)
