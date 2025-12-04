@@ -6,6 +6,7 @@ import {
   onGetEmailTemplate,
   onSaveEmailTemplate,
   onRemoveCustomerFromCapaign,
+  onScheduleCampaign,
 } from '@/actions/mail'
 import { EmailMarketingBodySchema, EmailMarketingSchema } from '@/schemas/marketing.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -120,6 +121,41 @@ export const useEmailMarketing = () => {
     }
   }
 
+
+ const onSchedule = async (campaignId: string, scheduledAt: Date | null) => {
+  console.log('🎯 Hook onSchedule called')
+  console.log('Campaign:', campaignId)
+  console.log('Date:', scheduledAt)
+  
+  try {
+    const result = await onScheduleCampaign(campaignId, scheduledAt)
+    console.log('📬 Result:', result)
+    
+    if (result?.status === 200) {
+      toast.success(
+        scheduledAt ? 'Campaign scheduled! 📅' : 'Campaign sent! 🚀',
+        {
+          description: result.message,
+        }
+      )
+      router.refresh()
+      return true
+    } else {
+      toast.error('Failed', {
+        description: result?.message || 'Please try again',
+      })
+      return false
+    }
+  } catch (error) {
+    console.error('❌ Hook error:', error)
+    toast.error('Error', {
+      description: 'Failed to process campaign',
+    })
+    return false
+  }
+}
+
+
   const onSetAnswersId = (id: string) => setIsId(id)
 
   return {
@@ -142,6 +178,7 @@ export const useEmailMarketing = () => {
     editing,
     setValue,
     onRemoveCustomer,
+    onSchedule,
   }
 }
 

@@ -1,17 +1,18 @@
 'use client'
 import { useEmailMarketing } from '@/hooks/email-marketing/use-marketing'
-import React from 'react'
+import React, { useState } from 'react'
 import { CustomerTable } from './customer-table'
 import { Button } from '../ui/button'
-import { Plus, Mail, Users, Calendar, Send, Eye } from 'lucide-react'
+import { Plus, Mail, Users, Calendar, Send, Eye, Clock } from 'lucide-react'
 import Modal from '../modal'
-import { Card, CardContent, CardDescription, CardTitle } from '../ui/card'
+import { Card, CardContent } from '../ui/card'
 import { Loader } from '../loader'
 import FormGenerator from '../forms/form-generator'
 import { cn, getMonthName } from '@/lib/utils'
 import { EditEmail } from './edit-email'
 import { CampaignPreview } from './campign-preview'
-import { string } from 'zod'
+import { ScheduleEmail } from './schedule-email'
+import { FieldValues, UseFormRegister } from 'react-hook-form'
 
 type Props = {
   domains: {
@@ -28,6 +29,8 @@ type Props = {
     id: string
     customers: string[]
     createdAt: Date
+    status?: string
+    scheduledAt?: Date | null
   }[]
   subscription: {
     plan: 'STANDARD' | 'PRO' | 'ULTIMATE'
@@ -36,6 +39,8 @@ type Props = {
 }
 
 const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
+  const [scheduleModalOpen, setScheduleModalOpen] = useState<string | null>(null)
+  
   const {
     onSelectedEmails,
     isSelected,
@@ -55,6 +60,7 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
     onCreateEmailTemplate,
     setValue,
     onRemoveCustomer,
+    onSchedule, 
   } = useEmailMarketing()
 
   const getCustomerEmailsForCampaign = (customerEmails: string[]) => {
@@ -69,6 +75,40 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
           email: string | null
         } => Boolean(c)
       )
+  }
+
+  const getStatusBadge = (status?: string, scheduledAt?: Date | null) => {
+    if (status === 'SCHEDULED' && scheduledAt) {
+      return {
+        icon: Clock,
+        text: 'Scheduled',
+        className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+      }
+    }
+    if (status === 'SENT') {
+      return {
+        icon: Send,
+        text: 'Sent',
+        className: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+      }
+    }
+    if (status === 'SENDING') {
+      return {
+        icon: Send,
+        text: 'Sending',
+        className: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
+      }
+    }
+    return {
+      icon: Mail,
+      text: 'Draft',
+      className: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
+    }
+  }
+
+  const handleSchedule = async (campaignId: string, scheduledAt: Date | null) => {
+    await onSchedule(campaignId, scheduledAt)
+    setScheduleModalOpen(null) 
   }
 
   return (
@@ -155,7 +195,7 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
               <form className="flex flex-col gap-4" onSubmit={onCreateCampaign}>
                 <FormGenerator
                   name="name"
-                  register={register}
+                  register={register as unknown as UseFormRegister<FieldValues>}
                   errors={errors}
                   inputType="input"
                   placeholder="Campaign name (e.g., Summer Sale 2024)"
@@ -175,118 +215,144 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
 
         <div className="flex flex-col gap-4">
           {campaign && campaign.length > 0 ? (
-            campaign.map((camp) => (
-              <Card
-                key={camp.id}
-                className={cn(
-                  'group relative overflow-hidden cursor-pointer',
-                  'transition-all duration-200',
-                  'hover:shadow-card-hover hover:-translate-y-1',
-                  campaignId === camp.id
-                    ? 'border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-950/30'
-                    : 'border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700'
-                )}
-                onClick={() => onSelectCampaign(camp.id)}
-              >
-                {campaignId === camp.id && (
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-2xl" />
-                )}
+            campaign.map((camp) => {
+              const statusBadge = getStatusBadge(camp.status, camp.scheduledAt)
+              const StatusIcon = statusBadge.icon
+              return (               
+                <Card
+                  key={camp.id}
+                  className={cn(
+                    'group relative overflow-hidden cursor-pointer',
+                    'transition-all duration-200',
+                    'hover:shadow-card-hover hover:-translate-y-1',
+                    campaignId === camp.id
+                      ? 'border-blue-500 dark:border-blue-600 bg-blue-50 dark:bg-blue-950/30'
+                      : 'border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700'
+                  )}
+                  onClick={() => onSelectCampaign(camp.id)}
+                >
+                  {campaignId === camp.id && (
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-2xl" />
+                  )}
 
-                <CardContent className="p-5 relative z-10">
-                  <Loader loading={processing}>
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex-1">
-                        <h3 className="text-lg font-bold text-slate-950 dark:text-white mb-2">
-                          {camp.name}
-                        </h3>
-                        <div className="flex flex-wrap gap-3 text-sm">
-                          <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
-                            <Calendar className="h-3.5 w-3.5" />
-                            <span>
-                              {getMonthName(camp.createdAt.getMonth())}{' '}
-                              {camp.createdAt.getDate()}, {camp.createdAt.getFullYear()}
-                            </span>
+                  <CardContent className="p-5 relative z-10">
+                    <Loader loading={processing}>
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                              {camp.name}
+                            </h3>
+                            <div className={cn('flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-semibold', statusBadge.className)}>
+                              <StatusIcon className="h-3 w-3" />
+                              {statusBadge.text}
+                            </div>
                           </div>
-                          <div className="flex items-center gap-1.5">
-                            <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
-                              <Users className="h-3.5 w-3.5" />
-                              <span className="font-semibold">
-                                {camp.customers.length} customers
+
+                          <div className="flex flex-wrap gap-3 text-sm">
+                            <div className="flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+                              <Calendar className="h-3.5 w-3.5" />
+                              <span>
+                                {camp.scheduledAt
+                                  ? `Scheduled: ${new Date(camp.scheduledAt).toLocaleDateString()}`
+                                  : `Created: ${getMonthName(camp.createdAt.getMonth())} ${camp.createdAt.getDate()}`
+                                }
                               </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
+                                <Users className="h-3.5 w-3.5" />
+                                <span className="font-semibold">
+                                  {camp.customers.length} customers
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
+
+                        <Modal
+                          title={`Campaign: ${camp.name}`}
+                          description="Preview customers in this campaign"
+                          trigger={
+                            <div
+                              className={cn(
+                                'flex h-8 w-8 items-center justify-center rounded-lg',
+                                'bg-slate-100 dark:bg-slate-800',
+                                'hover:bg-blue-100 dark:hover:bg-blue-900/30',
+                                'text-slate-600 dark:text-slate-300',
+                                'hover:text-blue-600 dark:hover:text-blue-400',
+                                'transition-all duration-200',
+                                'cursor-pointer'
+                              )}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </div>
+                          }
+                        >
+                          <CampaignPreview
+                            campaignName={camp.name}
+                            customers={getCustomerEmailsForCampaign(camp.customers)}
+                            onRemoveCustomer={(email) => onRemoveCustomer(camp.id, email)}
+                          />
+                        </Modal>
                       </div>
 
-                      <Modal
-                        title={`Campaign: ${camp.name}`}
-                        description="Preview customers in this campaign"
-                        trigger={
-                          <div
-                            className={cn(
-                              'flex h-8 w-8 items-center justify-center rounded-lg',
-                              'bg-slate-100 dark:bg-slate-800',
-                              'hover:bg-blue-100 dark:hover:bg-blue-900/30',
-                              'text-slate-600 dark:text-slate-300',
-                              'hover:text-blue-600 dark:hover:text-blue-400',
-                              'transition-all duration-200',
-                              'cursor-pointer'
-                            )}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Eye className="h-4 w-4" />
-                          </div>
-                        }
-                      >
-                        <CampaignPreview
-                          campaignName={camp.name}
-                          customers={getCustomerEmailsForCampaign(camp.customers)}
-                          onRemoveCustomer={(email) => onRemoveCustomer(camp.id, email)}
-                        />
-                      </Modal>
-                    </div>
+                      <div className="flex gap-2">
+                        <Modal
+                          title="Edit Email Template"
+                          description="Customize the email that will be sent to campaign members"
+                          trigger={
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="flex-1 hover:bg-slate-100 dark:hover:bg-slate-800"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Mail className="h-3.5 w-3.5 mr-2" />
+                              Edit Email
+                            </Button>
+                          }
+                        >
+                          <EditEmail
+                            register={registerEmail}
+                            errors={emailErrors}
+                            setDefault={setValue}
+                            id={camp.id}
+                            onCreate={onCreateEmailTemplate}
+                          />
+                        </Modal>
 
-                    <div className="flex gap-2">
-                      <Modal
-                        title="Edit Email Template"
-                        description="Customize the email that will be sent to campaign members"
-                        trigger={
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1 hover:bg-slate-100 dark:hover:bg-slate-800"
-                            onClick={(e) => e.stopPropagation()}
+                          <Modal
+                            title="Schedule Campaign"
+                            description="Choose when to send this campaign"
+                            trigger={
+                              <Button
+                                size="sm"
+                                className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold shadow-lg shadow-green-500/30"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  console.log('🟢 Send button clicked for campaign:', camp.id)
+                                }}
+                                disabled={camp.status === 'SENT' || camp.status === 'SENDING'}
+                              >
+                                <Send className="h-3.5 w-3.5 mr-2" />
+                                {camp.status === 'SCHEDULED' ? 'Reschedule' : 'Send'}
+                              </Button>
+                            }
                           >
-                            <Mail className="h-3.5 w-3.5 mr-2" />
-                            Edit Email
-                          </Button>
-                        }
-                      >
-                        <EditEmail
-                          register={registerEmail}
-                          errors={emailErrors}
-                          setDefault={setValue}
-                          id={camp.id}
-                          onCreate={onCreateEmailTemplate}
-                        />
-                      </Modal>
-
-                      <Button
-                        size="sm"
-                        className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold shadow-lg shadow-green-500/30"
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          onBulkEmail(camp.customers.map((c) => c), camp.id)
-                        }}
-                      >
-                        <Send className="h-3.5 w-3.5 mr-2" />
-                        Send
-                      </Button>
-                    </div>
-                  </Loader>
-                </CardContent>
-              </Card>
-            ))
+                            <ScheduleEmail
+                              campaignId={camp.id}
+                              onSchedule={handleSchedule}
+                              onClose={() => setScheduleModalOpen(null)}
+                            />
+                          </Modal>
+                      </div>
+                    </Loader>
+                  </CardContent>
+                </Card>
+              )
+            })
           ) : (
             <div className="text-center py-12 px-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800">
               <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-4">

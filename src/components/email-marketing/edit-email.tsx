@@ -2,7 +2,7 @@
 import React from 'react'
 import { Button } from '../ui/button'
 import { Loader } from '../loader'
-import { FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form'
+import { FieldErrors, FieldValues, UseFormRegister, UseFormSetValue } from 'react-hook-form'
 import { useEditEmail } from '@/hooks/email-marketing/use-marketing'
 import FormGenerator from '../forms/form-generator'
 import { Save } from 'lucide-react'
@@ -43,7 +43,7 @@ export const EditEmail = ({
           </label>
           <FormGenerator
             name="description"
-            register={register}
+            register={register as unknown as UseFormRegister<FieldValues>}
             errors={errors}
             inputType="textarea"
             lines={10}

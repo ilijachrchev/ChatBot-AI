@@ -159,6 +159,21 @@ model Campaign {
   User      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String?  @db.Uuid
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  scheduledAt DateTime?
+  status CampaignStatus @default(DRAFT)
+  sentAt DateTime?
+  timezone String?
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  SENDING
+  SENT
+  FAILED
+  CANCELLED
 }
 
 model Product {
