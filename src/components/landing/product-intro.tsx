@@ -2,6 +2,7 @@
 
 import { CheckCircle2, Target, Palette, Rocket } from "lucide-react";
 import { LandingButton } from "../ui/button-landing";
+import Link from "next/link";
 
 export const ProductIntro = () => {
   const steps = [
@@ -103,7 +104,9 @@ export const ProductIntro = () => {
         <div className="text-center animate-fade-in delay-500">
           <div className="rounded-2xl border-2 border-sky-500/40 bg-gradient-to-r from-sky-500/10 to-violet-500/10 p-6 md:p-10">
             <LandingButton variant="neon" size="xl" className="mb-4 w-full max-w-xs sm:msx-w-none mx-auto md:whitespace-nowrap">
-              Start Using SendWise-AI Today
+              <Link href="/auth/sign-up">
+                Start Using SendWise-AI Today
+              </Link>
             </LandingButton>
             <p className="text-sm md:text-base font-semibold text-sky-200">
               Launch your first AI-optimized sequence in 5 minutes.

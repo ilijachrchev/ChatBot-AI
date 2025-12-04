@@ -47,14 +47,14 @@ export function LandingNavbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link
-            href="/sign-in"
+            href="/auth/sign-in"
             className="text-sm text-slate-300 hover:text-sky-300 transition-colors"
           >
             Log in
           </Link>
 
           <Button variant="neon" size="sm" asChild>
-            <Link href="/dashboard?plan=Standard">
+            <Link href="/auth/sign-up">
               Start for free
             </Link>
           </Button>
@@ -90,7 +90,7 @@ export function LandingNavbar() {
 
           <div className="mt-2 flex items-center gap-3">
             <Link
-              href="/sign-in"
+              href="/auth/sign-in"
               onClick={() => setOpen(false)}
               className="flex-1 rounded-md px-2 py-2 text-center text-sm font-medium text-slate-200 hover:bg-slate-800/80"
             >
@@ -104,7 +104,7 @@ export function LandingNavbar() {
               asChild
             >
               <Link
-                href="/dashboard?plan=Standard"
+                href="/auth/sign-up"
                 onClick={() => setOpen(false)}
               >
                 Start for free

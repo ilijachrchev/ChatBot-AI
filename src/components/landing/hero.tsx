@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { LandingButton } from "../ui/button-landing";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -33,7 +34,9 @@ export const Hero = () => {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
             <LandingButton variant="neon" size="xl">
+              <Link href="/auth/sign-up">
                 Start Using SendWise-AI
+              </Link>
             </LandingButton>
 
             <LandingButton variant="neonOutline" size="lg" asChild>

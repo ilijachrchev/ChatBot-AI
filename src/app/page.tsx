@@ -1,4 +1,3 @@
-import NavBar from "@/components/navbar";
 import { Hero } from "@/components/landing/hero";
 import { ProductIntro } from "@/components/landing/product-intro";
 import { ProductShowcase } from "@/components/landing/prodcut-showcase";

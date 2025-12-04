@@ -2,6 +2,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { LandingButton } from "@/components/ui/button-landing";
+import Link from "next/link";
 
 export const FinalCTA = () => {
   return (
@@ -26,7 +27,9 @@ export const FinalCTA = () => {
             size="xl"
             className="group"
           >
-            Start Now
+            <Link href="/auth/sign-up">
+              Start Now
+            </Link>
             <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
           </LandingButton>
 

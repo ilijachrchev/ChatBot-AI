@@ -70,7 +70,7 @@ export const PricingSection = () => {
                     variant={card.title === "Ultimate" ? "neon" : "neonOutline"}
                     size="lg"
                 >
-                    <Link href={`/dashboard?plan=${card.title}`}>
+                    <Link href={`/auth/sign-up`}>
                         Get Started
                     </Link>
                 </LandingButton>
