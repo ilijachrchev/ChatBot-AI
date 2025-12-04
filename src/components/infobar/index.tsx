@@ -1,12 +1,36 @@
+'use client'
 import React from 'react'
 import BreadCrumb from './bread-crumb'
-import { Headphones, Star, Trash, Bell } from 'lucide-react'
+import { Headphones, Star, Trash, Bell, User, Shield, Settings as SettingsIcon, LogOut } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import { useClerk, useUser } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 type Props = {}
 
 const InfoBar = (props: Props) => {
+  const { user } = useUser()
+  const { signOut } = useClerk()
+  const router = useRouter()
+
+  const onSignOut = () => signOut(() => router.push('/'))
+
+
+  const handleSignOut = async () => {
+    await signOut()
+    router.push('/auth/sign-in')
+  }
+
   return (
     <div className="flex w-full justify-between items-start md:items-center py-3 md:py-4 mb-4 md:mb-6 gap-4 flex-col md:flex-row">
       <BreadCrumb />
@@ -81,18 +105,95 @@ const InfoBar = (props: Props) => {
           </AvatarFallback>
         </Avatar>
 
-        <Avatar className={cn(
-          "h-9 w-9 md:h-10 md:w-10",
-          "ring-2 ring-offset-2 ring-slate-200 dark:ring-slate-700",
-          "hover:ring-blue-500/40",
-          "transition-all cursor-pointer",
-          "ring-offset-white dark:ring-offset-slate-950"
-        )}>
-          <AvatarImage src="https://github.com/shadcn.png" alt="User" />
-          <AvatarFallback className="bg-gradient-to-br from-slate-700 to-slate-800 text-white">
-            CN
-          </AvatarFallback>
-        </Avatar>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className={cn(
+              "h-9 w-9 md:h-10 md:w-10",
+              "ring-2 ring-offset-2 ring-slate-200 dark:ring-slate-700",
+              "hover:ring-blue-500/40",
+              "transition-all cursor-pointer",
+              "ring-offset-white dark:ring-offset-slate-950"
+            )}>
+              <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+              <AvatarFallback className="bg-gradient-to-br from-slate-700 to-slate-800 text-white font-semibold">
+                {user?.fullName?.charAt(0) || user?.emailAddresses[0]?.emailAddress.charAt(0) || 'U'}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align='end' className='w-64 p-2'>
+            <DropdownMenuLabel className='pb-3'>
+              <div className='flex items-center gap-3'>
+                <Avatar className='w-12 h-12'>
+                  <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+                  <AvatarFallback className='bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-lg'>
+                    {user?.fullName?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className='flex flex-col overflow-hidden'>
+                  <p className='font-semibold text-sm truncate'>
+                    {user?.fullName || 'User'}
+                  </p>
+                  <p className='text-xs text-muted-foreground truncate'>
+                    {user?.emailAddresses[0]?.emailAddress}
+                  </p>
+                </div>
+              </div>
+            </DropdownMenuLabel>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              <Link href='/account/profile' className='flex items-center gap-3 px-2 py-2.5 rounded-md'>
+                <div className='w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center'>
+                  <User className='w-4 h-4 text-blue-600 dark:text-blue-400' />
+                </div>
+                <div className='flex flex-col'>
+                  <span className='text-sm font-medium'>Profile</span>
+                  <span className='text-xs text-muted-foreground'>Personal information</span>
+                </div>
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              <Link href='/account/security' className='flex items-center gap-3 px-2 py-2.5 rounded-md'>
+                <div className='w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center'>
+                  <Shield className='w-4 h-4 text-purple-600 dark:text-purple-400' />
+                </div>
+                <div className='flex flex-col'>
+                  <span className='text-sm font-medium'>Security</span>
+                  <span className='text-xs text-muted-foreground'>Password & authentication</span>
+                </div>
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild className='cursor-pointer'>
+              <Link href='/account/preferences' className='flex items-center gap-3 px-2 py-2.5 rounded-md'>
+                <div className='w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center'>
+                  <SettingsIcon className='w-4 h-4 text-amber-600 dark:text-amber-400' />
+                </div>
+                <div className='flex flex-col'>
+                  <span className='text-sm font-medium'>Preferences</span>
+                  <span className='text-xs text-muted-foreground'>Notifications & settings</span>
+                </div>
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuItem
+              onClick={onSignOut}
+              className='cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10'
+            >
+              <div className='flex items-center gap-3 px-2 py-2.5 w-full rounded-md'>
+                <div className='w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center'>
+                  <LogOut className='w-4 h-4 text-red-600 dark:text-red-400' />
+                </div>
+                <span className='text-sm font-medium'>Sign Out</span>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )
