@@ -13,9 +13,9 @@ const OwnerLayout = async ({ children }: Props) => {
 
   return (
     <ChatProvider>
-      <div className="flex h-screen w-full">
+      <div className="flex h-screen w-full overflow-hidden">
         <SideBar domains={authenticated.domains} />
-        <div className="w-full h-screen flex flex-col pl-20 md:pl-4">
+        <div className="w-full h-screen flex flex-col pl-20 md:pl-4 overflow-y-auto">
           {children}
         </div>
       </div>

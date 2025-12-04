@@ -589,3 +589,113 @@ export const onCreateNewDomainProduct = async (
     console.log(error)
   }
 }
+
+export const onGetUserProfile = async () => {
+  try {
+    const user = await currentUser()
+    if (!user) return null
+
+    const profile = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        id: true,
+        fullname: true,
+        clerkId: true,
+        type: true,
+        createdAt: true,
+        avatar: true,
+      },
+    })
+
+    if (profile) {
+      const email = user.emailAddresses?.[0]?.emailAddress || ''
+      
+      return {
+        ...profile,
+        email,
+        imageUrl: profile.avatar || user.imageUrl,
+      }
+    }
+
+    return null
+  } catch (error) {
+    console.log('Error fetching user profile:', error)
+    return null
+  }
+}
+
+export const onUpdateUserProfile = async (fullname: string) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 400, message: 'User not found' }
+
+    const updated = await client.user.update({
+      where: {
+        clerkId: user.id,
+      },
+      data: {
+        fullname,
+      },
+    })
+
+    const clerk = await clerkClient()
+    await clerk.users.updateUser(user.id, {
+      firstName: fullname.split(' ')[0],
+      lastName: fullname.split(' ').slice(1).join(' ') || undefined,
+    })
+
+    if (updated) {
+      return {
+        status: 200,
+        message: 'Profile updated successfully',
+      }
+    }
+
+    return {
+      status: 400,
+      message: 'Failed to update profile',
+    }
+  } catch (error) {
+    console.log('Error updating profile:', error)
+    return {
+      status: 500,
+      message: 'Internal server error',
+    }
+  }
+}
+export const onUpdateUserAvatar = async (imageUrl: string) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 400, message: 'User not found' }
+
+    const updated = await client.user.update({
+      where: {
+        clerkId: user.id,
+      },
+      data: {
+        avatar: imageUrl,
+      },
+    })
+
+    if (updated) {
+      return {
+        status: 200,
+        message: 'Profile picture updated successfully',
+        imageUrl,
+      }
+    }
+
+    return {
+      status: 400,
+      message: 'Failed to update profile picture',
+    }
+  } catch (error) {
+    console.log('Error updating avatar:', error)
+    return {
+      status: 500,
+      message: 'Failed to update profile picture',
+    }
+  }
+}

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import BreadCrumb from './bread-crumb'
 import { Headphones, Star, Trash, Bell, User, Shield, Settings as SettingsIcon, LogOut } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -22,14 +22,40 @@ const InfoBar = (props: Props) => {
   const { user } = useUser()
   const { signOut } = useClerk()
   const router = useRouter()
+  const [customAvatar, setCustomAvatar] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchAvatar = async () => {
+      try {
+        const response = await fetch('/api/user/avatar')
+        if (response.ok) {
+          const data = await response.json()
+          if (data.avatar) {
+            setCustomAvatar(data.avatar)
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch avatar:', error)
+      }
+    }
+    if (user) {
+      fetchAvatar()
+    }
+  }, [user])
+
+  const displayName = [
+    user?.firstName ?? '',
+    user?.lastName ?? ''
+  ].join(' ').trim()
 
   const onSignOut = () => signOut(() => router.push('/'))
 
+  const avatarUrl = customAvatar || user?.imageUrl
 
-  const handleSignOut = async () => {
-    await signOut()
-    router.push('/auth/sign-in')
-  }
+  useEffect(() => {
+  if (user) console.log('clerk user from useUser', user)
+}, [user])
+
 
   return (
     <div className="flex w-full justify-between items-start md:items-center py-3 md:py-4 mb-4 md:mb-6 gap-4 flex-col md:flex-row">
@@ -114,10 +140,12 @@ const InfoBar = (props: Props) => {
               "transition-all cursor-pointer",
               "ring-offset-white dark:ring-offset-slate-950"
             )}>
-              <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+              <AvatarImage src={avatarUrl || undefined} alt={displayName || 'User'} className='object-cover' />
               <AvatarFallback className="bg-gradient-to-br from-slate-700 to-slate-800 text-white font-semibold">
-                {user?.fullName?.charAt(0) || user?.emailAddresses[0]?.emailAddress.charAt(0) || 'U'}
-              </AvatarFallback>
+                {displayName.charAt(0) ||
+                  user?.emailAddresses[0]?.emailAddress.charAt(0) ||
+                  'U'}              
+                </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
 
@@ -125,14 +153,14 @@ const InfoBar = (props: Props) => {
             <DropdownMenuLabel className='pb-3'>
               <div className='flex items-center gap-3'>
                 <Avatar className='w-12 h-12'>
-                  <AvatarImage src={user?.imageUrl} alt={user?.fullName || 'User'} />
+                  <AvatarImage src={avatarUrl || undefined} alt={displayName || 'User'} className='object-cover' />
                   <AvatarFallback className='bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-lg'>
-                    {user?.fullName?.charAt(0) || 'U'}
+                    {displayName.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className='flex flex-col overflow-hidden'>
                   <p className='font-semibold text-sm truncate'>
-                    {user?.fullName || 'User'}
+                    {displayName || 'User'}
                   </p>
                   <p className='text-xs text-muted-foreground truncate'>
                     {user?.emailAddresses[0]?.emailAddress}
