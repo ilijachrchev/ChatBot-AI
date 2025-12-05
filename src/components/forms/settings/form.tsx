@@ -8,9 +8,10 @@ import EditChatbotIcon from './edit-chatbot-icon'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
 import { Loader } from '@/components/loader'
-import { Globe, Trash2, Save, MessageSquare, Code } from 'lucide-react'
+import { Globe, Trash2, Save, MessageSquare, Code, Sparkles } from 'lucide-react'
 import { ChatbotPreview } from './chatbot-preview'
 import { ColorPicker } from './color-picker'
+import { PersonaSelector } from '@/components/settings/persona-selector' 
 
 const WelcomeMessage = dynamic(
   () => import('./greetings-message').then((props) => props.default),
@@ -26,6 +27,8 @@ type Props = {
     icon: string | null
     welcomeMessage: string | null
     backgroundColor?: string | null
+    persona?: string          
+    customPrompt?: string | null 
   } | null
 }
 
@@ -87,6 +90,14 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
             <CodeSnippet id={id} />
           </div>
         </div>
+      </div>
+
+      <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
+        <PersonaSelector
+          chatBotId={chatBot?.id || ''}
+          currentPersona={(chatBot?.persona as any) || 'SALES_AGENT'}
+          currentCustomPrompt={chatBot?.customPrompt}
+        />
       </div>
 
       <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>

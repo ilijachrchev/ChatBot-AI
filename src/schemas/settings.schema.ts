@@ -56,8 +56,8 @@ export const DomainSettingsSchema = z
       .optional()
       .or(z.literal('').transform(() => undefined)),
     chatbotColor: z.string().optional(),
-  })
-  .refine(
+
+  }).refine(
     (schema) => {
       if (schema.image?.length) {
         if (
@@ -102,4 +102,26 @@ export const AddProductSchema = z.object({
       message: 'Only JPG, JPEG & PNG are accepted file formats',
     }),
   price: z.string(),
+})
+
+export const PersonaSchema = z.object({
+  persona: z.enum([
+    'SALES_AGENT',
+    'APPOINTMENT_SETTER',
+    'CUSTOMER_SUPPORT',
+    'ECOMMERCE_RECOMMENDER',
+    'REAL_ESTATE_QUALIFIER',
+    'HEALTHCARE_INTAKE',
+    'RESTAURANT_RESERVATION',
+    'CUSTOM'
+  ]),
+  customPrompt: z.string().optional(),
+}).refine((data) => {
+  if (data.persona === 'CUSTOM') {
+    return data.customPrompt && data.customPrompt.trim().length > 0
+  }
+  return true
+}, {
+  message: 'Custom prompt is required when Custom Persona is selected',
+  path: ['customPrompt']
 })

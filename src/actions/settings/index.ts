@@ -222,6 +222,8 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 welcomeMessage: true,
                 icon: true,
                 backgroundColor: true,
+                persona: true,
+                customPrompt: true,
               },
             },
           },
@@ -696,6 +698,40 @@ export const onUpdateUserAvatar = async (imageUrl: string) => {
     return {
       status: 500,
       message: 'Failed to update profile picture',
+    }
+  }
+}
+
+export const onUpdateChatbotPersona = async (
+  chatBotId: string,
+  persona: string,
+  customPrompt?: string | null
+) => {
+  try {
+    const chatbot = await client.chatBot.update({
+      where: { id: chatBotId },
+      data: {
+        persona,
+        customPrompt: persona === 'CUSTOM' ? customPrompt : null,
+      },
+    })
+
+    if (chatbot) {
+      return {
+        status: 200,
+        message: 'AI persona updated successfully',
+      }
+    }
+
+    return {
+      status: 400,
+      message: 'Failed to update persona',
+    }
+  } catch (error) {
+    console.error('Error updating persona:', error)
+    return {
+      status: 500,
+      message: 'Internal server error',
     }
   }
 }

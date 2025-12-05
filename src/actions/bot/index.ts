@@ -6,6 +6,8 @@ import { onRealTimeChat } from "../conversation"
 import { clerkClient } from "@clerk/nextjs/server"
 import { onMailer } from "../mailer"
 import OpenAi from "openai"
+import { se } from "date-fns/locale"
+import { getPersonaSystemPrompt } from "@/constants/personas"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
@@ -79,6 +81,8 @@ export const onGetCurrentChatBot = async (id: string) => {
                         background: true,
                         backgroundColor: true,
                         helpdesk: true,
+                        persona: true,
+                        customPrompt: true,
                     },
                 },
                 User: {
@@ -247,6 +251,12 @@ export const onAiChatBotAssistant = async (
             },
             select: {
                 name: true,
+                chatBot: {
+                  select: {
+                    persona: true,
+                    customPrompt: true,
+                  },
+                },
                 filterQuestions: {
                     where: {
                         answered: null,
@@ -258,6 +268,13 @@ export const onAiChatBotAssistant = async (
             },
         })
         if (!chatBotDomain) return
+
+        const personaPrompt = getPersonaSystemPrompt(
+          (chatBotDomain.chatBot?.persona as any) || 'SALES_AGENT',
+          chatBotDomain.chatBot?.customPrompt,
+          chatBotDomain.name
+        )
+
         const extractedEmail = extractEmailsFromString(message)
         const customerEmail = extractedEmail ? extractedEmail[0] : undefined
 
@@ -406,37 +423,25 @@ export const onAiChatBotAssistant = async (
                 };
               }
 
-             const chatCompletion = await openai.chat.completions.create({
+            const chatCompletion = await openai.chat.completions.create({
           messages: [
             {
               role: 'assistant',
-              content: `
-              You will get an array of questions that you must ask the customer. 
-              
-              Progress the conversation using those questions. 
-              
-              Whenever you ask a question from the array i need you to add a keyword at the end of the question (complete) this keyword is extremely important. 
-              
-              Do not forget it.
+              content: `${personaPrompt}
 
-              only add this keyword when your asking a question from the array of questions. No other question satisfies this condition
-
-              Always maintain character and stay respectfull.
-
-              The array of questions : [${chatBotDomain.filterQuestions
-                .map((questions) => questions.question)
+              Additional Context:
+              - You represent ${chatBotDomain.name}
+              - Ask these qualification questions naturally: [${chatBotDomain.filterQuestions
+                .map((q) => q.question)
                 .join(', ')}]
-
-              if the customer says something out of context or inapporpriate. Simply say this is beyond you and you will get a real user to continue the conversation. And add a keyword (realtime) at the end.
-
-              if the customer agrees to book an appointment send them this link http://localhost:3000/portal/${id}/appointment/${
-                checkCustomer?.customer[0].id
-              }
-
-              if the customer wants to buy a product redirect them to the payment page http://localhost:3000/portal/${id}/payment/${
-                checkCustomer?.customer[0].id
-              }
-          `,
+              
+              Important Instructions:
+              - When you ask a question from the qualification list, add the keyword (complete) at the end
+              - If customer requests human assistance or says something inappropriate, respond politely and add keyword (realtime)
+              - For appointments, direct them to: http://localhost:3000/portal/${id}/appointment/${checkCustomer?.customer[0].id}
+              - For purchases, direct them to: http://localhost:3000/portal/${id}/payment/${checkCustomer?.customer[0].id}
+              
+              Always stay in character as defined by your persona.`
             },
             ...chat,
             {
