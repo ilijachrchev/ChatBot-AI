@@ -37,7 +37,8 @@ const CodeSnippet = ({ id }: Props) => {
         let data = e.data;
         
         if (data === 'ready') {
-            iframe.contentWindow.postMessage("${id}", "http://localhost:3000/");
+            iframe.contentWindow.postMessage("${id}",
+             "http://localhost:3000/");
             return;
         }
         
@@ -50,7 +51,8 @@ const CodeSnippet = ({ id }: Props) => {
     
     iframe.onload = () => {
         setTimeout(() => {
-            iframe.contentWindow.postMessage("${id}", "http://localhost:3000/");
+            iframe.contentWindow.postMessage("${id}",
+             "http://localhost:3000/");
         }, 500);
     }
         `

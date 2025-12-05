@@ -62,6 +62,9 @@ model ChatBot {
   Domain         Domain? @relation(fields: [domainId], references: [id], onDelete: Cascade)
   domainId       String? @unique @db.Uuid
   backgroundColor String? @default("#3B82F6")
+
+  persona String @default("SALES_AGENT")
+  customPrompt String? @db.Text
 }
 
 model Billings {
