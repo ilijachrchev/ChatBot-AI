@@ -31,6 +31,7 @@ type Props = {
     createdAt: Date
     status?: string
     scheduledAt?: Date | null
+    sentAt?: Date | null
   }[]
   subscription: {
     plan: 'STANDARD' | 'PRO' | 'ULTIMATE'
@@ -77,39 +78,73 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
       )
   }
 
-  const getStatusBadge = (status?: string, scheduledAt?: Date | null) => {
-    if (status === 'SCHEDULED' && scheduledAt) {
-      return {
-        icon: Clock,
-        text: 'Scheduled',
-        className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
-      }
-    }
-    if (status === 'SENT') {
-      return {
-        icon: Send,
-        text: 'Sent',
-        className: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
-      }
-    }
-    if (status === 'SENDING') {
-      return {
-        icon: Send,
-        text: 'Sending',
-        className: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
-      }
-    }
+  const getStatusBadge = (status?: string, scheduledAt?: Date | null, sentAt?: Date | null) => {
+  if (status === 'SCHEDULED' && scheduledAt) {
     return {
-      icon: Mail,
-      text: 'Draft',
-      className: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
+      icon: Clock,
+      text: 'Scheduled',
+      subtext: new Date(scheduledAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }),
+      className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
     }
   }
+  if (status === 'SENT' && sentAt) {
+    return {
+      icon: Send,
+      text: 'Sent',
+      subtext: getTimeAgo(new Date(sentAt)),
+      className: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+    }
+  }
+  if (status === 'SENDING') {
+    return {
+      icon: Send,
+      text: 'Sending',
+      subtext: 'In progress...',
+      className: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
+    }
+  }
+  if (status === 'FAILED') {
+    return {
+      icon: Mail,
+      text: 'Failed',
+      subtext: 'Error occurred',
+      className: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300',
+    }
+  }
+  return {
+    icon: Mail,
+    text: 'Draft',
+    subtext: 'Not sent',
+    className: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
+  }
+}
 
   const handleSchedule = async (campaignId: string, scheduledAt: Date | null) => {
     await onSchedule(campaignId, scheduledAt)
     setScheduleModalOpen(null) 
   }
+
+const getTimeAgo = (date: Date) => {
+  const now = new Date()
+  const secondsAgo = Math.floor((now.getTime() - date.getTime()) / 1000)
+  
+  if (secondsAgo < 60) return `${secondsAgo}s ago`
+  
+  const minutesAgo = Math.floor(secondsAgo / 60)
+  if (minutesAgo < 60) return `${minutesAgo}m ago`
+  
+  const hoursAgo = Math.floor(minutesAgo / 60)
+  if (hoursAgo < 24) return `${hoursAgo}h ago`
+  
+  const daysAgo = Math.floor(hoursAgo / 24)
+  if (daysAgo < 7) return `${daysAgo}d ago`
+  
+  const weeksAgo = Math.floor(daysAgo / 7)
+  if (weeksAgo < 4) return `${weeksAgo}w ago`
+  
+  const monthsAgo = Math.floor(daysAgo / 30)
+  return `${monthsAgo}mo ago`
+}
 
   return (
     <div className="w-full flex-1 h-0 grid grid-cols-1 lg:grid-cols-2 gap-6 px-4 md:px-6 pb-8">
@@ -216,7 +251,7 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
         <div className="flex flex-col gap-4">
           {campaign && campaign.length > 0 ? (
             campaign.map((camp) => {
-              const statusBadge = getStatusBadge(camp.status, camp.scheduledAt)
+              const statusBadge = getStatusBadge(camp.status, camp.scheduledAt, camp.sentAt)
               const StatusIcon = statusBadge.icon
               return (               
                 <Card
@@ -243,9 +278,16 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
                             <h3 className="text-lg font-bold text-slate-950 dark:text-white">
                               {camp.name}
                             </h3>
-                            <div className={cn('flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-semibold', statusBadge.className)}>
-                              <StatusIcon className="h-3 w-3" />
-                              {statusBadge.text}
+                            <div className={cn('flex flex-col gap-0.5 px-2.5 py-1.5 rounded-md text-xs font-semibold', statusBadge.className)}>
+                              <div className="flex items-center gap-1.5">
+                                <StatusIcon className="h-3 w-3" />
+                                <span>{statusBadge.text}</span>
+                              </div>
+                              {statusBadge.subtext && (
+                                <span className="text-[10px] font-normal opacity-80">
+                                  {statusBadge.subtext}
+                                </span>
+                              )}
                             </div>
                           </div>
 
@@ -324,20 +366,29 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
                         </Modal>
 
                           <Modal
-                            title="Schedule Campaign"
-                            description="Choose when to send this campaign"
+                            title={camp.status === 'SENT' ? 'Resend Campaign' : 'Schedule Campaign'}
+                            description={camp.status === 'SENT' 
+                              ? 'Send this campaign again to the same recipients'
+                              : 'Choose when to send this campaign'
+                            }
                             trigger={
                               <Button
                                 size="sm"
-                                className="flex-1 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold shadow-lg shadow-green-500/30"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  console.log('🟢 Send button clicked for campaign:', camp.id)
-                                }}
-                                disabled={camp.status === 'SENT' || camp.status === 'SENDING'}
+                                className={cn(
+                                  'flex-1 font-semibold shadow-lg',
+                                  camp.status === 'SENT'
+                                    ? 'bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 shadow-purple-500/30'
+                                    : 'bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 shadow-green-500/30',
+                                  'text-white'
+                                )}
+                                onClick={(e) => e.stopPropagation()}
+                                disabled={camp.status === 'SENDING'}
                               >
                                 <Send className="h-3.5 w-3.5 mr-2" />
-                                {camp.status === 'SCHEDULED' ? 'Reschedule' : 'Send'}
+                                {camp.status === 'SENT' ? 'Resend' : 
+                                camp.status === 'SCHEDULED' ? 'Reschedule' : 
+                                camp.status === 'SENDING' ? 'Sending...' : 
+                                'Send'}
                               </Button>
                             }
                           >
@@ -347,12 +398,12 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
                               onClose={() => setScheduleModalOpen(null)}
                             />
                           </Modal>
-                      </div>
-                    </Loader>
-                  </CardContent>
-                </Card>
-              )
-            })
+                        </div>
+                      </Loader>
+                    </CardContent>
+                  </Card>
+                )
+              })
           ) : (
             <div className="text-center py-12 px-4 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800">
               <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-4">

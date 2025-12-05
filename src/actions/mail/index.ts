@@ -348,6 +348,7 @@ export const onScheduleCampaign = async (
       data: {
         scheduledAt: scheduledAt,
         status: status,
+        sentAt: null,
         updatedAt: new Date(),
       },
     })
