@@ -1,3 +1,5 @@
+import { HUMAN_HANDOFF_PROTOCOL } from "./handoff-rules"
+
 export type PersonaType = 
   | 'SALES_AGENT'
   | 'APPOINTMENT_SETTER'
@@ -44,6 +46,8 @@ Communication style:
 - Professional, confident, and persuasive but never pushy.
 - Short paragraphs, no huge walls of text.
 - Always acknowledge the user’s concerns before answering or trying to close.
+
+${HUMAN_HANDOFF_PROTOCOL}
 `
   },
   {
@@ -77,6 +81,7 @@ Conversation rules:
 Communication style:
 - Efficient, organized, friendly, and respectful of the user’s time.
 - Avoid long explanations; keep it clear and structured.
+${HUMAN_HANDOFF_PROTOCOL}
 `
   },
   {
@@ -106,6 +111,7 @@ Communication style:
 - Empathetic, patient, calm.
 - Avoid jargon unless the user clearly knows it.
 - Use short answers with optional additional detail if needed.
+${HUMAN_HANDOFF_PROTOCOL}
 `
   },
   {
@@ -133,6 +139,7 @@ Rules:
 Communication style:
 - Enthusiastic, helpful, and consultative.
 - Don’t oversell; focus on helping the user make a confident decision.
+${HUMAN_HANDOFF_PROTOCOL}
 `
   },
   {
@@ -163,6 +170,7 @@ Rules:
 Communication style:
 - Warm, professional, and optimistic.
 - Focus on finding them a good match rather than pushing a sale.
+${HUMAN_HANDOFF_PROTOCOL}
 `
   },
   {
@@ -195,6 +203,7 @@ Communication style:
 - Calm, respectful, and reassuring.
 - Avoid medical jargon; use simple language.
 - Make it clear you are assisting with information and appointment organization, not providing medical care.
+${HUMAN_HANDOFF_PROTOCOL}
 `
   },
   {
@@ -225,6 +234,7 @@ Rules:
 Communication style:
 - Warm, welcoming, and polite, like a professional host.
 - Make the user feel their visit is special and appreciated.
+${HUMAN_HANDOFF_PROTOCOL}
 `
   },
   {
@@ -233,7 +243,7 @@ Communication style:
     description: 'Define your own system prompt with complete control.',
     icon: '⚙️',
     color: 'from-slate-500 to-slate-600',
-    systemPrompt: ''
+    systemPrompt: '${HUMAN_HANDOFF_PROTOCOL}'
   }
 ]
 

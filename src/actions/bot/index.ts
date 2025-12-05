@@ -193,49 +193,54 @@ export const onAiChatBotAssistant = async (
         };
       }
 
-      const realtimeKeywords = [
-        'manager', 'human', 'real person', 'speak to someone',
-        'talk to someone', 'customer service', 'representatiive', 'agent', 'support', 'help me', 'assistance'
+      const HARD_HANDOFF_PHRASES = [
+        'talk to a human',
+        'talk to a real person',
+        'speak to a human',
+        'speak to a real person',
+        'real person please',
+        'human agent',
+        'live agent',
+        'human support',
+        'human representative',
       ];
 
-      const messagelower = message.toLowerCase();
-      const needsRealtime = realtimeKeywords.some(keyword =>
-        messagelower.includes(keyword)
+      const SOFT_HANDOFF_PHRASES = [
+        'can i talk to someone',
+        'can i talk to a person',
+        'can i talk to an agent',
+        'talk to someone from your team',
+      ];
+
+      const messageLower = message.toLowerCase();
+
+      const explicitHardRequest = HARD_HANDOFF_PHRASES.some(p =>
+        messageLower.includes(p)
       );
 
-      if (needsRealtime) {
+      const explicitSoftRequest = SOFT_HANDOFF_PHRASES.some(p =>
+        messageLower.includes(p)
+      );
+
+      if (explicitHardRequest) {
         await db.chatRoom.update({
-          where: {
-            id: room.id,
-          },
-          data: {
-            live: true,
-          },
+          where: { id: room.id },
+          data: { live: true },
         });
 
         const response = {
           role: 'assistant' as const,
-          content: 'I understand you\'d like to speak with a real person. Let me connect you with one of our team members. They\'ll be with you shortly!' 
+          content: `I understand you'd like to speak with a real person. Let me connect you with one of our team members. They'll be with you shortly!`,
         };
-        const userMsg = await onStoreConversations(room.id, message, 'user');
 
+        const userMsg = await onStoreConversations(room.id, message, 'user');
         const assistantMsg = await onStoreConversations(room.id, response.content, 'assistant');
 
         if (userMsg) {
-          await onRealTimeChat(
-            room.id,
-            userMsg.message,
-            userMsg.id,
-            'user'
-          );
+          await onRealTimeChat(room.id, userMsg.message, userMsg.id, 'user');
         }
         if (assistantMsg) {
-          await onRealTimeChat(
-            room.id,
-            assistantMsg.message,
-            assistantMsg.id,
-            'assistant'
-          );
+          await onRealTimeChat(room.id, assistantMsg.message, assistantMsg.id, 'assistant');
         }
 
         return {
@@ -244,6 +249,7 @@ export const onAiChatBotAssistant = async (
           chatRoom: room.id,
         };
       }
+
 
         const chatBotDomain = await db.domain.findUnique({
             where: {
@@ -437,7 +443,6 @@ export const onAiChatBotAssistant = async (
               
               Important Instructions:
               - When you ask a question from the qualification list, add the keyword (complete) at the end
-              - If customer requests human assistance or says something inappropriate, respond politely and add keyword (realtime)
               - For appointments, direct them to: http://localhost:3000/portal/${id}/appointment/${checkCustomer?.customer[0].id}
               - For purchases, direct them to: http://localhost:3000/portal/${id}/payment/${checkCustomer?.customer[0].id}
               
@@ -452,29 +457,40 @@ export const onAiChatBotAssistant = async (
           model: 'gpt-3.5-turbo',
         })
 
-        if (chatCompletion.choices[0].message.content?.includes('(realtime)')) {
-          await db.chatRoom.update({
-            where: { id: room.id },
-            data: { live: true },
-          });
+        if (chatCompletion.choices[0].message.content) {
+          const assistantResponse = chatCompletion.choices[0].message.content;
 
-          const response = {
-            role: 'assistant',
-            content: chatCompletion.choices[0].message.content.replace('(realtime)', ''),
-          };
+          const requireHandoff = assistantResponse.includes('(handoff:require)');
+          
+          const cleanResponse = assistantResponse
+            .replace(/\(handoff:none\)/gi, '')
+            .replace(/\(handoff:suggest\)/gi, '')
+            .replace(/\(handoff:require\)/gi, '')
+            .trim();
 
-          await onStoreConversations(
-            room.id as string,
-            response.content,
-            'assistant'
-          );
+          if (requireHandoff) {
+            await db.chatRoom.update({
+              where: { id: room.id },
+              data: { live: true },
+            });
 
-          return { 
-            response,
-            live: true,
-            chatRoom: room.id,
-           };
-        }
+            const response = {
+              role: 'assistant' as const,
+              content: cleanResponse,
+            };
+
+            await onStoreConversations(room.id, message, 'user');
+            await onStoreConversations(room.id, response.content, 'assistant');
+
+            await onRealTimeChat(room.id, message, room.id, 'user');
+            await onRealTimeChat(room.id, response.content, room.id, 'assistant');
+
+            return {
+              response,
+              live: true,
+              chatRoom: room.id,
+            };
+          }
 
         if (chat[chat.length - 1].content.includes('(complete)') && checkCustomer?.customer[0]?.id) {
           const customerId = checkCustomer.customer[0].id;
@@ -506,7 +522,7 @@ export const onAiChatBotAssistant = async (
 
         if (chatCompletion) {
           const generatedLink = extractURLfromString(
-            chatCompletion.choices[0].message.content as string
+            cleanResponse
           )
 
           if (generatedLink) {
@@ -531,7 +547,7 @@ export const onAiChatBotAssistant = async (
 
           const response = {
             role: 'assistant' as const,
-            content: chatCompletion.choices[0].message.content,
+            content: cleanResponse,
           }
 
           await onStoreConversations(
@@ -546,17 +562,20 @@ export const onAiChatBotAssistant = async (
           }
         }
       }
+    }
       console.log('No customer')
       const chatCompletion = await openai.chat.completions.create({
         messages: [
           {
             role: 'assistant',
-            content: `
-            You are a highly knowledgeable and experienced sales representative for a ${chatBotDomain.name} that offers a valuable product or service. Your goal is to have a natural, human-like conversation with the customer in order to understand their needs, provide relevant information, and ultimately guide them towards making a purchase or redirect them to a link if they havent provided all relevant information.
-            Right now you are talking to a customer for the first time. Start by giving them a warm welcome on behalf of ${chatBotDomain.name} and make them feel welcomed.
-
-            Your next task is lead the conversation naturally to get the customers email address. Be respectful and never break character
-
+            content: `${personaPrompt}
+              Current Situation:
+              - This is a NEW customer visiting ${chatBotDomain.name}
+              - Give them a warm welcome
+              - Your primary goal is to naturally collect their email address
+              - Stay in character and be professional
+              
+              Remember: Be respectful and never break character.
           `,
           },
           ...chat,
