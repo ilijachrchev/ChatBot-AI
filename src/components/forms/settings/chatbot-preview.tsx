@@ -9,16 +9,52 @@ type ChatbotPreviewProps = {
   welcomeMessage: string | null | undefined
   previewIcon: string | null
   chatbotColor?: string
+  chatbotTitle?: string | null
+  chatbotSubtitle?: string | null
+  userBubbleColor?: string | null
+  botBubbleColor?: string | null
+  userTextColor?: string | null
+  botTextColor?: string | null
+  buttonStyle?: string | null
+  showAvatars?: boolean | null
 }
 
 export const ChatbotPreview = ({ 
   icon, 
   welcomeMessage, 
   previewIcon,
-  chatbotColor = '#3B82F6' 
+  chatbotColor = '#3B82F6',
+  chatbotTitle,
+  chatbotSubtitle,
+  userBubbleColor,
+  botBubbleColor,
+  userTextColor,
+  botTextColor,
+  buttonStyle,
+  showAvatars,
 }: ChatbotPreviewProps) => {
   const displayIcon = previewIcon || icon
   const displayMessage = welcomeMessage || "Hey there, have a question? Text us here"
+  const displayTitle = chatbotTitle || "Sales Rep - AI"
+  const displaySubtitle = chatbotSubtitle || "SendWise-AI"
+  
+  const finalUserBubbleColor = userBubbleColor || chatbotColor || '#3B82F6'
+  const finalBotBubbleColor = botBubbleColor || '#F1F5F9'
+  const finalUserTextColor = userTextColor || '#FFFFFF'
+  const finalBotTextColor = botTextColor || '#1E293B'
+  const finalShowAvatars = showAvatars ?? true
+  
+  const getButtonClass = () => {
+    switch (buttonStyle) {
+      case 'SQUARE':
+        return 'rounded-none'
+      case 'PILL':
+        return 'rounded-full'
+      case 'ROUNDED':
+      default:
+        return 'rounded-lg'
+    }
+  }
 
   return (
     <div className="relative w-full max-w-md mx-auto">
@@ -58,13 +94,27 @@ export const ChatbotPreview = ({
 
               <div>
                 <h3 className="text-white font-semibold text-sm">
-                  Sales Rep - You
+                  {displayTitle}
                 </h3>
                 <p className="text-white/90 text-xs">
-                  Web Prodigies
+                  {displaySubtitle}
                 </p>
               </div>
             </div>
+
+            {finalShowAvatars && (
+              <div className="flex -space-x-2">
+                <div className="h-8 w-8 rounded-full border-2 border-white bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-xs font-bold">
+                  A
+                </div>
+                <div className="h-8 w-8 rounded-full border-2 border-white bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
+                  B
+                </div>
+                <div className="h-8 w-8 rounded-full border-2 border-white bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-white text-xs font-bold">
+                  C
+                </div>
+              </div>
+            )}
 
             <button className="text-white hover:bg-white/20 rounded-lg p-1.5 transition-colors">
               <Minimize2 className="h-4 w-4" />
@@ -91,8 +141,15 @@ export const ChatbotPreview = ({
               )}
             </div>
             <div className="flex-1">
-              <div className="bg-white dark:bg-slate-800 rounded-2xl rounded-tl-sm p-3 shadow-sm border border-slate-200 dark:border-slate-700 max-w-[280px]">
-                <p className="text-sm text-slate-900 dark:text-white">
+              <div 
+                className={cn('rounded-2xl rounded-tl-sm p-3 shadow-sm border max-w-[280px]', getButtonClass())}
+                style={{ 
+                  backgroundColor: finalBotBubbleColor,
+                  color: finalBotTextColor,
+                  borderColor: `${finalBotBubbleColor}20`
+                }}
+              >
+                <p className="text-sm">
                   {displayMessage}
                 </p>
               </div>
@@ -105,10 +162,13 @@ export const ChatbotPreview = ({
           <div className="flex items-start gap-2 justify-end">
             <div className="flex-1">
               <div 
-                className="rounded-2xl rounded-tr-sm p-3 shadow-sm max-w-[280px] ml-auto"
-                style={{ background: `linear-gradient(135deg, ${chatbotColor} 0%, ${chatbotColor}dd 100%)` }}
+                className={cn('rounded-2xl rounded-tr-sm p-3 shadow-sm max-w-[280px] ml-auto', getButtonClass())}
+                style={{ 
+                  backgroundColor: finalUserBubbleColor,
+                  color: finalUserTextColor,
+                }}
               >
-                <p className="text-sm text-white">
+                <p className="text-sm">
                   I want this
                 </p>
               </div>
@@ -124,15 +184,22 @@ export const ChatbotPreview = ({
             <input
               type="text"
               placeholder="Type your message..."
-              className="flex-1 px-4 py-2 rounded-full border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 text-slate-900 dark:text-white placeholder:text-slate-400"
+              className={cn(
+                'flex-1 px-4 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 text-slate-900 dark:text-white placeholder:text-slate-400',
+                getButtonClass()
+              )}
               style={{
                 '--tw-ring-color': chatbotColor,
-            } as React.CSSProperties}
+              } as React.CSSProperties}
               disabled
             />
             <button 
-              className="h-10 w-10 rounded-full flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50"
+              className={cn(
+                'h-10 w-10 flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50',
+                getButtonClass()
+              )}
               style={{ background: `linear-gradient(135deg, ${chatbotColor} 0%, ${chatbotColor}dd 100%)` }}
+              disabled
             >
               <Send className="h-4 w-4" />
             </button>

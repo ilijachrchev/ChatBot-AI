@@ -52,6 +52,14 @@ type Props = {
   removeImage: () => void
   botIcon?: string
   plan?: 'STANDARD' | 'PRO' | 'ULTIMATE'
+  chatbotTitle?: string | null
+  chatbotSubtitle?: string | null
+  userBubbleColor?: string | null
+  botBubbleColor?: string | null
+  userTextColor?: string | null
+  botTextColor?: string | null
+  buttonStyle?: string | null
+  showAvatars?: boolean | null
 }
 
 export const BotWindow = forwardRef<HTMLDivElement, Props>(
@@ -72,11 +80,36 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       onImageChange,
       removeImage,
       botIcon,
-      plan = 'STANDARD'
+      plan = 'STANDARD',
+      chatbotTitle,
+      chatbotSubtitle,
+      userBubbleColor,
+      botBubbleColor,
+      userTextColor,
+      botTextColor,
+      buttonStyle,
+      showAvatars,
     },
     ref
   ) => {
     const showPoweredBy = plan === 'STANDARD'
+
+    const getButtonClass = () => {
+      switch (buttonStyle) {
+        case 'SQUARE':
+          return 'rounded-none'
+        case 'PILL':
+          return 'rounded-full'
+        case 'ROUNDED':
+        default:
+          return 'rounded-lg'
+      }
+    }
+
+    const displayTitle = chatbotTitle || 'Sales Rep - SendWise-AI'
+    const displaySubtitle = chatbotSubtitle || (domainName ?? '').replace(/\.com$/, '') || 'ChatBot'
+    const finalShowAvatars = showAvatars ?? true
+
     return (
       <div className="h-[670px] w-[450px] flex flex-col bg-white rounded-xl mr-[80px] border-[1px] overflow-hidden">
         <div className="flex justify-between px-4 pt-4 pb-4 items-center"
@@ -106,9 +139,9 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
             )}
             <div className="flex items-start flex-col">
               <h3 className="text-lg font-bold leading-none">
-                Sales Rep - SendWise-AI
+                {displayTitle}
               </h3>
-              <p className="text-sm">{(domainName ?? '').replace(/\.com$/, '') || 'ChatBot'}</p>
+              <p className="text-sm">{displaySubtitle}</p>
               {realtimeMode?.chatroom && (
                 <RealTimeMode
                   setChats={setChat}
@@ -118,14 +151,16 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               )}
             </div>
           </div>
-          <div className="relative w-16 h-16">
-            <Image
-              src="https://ucarecdn.com/019dd17d-b69b-4dea-a16b-60e0f25de1e9/propuser.png"
-              fill
-              alt="users"
-              objectFit="contain"
-            />
-          </div>
+          {finalShowAvatars && (
+            <div className="relative w-16 h-16">
+              <Image
+                src="https://ucarecdn.com/019dd17d-b69b-4dea-a16b-60e0f25de1e9/propuser.png"
+                fill
+                alt="users"
+                objectFit="contain"
+              />
+            </div>
+          )}
         </div>
         <TabsMenu
           triggers={BOT_TABS_MENU}
@@ -143,6 +178,11 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                     key={key}
                     message={chat}
                     botIcon={botIcon}
+                    userBubbleColor={userBubbleColor}
+                    botBubbleColor={botBubbleColor}
+                    userTextColor={userTextColor}
+                    botTextColor={botTextColor}
+                    buttonStyle={buttonStyle}
                   />
                 ))}
                 {onResponding && <Responding botIcon={botIcon} />}
@@ -185,7 +225,8 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                   
                   <Button
                     type="submit"
-                    className="h-10"
+                    className={`h-10 ${getButtonClass()}`}
+                    style={{ background: theme || '#7C3AED' }}
                   >
                     <Send />
                   </Button>

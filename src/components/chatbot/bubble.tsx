@@ -11,15 +11,45 @@ type Props = {
     }
     createdAt?: Date
     botIcon?: string
+    userBubbleColor?: string | null
+    botBubbleColor?: string | null
+    userTextColor?: string | null
+    botTextColor?: string | null
+    buttonStyle?: string | null
 }
 
 
 
-const Bubble = ({ message, createdAt, botIcon }: Props) => {
+const Bubble = ({  message, 
+    createdAt, 
+    botIcon,
+    userBubbleColor,
+    botBubbleColor,
+    userTextColor,
+    botTextColor,
+    buttonStyle,
+  }: Props) => {
     let d = new Date()
 
     const isImageUrl = message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i) || 
                         message.content.includes('/uploads/')
+
+    const getButtonClass = () => {
+      switch (buttonStyle) {
+        case 'SQUARE':
+          return 'rounded-none'
+        case 'PILL':
+          return 'rounded-full'
+        case 'ROUNDED':
+        default:
+          return 'rounded-lg'
+      }
+    }
+
+    const finalUserBubbleColor = userBubbleColor || '#3B82F6'
+    const finalBotBubbleColor = botBubbleColor || '#F1F5F9'
+    const finalUserTextColor = userTextColor || '#FFFFFF'
+    const finalBotTextColor = botTextColor || '#1E293B'
 
    return (
     <div className={cn(

@@ -15,6 +15,14 @@ export async function GET(
         welcomeMessage: true,
         icon: true,
         backgroundColor: true,
+        chatbotTitle: true,
+        chatbotSubtitle: true,
+        userBubbleColor: true,
+        botBubbleColor: true,
+        userTextColor: true,
+        botTextColor: true,
+        buttonStyle: true,
+        showAvatars: true,
       },
     })
 

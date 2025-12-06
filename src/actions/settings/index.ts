@@ -224,6 +224,14 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 backgroundColor: true,
                 persona: true,
                 customPrompt: true,
+                chatbotTitle: true,
+                chatbotSubtitle: true,
+                userBubbleColor: true,
+                botBubbleColor: true,
+                userTextColor: true,
+                botTextColor: true,
+                buttonStyle: true,
+                showAvatars: true,
               },
             },
           },
@@ -729,6 +737,45 @@ export const onUpdateChatbotPersona = async (
     }
   } catch (error) {
     console.error('Error updating persona:', error)
+    return {
+      status: 500,
+      message: 'Internal server error',
+    }
+  }
+}
+
+export const onUpdateChatbotCustomization = async (
+  chatBotId: string,
+  customization: {
+    chatbotTitle?: string
+    chatbotSubtitle?: string
+    userBubbleColor?: string
+    botBubbleColor?: string
+    userTextColor?: string
+    botTextColor?: string
+    buttonStyle?: string
+    showAvatars?: boolean
+  }
+) => {
+  try {
+    const chatbot = await client.chatBot.update({
+      where: { id: chatBotId },
+      data: customization,
+    })
+
+    if (chatbot) {
+      return {
+        status: 200,
+        message: 'Chatbot customization updated successfully',
+      }
+    }
+
+    return {
+      status: 400,
+      message: 'Failed to update customization',
+    }
+  } catch (error) {
+    console.error('Error updating customization:', error)
     return {
       status: 500,
       message: 'Internal server error',

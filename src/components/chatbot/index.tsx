@@ -57,6 +57,14 @@ const AiChatBot = (props: Props) => {
                 removeImage={removeImage}
                 botIcon={botIcon}
                 plan={plan}
+                chatbotTitle={currentBot?.chatBot?.chatbotTitle}
+                chatbotSubtitle={currentBot?.chatBot?.chatbotSubtitle}
+                userBubbleColor={currentBot?.chatBot?.userBubbleColor}
+                botBubbleColor={currentBot?.chatBot?.botBubbleColor}
+                userTextColor={currentBot?.chatBot?.userTextColor}
+                botTextColor={currentBot?.chatBot?.botTextColor}
+                buttonStyle={currentBot?.chatBot?.buttonStyle}
+                showAvatars={currentBot?.chatBot?.showAvatars}
             />
         )}
     <div

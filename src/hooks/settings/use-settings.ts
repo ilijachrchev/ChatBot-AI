@@ -1,5 +1,5 @@
 "use client"
-import { onChatBotImageUpdate, onUpdateChatbotColor, onCreateFilterQuestions, onCreateHelpDeskQuestion, onCreateNewDomainProduct, onDeleteUserDomain, onGetAllFilterQuestions, onGetAllHelpDeskQuestions, onUpdateDomain, onUpdatePassword, onUpdateWelcomeMessage, onUpdateChatbotPersona } from '@/actions/settings'
+import { onChatBotImageUpdate, onUpdateChatbotColor, onCreateFilterQuestions, onCreateHelpDeskQuestion, onCreateNewDomainProduct, onDeleteUserDomain, onGetAllFilterQuestions, onGetAllHelpDeskQuestions, onUpdateDomain, onUpdatePassword, onUpdateWelcomeMessage, onUpdateChatbotPersona, onUpdateChatbotCustomization } from '@/actions/settings'
 import { ChangePasswordProps, ChangePasswordSchema } from '@/schemas/auth.schema'
 import { AddProductProps, AddProductSchema, DomainSettingsProps, DomainSettingsSchema, FilterQuestionsProps, FilterQuestionsSchema, HelpDeskQuestionsProps, HelpDeskQuestionsSchema } from '@/schemas/settings.schema'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -68,11 +68,28 @@ export const useSettings = (id: string, chatBotId: string) => {
 
     useEffect(() => {
         register('chatbotColor')
+        register('chatbotTitle')
+        register('chatbotSubtitle')
+        register('userBubbleColor')
+        register('botBubbleColor')
+        register('userTextColor')
+        register('botTextColor')
+        register('buttonStyle')
+        register('showAvatars')
     }, [register])
     
     const watchedIcon = watch('image')
     const watchedWelcomeMessage = watch('welcomeMessage')
     const watchedColor = watch('chatbotColor')
+    const watchedTitle = watch('chatbotTitle')
+    const watchedSubtitle = watch('chatbotSubtitle')
+    const watchedUserBubbleColor = watch('userBubbleColor')
+    const watchedBotBubbleColor = watch('botBubbleColor')
+    const watchedUserTextColor = watch('userTextColor')
+    const watchedBotTextColor = watch('botTextColor')
+    const watchedButtonStyle = watch('buttonStyle')
+    const watchedShowAvatars = watch('showAvatars')
+
     const [previewIcon, setPreviewIcon] = useState<string | null>(null)
 
     useEffect(() => {
@@ -130,6 +147,35 @@ export const useSettings = (id: string, chatBotId: string) => {
                 }
             }
         }
+        if (
+            values.chatbotTitle ||
+            values.chatbotSubtitle ||
+            values.userBubbleColor ||
+            values.botBubbleColor ||
+            values.userTextColor ||
+            values.botTextColor ||
+            values.buttonStyle ||
+            values.showAvatars !== undefined
+        ) {
+            const customization = await onUpdateChatbotCustomization(chatBotId, {
+                chatbotTitle: values.chatbotTitle,
+                chatbotSubtitle: values.chatbotSubtitle,
+                userBubbleColor: values.userBubbleColor,
+                botBubbleColor: values.botBubbleColor,
+                userTextColor: values.userTextColor,
+                botTextColor: values.botTextColor,
+                buttonStyle: values.buttonStyle,
+                showAvatars: values.showAvatars,
+            })
+
+            if (customization) {
+                if (customization.status === 200) {
+                    toast.success(customization.message)
+                } else {
+                    toast.error(customization.message)
+                }
+            }
+        }
         
         reset()
         router.refresh()
@@ -157,6 +203,14 @@ export const useSettings = (id: string, chatBotId: string) => {
         previewIcon,
         watchedWelcomeMessage,
         watchedColor,
+        watchedTitle,
+        watchedSubtitle,
+        watchedUserBubbleColor,
+        watchedBotBubbleColor,
+        watchedUserTextColor,
+        watchedBotTextColor,
+        watchedButtonStyle,
+        watchedShowAvatars,
         setValue,
     }
 }

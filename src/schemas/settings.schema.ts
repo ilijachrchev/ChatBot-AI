@@ -56,6 +56,14 @@ export const DomainSettingsSchema = z
       .optional()
       .or(z.literal('').transform(() => undefined)),
     chatbotColor: z.string().optional(),
+    chatbotTitle: z.string().optional(),
+    chatbotSubtitle: z.string().optional(),
+    userBubbleColor: z.string().optional(),
+    botBubbleColor: z.string().optional(),
+    userTextColor: z.string().optional(),
+    botTextColor: z.string().optional(),
+    buttonStyle: z.enum(['ROUNDED', 'SQUARE', 'PILL']).optional(),
+    showAvatars: z.boolean().optional(),
 
   }).refine(
     (schema) => {
