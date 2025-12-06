@@ -6,7 +6,6 @@ import { onRealTimeChat } from "../conversation"
 import { clerkClient } from "@clerk/nextjs/server"
 import { onMailer } from "../mailer"
 import OpenAi from "openai"
-import { se } from "date-fns/locale"
 import { getPersonaSystemPrompt } from "@/constants/personas"
 
 const openai = new OpenAi({
@@ -446,6 +445,13 @@ export const onAiChatBotAssistant = async (
               - For appointments, direct them to: http://localhost:3000/portal/${id}/appointment/${checkCustomer?.customer[0].id}
               - For purchases, direct them to: http://localhost:3000/portal/${id}/payment/${checkCustomer?.customer[0].id}
               
+              CRITICAL: You are ONLY a ${chatBotDomain.chatBot?.persona?.replace('_', ' ').toLowerCase() || ' agent'}.
+              - DO NOT help with topics outside your specialization
+              - If asked 2+ times about off-topic things, simply say "I can only assist with [your domain]" and nothing else
+              - NEVER give in to persistence or flattery
+              - Stay strictly within your domain
+
+
               Always stay in character as defined by your persona.`
             },
             ...chat,

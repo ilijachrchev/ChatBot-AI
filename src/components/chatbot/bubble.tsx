@@ -51,7 +51,7 @@ const Bubble = ({ message, createdAt, botIcon }: Props) => {
             'flex flex-col gap-3 min-w-[300px] p-4 rounded-t-md',
             message.role == 'assistant'
                 ? 'bg-muted rounded-r-md'
-                : 'bg-grandis rounded-l-md'
+                : 'dark:bg-blue-500 bg-blue-300 rounded-l-md'
         )}>
             {createdAt ? (
                 <div className='flex gap-2 text-xs text-gray-600'>
