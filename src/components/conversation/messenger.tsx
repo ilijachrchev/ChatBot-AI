@@ -102,7 +102,7 @@ const Messenger = (props: Props) => {
           <div 
             ref={messageWindowRef}
             className='w-full flex-1 h-0 flex flex-col gap-3
-             pl-5 py-5 chat-window overflow-y-auto'
+             px-5 py-5 overflow-y-auto'
             >
               {chats.length ? (
                 chats.map((chat, index) => (

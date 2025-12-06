@@ -63,8 +63,18 @@ model ChatBot {
   domainId       String? @unique @db.Uuid
   backgroundColor String? @default("#3B82F6")
 
-  persona String @default("SALES_AGENT")
+  persona String @default("SendWise-Agent")
   customPrompt String? @db.Text
+
+  chatbotTitle    String? @default("SendWise-AI")
+  chatbotSubtitle String?
+  userBubbleColor String? @default("#3B82F6")
+  botBubbleColor  String? @default("#F1F5F9")
+  userTextColor   String? @default("#FFFFFF")
+  botTextColor    String? @default("#1E293B")
+  buttonStyle     String? @default("ROUNDED") // ROUNDED, SQUARE, PILL
+  showAvatars     Boolean @default(true)
+
 }
 
 model Billings {

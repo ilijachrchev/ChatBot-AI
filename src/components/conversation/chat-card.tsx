@@ -28,34 +28,39 @@ const ChatCard = ({
         onClick={onChat}
         className='rounded-none border-r-0 hover:bg-muted cursor-pointer transition duration-150 ease-in-out'
     >
-        <CardContent className='py-4 flex gap-3'>
-            <div>
-                <Avatar>
+        <CardContent className='py-4 flex gap-3 px-3'>
+            <div className='flex-shrink-0'>
+                <Avatar className='w-10 h-10'>
                     <AvatarFallback className='bg-muted'>
-                        <User />
+                        <User className='w-5 h-5' />
                     </AvatarFallback>
                 </Avatar>
             </div>
-            <div className='flex justify-between w-full'>
-                <div>
-                    <div className='flex gap-5 items-center'>
-                        <CardDescription className='font-bold leading-none text-gray-600'>
-                            {title}
-                        </CardDescription>
-                        {urgent && !seen && <UrgentIcon />}
-                    </div>
-                    <CardDescription>
-                        {description
-                        ? description.substring(0, 20) + '...'
+
+            <div className='flex-1 min-w-0 flex flex-col gap-1'>
+                <div className='flex items-center gap-2'>
+                    <CardDescription className='font-bold leading-none text-gray-600 dark:text-gray-300 truncate'>
+                        {title}
+                    </CardDescription>
+                    {urgent && !seen && (
+                        <div className='flex-shrink-0'>
+                            <UrgentIcon />
+                        </div>
+                    )}
+                </div>
+
+                <CardDescription className='text-sm text-gray-500 dark:text-gray-400 truncate'>
+                    {description
+                        ? description.substring(0, 35) + (description.length > 35 ? '...' : '')
                         : 'This chatroom is empty' 
-                        }
-                    </CardDescription>
-                </div>
-                <div className='w-[100px] flex justify-end'>
-                    <CardDescription className='text-xs'>
-                        {createdAt ? messageSentAt : ''}
-                    </CardDescription>
-                </div>
+                    }
+                </CardDescription>
+            </div>
+
+            <div className='flex-shrink-0 w-[60px] flex items-start justify-end'>
+                <CardDescription className='text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap'>
+                    {createdAt ? messageSentAt : ''}
+                </CardDescription>
             </div>
         </CardContent>
     </Card>
