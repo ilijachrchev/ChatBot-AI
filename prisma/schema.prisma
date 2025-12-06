@@ -72,7 +72,8 @@ model ChatBot {
   botBubbleColor  String? @default("#F1F5F9")
   userTextColor   String? @default("#FFFFFF")
   botTextColor    String? @default("#1E293B")
-  buttonStyle     String? @default("ROUNDED") // ROUNDED, SQUARE, PILL
+  buttonStyle     String? @default("ROUNDED")
+  bubbleStyle     String? @default("ROUNDED")
   showAvatars     Boolean @default(true)
 
 }

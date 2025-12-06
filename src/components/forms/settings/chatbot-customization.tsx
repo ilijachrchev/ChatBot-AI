@@ -18,12 +18,19 @@ type Props = {
     userTextColor?: string | null
     botTextColor?: string | null
     buttonStyle?: string | null
+    bubbleStyle?: string | null
     showAvatars?: boolean | null
   }
 }
 
 const BUTTON_STYLES = [
   { id: 'ROUNDED', name: 'Rounded', preview: 'rounded-lg' },
+  { id: 'SQUARE', name: 'Square', preview: 'rounded-none' },
+  { id: 'PILL', name: 'Pill', preview: 'rounded-full' },
+]
+
+const BUBBLE_STYLES = [
+  { id: 'ROUNDED', name: 'Rounded', preview: 'rounded-2xl' },
   { id: 'SQUARE', name: 'Square', preview: 'rounded-none' },
   { id: 'PILL', name: 'Pill', preview: 'rounded-full' },
 ]
@@ -37,6 +44,9 @@ export const ChatbotCustomization = ({
   const [selectedButtonStyle, setSelectedButtonStyle] = React.useState(
     currentValues?.buttonStyle || 'ROUNDED'
   )
+  const [selectedBubbleStyle, setSelectedBubbleStyle] = React.useState(
+    currentValues?.bubbleStyle || 'ROUNDED'
+  )
   const [showAvatars, setShowAvatars] = React.useState(
     currentValues?.showAvatars ?? true
   )
@@ -49,6 +59,7 @@ export const ChatbotCustomization = ({
     register('userTextColor')
     register('botTextColor')
     register('buttonStyle')
+    register('bubbleStyle')
     register('showAvatars')
   }, [register])
 
@@ -56,7 +67,10 @@ export const ChatbotCustomization = ({
     setSelectedButtonStyle(style)
     setValue('buttonStyle', style, { shouldDirty: true })
   }
-
+  const handleBubbleStyleChange = (style: string) => {
+    setSelectedBubbleStyle(style)
+    setValue('bubbleStyle', style, { shouldDirty: true })
+  }
   const handleAvatarToggle = (checked: boolean) => {
     setShowAvatars(checked)
     setValue('showAvatars', checked, { shouldDirty: true })
@@ -138,6 +152,7 @@ export const ChatbotCustomization = ({
                 id="userBubbleColor"
                 {...register('userBubbleColor')}
                 defaultValue={currentValues?.userBubbleColor || '#3B82F6'}
+                onChange={(e) => setValue('userBubbleColor', e.target.value, { shouldDirty: true })}
                 className="h-10 w-full rounded-md border cursor-pointer"
               />
             </div>
@@ -153,6 +168,7 @@ export const ChatbotCustomization = ({
                 id="userTextColor"
                 {...register('userTextColor')}
                 defaultValue={currentValues?.userTextColor || '#FFFFFF'}
+                onChange={(e) => setValue('userTextColor', e.target.value, { shouldDirty: true })}
                 className="h-10 w-full rounded-md border cursor-pointer"
               />
             </div>
@@ -168,6 +184,7 @@ export const ChatbotCustomization = ({
                 id="botBubbleColor"
                 {...register('botBubbleColor')}
                 defaultValue={currentValues?.botBubbleColor || '#F1F5F9'}
+                onChange={(e) => setValue('botBubbleColor', e.target.value, { shouldDirty: true })}
                 className="h-10 w-full rounded-md border cursor-pointer"
               />
             </div>
@@ -183,10 +200,46 @@ export const ChatbotCustomization = ({
                 id="botTextColor"
                 {...register('botTextColor')}
                 defaultValue={currentValues?.botTextColor || '#1E293B'}
+                onChange={(e) => setValue('botTextColor', e.target.value, { shouldDirty: true })}
                 className="h-10 w-full rounded-md border cursor-pointer"
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Layout className="h-4 w-4 text-slate-600" />
+          <h4 className="font-semibold text-slate-900 dark:text-white">
+            Message Bubble Style
+          </h4>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          {BUBBLE_STYLES.map((style) => (
+            <button
+              key={style.id}
+              type="button"
+              onClick={() => handleBubbleStyleChange(style.id)}
+              className={cn(
+                'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
+                selectedBubbleStyle === style.id
+                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-purple-300'
+              )}
+            >
+              <div className="flex flex-col items-center gap-2">
+                <div className="flex gap-1">
+                  <div className={cn('w-12 h-8 bg-blue-500', style.preview)} />
+                  <div className={cn('w-12 h-8 bg-gray-300', style.preview)} />
+                </div>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                  {style.name}
+                </span>
+              </div>
+            </button>
+          ))}
         </div>
       </div>
 

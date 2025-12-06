@@ -65,7 +65,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
 
   return (
     <form className='flex flex-col gap-6 pb-10 px-4 md:px-6' onSubmit={onUpdateSettings}>
-      {/* Domain & Embed Code Row */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
           <div className='flex items-center gap-3 mb-4'>
@@ -106,7 +105,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
         </div>
       </div>
 
-      {/* AI Persona Section */}
       <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
         <PersonaSelector
           chatBotId={chatBot?.id || ''}
@@ -115,7 +113,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
         />
       </div>
 
-      {/* ✅ CONSOLIDATED: All Chatbot Customization in One Box */}
       <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
         <div className='flex items-center justify-between mb-6'>
           <div className='flex items-center gap-3'>
@@ -141,11 +138,8 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
           )}
         </div>
 
-        {/* Two Column Layout: Settings on Left, Preview on Right */}
         <div className='grid grid-cols-1 xl:grid-cols-[1fr,400px] gap-8'>
-          {/* Left Column: All Settings */}
           <div className='space-y-8'>
-            {/* Basic Settings */}
             <div className='space-y-4'>
               <h4 className='font-semibold text-slate-900 dark:text-white flex items-center gap-2'>
                 <MessageSquare className='h-4 w-4' />
@@ -172,7 +166,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
 
             <Separator />
 
-            {/* Advanced Customization */}
             <ChatbotCustomization
               register={register}
               errors={errors}
@@ -190,7 +183,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
             />
           </div>
 
-          {/* Right Column: Live Preview */}
           <div className='xl:sticky xl:top-6 xl:self-start'>
             <ChatbotPreview
               icon={chatBot?.icon}
@@ -210,7 +202,6 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
         </div>
       </div>
 
-      {/* ✅ Single Save Changes Button for Everything */}
       <div className='flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-slate-200 dark:border-slate-800'>
         <Button 
           onClick={onDeleteDomain}
