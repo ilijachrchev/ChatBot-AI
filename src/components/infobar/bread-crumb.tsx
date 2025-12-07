@@ -6,6 +6,7 @@ import { Switch } from '@radix-ui/react-switch'
 import { Activity, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { usePathname } from 'next/navigation'
+import Image from 'next/image'
 
 type PageKey =
   | 'conversation'
@@ -16,42 +17,42 @@ type PageKey =
   | 'integrations'
   | string
 
-const LABELS: Record<string, { title: string; subtitle: string; icon?:React.ReactNode }> = {
+const LABELS: Record<string, { title: string; subtitle: string; icon?: string }> = {
   conversation: {
     title: 'Conversations',
     subtitle: 'View, search, and reply to customer chats.',
-    icon: '💬',
+    icon: '/images/chat.png',
   },
   settings: {
     title: 'Settings',
     subtitle: 'Manage your account settings, preferences, and integrations.',
-    icon: '⚙️',
+    icon: '/images/settings.png',
   },
   dashboard: {
     title: 'Dashboard',
     subtitle: 'A detailed overview of your metrics, usage, customers, and more.',
-    icon: '📊',
+    icon: '/images/computer-screen.png',
   },
   appointment: {
     title: 'Appointments',
     subtitle: 'View and edit all your appointments.',
-    icon: '📅',
+    icon: '/images/online-booking.png',
   },
   'email-marketing': {
     title: 'Email Marketing',
     subtitle: 'Send bulk emails to your customers.',
-    icon: '📧',
+    icon: '/images/digital-marketing.png',
   },
   integrations: {
     title: 'Integrations',
     subtitle: 'Connect third-party applications into SendWise-AI.',
-    icon: '🔌',
+    icon: '/images/integration.png',
   },
   default: {
     title: 'Conversations',
     subtitle:
       'Modify domain settings, change chatbot options, enter sales questions, and train your bot to do what you want it to!',
-      icon: '💬',
+      icon: '/images/chat.png',
   },
 }
 
@@ -69,6 +70,16 @@ const BreadCrumb = () => {
   const isDomainPage = pathname?.startsWith('/settings/') && pathname.split('/').length >= 3
   const domainName = isDomainPage ? pathname.split('/')[2] : null
 
+  const getCurrentPage = (): PageKey => {
+    if (pathname?.includes('/integrations')) return 'integrations'
+    if (pathname?.includes('/email-marketing')) return 'email-marketing'
+    if (pathname?.includes('/appointment')) return 'appointment'
+    if (pathname?.includes('/conversation')) return 'conversation'
+    if (pathname?.includes('/settings')) return 'settings'
+    if (pathname?.includes('/dashboard')) return 'dashboard'
+    return page || 'default'
+  }
+
   let title, subtitle, icon
   
   if (isDomainPage && domainName) {
@@ -78,9 +89,9 @@ const BreadCrumb = () => {
     
     title = displayDomain
     subtitle = 'Configure domain settings, customize chatbot appearance, and manage your bot behavior.'
-    icon = '🌐'
+    icon = '/images/domain.png'
   } else {
-    const key: PageKey = page || 'default'
+    const key = getCurrentPage() 
     const labels = LABELS[key] ?? LABELS.default
     title = labels.title
     subtitle = labels.subtitle
@@ -96,7 +107,14 @@ const BreadCrumb = () => {
               bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900
               border border-blue-200 dark:border-blue-800
             '>
-              <span className='text-xl md:text-2xl'>{icon}</span>
+              <div className='relative w-full h-full'>
+                <Image
+                  src={icon}
+                  alt={title}
+                  fill
+                  className='object-contain'
+                />
+              </div>
             </div>
           )}
 

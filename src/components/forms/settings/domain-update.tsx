@@ -20,6 +20,7 @@ export const DomainUpdate = ({ name, register, errors }: DomainUpdateProps) => {
         type="text"
         inputType="input"
         placeholder={name}
+        
       />
     </div>
   )

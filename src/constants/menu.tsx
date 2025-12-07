@@ -29,7 +29,7 @@ export const SIDE_BAR_MENU: SIDE_BAR_MENU_PROPS[] = [
   {
     label: 'Integrations',
     icon: <IntegrationsIcon />,
-    path: 'integration',
+    path: 'integrations',
   },
   {
     label: 'Settings',
