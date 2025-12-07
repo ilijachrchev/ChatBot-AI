@@ -184,6 +184,7 @@ export async function verifyDomainOwnership(
   console.log(`🔍 Starting verification for domain: ${domain}`)
   
   console.log('📡 Checking DNS TXT record...')
+  console.log("Resolving TXT for:", `"${domain}"`);
   const dnsResult = await verifyDnsTxt(domain, token)
   if (dnsResult.success) {
     console.log('✅ DNS verification successful')

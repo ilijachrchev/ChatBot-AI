@@ -71,14 +71,12 @@ const CodeSnippet = ({ id }: Props) => {
         message="Copy and paste this code snippet into the header tag of your website"
       />
 
-      {/* MOBILE: no script, just info text */}
       <div className="w-full sm:hidden rounded-lg bg-cream px-4 py-3 text-xs text-slate-700">
         You don&apos;t need the embed script on mobile.
         <br />
         Open this page on your laptop or desktop to copy the chatbot embed code.
       </div>
 
-      {/* DESKTOP / TABLET: full script in a scrollable box */}
       <div className="hidden sm:block w-full">
         <div className="relative rounded-lg bg-cream px-4 py-4">
           <Copy

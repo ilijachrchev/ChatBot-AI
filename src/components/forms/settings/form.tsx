@@ -22,6 +22,7 @@ import { PersonaSelector } from '@/components/settings/persona-selector'
 import { ChatbotCustomization } from './chatbot-customization'
 import { Separator } from '@/components/ui/separator'
 import { VerificationBanner } from '@/components/domain/verification-banner'
+import { PlanLockedOverlay } from '@/components/plan/plan-locked-overlay' 
 import { cn } from '@/lib/utils'
 
 const WelcomeMessage = dynamic(
@@ -88,6 +89,8 @@ const SettingsForm = ({
     setValue,
   } = useSettings(id, chatBot?.id || '')
 
+  const isAppearanceLocked = plan === 'STANDARD'
+
   return (
     <form
       className="flex flex-col gap-6 px-4 md:px-6"
@@ -150,115 +153,127 @@ const SettingsForm = ({
           />
         </div>
 
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-white">
-                <Palette className="h-5 w-5" />
+        <div className="relative min-h-[500px]"> 
+          <div className={cn(
+            "rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6",
+            isAppearanceLocked && 'opacity-40 blur-[1px] pointer-events-none' // ✅ Add blur if locked
+          )}>
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-white">
+                  <Palette className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                    Chatbot Appearance & Customization
+                  </h3>
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
+                    Customize your chatbot&apos;s look, feel, and behavior
+                  </p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-lg font-bold text-slate-950 dark:text-white">
-                  Chatbot Appearance & Customization
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Customize your chatbot&apos;s look, feel, and behavior
-                </p>
-              </div>
+
+              {plan !== 'STANDARD' && (
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950 dark:to-amber-900 border border-amber-200 dark:border-amber-800">
+                  <span className="text-xs font-bold text-amber-900 dark:text-amber-100">
+                    ✨ PREMIUM
+                  </span>
+                </div>
+              )}
             </div>
 
-            {plan !== 'STANDARD' && (
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950 dark:to-amber-900 border border-amber-200 dark:border-amber-800">
-                <span className="text-xs font-bold text-amber-900 dark:text-amber-100">
-                  ✨ PREMIUM
-                </span>
-              </div>
-            )}
-          </div>
+            <div className="grid grid-cols-1 xl:grid-cols-[1fr,400px] gap-8">
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <h4 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4" />
+                    Basic Settings
+                  </h4>
 
-          <div className="grid grid-cols-1 xl:grid-cols-[1fr,400px] gap-8">
-            <div className="space-y-8">
-              <div className="space-y-4">
-                <h4 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                  <MessageSquare className="h-4 w-4" />
-                  Basic Settings
-                </h4>
+                  <EditChatbotIcon
+                    register={register}
+                    errors={errors}
+                    chatBot={chatBot}
+                  />
 
-                <EditChatbotIcon
+                  <WelcomeMessage
+                    message={chatBot?.welcomeMessage}
+                    register={register}
+                    errors={errors}
+                  />
+
+                  <ColorPicker
+                    defaultColor={chatBot?.backgroundColor || '#3B82F6'}
+                    setValue={setValue}
+                  />
+                </div>
+
+                <Separator />
+
+                <ChatbotCustomization
                   register={register}
                   errors={errors}
-                  chatBot={chatBot}
-                />
-
-                <WelcomeMessage
-                  message={chatBot?.welcomeMessage}
-                  register={register}
-                  errors={errors}
-                />
-
-                <ColorPicker
-                  defaultColor={chatBot?.backgroundColor || '#3B82F6'}
                   setValue={setValue}
+                  currentValues={{
+                    chatbotTitle: chatBot?.chatbotTitle,
+                    chatbotSubtitle: chatBot?.chatbotSubtitle,
+                    userBubbleColor: chatBot?.userBubbleColor,
+                    botBubbleColor: chatBot?.botBubbleColor,
+                    userTextColor: chatBot?.userTextColor,
+                    botTextColor: chatBot?.botTextColor,
+                    buttonStyle: chatBot?.buttonStyle,
+                    showAvatars: chatBot?.showAvatars,
+                  }}
                 />
               </div>
 
-              <Separator />
-
-              <ChatbotCustomization
-                register={register}
-                errors={errors}
-                setValue={setValue}
-                currentValues={{
-                  chatbotTitle: chatBot?.chatbotTitle,
-                  chatbotSubtitle: chatBot?.chatbotSubtitle,
-                  userBubbleColor: chatBot?.userBubbleColor,
-                  botBubbleColor: chatBot?.botBubbleColor,
-                  userTextColor: chatBot?.userTextColor,
-                  botTextColor: chatBot?.botTextColor,
-                  buttonStyle: chatBot?.buttonStyle,
-                  showAvatars: chatBot?.showAvatars,
-                }}
-              />
-            </div>
-
-            <div className="xl:sticky xl:top-6 xl:self-start">
-              <ChatbotPreview
-                icon={chatBot?.icon}
-                welcomeMessage={
-                  watchedWelcomeMessage || chatBot?.welcomeMessage
-                }
-                previewIcon={previewIcon}
-                chatbotColor={
-                  (watchedColor as string) ||
-                  chatBot?.backgroundColor ||
-                  '#3B82F6'
-                }
-                chatbotTitle={
-                  (watchedTitle as string) || chatBot?.chatbotTitle
-                }
-                chatbotSubtitle={
-                  (watchedSubtitle as string) || chatBot?.chatbotSubtitle
-                }
-                userBubbleColor={
-                  (watchedUserBubbleColor as string) ||
-                  chatBot?.userBubbleColor
-                }
-                botBubbleColor={
-                  (watchedBotBubbleColor as string) ||
-                  chatBot?.botBubbleColor
-                }
-                userTextColor={
-                  (watchedUserTextColor as string) || chatBot?.userTextColor
-                }
-                botTextColor={
-                  (watchedBotTextColor as string) || chatBot?.botTextColor
-                }
-                buttonStyle={
-                  (watchedButtonStyle as string) || chatBot?.buttonStyle
-                }
-                showAvatars={watchedShowAvatars ?? chatBot?.showAvatars}
-              />
+              <div className="xl:sticky xl:top-6 xl:self-start">
+                <ChatbotPreview
+                  icon={chatBot?.icon}
+                  welcomeMessage={
+                    watchedWelcomeMessage || chatBot?.welcomeMessage
+                  }
+                  previewIcon={previewIcon}
+                  chatbotColor={
+                    (watchedColor as string) ||
+                    chatBot?.backgroundColor ||
+                    '#3B82F6'
+                  }
+                  chatbotTitle={
+                    (watchedTitle as string) || chatBot?.chatbotTitle
+                  }
+                  chatbotSubtitle={
+                    (watchedSubtitle as string) || chatBot?.chatbotSubtitle
+                  }
+                  userBubbleColor={
+                    (watchedUserBubbleColor as string) ||
+                    chatBot?.userBubbleColor
+                  }
+                  botBubbleColor={
+                    (watchedBotBubbleColor as string) ||
+                    chatBot?.botBubbleColor
+                  }
+                  userTextColor={
+                    (watchedUserTextColor as string) || chatBot?.userTextColor
+                  }
+                  botTextColor={
+                    (watchedBotTextColor as string) || chatBot?.botTextColor
+                  }
+                  buttonStyle={
+                    (watchedButtonStyle as string) || chatBot?.buttonStyle
+                  }
+                  showAvatars={watchedShowAvatars ?? chatBot?.showAvatars}
+                />
+              </div>
             </div>
           </div>
+
+          {isAppearanceLocked && (
+            <PlanLockedOverlay 
+              currentPlan={plan} 
+              feature="Chatbot Appearance"
+            />
+          )}
         </div>
 
         <div className="flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-slate-200 dark:border-slate-800">

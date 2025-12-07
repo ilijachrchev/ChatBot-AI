@@ -24,6 +24,7 @@ const DomainSettingsPage = async ({ params }: Props) => {
 
   const currentDomain = domainInfo.domains[0]
   const isLocked = currentDomain.verificationStatus !== 'VERIFIED'
+  const isAppearanceLocked = domainInfo.subscription?.plan === 'STANDARD'
 
   return (
     <>
@@ -31,7 +32,7 @@ const DomainSettingsPage = async ({ params }: Props) => {
 
       <div className="relative overflow-y-auto w-full chat-window flex-1 h-0">
         <SettingsForm
-          plan={domainInfo.subscription?.plan!}
+          plan={domainInfo.subscription?.plan! || 'STANDARD'}
           chatBot={currentDomain.chatBot}
           id={currentDomain.id}
           name={currentDomain.name}
