@@ -27,7 +27,6 @@ const OTPInput = ({ otp, setOtp }: Props) => {
     newOTP[index] = value
     setOtp(newOTP.join(''))
 
-    // Move to next input
     if (value && index < OTP_LENGTH - 1) {
       inputRefs.current[index + 1]?.focus()
       setActiveInput(index + 1)
@@ -41,11 +40,9 @@ const OTPInput = ({ otp, setOtp }: Props) => {
       const newOTP = otp.split('')
       
       if (otp[index]) {
-        // Clear current input
         newOTP[index] = ''
         setOtp(newOTP.join(''))
       } else if (index > 0) {
-        // Move to previous input and clear it
         inputRefs.current[index - 1]?.focus()
         setActiveInput(index - 1)
         newOTP[index - 1] = ''

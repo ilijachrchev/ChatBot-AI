@@ -323,7 +323,6 @@ export const onDeleteUserDomain = async (id: string) => {
   if (!user) return
 
   try {
-    //first verify that domain belongs to user
     const validUser = await client.user.findUnique({
       where: {
         clerkId: user.id,
@@ -334,7 +333,6 @@ export const onDeleteUserDomain = async (id: string) => {
     })
 
     if (validUser) {
-      //check that domain belongs to this user and delete
       const deletedDomain = await client.domain.delete({
         where: {
           userId: validUser.id,
