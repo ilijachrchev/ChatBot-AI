@@ -157,6 +157,9 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
             icon: true,
             userId: true,
             products: true,
+            verificationMethod: true,
+            verificationStatus: true,
+            verifiedAt: true,
             chatBot: {
               select: {
                 id: true,

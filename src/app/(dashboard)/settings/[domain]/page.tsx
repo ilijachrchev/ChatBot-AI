@@ -28,6 +28,9 @@ const DomainSettingsPage = async ({ params }: Props) => {
                 chatBot={currentDomain.chatBot}
                 id={currentDomain.id}
                 name={currentDomain.name}
+                verificationStatus={currentDomain.verificationStatus} 
+                verifiedAt={currentDomain.verifiedAt}                
+                verificationMethod={currentDomain.verificationMethod}
             />
             <BotTrainingForm id={currentDomain.id} />
             <ProductTable

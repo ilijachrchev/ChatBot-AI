@@ -13,6 +13,7 @@ import { ColorPicker } from './color-picker'
 import { PersonaSelector } from '@/components/settings/persona-selector' 
 import { ChatbotCustomization } from './chatbot-customization'
 import { Separator } from '@/components/ui/separator'
+import { VerificationBanner } from '@/components/domain/verification-banner'
 
 const WelcomeMessage = dynamic(
   () => import('./greetings-message').then((props) => props.default),
@@ -39,9 +40,21 @@ type Props = {
     buttonStyle?: string | null
     showAvatars?: boolean | null
   } | null
+
+  verificationStatus?: string
+  verifiedAt?: Date | null
+  verificationMethod?: string | null
 }
 
-const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
+const SettingsForm = ({ 
+  id,
+  name,
+  plan, 
+  chatBot,
+  verificationStatus = 'PENDING',
+  verifiedAt,
+  verificationMethod,
+}: Props) => {
   const {
     register,
     onUpdateSettings,
@@ -64,7 +77,13 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
   } = useSettings(id, chatBot?.id || '')
 
   return (
-    <form className='flex flex-col gap-6 pb-10 px-4 md:px-6' onSubmit={onUpdateSettings}>
+    <form className='flex flex-col gap-6 px-4 md:px-6' onSubmit={onUpdateSettings}>
+      <VerificationBanner
+        domainName={name}
+        verificationStatus={verificationStatus}
+        verifiedAt={verifiedAt}
+        verificationMethod={verificationMethod}
+      />
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6'>
         <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
           <div className='flex items-center gap-3 mb-4'>
