@@ -2,7 +2,7 @@ import { useDomain } from '@/hooks/sidebar/use-domain'
 import { cn } from '@/lib/utils'
 import React from 'react'
 import AppDrawer from '../drawer'
-import { Plus } from 'lucide-react'
+import { CheckCircle2, Clock, Plus, XCircle } from 'lucide-react'
 import { Loader } from '../loader'
 import FormGenerator from '../forms/form-generator'
 import UploadButton from '../upload-button'
@@ -17,9 +17,22 @@ type Props = {
         id: string
         name: string
         icon: string | null
+        verificationStatus?: string
       }[]
     | null
     | undefined
+}
+
+const getVerificationIcon = (status?: string) => {
+  switch (status) {
+    case 'VERIFIED':
+      return <CheckCircle2 className="w-3 h-3 text-green-500" />
+    case 'FAILED':
+      return <XCircle className="w-3 h-3 text-red-500" />
+    case 'PENDING':
+    default:
+      return <Clock className="w-3 h-3 text-amber-500" />
+  }
 }
 
 const DomainMenu = ({ domains, min }: Props) => {
@@ -31,8 +44,8 @@ const DomainMenu = ({ domains, min }: Props) => {
         {!min && (
           <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
             Domains
-            </p>
-            )}
+          </p>
+        )}
 
         <AppDrawer
           description="Add in your domain address to integrate your chatbot"
@@ -148,6 +161,8 @@ const DomainMenu = ({ domains, min }: Props) => {
                   {domain.name}
                 </span>
 
+                {getVerificationIcon(domain.verificationStatus)}
+
                 {!isActive && (
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 )}
@@ -192,6 +207,9 @@ const DomainMenu = ({ domains, min }: Props) => {
                     e.currentTarget.src = '/favicon.ico'
                   }}
                 />
+                <div className="absolute -top-0.5 -right-0.5">
+                  {getVerificationIcon(domain.verificationStatus)}
+                </div>
               </div>
 
               {isActive && (

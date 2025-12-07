@@ -39,80 +39,18 @@ function getPlanLimits(plan: string | null | undefined) {
 
 export const onIntegrateDomain = async (domain: string, icon: string) => {
   const user = await currentUser()
-  if (!user) return
+  if (!user) return { status: 401, message: 'Unauthorized' }
+
   try {
-    const subscription = await client.user.findUnique({
-      where: {
-        clerkId: user.id,
-      },
-      select: {
-        _count: {
-          select: {
-            domains: true,
-          },
-        },
-        subscription: {
-          select: {
-            plan: true,
-          },
-        },
-      },
-    })
-    const domainExists = await client.user.findFirst({
-      where: {
-        clerkId: user.id,
-        domains: {
-          some: {
-            name: domain,
-          },
-        },
-      },
-    })
-
-    if (!domainExists) {
-      if (
-        (subscription?.subscription?.plan == 'STANDARD' &&
-          subscription._count.domains < 1) ||
-        (subscription?.subscription?.plan == 'PRO' &&
-          subscription._count.domains < 5) ||
-        (subscription?.subscription?.plan == 'ULTIMATE' &&
-          subscription._count.domains < 10)
-      ) {
-        const newDomain = await client.user.update({
-          where: {
-            clerkId: user.id,
-          },
-          data: {
-            domains: {
-              create: {
-                name: domain,
-                icon,
-                chatBot: {
-                  create: {
-                    welcomeMessage: 'Hey there, have  a question? Text us here',
-                  },
-                },
-              },
-            },
-          },
-        })
-
-        if (newDomain) {
-          return { status: 200, message: 'Domain successfully added' }
-        }
-      }
-      return {
-        status: 400,
-        message:
-          "You've reached the maximum number of domains, upgrade your plan",
-      }
-    }
-    return {
-      status: 400,
-      message: 'Domain already exists',
-    }
+    const { onCreateDomain } = await import('@/actions/domain')
+    const result = await onCreateDomain(domain, icon)
+    return result
   } catch (error) {
     console.log(error)
+    return {
+      status: 500,
+      message: 'Internal server error',
+    }
   }
 }
 
@@ -155,6 +93,9 @@ export const onGetAllAccountDomains = async () => {
             name: true,
             icon: true,
             id: true,
+            verificationStatus: true,
+            verificationMethod: true,
+            verifiedAt: true,
             customer: {
               select: {
                 chatRoom: {
