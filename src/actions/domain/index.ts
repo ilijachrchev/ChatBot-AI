@@ -7,39 +7,64 @@ import {
   generateVerificationToken 
 } from '@/lib/domain-utils'
 import { verifyDomainOwnership } from '@/lib/domain-verification'
+import { Domain } from '@/generated/prisma/wasm'
 
 
-export const onCreateDomain = async (domainInput: string, icon: string) => {
-  const user = await currentUser()
-  if (!user) {
-    return { status: 401, message: 'Unauthorized' }
-  }
-
+export const onCreateDomain = async (
+  domainInput: string,
+  icon?: string
+): Promise<{
+  status: number
+  message: string
+  domain?: Domain
+}> => {
   try {
+    const user = await currentUser()
+
+    if (!user) {
+      return {
+        status: 401,
+        message: 'Unauthorized',
+      }
+    }
+
+    const dbUser = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (!dbUser) {
+      return {
+        status: 401,
+        message: 'User not found in database',
+      }
+    }
+
     const validation = validateAndNormalizeDomain(domainInput)
-    
     if (!validation.valid) {
       return {
         status: 400,
-        message: validation.error,
+        message: validation.error || 'Invalid domain',
       }
     }
 
     const normalizedDomain = validation.normalized!
 
-    const existingDomain = await client.domain.findFirst({
+    const userExistingDomain = await client.domain.findFirst({
       where: {
         name: normalizedDomain,
-        User: {
-          clerkId: user.id,
-        },
+        userId: dbUser.id,
       },
     })
 
-    if (existingDomain) {
+    if (userExistingDomain) {
       return {
         status: 400,
-        message: 'You already have this domain',
+        message: 'You already have this domain in your account',
       }
     }
 
@@ -47,85 +72,131 @@ export const onCreateDomain = async (domainInput: string, icon: string) => {
       where: {
         name: normalizedDomain,
         verificationStatus: 'VERIFIED',
-        User: {
-          clerkId: {
-            not: user.id,
-          },
-        },
+        userId: { not: dbUser.id },
       },
     })
 
     if (verifiedByOther) {
       return {
         status: 400,
-        message: 'This domain is already verified by another account',
+        message: 'This domain has already been verified by another user',
       }
     }
 
-    const subscription = await client.user.findUnique({
-      where: { clerkId: user.id },
-      select: {
-        _count: {
-          select: { domains: true },
-        },
-        subscription: {
-          select: { plan: true },
-        },
+    const pendingCount = await client.domain.count({
+      where: {
+        name: normalizedDomain,
+        verificationStatus: 'PENDING',
       },
     })
 
+    if (pendingCount >= 2) {
+      return {
+        status: 400,
+        message: 'This domain is currently pending verification on 2 accounts. Please verify one of them first, or contact support if you need help accessing your account.',
+      }
+    }
+
+    const existingDomains = await client.domain.count({
+      where: {
+        userId: dbUser.id,
+      },
+    })
+
+    const subscription = await client.billings.findUnique({
+      where: {
+        userId: dbUser.id,
+      },
+      select: {
+        plan: true,
+      },
+    })
+
+    const plan = subscription?.plan || 'STANDARD'
     const limits = {
       STANDARD: 1,
       PRO: 5,
       ULTIMATE: 10,
     }
 
-    const plan = subscription?.subscription?.plan || 'STANDARD'
-    const currentCount = subscription?._count.domains || 0
-    const limit = limits[plan]
-
-    if (currentCount >= limit) {
+    if (existingDomains >= limits[plan]) {
       return {
-        status: 400,
-        message: `You've reached the maximum of ${limit} domain(s) for your ${plan} plan. Upgrade to add more.`,
+        status: 403,
+        message: `You've reached your domain limit (${limits[plan]}) for the ${plan} plan`,
       }
     }
 
     const verificationToken = generateVerificationToken()
 
-    const newDomain = await client.domain.create({
-      data: {
-        name: normalizedDomain,
-        icon,
-        verificationToken,
-        verificationStatus: 'PENDING',
-        User: {
-          connect: { clerkId: user.id },
+    let domain
+    try {
+      domain = await client.domain.create({
+        data: {
+          name: normalizedDomain,
+          icon: icon || '/favicon.ico',
+          userId: dbUser.id,
+          verificationToken,
+          verificationStatus: 'PENDING',
         },
-        chatBot: {
-          create: {
-            welcomeMessage: 'Hey there, have a question? Text us here',
+      })
+    } catch (createError: any) {
+      if (createError.code === 'P2002') {
+        const existingPending = await client.domain.findFirst({
+          where: {
+            name: normalizedDomain,
+            verificationStatus: 'PENDING',
+            userId: dbUser.id,
           },
-        },
-      },
-      select: {
-        id: true,
-        name: true,
-        verificationToken: true,
-        verificationStatus: true,
+        })
+
+        if (existingPending) {
+          return {
+            status: 400,
+            message: 'You already have this domain pending verification in your account',
+          }
+        }
+
+        const otherPending = await client.domain.count({
+          where: {
+            name: normalizedDomain,
+            verificationStatus: 'PENDING',
+          },
+        })
+
+        if (otherPending >= 2) {
+          return {
+            status: 400,
+            message: 'This domain is currently pending verification on 2 accounts. Please verify one of them first.',
+          }
+        }
+
+        return {
+          status: 400,
+          message: 'This domain is already being verified by another account',
+        }
+      }
+
+      throw createError
+    }
+
+    await client.chatBot.create({
+      data: {
+        welcomeMessage: 'Hi there! How can I help you today?',
+        icon: icon || '/favicon.ico',
+        domainId: domain.id,
       },
     })
 
     return {
       status: 200,
-      message: 'Domain created. Please verify ownership.',
-      domain: newDomain,
+      message: 'Domain added successfully. Please verify ownership to activate it.',
+      domain,
     }
   } catch (error) {
-    console.error('Error creating domain:', error)
+    console.error('❌ Error creating domain:', error)
     return {
       status: 500,
-      message: 'Internal server error',
+      message: 'Failed to create domain. Please try again.',
     }
   }
 }
@@ -180,6 +251,16 @@ export const onVerifyDomain = async (domainId: string) => {
           lastVerifiedAt: new Date(),
         },
       })
+
+      await client.domain.deleteMany({
+        where: {
+          name: domain.name,
+          verificationStatus: 'PENDING',
+          id: { not: domainId },
+        },
+      })
+
+      console.log(`🧹 Cleaned up other PENDING domains for: ${domain.name}`)
 
       return {
         status: 200,

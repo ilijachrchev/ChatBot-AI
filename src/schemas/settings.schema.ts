@@ -27,15 +27,31 @@ export const AddDomainSchema = z.object({
         /^((?!-)[A-Za-z0-9-]{1,63}(?<!-)\.)+[A-Za-z]{2,3}$/.test(value ?? ''),
       'This is not a valid domain'
     ),
-  image: z
-    .any()
-    .refine((files) => files?.[0]?.size <= MAX_UPLOAD_SIZE, {
-      message: 'Your file size must be less then 2MB',
-    })
-    .refine((files) => ACCEPTED_FILE_TYPES.includes(files?.[0]?.type), {
-      message: 'Only JPG, JPEG & PNG are accepted file formats',
-    }),
+  image: z.any().optional(),
 })
+  .refine(
+    (schema) => {
+      if (schema.image && schema.image?.length > 0) {
+        const file = schema.image[0]
+        
+        if (file.size > MAX_UPLOAD_SIZE) {
+          return false
+        }
+        
+        if (!ACCEPTED_FILE_TYPES.includes(file.type)) {
+          return false
+        }
+      }
+      
+      return true
+    },
+    {
+      message: 'Image must be less than 2MB and be PNG, JPEG, or JPG',
+      path: ['image'],
+    }
+  )
+
+export type AddDomainProps = z.infer<typeof AddDomainSchema>
 
 export const DomainSettingsSchema = z
   .object({
@@ -63,9 +79,10 @@ export const DomainSettingsSchema = z
     userTextColor: z.string().optional(),
     botTextColor: z.string().optional(),
     buttonStyle: z.enum(['ROUNDED', 'SQUARE', 'PILL']).optional(),
+    bubbleStyle: z.enum(['ROUNDED', 'SQUARE', 'PILL']).optional(),
     showAvatars: z.boolean().optional(),
-
-  }).refine(
+  })
+  .refine(
     (schema) => {
       if (schema.image?.length) {
         if (
@@ -81,12 +98,12 @@ export const DomainSettingsSchema = z
     },
     {
       message:
-        'The fill must be less then 2MB, and on PNG, JPEG & JPG files are accepted',
+        'The file must be less than 2MB, and only PNG, JPEG & JPG files are accepted',
       path: ['image'],
     }
   )
 
-  export type DomainSettingsProps = z.infer<typeof DomainSettingsSchema>
+export type DomainSettingsProps = z.infer<typeof DomainSettingsSchema>
 
 export const HelpDeskQuestionsSchema = z.object({
   question: z.string().min(1, { message: 'Question cannot be left empty' }),
