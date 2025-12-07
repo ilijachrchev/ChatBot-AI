@@ -38,6 +38,12 @@ model Domain {
   name String
   icon String
 
+  verificationToken String @default(dbgenerated("gen_random_uuid()"))
+  verificationStatus  VerificationStatus @default(PENDING)
+  verificationMethod  String? 
+  lastVerifiedAt      DateTime?
+  verifiedAt          DateTime?
+
   chatBot         ChatBot?
   helpdesk        HelpDesk[]
   filterQuestions FilterQuestions[]
@@ -50,6 +56,19 @@ model Domain {
   campaignId String?    @db.Uuid
 
   chatRooms ChatRoom[] @relation("DomainToChatRoooms")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@index([userId])
+  @@index([verificationStatus])
+  @@unique([name, verificationStatus])
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  FAILED
 }
 
 model ChatBot {

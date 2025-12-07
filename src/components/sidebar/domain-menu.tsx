@@ -8,6 +8,7 @@ import FormGenerator from '../forms/form-generator'
 import UploadButton from '../upload-button'
 import { Button } from '../ui/button'
 import Link from 'next/link'
+import { FieldArray, FieldValues, UseFormRegister } from 'react-hook-form'
 
 type Props = {
   min?: boolean
@@ -59,7 +60,7 @@ const DomainMenu = ({ domains, min }: Props) => {
             >
               <FormGenerator
                 inputType="input"
-                register={register}
+                register={register as unknown as UseFormRegister<FieldValues>}
                 label="Domain"
                 name="domain"
                 errors={errors}
