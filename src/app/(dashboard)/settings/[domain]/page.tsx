@@ -30,8 +30,6 @@ const DomainSettingsPage = async ({ params }: Props) => {
       <InfoBar />
 
       <div className="relative overflow-y-auto w-full chat-window flex-1 h-0">
-        {isLocked && <DomainLockedOverlay />}
-
         <SettingsForm
           plan={domainInfo.subscription?.plan!}
           chatBot={currentDomain.chatBot}
@@ -43,18 +41,22 @@ const DomainSettingsPage = async ({ params }: Props) => {
           isLocked={isLocked}
         />
 
-        <div
-          className={cn(
-            'space-y-6 px-4 md:px-6 pb-10',
-            isLocked && 'opacity-40 blur-[1px] pointer-events-none'
-          )}
-        >
-          <BotTrainingForm id={currentDomain.id} />
+        <div className="relative min-h-[400px]">
+          <div
+            className={cn(
+              'space-y-6 px-4 md:px-6 pb-10',
+              isLocked && 'opacity-40 blur-[1px] pointer-events-none'
+            )}
+          >
+            <BotTrainingForm id={currentDomain.id} />
 
-          <ProductTable
-            id={currentDomain.id}
-            products={currentDomain.products || []}
-          />
+            <ProductTable
+              id={currentDomain.id}
+              products={currentDomain.products || []}
+            />
+          </div>
+
+          {isLocked && <DomainLockedOverlay />}
         </div>
       </div>
     </>

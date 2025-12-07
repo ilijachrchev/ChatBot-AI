@@ -83,14 +83,15 @@ export const onCreateDomain = async (
       }
     }
 
-    const pendingCount = await client.domain.count({
+    const otherUsersPendingCount = await client.domain.count({
       where: {
         name: normalizedDomain,
         verificationStatus: 'PENDING',
+        userId: { not: dbUser.id }, 
       },
     })
 
-    if (pendingCount >= 2) {
+    if (otherUsersPendingCount >= 2) {
       return {
         status: 400,
         message: 'This domain is currently pending verification on 2 accounts. Please verify one of them first, or contact support if you need help accessing your account.',
@@ -141,38 +142,23 @@ export const onCreateDomain = async (
       })
     } catch (createError: any) {
       if (createError.code === 'P2002') {
-        const existingPending = await client.domain.findFirst({
-          where: {
-            name: normalizedDomain,
-            verificationStatus: 'PENDING',
-            userId: dbUser.id,
-          },
-        })
-
-        if (existingPending) {
-          return {
-            status: 400,
-            message: 'You already have this domain pending verification in your account',
-          }
-        }
-
-        const otherPending = await client.domain.count({
+        const currentPendingCount = await client.domain.count({
           where: {
             name: normalizedDomain,
             verificationStatus: 'PENDING',
           },
         })
 
-        if (otherPending >= 2) {
+        if (currentPendingCount >= 2) {
           return {
             status: 400,
-            message: 'This domain is currently pending verification on 2 accounts. Please verify one of them first.',
+            message: 'This domain is currently pending verification on 2 accounts. Maximum limit reached.',
           }
         }
 
         return {
           status: 400,
-          message: 'This domain is already being verified by another account',
+          message: 'This domain is already being verified. Please try again.',
         }
       }
 

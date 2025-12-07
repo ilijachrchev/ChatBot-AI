@@ -57,28 +57,44 @@ const CodeSnippet = ({ id }: Props) => {
     }
         `
 
+    const handleCopy = () => {
+      navigator.clipboard.writeText(snippet)
+      toast('Copied to clipboard', {
+        description: 'You can now paste the code inside your website',
+      })
+    }
+
   return (
-    <div className="mt-10 flex flex-col gap-5 items-start">
+    <div className="mt-10 flex flex-col gap-5 items-start w-full">
       <Section
         label="Code snippet"
         message="Copy and paste this code snippet into the header tag of your website"
       />
-      <div className="bg-cream px-10 rounded-lg inline-block relative">
-        <Copy
-          className="absolute top-5 right-5 text-gray-400 cursor-pointer"
-          onClick={() => {
-            navigator.clipboard.writeText(snippet)
-            const description = 'You can now paste the code inside your website'
-            toast('Copied to clipboard', { description: description })
-          }}
 
-        />
-        <pre>
-          <code className="text-gray-500">{snippet}</code>
-        </pre>
+      {/* MOBILE: no script, just info text */}
+      <div className="w-full sm:hidden rounded-lg bg-cream px-4 py-3 text-xs text-slate-700">
+        You don&apos;t need the embed script on mobile.
+        <br />
+        Open this page on your laptop or desktop to copy the chatbot embed code.
+      </div>
+
+      {/* DESKTOP / TABLET: full script in a scrollable box */}
+      <div className="hidden sm:block w-full">
+        <div className="relative rounded-lg bg-cream px-4 py-4">
+          <Copy
+            className="absolute top-3 right-3 h-4 w-4 text-gray-500 cursor-pointer hover:text-gray-700"
+            onClick={handleCopy}
+          />
+          <div className="max-h-96 overflow-x-auto overflow-y-auto rounded-md bg-white/70 px-3 py-3">
+            <pre className="whitespace-pre text-[11px] leading-relaxed">
+              <code className="text-gray-700">{snippet}</code>
+            </pre>
+          </div>
+        </div>
       </div>
     </div>
   )
 }
+
 
 export default CodeSnippet

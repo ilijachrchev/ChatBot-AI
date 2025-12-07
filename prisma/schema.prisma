@@ -62,7 +62,6 @@ model Domain {
 
   @@index([userId])
   @@index([verificationStatus])
-  @@unique([name, verificationStatus])
 }
 
 enum VerificationStatus {
