@@ -16,9 +16,8 @@ type Props = {
     userTextColor?: string | null
     botTextColor?: string | null
     buttonStyle?: string | null
+    bubbleStyle?: string | null
 }
-
-
 
 const Bubble = ({  message, 
     createdAt, 
@@ -28,14 +27,15 @@ const Bubble = ({  message,
     userTextColor,
     botTextColor,
     buttonStyle,
+    bubbleStyle,
   }: Props) => {
     let d = new Date()
 
     const isImageUrl = message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i) || 
                         message.content.includes('/uploads/')
 
-    const getButtonClass = () => {
-      switch (buttonStyle) {
+    const getBubbleClass = () => {
+      switch (bubbleStyle) {
         case 'SQUARE':
           return 'rounded-none'
         case 'PILL':
@@ -78,11 +78,21 @@ const Bubble = ({  message,
         </Avatar>
       )}
         <div className={cn(
-            'flex flex-col gap-3 min-w-[85%] p-4 rounded-t-md break-words',
+            'flex flex-col gap-3 min-w-[85%] p-4 break-words',
+            getBubbleClass(),
             message.role == 'assistant'
-                ? 'bg-muted rounded-r-md'
-                : 'dark:bg-blue-500 bg-blue-300 rounded-l-md'
-        )}>
+                ? 'rounded-tl-sm'
+                : 'rounded-tr-sm'
+        )}
+          style={{
+            backgroundColor: message.role === 'assistant' 
+            ? finalBotBubbleColor 
+            : finalUserBubbleColor,
+          color: message.role === 'assistant'
+            ? finalBotTextColor
+            : finalUserTextColor,
+          }}
+        >
             {createdAt ? (
                 <div className='flex gap-2 text-xs text-gray-600'>
                     <p>
@@ -111,9 +121,14 @@ const Bubble = ({  message,
                     {message.content.replace('(complete)', '')}
                     {message.link && (
                         <Link
-                            className="underline font-bold pl-2 text-blue-500 hover:text-blue-700"
+                            className="underline font-bold pl-2 hover:opacity-80"
                             href={message.link}
                             target='_blank'
+                            style={{ 
+                                color: message.role === 'assistant' 
+                                    ? finalBotTextColor 
+                                    : finalUserTextColor 
+                            }}
                         >
                             Your Link
                         </Link>

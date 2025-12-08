@@ -16,6 +16,7 @@ type ChatbotPreviewProps = {
   userTextColor?: string | null
   botTextColor?: string | null
   buttonStyle?: string | null
+  bubbleStyle?: string | null
   showAvatars?: boolean | null
 }
 
@@ -31,6 +32,7 @@ export const ChatbotPreview = ({
   userTextColor,
   botTextColor,
   buttonStyle,
+  bubbleStyle,
   showAvatars,
 }: ChatbotPreviewProps) => {
   const displayIcon = previewIcon || icon
@@ -53,6 +55,18 @@ export const ChatbotPreview = ({
       case 'ROUNDED':
       default:
         return 'rounded-lg'
+    }
+  }
+  
+  const getBubbleClass = () => {
+    switch (bubbleStyle) {
+      case 'SQUARE':
+        return 'rounded-none'
+      case 'PILL':
+        return 'rounded-full'
+      case 'ROUNDED':
+      default:
+        return 'rounded-2xl'
     }
   }
 
@@ -142,7 +156,7 @@ export const ChatbotPreview = ({
             </div>
             <div className="flex-1">
               <div 
-                className={cn('rounded-2xl rounded-tl-sm p-3 shadow-sm border max-w-[280px]', getButtonClass())}
+                className={cn('p-3 shadow-sm border max-w-[280px]', getBubbleClass())} 
                 style={{ 
                   backgroundColor: finalBotBubbleColor,
                   color: finalBotTextColor,
@@ -162,7 +176,7 @@ export const ChatbotPreview = ({
           <div className="flex items-start gap-2 justify-end">
             <div className="flex-1">
               <div 
-                className={cn('rounded-2xl rounded-tr-sm p-3 shadow-sm max-w-[280px] ml-auto', getButtonClass())}
+                className={cn('p-3 shadow-sm max-w-[280px] ml-auto', getBubbleClass())} 
                 style={{ 
                   backgroundColor: finalUserBubbleColor,
                   color: finalUserTextColor,
@@ -186,7 +200,7 @@ export const ChatbotPreview = ({
               placeholder="Type your message..."
               className={cn(
                 'flex-1 px-4 py-2 border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:outline-none focus:ring-2 text-slate-900 dark:text-white placeholder:text-slate-400',
-                getButtonClass()
+                getButtonClass() 
               )}
               style={{
                 '--tw-ring-color': chatbotColor,
@@ -196,7 +210,7 @@ export const ChatbotPreview = ({
             <button 
               className={cn(
                 'h-10 w-10 flex items-center justify-center text-white shadow-lg hover:shadow-xl transition-shadow disabled:opacity-50',
-                getButtonClass()
+                getButtonClass() 
               )}
               style={{ background: `linear-gradient(135deg, ${chatbotColor} 0%, ${chatbotColor}dd 100%)` }}
               disabled

@@ -44,6 +44,7 @@ export const useChatBot = () => {
                 userTextColor?: string | null
                 botTextColor?: string | null
                 buttonStyle?: string | null
+                bubbleStyle?: string | null
                 showAvatars?: boolean | null
             } | null
             helpdesk: {

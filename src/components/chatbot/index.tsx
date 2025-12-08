@@ -64,6 +64,7 @@ const AiChatBot = (props: Props) => {
                 userTextColor={currentBot?.chatBot?.userTextColor}
                 botTextColor={currentBot?.chatBot?.botTextColor}
                 buttonStyle={currentBot?.chatBot?.buttonStyle}
+                bubbleStyle={currentBot?.chatBot?.bubbleStyle}
                 showAvatars={currentBot?.chatBot?.showAvatars}
             />
         )}

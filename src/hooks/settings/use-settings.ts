@@ -75,6 +75,7 @@ export const useSettings = (id: string, chatBotId: string) => {
         register('userTextColor')
         register('botTextColor')
         register('buttonStyle')
+        register('bubbleStyle')
         register('showAvatars')
     }, [register])
     
@@ -88,6 +89,7 @@ export const useSettings = (id: string, chatBotId: string) => {
     const watchedUserTextColor = watch('userTextColor')
     const watchedBotTextColor = watch('botTextColor')
     const watchedButtonStyle = watch('buttonStyle')
+    const watchedBubbleStyle = watch('bubbleStyle')
     const watchedShowAvatars = watch('showAvatars')
 
     const [previewIcon, setPreviewIcon] = useState<string | null>(null)
@@ -155,6 +157,7 @@ export const useSettings = (id: string, chatBotId: string) => {
             values.userTextColor ||
             values.botTextColor ||
             values.buttonStyle ||
+            values.bubbleStyle ||
             values.showAvatars !== undefined
         ) {
             const customization = await onUpdateChatbotCustomization(chatBotId, {
@@ -165,6 +168,7 @@ export const useSettings = (id: string, chatBotId: string) => {
                 userTextColor: values.userTextColor,
                 botTextColor: values.botTextColor,
                 buttonStyle: values.buttonStyle,
+                bubbleStyle: values.bubbleStyle,
                 showAvatars: values.showAvatars,
             })
 
@@ -210,6 +214,7 @@ export const useSettings = (id: string, chatBotId: string) => {
         watchedUserTextColor,
         watchedBotTextColor,
         watchedButtonStyle,
+        watchedBubbleStyle,
         watchedShowAvatars,
         setValue,
     }

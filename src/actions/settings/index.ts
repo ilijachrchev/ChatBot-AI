@@ -175,6 +175,7 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 userTextColor: true,
                 botTextColor: true,
                 buttonStyle: true,
+                bubbleStyle: true,
                 showAvatars: true,
               },
             },
@@ -696,6 +697,7 @@ export const onUpdateChatbotCustomization = async (
     userTextColor?: string
     botTextColor?: string
     buttonStyle?: string
+    bubbleStyle?: string
     showAvatars?: boolean
   }
 ) => {

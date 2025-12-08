@@ -59,6 +59,7 @@ type Props = {
   userTextColor?: string | null
   botTextColor?: string | null
   buttonStyle?: string | null
+  bubbleStyle?: string | null
   showAvatars?: boolean | null
 }
 
@@ -88,6 +89,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       userTextColor,
       botTextColor,
       buttonStyle,
+      bubbleStyle,
       showAvatars,
     },
     ref
@@ -183,6 +185,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                     userTextColor={userTextColor}
                     botTextColor={botTextColor}
                     buttonStyle={buttonStyle}
+                    bubbleStyle={bubbleStyle}
                   />
                 ))}
                 {onResponding && <Responding botIcon={botIcon} />}

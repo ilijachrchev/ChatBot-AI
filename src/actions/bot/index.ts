@@ -89,6 +89,7 @@ export const onGetCurrentChatBot = async (id: string) => {
                         userTextColor: true,
                         botTextColor: true,
                         buttonStyle: true,
+                        bubbleStyle: true,
                         showAvatars: true,
                     },
                 },
