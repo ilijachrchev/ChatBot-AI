@@ -12,17 +12,26 @@ const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
 })
 
-const ensureChatRoom = async (chatroomId: string) => {
-  return db.chatRoom.upsert({
+const ensureChatRoom = async (chatroomId: string, domainId: string, customerId?: string) => {
+  console.log('🔧 ensureChatRoom called with:', { chatroomId, domainId })
+
+  const room = await db.chatRoom.upsert({
     where: { id: chatroomId },
-    update: {},
+    update: {
+      domainId: domainId,
+    },
     create: {
        id: chatroomId ,
        live: false,
        mailed: false,
+       domainId: domainId,
+       customerId: customerId,
       },
-    select: { id: true, live: true, mailed: true },
+    select: { id: true, live: true, mailed: true, domainId: true },
   });
+
+  console.log('✅ ChatRoom created/updated:', room)
+  return room;
 };
 
 export const onStoreConversations = async (
@@ -131,6 +140,8 @@ export const onAiChatBotAssistant = async (
     isImage?: boolean,
 ) => {
     try {
+      console.log('🤖 onAiChatBotAssistant called with domainId:', id)
+      console.log('🤖 chatroomId:', chatroomId)
 
       if (!id || id === 'undefined') {
         console.error('Invalid bot Id provided:', id);
@@ -146,8 +157,12 @@ export const onAiChatBotAssistant = async (
 
       if (!chatroomId || newThread) {
         chatroomId = crypto.randomUUID();
+        console.log('🆕 Generated new chatroomId:', chatroomId)
       }
-      const room = await ensureChatRoom(chatroomId);
+
+      console.log('🔧 Calling ensureChatRoom with:', { chatroomId, domainId: id })
+      const room = await ensureChatRoom(chatroomId, id);
+      console.log('✅ Room from ensureChatRoom:', room)
 
       if (isImage) {
         const imageUrl = message.startsWith('http') ? message : `https://ucarecdn.com/${message}/`;
