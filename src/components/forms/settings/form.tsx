@@ -162,7 +162,7 @@ const SettingsForm = ({
         <div className="relative min-h-[500px]"> 
           <div className={cn(
             "rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6",
-            isAppearanceLocked && 'opacity-40 blur-[1px] pointer-events-none' // ✅ Add blur if locked
+            isAppearanceLocked && 'opacity-40 blur-[1px] pointer-events-none' 
           )}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">

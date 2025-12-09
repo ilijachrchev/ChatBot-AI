@@ -1,5 +1,3 @@
-// src\components\chatbot\bubble.tsx
-
 import { cn, getMonthName } from '@/lib/utils'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -59,7 +57,6 @@ const Bubble = ({
       'flex gap-2 items-end animate-in fade-in-0 slide-in-from-bottom-2 duration-300',
       message.role == 'assistant' ? 'self-start' : 'self-end flex-row-reverse'
     )}>
-      {/* Avatar - Smaller and cleaner */}
       {message.role == 'assistant' ? (
         <Avatar className='w-6 h-6 flex-shrink-0 border border-gray-200'>
           {botIcon ? (
@@ -84,7 +81,6 @@ const Bubble = ({
         </Avatar>
       )}
 
-      {/* Message Bubble */}
       <div className={cn(
           'flex flex-col gap-2 max-w-[75%] px-3 py-2.5 break-words shadow-sm',
           getBubbleClass(),
@@ -101,7 +97,6 @@ const Bubble = ({
             : finalUserTextColor,
         }}
       >
-          {/* Timestamp - More subtle */}
           {createdAt ? (
               <div className='flex gap-1.5 text-[10px] opacity-60'>
                   <p>
@@ -117,7 +112,6 @@ const Bubble = ({
               </p>
           )}
 
-          {/* Content */}
           {isImageUrl ? (
               <div className='relative w-full max-w-[200px] h-[180px] rounded-lg overflow-hidden bg-gray-100 border border-gray-200'>
                   <img 

@@ -113,7 +113,6 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
           </ResponsiveContainer>
         </div>
 
-        {/* Legend */}
         <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-sm bg-blue-500" />

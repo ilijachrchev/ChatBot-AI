@@ -13,8 +13,8 @@ import {
   getSalesTrend,
   getBookingsTrend,
   getConversationsToday,
-  getConversationsThisWeek, // ✅ NEW
-  getTotalChatRooms, // ✅ NEW
+  getConversationsThisWeek, 
+  getTotalChatRooms,
 } from '@/actions/analytics'
 import { KpiCard } from '@/components/dashboard/kpi-card'
 import { ActivityChart } from '@/components/dashboard/activity-chart'
@@ -41,8 +41,8 @@ const Page = async (props: Props) => {
     salesTrend,
     bookingsTrend,
     conversationsToday,
-    conversationsThisWeek, // ✅ NEW
-    totalChatRooms, // ✅ NEW
+    conversationsThisWeek, 
+    totalChatRooms, 
   ] = await Promise.all([
     getUserClients(),
     getUserBalance(),
@@ -56,13 +56,12 @@ const Page = async (props: Props) => {
     getSalesTrend(),
     getBookingsTrend(),
     getConversationsToday(),
-    getConversationsThisWeek(), // ✅ NEW
-    getTotalChatRooms(), // ✅ NEW
+    getConversationsThisWeek(),
+    getTotalChatRooms(), 
   ])
 
   const pipelineValue = (products ?? 0) * (clients ?? 0)
 
-  // Plan limits
   const PLAN_LIMITS = {
     STANDARD: { credits: 10, domains: 1, clients: 10 },
     PRO: { credits: 50, domains: 2, clients: 50 },
@@ -72,7 +71,6 @@ const Page = async (props: Props) => {
   const currentPlan = plan?.plan || 'STANDARD'
   const limits = PLAN_LIMITS[currentPlan]
 
-  // Fallback data if analytics returns null
   const defaultActivityData = [
     { date: 'Mon', ai: 0, human: 0 },
     { date: 'Tue', ai: 0, human: 0 },
@@ -93,7 +91,6 @@ const Page = async (props: Props) => {
   const finalActivityData = activityData || defaultActivityData
   const finalResolutionData = resolutionData || defaultResolutionData
 
-  // Calculate AI resolution rate from real data
   const totalAI = finalResolutionData.reduce((sum, item) => sum + item.ai, 0)
   const totalHuman = finalResolutionData.reduce((sum, item) => sum + item.human, 0)
   const totalResolutions = totalAI + totalHuman
@@ -101,15 +98,12 @@ const Page = async (props: Props) => {
     ? Math.round((totalAI / totalResolutions) * 100)
     : 0
 
-  // Only pass sparkline data if it exists AND has values > 0
   const hasConversationData = conversationTrend && conversationTrend.length > 0 && conversationTrend.some(v => v > 0)
   const hasSalesData = salesTrend && salesTrend.length > 0 && salesTrend.some(v => v > 0)
   const hasBookingsData = bookingsTrend && bookingsTrend.length > 0 && bookingsTrend.some(v => v > 0)
 
-  // ✅ Calculate trend percentage (compare today vs yesterday or this week vs last week)
   const conversationTrendPercent = conversationsThisWeek > 0 ? 12 : 0
 
-  // ✅ Log for debugging
   console.log('Dashboard Data:', {
     conversationsToday,
     conversationsThisWeek,
@@ -123,7 +117,6 @@ const Page = async (props: Props) => {
       <InfoBar />
       
       <div className='overflow-y-auto w-full flex-1'>
-        {/* Page Header */}
         <div className="mb-6 lg:mb-8">
           <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
             Dashboard
@@ -133,7 +126,6 @@ const Page = async (props: Props) => {
           </p>
         </div>
 
-        {/* KPI Cards - Row 1 */}
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8'>
           <KpiCard
             title="Conversations Today"
@@ -169,7 +161,6 @@ const Page = async (props: Props) => {
           />
         </div>
 
-        {/* Charts - Row 2 */}
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-6 lg:mb-8'>
           <ActivityChart data={finalActivityData} />
           <AIResolutionChart 
@@ -178,7 +169,6 @@ const Page = async (props: Props) => {
           />
         </div>
 
-        {/* Lower Panels - Row 3 */}
         <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6'>
           <div className='lg:col-span-2'>
             <RecentTransactionsCard transactions={transactions?.data} />
