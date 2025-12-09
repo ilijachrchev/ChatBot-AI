@@ -12,10 +12,11 @@ import Bubble from './bubble'
 import { Responding } from './responding'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import { BotIcon, Paperclip, Send } from 'lucide-react'
+import { BotIcon, Paperclip, Send, Sparkles } from 'lucide-react'
 import { Label } from '../ui/label'
 import { CardDescription, CardTitle } from '../ui/card'
 import Accordion from '../accordian'
+import { cn } from '@/lib/utils'
 
 type Props = {
   register: UseFormRegister<ChatBotMessageProps>
@@ -61,6 +62,8 @@ type Props = {
   buttonStyle?: string | null
   bubbleStyle?: string | null
   showAvatars?: boolean | null
+  widgetSize?: string | null
+  widgetStyle?: string | null
 }
 
 export const BotWindow = forwardRef<HTMLDivElement, Props>(
@@ -91,6 +94,8 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       buttonStyle,
       bubbleStyle,
       showAvatars,
+      widgetSize,
+      widgetStyle,
     },
     ref
   ) => {
@@ -104,25 +109,51 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
           return 'rounded-full'
         case 'ROUNDED':
         default:
-          return 'rounded-lg'
+          return 'rounded-md'
+      }
+    }
+    const getSizeClasses = () => {
+      switch (widgetSize) {
+        case 'COMPACT':
+          return 'h-[500px] w-[360px]'
+        case 'FULL':
+          return 'h-[700px] w-[480px]'
+        case 'MEDIUM':
+        default:
+          return 'h-[600px] w-[420px]'
+      }
+    }
+    const getStyleClasses = () => {
+      switch (widgetStyle) {
+        case 'SOFT':
+          return 'bg-white/95 backdrop-blur-sm border border-gray-200/50'
+        case 'GLASS':
+          return 'bg-white/80 backdrop-blur-md border border-white/20 shadow-2xl'
+        case 'SOLID':
+        default:
+          return 'bg-white border border-gray-200'
       }
     }
 
-    const displayTitle = chatbotTitle || 'Sales Rep - SendWise-AI'
-    const displaySubtitle = chatbotSubtitle || (domainName ?? '').replace(/\.com$/, '') || 'ChatBot'
-    const finalShowAvatars = showAvatars ?? true
+    const displayTitle = chatbotTitle || 'SendWise-AI'
+    const displaySubtitle = chatbotSubtitle || 'Your AI assistant'
 
     return (
-      <div className="h-[670px] w-[450px] flex flex-col bg-white rounded-xl mr-[80px] border-[1px] overflow-hidden">
-        <div className="flex justify-between px-4 pt-4 pb-4 items-center"
-        style={{
-          background: theme || '#7C3AED',
-          color: textColor || '#FFFFFF',
-        }}
+      <div className={cn(
+        'flex flex-col rounded-2xl mr-[80px] shadow-xl overflow-hidden',
+        getSizeClasses(),
+        getStyleClasses()
+      )}>
+        <div 
+          className="flex justify-between items-center px-4 py-3 border-b border-white/10"
+          style={{
+            background: theme || '#6366F1',
+            color: textColor || '#FFFFFF',
+          }}
         >
-          <div className="flex gap-2">
+          <div className="flex items-center gap-3">
             {botIcon ? (
-              <div className="w-20 h-20 flex items-center justify-center bg-white rounded-full p-2 overflow-hidden">
+              <div className="w-9 h-9 flex items-center justify-center bg-white rounded-full p-1.5 overflow-hidden flex-shrink-0">
                 <div className="relative w-full h-full">
                   <Image
                     src={botIcon}
@@ -133,46 +164,34 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 </div>
               </div>
             ) : (
-              <Avatar className="w-20 h-20">
-                <div className="w-full h-full flex items-center justify-center bg-white rounded-full">
-                  <BotIcon />
-                </div>
-              </Avatar>
+              <div className="w-9 h-9 flex items-center justify-center bg-white rounded-full flex-shrink-0">
+                <Sparkles className="w-5 h-5 text-indigo-600" />
+              </div>
             )}
-            <div className="flex items-start flex-col">
-              <h3 className="text-lg font-bold leading-none">
+            
+            <div className="flex flex-col min-w-0">
+              <h3 className="text-sm font-semibold leading-tight truncate">
                 {displayTitle}
               </h3>
-              <p className="text-sm">{displaySubtitle}</p>
-              {realtimeMode?.chatroom && (
-                <RealTimeMode
-                  setChats={setChat}
-                  chatRoomId={realtimeMode.chatroom}
-                  showBadge={realtimeMode.mode}
-                />
-              )}
+              <p className="text-xs opacity-90 truncate">{displaySubtitle}</p>
             </div>
           </div>
-          {finalShowAvatars && (
-            <div className="relative w-16 h-16">
-              <Image
-                src="https://ucarecdn.com/019dd17d-b69b-4dea-a16b-60e0f25de1e9/propuser.png"
-                fill
-                alt="users"
-                objectFit="contain"
-              />
+
+          {realtimeMode?.mode && (
+            <div className="bg-white/20 backdrop-blur-sm px-2.5 py-1 rounded-full">
+              <span className="text-xs font-medium">Live</span>
             </div>
           )}
         </div>
+
         <TabsMenu
           triggers={BOT_TABS_MENU}
-          className=" bg-transparent border-[1px] border-border m-2"
+          className="bg-gray-50/50 border-b border-gray-200 mx-3 mt-2 rounded-lg"
         >
-          <TabsContent value="chat">
-            <Separator orientation="horizontal" />
+          <TabsContent value="chat" className="mt-0">
             <div className="flex flex-col h-full">
               <div
-                className="px-3 flex h-[400px] flex-col py-5 gap-3 chat-window overflow-y-auto bg-white"
+                className="px-4 flex h-[420px] flex-col py-4 gap-3 chat-window overflow-y-auto bg-white"
                 ref={ref}
               >
                 {chats.map((chat, key) => (
@@ -190,33 +209,48 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 ))}
                 {onResponding && <Responding botIcon={botIcon} />}
               </div>
+
               <form
                 onSubmit={onChat}
-                className="flex px-3 py-3.5 flex-col bg-porcelain "
+                className="flex px-4 py-3 flex-col gap-2 bg-gray-50/80 border-t border-gray-200"
               >
-                <div className="flex justify-between items-end gap-2">
-                  <div className="flex-1 flex flex-col gap-2">
-                    {imagePreview && (
-                      <div className="relative w-16 h-16 rounded-md overflow-hidden border-2 border-gray-300">
-                        <img 
-                          src={imagePreview} 
-                          alt="preview" 
-                          className="w-full h-full object-cover"
-                        />
-                        <button
-                          type="button"
-                          onClick={removeImage}
-                          className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    )}
-                    
+                {imagePreview && (
+                  <div className="relative w-14 h-14 rounded-lg overflow-hidden border-2 border-gray-200 bg-white">
+                    <img 
+                      src={imagePreview} 
+                      alt="preview" 
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={removeImage}
+                      className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 transition-colors shadow-sm"
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
+                
+                <div className="flex items-center gap-2">
+                  <Label 
+                    htmlFor="bot-image" 
+                    className="cursor-pointer hover:bg-gray-200 p-2 rounded-lg transition-colors"
+                  >
+                    <Paperclip className="w-4 h-4 text-gray-500" />
+                    <Input
+                      type="file"
+                      id="bot-image"
+                      className="hidden"
+                      accept="image/*"
+                      onChange={onImageChange}
+                    />
+                  </Label>
+
+                  <div className="flex-1 relative">
                     <Input
                       {...register('content')}
                       placeholder="Type your message..."
-                      className="focus-visible:ring-0 p-0 focus-visible:ring-offset-0 bg-porcelain rounded-none outline-none border-none"
+                      className="w-full bg-white border-gray-200 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-0 rounded-lg px-3 py-2 text-sm pr-10"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault()
@@ -228,36 +262,26 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                   
                   <Button
                     type="submit"
-                    className={`h-10 ${getButtonClass()}`}
-                    style={{ background: theme || '#7C3AED' }}
+                    size="icon"
+                    className={`h-9 w-9 flex-shrink-0 ${getButtonClass()} transition-all hover:scale-105`}
+                    style={{ background: theme || '#6366F1' }}
                   >
-                    <Send />
+                    <Send className="w-4 h-4" />
                   </Button>
                 </div>
-                
-                <Label htmlFor="bot-image" className="cursor-pointer mt-1">
-                  <Paperclip className="text-muted-foreground hover:text-foreground transition-colors" />
-                  <Input
-                    type="file"
-                    id="bot-image"
-                    className="hidden"
-                    accept="image/*"
-                    onChange={onImageChange}
-                  />
-                </Label>
               </form>
             </div>
           </TabsContent>
 
-          <TabsContent value="helpdesk">
+          <TabsContent value="helpdesk" className="mt-0">
             <div className="h-[485px] overflow-y-auto overflow-x-hidden p-4 flex flex-col gap-4">
-              <div>
-                <CardTitle>Help Desk</CardTitle>
-                <CardDescription>
+              <div className="space-y-1">
+                <CardTitle className="text-base">Help Desk</CardTitle>
+                <CardDescription className="text-xs">
                   Browse from a list of questions people usually ask.
                 </CardDescription>
               </div>
-              <Separator orientation="horizontal" />
+              <Separator orientation="horizontal" className="my-2" />
 
               {(helpdesk ?? []).map((desk) => (
                 <Accordion
@@ -269,9 +293,12 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
             </div>
           </TabsContent>
         </TabsMenu>
+
         {showPoweredBy && (
-          <div className="flex justify-center py-2">
-            <p className="text-gray-400 text-xs">Powered by SendWise AI</p>
+          <div className="flex justify-center py-2 bg-gray-50/50 border-t border-gray-100">
+            <p className="text-gray-400 text-[10px] font-medium">
+              Powered by <span className="text-gray-500">SendWise-AI</span>
+            </p>
           </div>
         )}
       </div>

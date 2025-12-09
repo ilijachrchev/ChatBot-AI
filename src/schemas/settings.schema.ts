@@ -81,6 +81,8 @@ export const DomainSettingsSchema = z
     buttonStyle: z.enum(['ROUNDED', 'SQUARE', 'PILL']).optional(),
     bubbleStyle: z.enum(['ROUNDED', 'SQUARE', 'PILL']).optional(),
     showAvatars: z.boolean().optional(),
+    widgetSize: z.string().optional(),
+    widgetStyle: z.string().optional(),
   })
   .refine(
     (schema) => {

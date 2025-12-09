@@ -66,6 +66,8 @@ const AiChatBot = (props: Props) => {
                 buttonStyle={currentBot?.chatBot?.buttonStyle}
                 bubbleStyle={currentBot?.chatBot?.bubbleStyle}
                 showAvatars={currentBot?.chatBot?.showAvatars}
+                widgetSize={currentBot?.chatBot?.widgetSize}
+                widgetStyle={currentBot?.chatBot?.widgetStyle}
             />
         )}
     <div

@@ -18,6 +18,8 @@ type ChatbotPreviewProps = {
   buttonStyle?: string | null
   bubbleStyle?: string | null
   showAvatars?: boolean | null
+  widgetSize?: string | null
+  widgetStyle?: string | null
 }
 
 export const ChatbotPreview = ({ 
@@ -34,6 +36,8 @@ export const ChatbotPreview = ({
   buttonStyle,
   bubbleStyle,
   showAvatars,
+  widgetSize,
+  widgetStyle,
 }: ChatbotPreviewProps) => {
   const displayIcon = previewIcon || icon
   const displayMessage = welcomeMessage || "Hey there, have a question? Text us here"
@@ -218,6 +222,21 @@ export const ChatbotPreview = ({
               <Send className="h-4 w-4" />
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className="absolute -top-3 left-4 z-10">
+        <div className="flex gap-2">
+          {widgetSize && (
+            <div className="px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-semibold">
+              {widgetSize}
+            </div>
+          )}
+          {widgetStyle && (
+            <div className="px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 text-[10px] font-semibold">
+              {widgetStyle}
+            </div>
+          )}
         </div>
       </div>
 

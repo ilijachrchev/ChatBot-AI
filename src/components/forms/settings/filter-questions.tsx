@@ -37,7 +37,7 @@ const FilterQuestions = ({ id }: Props) => {
                     />
                     <FormGenerator
                         inputType='input'
-                        register={register}
+                        register={register as unknown as any}
                         errors={errors}
                         form='filter-questions-form'
                         name='question'
@@ -52,7 +52,7 @@ const FilterQuestions = ({ id }: Props) => {
                     />
                     <FormGenerator
                         inputType='textarea'
-                        register={register}
+                        register={register as unknown as any}
                         errors={errors}
                         form='filter-questions-form'
                         name='answer'

@@ -50,6 +50,8 @@ type Props = {
     buttonStyle?: string | null
     bubbleStyle?: string | null
     showAvatars?: boolean | null
+    widgetSize?: string | null
+    widgetStyle?: string | null
   } | null
 
   verificationStatus?: string
@@ -88,6 +90,8 @@ const SettingsForm = ({
     watchedButtonStyle,
     watchedBubbleStyle,
     watchedShowAvatars,
+    watchedWidgetSize,
+    watchedWidgetStyle,
     setValue,
   } = useSettings(id, chatBot?.id || '')
 
@@ -225,6 +229,8 @@ const SettingsForm = ({
                     botTextColor: chatBot?.botTextColor,
                     buttonStyle: chatBot?.buttonStyle,
                     showAvatars: chatBot?.showAvatars,
+                    widgetSize: chatBot?.widgetSize,
+                    widgetStyle: chatBot?.widgetStyle,
                   }}
                 />
               </div>
@@ -266,6 +272,12 @@ const SettingsForm = ({
                   }
                   bubbleStyle={
                     (watchedBubbleStyle as string) || chatBot?.bubbleStyle
+                  }
+                  widgetSize={
+                    (watchedWidgetSize as string) || chatBot?.widgetSize
+                  }
+                  widgetStyle={
+                    (watchedWidgetStyle as string) || chatBot?.widgetStyle
                   }
                   showAvatars={watchedShowAvatars ?? chatBot?.showAvatars}
                 />

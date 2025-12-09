@@ -77,6 +77,8 @@ export const useSettings = (id: string, chatBotId: string) => {
         register('buttonStyle')
         register('bubbleStyle')
         register('showAvatars')
+        register('widgetSize')
+        register('widgetStyle')
     }, [register])
     
     const watchedIcon = watch('image')
@@ -91,6 +93,8 @@ export const useSettings = (id: string, chatBotId: string) => {
     const watchedButtonStyle = watch('buttonStyle')
     const watchedBubbleStyle = watch('bubbleStyle')
     const watchedShowAvatars = watch('showAvatars')
+    const watchedWidgetSize = watch('widgetSize')
+    const watchedWidgetStyle = watch('widgetStyle')
 
     const [previewIcon, setPreviewIcon] = useState<string | null>(null)
 
@@ -158,7 +162,9 @@ export const useSettings = (id: string, chatBotId: string) => {
             values.botTextColor ||
             values.buttonStyle ||
             values.bubbleStyle ||
-            values.showAvatars !== undefined
+            values.showAvatars !== undefined ||
+            values.widgetSize ||
+            values.widgetStyle
         ) {
             const customization = await onUpdateChatbotCustomization(chatBotId, {
                 chatbotTitle: values.chatbotTitle,
@@ -170,6 +176,8 @@ export const useSettings = (id: string, chatBotId: string) => {
                 buttonStyle: values.buttonStyle,
                 bubbleStyle: values.bubbleStyle,
                 showAvatars: values.showAvatars,
+                widgetSize: values.widgetSize,
+                widgetStyle: values.widgetStyle,
             })
 
             if (customization) {
@@ -217,6 +225,8 @@ export const useSettings = (id: string, chatBotId: string) => {
         watchedBubbleStyle,
         watchedShowAvatars,
         setValue,
+        watchedWidgetSize,
+        watchedWidgetStyle,
     }
 }
 

@@ -46,6 +46,8 @@ export const useChatBot = () => {
                 buttonStyle?: string | null
                 bubbleStyle?: string | null
                 showAvatars?: boolean | null
+                widgetSize?: string | null
+                widgetStyle?: string | null
             } | null
             helpdesk: {
                 id: string

@@ -699,6 +699,8 @@ export const onUpdateChatbotCustomization = async (
     buttonStyle?: string
     bubbleStyle?: string
     showAvatars?: boolean
+    widgetSize?: string
+    widgetStyle?: string
   }
 ) => {
   try {

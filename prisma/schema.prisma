@@ -94,6 +94,8 @@ model ChatBot {
   bubbleStyle     String? @default("ROUNDED")
   showAvatars     Boolean @default(true)
 
+  widgetSize String? @default("MEDIUM")
+  widgetStyle String? @default("SOLID")
 }
 
 model Billings {

@@ -3,7 +3,7 @@ import React from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input' 
 import { Switch } from '@/components/ui/switch' 
-import { Paintbrush, Type, Layout } from 'lucide-react'
+import { Paintbrush, Type, Layout, Maximize2, Sparkles } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 type Props = {
@@ -20,6 +20,8 @@ type Props = {
     buttonStyle?: string | null
     bubbleStyle?: string | null
     showAvatars?: boolean | null
+    widgetSize?: string | null
+    widgetStyle?: string | null
   }
 }
 
@@ -35,6 +37,33 @@ const BUBBLE_STYLES = [
   { id: 'PILL', name: 'Pill', preview: 'rounded-full' },
 ]
 
+const WIDGET_SIZES = [
+  { id: 'COMPACT', name: 'Compact', dimensions: '360×500px', description: 'Small & minimal' },
+  { id: 'MEDIUM', name: 'Medium', dimensions: '420×600px', description: 'Balanced size' },
+  { id: 'FULL', name: 'Full', dimensions: '480×700px', description: 'Maximum space' },
+]
+
+const WIDGET_STYLES = [
+  { 
+    id: 'SOLID', 
+    name: 'Solid', 
+    description: 'Clean background',
+    gradient: 'bg-white border-2 border-gray-300'
+  },
+  { 
+    id: 'SOFT', 
+    name: 'Soft', 
+    description: 'Subtle backdrop',
+    gradient: 'bg-gradient-to-br from-white/90 to-gray-100/90 border-2 border-gray-200/50'
+  },
+  { 
+    id: 'GLASS', 
+    name: 'Glass', 
+    description: 'Frosted glass',
+    gradient: 'bg-gradient-to-br from-white/60 to-white/40 backdrop-blur-sm border-2 border-white/20 shadow-xl'
+  },
+]
+
 export const ChatbotCustomization = ({ 
   register, 
   errors, 
@@ -46,6 +75,12 @@ export const ChatbotCustomization = ({
   )
   const [selectedBubbleStyle, setSelectedBubbleStyle] = React.useState(
     currentValues?.bubbleStyle || 'ROUNDED'
+  )
+  const [selectedWidgetSize, setSelectedWidgetSize] = React.useState(
+    currentValues?.widgetSize || 'MEDIUM'
+  )
+  const [selectedWidgetStyle, setSelectedWidgetStyle] = React.useState(
+    currentValues?.widgetStyle || 'SOLID'
   )
   const [showAvatars, setShowAvatars] = React.useState(
     currentValues?.showAvatars ?? true
@@ -61,16 +96,30 @@ export const ChatbotCustomization = ({
     register('buttonStyle')
     register('bubbleStyle')
     register('showAvatars')
+    register('widgetSize')
+    register('widgetStyle')
   }, [register])
 
   const handleButtonStyleChange = (style: string) => {
     setSelectedButtonStyle(style)
     setValue('buttonStyle', style, { shouldDirty: true })
   }
+
   const handleBubbleStyleChange = (style: string) => {
     setSelectedBubbleStyle(style)
     setValue('bubbleStyle', style, { shouldDirty: true })
   }
+
+  const handleWidgetSizeChange = (size: string) => {
+    setSelectedWidgetSize(size)
+    setValue('widgetSize', size, { shouldDirty: true })
+  }
+
+  const handleWidgetStyleChange = (style: string) => {
+    setSelectedWidgetStyle(style)
+    setValue('widgetStyle', style, { shouldDirty: true })
+  }
+
   const handleAvatarToggle = (checked: boolean) => {
     setShowAvatars(checked)
     setValue('showAvatars', checked, { shouldDirty: true })
@@ -92,6 +141,80 @@ export const ChatbotCustomization = ({
 
       <div className="space-y-4">
         <div className="flex items-center gap-2 mb-3">
+          <Maximize2 className="h-4 w-4 text-slate-600" />
+          <h4 className="font-semibold text-slate-900 dark:text-white">
+            Widget Size
+          </h4>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          {WIDGET_SIZES.map((size) => (
+            <button
+              key={size.id}
+              type="button"
+              onClick={() => handleWidgetSizeChange(size.id)}
+              className={cn(
+                'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
+                selectedWidgetSize === size.id
+                  ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 ring-2 ring-indigo-500/20'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-indigo-300'
+              )}
+            >
+              <div className="flex flex-col items-center gap-2">
+                <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  {size.name}
+                </div>
+                <div className="text-xs text-slate-500 dark:text-slate-400">
+                  {size.dimensions}
+                </div>
+                <div className="text-[10px] text-slate-400 dark:text-slate-500">
+                  {size.description}
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="h-4 w-4 text-slate-600" />
+          <h4 className="font-semibold text-slate-900 dark:text-white">
+            Widget Style
+          </h4>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          {WIDGET_STYLES.map((style) => (
+            <button
+              key={style.id}
+              type="button"
+              onClick={() => handleWidgetStyleChange(style.id)}
+              className={cn(
+                'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
+                selectedWidgetStyle === style.id
+                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30 ring-2 ring-purple-500/20'
+                  : 'border-slate-200 dark:border-slate-800 hover:border-purple-300'
+              )}
+            >
+              <div className="flex flex-col items-center gap-3">
+                <div className={cn('w-full h-16 rounded-lg', style.gradient)}></div>
+                <div className="text-center">
+                  <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    {style.name}
+                  </div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    {style.description}
+                  </div>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 mb-3">
           <Type className="h-4 w-4 text-slate-600" />
           <h4 className="font-semibold text-slate-900 dark:text-white">
             Chatbot Header
@@ -106,8 +229,8 @@ export const ChatbotCustomization = ({
             <Input
               id="chatbotTitle"
               {...register('chatbotTitle')}
-              defaultValue={currentValues?.chatbotTitle || 'Sales Rep - AI'}
-              placeholder="Sales Rep - AI"
+              defaultValue={currentValues?.chatbotTitle || 'SendWise-AI'}
+              placeholder="SendWise-AI"
               className="w-full"
             />
             {errors.chatbotTitle && (
@@ -122,8 +245,8 @@ export const ChatbotCustomization = ({
             <Input
               id="chatbotSubtitle"
               {...register('chatbotSubtitle')}
-              defaultValue={currentValues?.chatbotSubtitle || ''}
-              placeholder="Your company name"
+              defaultValue={currentValues?.chatbotSubtitle || 'Your AI assistant'}
+              placeholder="Your AI assistant"
               className="w-full"
             />
             {errors.chatbotSubtitle && (

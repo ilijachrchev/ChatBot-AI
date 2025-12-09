@@ -1,3 +1,5 @@
+// src\components\chatbot\bubble.tsx
+
 import { cn, getMonthName } from '@/lib/utils'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -19,7 +21,8 @@ type Props = {
     bubbleStyle?: string | null
 }
 
-const Bubble = ({  message, 
+const Bubble = ({  
+    message, 
     createdAt, 
     botIcon,
     userBubbleColor,
@@ -28,7 +31,7 @@ const Bubble = ({  message,
     botTextColor,
     buttonStyle,
     bubbleStyle,
-  }: Props) => {
+}: Props) => {
     let d = new Date()
 
     const isImageUrl = message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i) || 
@@ -39,103 +42,110 @@ const Bubble = ({  message,
         case 'SQUARE':
           return 'rounded-none'
         case 'PILL':
-          return 'rounded-full'
+          return 'rounded-2xl'
         case 'ROUNDED':
         default:
-          return 'rounded-lg'
+          return 'rounded-xl'
       }
     }
 
-    const finalUserBubbleColor = userBubbleColor || '#3B82F6'
-    const finalBotBubbleColor = botBubbleColor || '#F1F5F9'
+    const finalUserBubbleColor = userBubbleColor || '#6366F1'
+    const finalBotBubbleColor = botBubbleColor || '#F3F4F6'
     const finalUserTextColor = userTextColor || '#FFFFFF'
-    const finalBotTextColor = botTextColor || '#1E293B'
+    const finalBotTextColor = botTextColor || '#1F2937'
 
    return (
     <div className={cn(
-      'flex gap-2 items-end',
+      'flex gap-2 items-end animate-in fade-in-0 slide-in-from-bottom-2 duration-300',
       message.role == 'assistant' ? 'self-start' : 'self-end flex-row-reverse'
     )}>
+      {/* Avatar - Smaller and cleaner */}
       {message.role == 'assistant' ? (
-        <Avatar className='w-5 h-5'>
+        <Avatar className='w-6 h-6 flex-shrink-0 border border-gray-200'>
           {botIcon ? (
-            <AvatarImage src={botIcon} alt="bot" />
+            <AvatarImage src={botIcon} alt="bot" className="object-cover" />
           ) : (
             <>
               <AvatarImage
                 src="https://github.com/shadcn.png"
                 alt='@shadcn'
               />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback className="bg-indigo-100 text-indigo-600 text-[10px]">
+                AI
+              </AvatarFallback>
             </>
           )}
         </Avatar>
       ) : (
-        <Avatar className="w-5 h-5">
-          <AvatarFallback>
-            <User />
+        <Avatar className="w-6 h-6 flex-shrink-0 border border-gray-200">
+          <AvatarFallback className="bg-gray-100">
+            <User className="w-3 h-3 text-gray-600" />
           </AvatarFallback>
         </Avatar>
       )}
-        <div className={cn(
-            'flex flex-col gap-3 min-w-[85%] p-4 break-words',
-            getBubbleClass(),
-            message.role == 'assistant'
-                ? 'rounded-tl-sm'
-                : 'rounded-tr-sm'
-        )}
-          style={{
-            backgroundColor: message.role === 'assistant' 
+
+      {/* Message Bubble */}
+      <div className={cn(
+          'flex flex-col gap-2 max-w-[75%] px-3 py-2.5 break-words shadow-sm',
+          getBubbleClass(),
+          message.role == 'assistant'
+              ? 'rounded-bl-sm'
+              : 'rounded-br-sm'
+      )}
+        style={{
+          backgroundColor: message.role === 'assistant' 
             ? finalBotBubbleColor 
             : finalUserBubbleColor,
           color: message.role === 'assistant'
             ? finalBotTextColor
             : finalUserTextColor,
-          }}
-        >
-            {createdAt ? (
-                <div className='flex gap-2 text-xs text-gray-600'>
-                    <p>
-                        {createdAt.getDate()} {getMonthName(createdAt.getMonth())}
-                    </p>
-                    <p>
-                        {createdAt.getHours()}:{createdAt.getMinutes().toString().padStart(2, '0')}
-                        {createdAt.getHours() >= 12 ? 'PM' : 'AM'}
-                    </p>
-                </div>
-            ) : (
-                <p className='text-xs'>
-                    {`${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')} ${d.getHours() >= 12 ? 'pm' : 'am'}`}
-                </p>
-            )}
-            {isImageUrl ? (
-                <div className='relative w-full h-[250px] rounded-md overflow-hidden bg-gray-100'>
-                    <img 
-                        src={message.content}
-                        alt="Uploaded Image"
-                        className='w-full h-full object-contain'
-                    />
-                </div>
-            ) : (
-                <p className='text-sm break-words whitespace-pre-wrap'>
-                    {message.content.replace('(complete)', '')}
-                    {message.link && (
-                        <Link
-                            className="underline font-bold pl-2 hover:opacity-80"
-                            href={message.link}
-                            target='_blank'
-                            style={{ 
-                                color: message.role === 'assistant' 
-                                    ? finalBotTextColor 
-                                    : finalUserTextColor 
-                            }}
-                        >
-                            Your Link
-                        </Link>
-                    )}
-                </p>
-            )}
-        </div>
+        }}
+      >
+          {/* Timestamp - More subtle */}
+          {createdAt ? (
+              <div className='flex gap-1.5 text-[10px] opacity-60'>
+                  <p>
+                      {createdAt.getDate()} {getMonthName(createdAt.getMonth())}
+                  </p>
+                  <p>
+                      {createdAt.getHours()}:{createdAt.getMinutes().toString().padStart(2, '0')}
+                  </p>
+              </div>
+          ) : (
+              <p className='text-[10px] opacity-60'>
+                  {`${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')}`}
+              </p>
+          )}
+
+          {/* Content */}
+          {isImageUrl ? (
+              <div className='relative w-full max-w-[200px] h-[180px] rounded-lg overflow-hidden bg-gray-100 border border-gray-200'>
+                  <img 
+                      src={message.content}
+                      alt="Uploaded Image"
+                      className='w-full h-full object-cover'
+                  />
+              </div>
+          ) : (
+              <p className='text-sm leading-relaxed break-words whitespace-pre-wrap'>
+                  {message.content.replace('(complete)', '')}
+                  {message.link && (
+                      <Link
+                          className="inline-flex items-center gap-1 underline font-medium ml-1 hover:opacity-80 transition-opacity"
+                          href={message.link}
+                          target='_blank'
+                          style={{ 
+                              color: message.role === 'assistant' 
+                                  ? finalBotTextColor 
+                                  : finalUserTextColor 
+                          }}
+                      >
+                          Your Link
+                      </Link>
+                  )}
+              </p>
+          )}
+      </div>
     </div>
   )
 }
