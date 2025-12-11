@@ -3,7 +3,6 @@
 import { useSettings } from '@/hooks/settings/use-settings'
 import React from 'react'
 import { DomainUpdate } from './domain-update'
-import CodeSnippet from './code-snippet'
 import EditChatbotIcon from './edit-chatbot-icon'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
@@ -24,6 +23,7 @@ import { Separator } from '@/components/ui/separator'
 import { VerificationBanner } from '@/components/domain/verification-banner'
 import { PlanLockedOverlay } from '@/components/plan/plan-locked-overlay' 
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 const WelcomeMessage = dynamic(
   () => import('./greetings-message').then((props) => props.default),
@@ -143,11 +143,19 @@ const SettingsForm = ({
                   Embed Code
                 </h3>
                 <p className="text-sm text-slate-600 dark:text-slate-300">
-                  Add this snippet to your website
+                  Get multi-language embed snippets for this domain
                 </p>
               </div>
             </div>
-            <CodeSnippet id={id} />
+
+            <p className="text-sm text-muted-foreground mb-4">
+              Open the embed page to view installation instructions and code for
+              15 languages & frameworks.
+            </p>
+              <Link href={`/settings/${name}/embed`}>
+                <Code className="h-4 w-4 mr-2" />
+                Open Embed Instructions
+              </Link>
           </div>
         </div>
 

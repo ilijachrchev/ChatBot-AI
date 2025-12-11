@@ -1,11 +1,11 @@
-export const javascriptSnippet = (domainId: string, baseUrl: string): string => `
+export const typescriptSnippet = (domainId: string, baseUrl: string): string => `
 const WIDGET_ORIGIN = '${baseUrl}';
 const WIDGET_ID = '${domainId}';
 
-const iframe = document.createElement('iframe');
+const iframe: HTMLIFrameElement = document.createElement('iframe');
 
-const iframeStyles = (styleString) => {
-  const style = document.createElement('style');
+const iframeStyles = (styleString: string): void => {
+  const style: HTMLStyleElement = document.createElement('style');
   style.textContent = styleString;
   document.head.append(style);
 };
@@ -23,7 +23,7 @@ iframe.src = \`\${WIDGET_ORIGIN}/chatbot\`;
 iframe.classList.add('chat-frame');
 document.body.appendChild(iframe);
 
-window.addEventListener('message', (e) => {
+window.addEventListener('message', (e: MessageEvent) => {
   if (e.origin !== WIDGET_ORIGIN) return;
   
   const data = e.data;
@@ -34,9 +34,9 @@ window.addEventListener('message', (e) => {
   }
   
   try {
-    const dimensions = JSON.parse(data);
-    iframe.width = dimensions.width;
-    iframe.height = dimensions.height;
+    const dimensions = JSON.parse(data as string) as { width: number; height: number };
+    iframe.width = String(dimensions.width);
+    iframe.height = String(dimensions.height);
   } catch (err) {
     // ignore invalid messages
   }
