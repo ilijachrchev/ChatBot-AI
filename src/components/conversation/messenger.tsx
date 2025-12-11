@@ -10,7 +10,7 @@ import { Switch } from '../ui/switch'
 import { onToggleRealtime, onGetConversationMode } from '@/actions/conversation'
 import { cn } from '@/lib/utils'
 
-type Props = {}
+type Props = Record<string, never>
 
 const Messenger = (props: Props) => {
     const {

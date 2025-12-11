@@ -3,7 +3,7 @@ import React from 'react'
 import { Bell } from 'lucide-react'
 import { Switch } from '../ui/switch'
 
-type Props = {}
+type Props = Record<string, never>
 
 const NotificationPreferences = (props: Props) => {
   const [notifications, setNotifications] = React.useState({

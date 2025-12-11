@@ -21,7 +21,7 @@ const OTPForm = dynamic(() => import('./otp-form'), {
   loading: () => <Spinner />,
 })
 
-type Props = {}
+type Props = Record<string, never>
 
 const RegistrationFormStep = (props: Props) => {
   const {

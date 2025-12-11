@@ -32,4 +32,3 @@ export const onCompleteUserRegistration = async (
     return { status: 400 }
   }
 }
-

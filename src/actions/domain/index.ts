@@ -114,7 +114,7 @@ export const onCreateDomain = async (
     })
 
     const plan = subscription?.plan || 'STANDARD'
-    const limits = {
+    const limits: Record<string, number> = {
       STANDARD: 1,
       PRO: 5,
       ULTIMATE: 10,

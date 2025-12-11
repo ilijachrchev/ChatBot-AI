@@ -12,7 +12,7 @@ export const useSignInForm = () => {
   const router = useRouter()
 
   const methods = useForm<UserLoginProps>({
-    resolver: zodResolver(UserLoginSchema as any) as Resolver<UserLoginProps>,
+    resolver: zodResolver(UserLoginSchema),
     mode: 'onChange',
   })
 
@@ -41,12 +41,18 @@ export const useSignInForm = () => {
         toast.error('Sign-in not completed. Please try again.')
         setLoading(false)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as { 
+        errors?: Array<{ 
+          code?: string
+          message?: string 
+        }> 
+      }
       setLoading(false)
       console.error('Sign-in error:', error)
       
-      const code = error?.errors?.[0]?.code
-      const message = error?.errors?.[0]?.message
+      const code = err?.errors?.[0]?.code
+      const message = err?.errors?.[0]?.message
       
       if (code === 'form_password_incorrect') {
         toast.error('Incorrect credentials', {

@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import { FieldErrors, UseFormRegister } from 'react-hook-form'
 import { Label } from '@/components/ui/label' 
 import { Input } from '@/components/ui/input'
 import { ErrorMessage } from '@hookform/error-message'
@@ -11,9 +11,9 @@ type Props = {
   options?: { value: string; label: string; id: string }[]
   label?: string
   placeholder: string
-  register: UseFormRegister<FieldValues>
+  register: UseFormRegister<any>
   name: string
-  errors: FieldErrors<FieldValues>
+  errors: FieldErrors<any>
   lines?: number
   form?: string
   defaultValue?: string

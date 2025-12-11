@@ -97,7 +97,9 @@ export const useEmailMarketing = () => {
         setProcessing(false)
         router.refresh()
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onSelectedEmails = (email: string) => {

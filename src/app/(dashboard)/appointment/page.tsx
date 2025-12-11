@@ -8,7 +8,7 @@ import { Calendar, Clock, Mail, Globe } from 'lucide-react'
 import React from 'react'
 import { cn } from '@/lib/utils'
 
-type Props = {}
+type Props = Record<string, never>
 
 const Page = async (props: Props) => {
   const user = await currentUser()
@@ -39,7 +39,7 @@ const Page = async (props: Props) => {
     )
   }
 
-  const bookingExistToday = domainBookings.bookings.filter((booking) => {
+  const bookingExistToday = domainBookings.bookings.filter((booking: any ) => {
     return booking.date.getDate() === today.getDate() &&
            booking.date.getMonth() === today.getMonth() &&
            booking.date.getFullYear() === today.getFullYear()
@@ -69,7 +69,7 @@ const Page = async (props: Props) => {
 
           <div className='space-y-3 md:space-y-4'>
             {bookingExistToday.length ? (
-              bookingExistToday.map((booking) => (
+              bookingExistToday.map((booking: any) => (
                 <div
                   key={booking.id}
                   className={cn(

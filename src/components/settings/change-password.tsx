@@ -8,7 +8,7 @@ import { Loader } from '../loader'
 import { Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-type Props = {}
+type Props = Record<string, never>
 
 const ChangePassword = (props: Props) => {
   const { register, errors, onChangePassword, loading } = useChangePassword()

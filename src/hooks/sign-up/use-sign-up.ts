@@ -5,7 +5,7 @@ import { useSignUp } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { Toaster, toast } from "sonner"
+import { toast } from "sonner"
 import { zodResolver } from '@hookform/resolvers/zod'
 import { onCompleteUserRegistration } from "@/actions"
 
@@ -43,8 +43,9 @@ export const useSignUpForm = () => {
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
 
       onNext((prev) => prev + 1)
-    } catch (error: any) {
-      toast.error(error.errors?.[0]?.longMessage || 'Something went wrong')
+    } catch (error: unknown) {
+      const err = error as { errors?: Array<{ longMessage?: string }> }
+      toast.error(err.errors?.[0]?.longMessage || 'Something went wrong')
     }
   }
 
@@ -84,8 +85,9 @@ export const useSignUpForm = () => {
             toast.error('Something went wrong!')
           }
         }
-      } catch (error: any) {
-        toast.error(error.errors?.[0]?.longMessage || 'Something went wrong')
+      } catch (error: unknown) {
+        const err = error as { errors?: Array<{ longMessage?: string }> }
+        toast.error(err.errors?.[0]?.longMessage || 'Something went wrong')
       }
     }
   )

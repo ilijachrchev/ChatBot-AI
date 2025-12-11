@@ -82,7 +82,7 @@ export const onBookNewAppointment = async (
 }
 
 export const saveAnswers = async (
-  questions: [question: string],
+  questions: Record<string, string>,
   customerId: string
 ) => {
   try {
@@ -105,7 +105,7 @@ export const saveAnswers = async (
     }
     return {
       status: 200,
-      messege: 'Updated Responses',
+      message: 'Updated Responses',
     }
   } catch (error) {
     console.log(error)

@@ -1,12 +1,10 @@
 import {
   onBookNewAppointment,
-  onDomainCustomerResponses,
   saveAnswers,
 } from '@/actions/appointment'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { set } from 'zod'
 
 export const usePortal = (
   customerId: string,
@@ -36,10 +34,10 @@ export const usePortal = (
 
         const questions = Object.keys(values)
           .filter((key) => key.startsWith('question'))
-          .reduce((obj: any, key) => {
+          .reduce((obj: Record<string, string>, key) => {
             obj[key.split('question-')[1]] = values[key]
             return obj
-          }, {})
+        }, {})
 
         const savedAnswers = await saveAnswers(questions, customerId)
 
@@ -57,7 +55,9 @@ export const usePortal = (
             setStep(3)
           }
         }
-    } catch (error) {}
+    } catch (error) {
+        console.log(error)
+    }
   })
 
   const onSelectedTimeSlot = (slot: string) => setSelectedSlot(slot)

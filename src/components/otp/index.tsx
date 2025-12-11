@@ -79,7 +79,9 @@ const OTPInput = ({ otp, setOtp }: Props) => {
           transition={{ delay: index * 0.05 }}
         >
           <Input
-            ref={(el) => (inputRefs.current[index] = el)}
+            ref={(el) => {
+              inputRefs.current[index] = el
+            }}
             type='text'
             inputMode='numeric'
             maxLength={1}

@@ -4,7 +4,7 @@ import InfoBar from '@/components/infobar'
 import { currentUser } from '@clerk/nextjs/server'
 import React from 'react'
 
-type Props = {}
+type Props = Record<string, never>
 
 const Page = async (props: Props) => {
   const user = await currentUser()

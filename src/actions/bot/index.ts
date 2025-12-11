@@ -346,7 +346,7 @@ export const onAiChatBotAssistant = async (
                             email: customerEmail,
                             domainId: id,
                             questions: {
-                              create: chatBotDomain.filterQuestions.map(f => ({
+                              create: chatBotDomain.filterQuestions.map((f: { question: string }) => ({
                                 question: f.question,
                               })),
                             },
@@ -461,7 +461,7 @@ export const onAiChatBotAssistant = async (
               Additional Context:
               - You represent ${chatBotDomain.name}
               - Ask these qualification questions naturally: [${chatBotDomain.filterQuestions
-                .map((q) => q.question)
+                .map((q: { question: string }) => q.question)
                 .join(', ')}]
               
               Important Instructions:

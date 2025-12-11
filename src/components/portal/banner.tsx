@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 
-type Props = {}
+type Props = Record<string, never>
 
 const PortalBanner = (props: Props) => {
   return (

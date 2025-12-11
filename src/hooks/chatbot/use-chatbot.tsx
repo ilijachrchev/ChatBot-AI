@@ -21,7 +21,7 @@ const helperGenerateUUID = (): string => {
 export const useChatBot = () => {
     const { register, handleSubmit, reset, setValue } = 
     useForm<ChatBotMessageProps>({
-        resolver: zodResolver(ChatBotMessageSchema as any) as any,
+        resolver: zodResolver(ChatBotMessageSchema as any),
     })
     const [currentBot, setCurrentBot] = useState<
         | {
@@ -232,7 +232,7 @@ export const useChatBot = () => {
                 reset()
                 setImagePreview(null)
 
-                setOnChats((prev: any) => [
+                setOnChats((prev: Array<{ role: 'assistant' | 'user'; content: string; link?: string }>) => [
                     ...prev,
                     {
                         role: 'user',
@@ -337,7 +337,7 @@ export const useChatBot = () => {
     }
     const removeImage = () => {
         setImagePreview(null)
-        setValue('image', null as any)
+        setValue('image', null as unknown as FileList)
     }
 
 

@@ -4,7 +4,7 @@ import ChangePassword from '@/components/settings/change-password'
 import DarkModetoggle from '@/components/settings/dark-mode'
 import React from 'react'
 
-type Props = {}
+type Props = Record<string, never>
 
 const Page = (props: Props) => {
   return (

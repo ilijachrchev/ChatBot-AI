@@ -29,7 +29,7 @@ export const onGetDomainProductsAndConnectedAccountId = async (id: string) => {
     })
 
     if (products) {
-      const totalAmount = products.reduce((current, next) => {
+      const totalAmount = products.reduce((current: number, next: { price: number }) => {
         return current + next.price
       }, 0)
       return {

@@ -1,6 +1,6 @@
 import React from 'react'
 
-type Props = {}
+type Props = Record<string, never>
 
 const HelpDeskIcon = (props: Props) => {
   return (

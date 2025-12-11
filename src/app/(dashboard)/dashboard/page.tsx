@@ -25,7 +25,7 @@ import InfoBar from '@/components/infobar'
 import { MessageSquare, TrendingUp, Calendar, DollarSign } from 'lucide-react'
 import React from 'react'
 
-type Props = {}
+type Props = Record<string, never>
 
 const Page = async (props: Props) => {
   const [
@@ -62,7 +62,7 @@ const Page = async (props: Props) => {
 
   const pipelineValue = (products ?? 0) * (clients ?? 0)
 
-  const PLAN_LIMITS = {
+  const PLAN_LIMITS: Record<string, { credits: number; domains: number; clients: number }> = {
     STANDARD: { credits: 10, domains: 1, clients: 10 },
     PRO: { credits: 50, domains: 2, clients: 50 },
     ULTIMATE: { credits: 500, domains: 100, clients: 500 },

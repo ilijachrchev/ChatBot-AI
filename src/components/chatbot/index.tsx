@@ -5,7 +5,7 @@ import { BotWindow } from './window'
 import { cn } from '@/lib/utils'
 import { BotIcon } from '@/icons/bot-icon'
 
-type Props = {}
+type Props = Record<string, never>
 
 const AiChatBot = (props: Props) => {
     const {

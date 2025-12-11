@@ -166,7 +166,7 @@ export const onRemoveCustomerFromCapaign = async (
     }
 
     const updatedCustomers = campaign.customers.filter(
-      (e) => e !== email
+      (e: string) => e !== email
     )
 
     await client.campaign.update({

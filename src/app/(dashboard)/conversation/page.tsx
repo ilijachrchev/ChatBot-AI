@@ -4,7 +4,7 @@ import Messenger from '@/components/conversation/messenger'
 import InfoBar from '@/components/infobar'
 import React from 'react'
 
-type Props = {}
+type Props = Record<string, never>
 
 const ConversationPage = async (props: Props) => {
   const domains = await onGetAllAccountDomains()

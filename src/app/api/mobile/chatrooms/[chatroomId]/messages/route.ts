@@ -57,9 +57,9 @@ export async function GET(_req: NextRequest, { params }: Params) {
     return NextResponse.json({
       id: room.id,
       live: room.live,
-      messages: room.message.map((m) => ({
+      messages: room.message.map((m: { id: string; role: string | null; message: string; createdAt: Date; seen: boolean }) => ({
         id: m.id,
-        role: m.role,
+        role: m.role || 'user',
         text: m.message,
         createdAt: m.createdAt,
         seen: m.seen,

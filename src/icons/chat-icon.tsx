@@ -1,6 +1,6 @@
 import React from 'react'
 
-type Props = {}
+type Props = Record<string, never>
 
 const ChatIcon = (props: Props) => {
   return (

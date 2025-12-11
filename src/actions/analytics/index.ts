@@ -35,7 +35,7 @@ export const getConversationActivity = async () => {
       activityByDay[dayName] = { ai: 0, human: 0 }
     }
 
-    chatRooms.forEach((room) => {
+    chatRooms.forEach((room: { createdAt: Date; live: boolean }) => {
       const dayName = format(room.createdAt, 'EEE')
       if (activityByDay[dayName]) {
         if (room.live) {
@@ -101,7 +101,7 @@ export const getResolutionData = async () => {
 
     const now = new Date()
 
-    chatRooms.forEach((room) => {
+    chatRooms.forEach((room: { createdAt: Date; live: boolean }) => {
       const daysAgo = Math.floor(
         (now.getTime() - room.createdAt.getTime()) / (1000 * 60 * 60 * 24)
       )
@@ -163,7 +163,7 @@ export const getConversationTrend = async () => {
       trendData[date] = 0
     }
 
-    chatRooms.forEach((room) => {
+    chatRooms.forEach((room: { createdAt: Date }) => {
       const dateKey = format(room.createdAt, 'yyyy-MM-dd')
       if (trendData[dateKey] !== undefined) {
         trendData[dateKey]++
@@ -208,7 +208,7 @@ export const getSalesTrend = async () => {
       trendData[date] = 0
     }
 
-    products.forEach((product) => {
+    products.forEach((product: { createdAt: Date; price: number }) => {
       const dateKey = format(product.createdAt, 'yyyy-MM-dd')
       if (trendData[dateKey] !== undefined) {
         trendData[dateKey] += product.price
@@ -260,7 +260,7 @@ export const getBookingsTrend = async () => {
       trendData[date] = 0
     }
 
-    bookings.forEach((booking) => {
+    bookings.forEach((booking: { createdAt: Date }) => {
       const dateKey = format(booking.createdAt, 'yyyy-MM-dd')
       if (trendData[dateKey] !== undefined) {
         trendData[dateKey]++

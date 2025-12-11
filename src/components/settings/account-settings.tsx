@@ -6,7 +6,7 @@ import { Button } from '../ui/button'
 import { useForm } from 'react-hook-form'
 import { Loader } from '../loader'
 
-type Props = {}
+type Props = Record<string, never>
 
 const AccountSettings = (props: Props) => {
   const { register, handleSubmit, formState: { errors } } = useForm()

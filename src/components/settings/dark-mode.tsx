@@ -7,7 +7,7 @@ import { SystemMode } from '../themes-placeholder/systemmode'
 import { LightMode } from '../themes-placeholder/lightmode'
 import { DarkMode } from '../themes-placeholder/darkmode'
 
-type Props = {}
+type Props = Record<string, never>
 
 const DarkModetoggle = (props: Props) => {
 

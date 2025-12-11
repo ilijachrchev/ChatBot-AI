@@ -1,6 +1,7 @@
 'use server'
 import { client } from '@/lib/prisma'
 import { clerkClient, currentUser } from '@clerk/nextjs/server'
+import { onCreateDomain } from '../domain';
 
 async function ensureUserRow() {
   const cu = await currentUser()
@@ -42,7 +43,6 @@ export const onIntegrateDomain = async (domain: string, icon: string) => {
   if (!user) return { status: 401, message: 'Unauthorized' }
 
   try {
-    const { onCreateDomain } = await import('@/actions/domain')
     const result = await onCreateDomain(domain, icon)
     return result
   } catch (error) {

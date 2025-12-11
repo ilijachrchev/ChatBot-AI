@@ -9,7 +9,7 @@ import Modal from '../modal'
 import SubscriptionForm from '../forms/settings/subscription-form'
 import { cn } from '@/lib/utils'
 
-type Props = {}
+type Props = Record<string, never>
 
 const BillingSettings = async (props: Props) => {
   const plan = await onGetSubscriptionPlan()

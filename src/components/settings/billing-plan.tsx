@@ -5,7 +5,7 @@ import { Button } from '../ui/button'
 import Modal from '../modal'
 import SubscriptionForm from '../forms/settings/subscription-form'
 
-type Props = {}
+type Props = Record<string, never>
 
 const BillingPlan = async (props: Props) => {
   const plan = await onGetSubscriptionPlan()

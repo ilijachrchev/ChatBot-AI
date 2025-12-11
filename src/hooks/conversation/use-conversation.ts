@@ -139,7 +139,7 @@ export const useChatWindow = () => {
   const { chats, loading, setChats, chatRoom } = useChatContext()
   const messageWindowRef = useRef<HTMLDivElement | null>(null)
   const { register, handleSubmit, reset } = useForm<ChatBotMessageForm>({
-    resolver: zodResolver(ChatBotMessageSchema as any) as any,
+    resolver: zodResolver(ChatBotMessageSchema as any),
     mode: 'onChange',
   });
   const onScrollToBottom = () => {

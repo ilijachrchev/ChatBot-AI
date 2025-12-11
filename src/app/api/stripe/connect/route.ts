@@ -1,76 +1,55 @@
-import { client } from '@/lib/prisma'
-import { currentUser } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
-import Stripe from 'stripe'
+import { currentUser } from '@clerk/nextjs/server'
+import { client } from '@/lib/prisma'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-10-29.clover',
-  typescript: true,
-})
+export const dynamic = 'force-dynamic'
 
 export async function GET() {
   try {
     const user = await currentUser()
+
     if (!user) {
-      return NextResponse.json(
-        { error: 'User not authenticated' },
-        { status: 401 }
-      )
+      return new NextResponse('Unauthorized', { status: 401 })
     }
 
-    const existingUser = await client.user.findUnique({
-      where: { clerkId: user.id },
+    const Stripe = (await import('stripe')).default
+    const stripe = new Stripe(process.env.STRIPE_SECRET!, {
+      typescript: true,
+      apiVersion: '2025-10-29.clover',
     })
-
-    if (existingUser?.stripeId) {
-      const accountLink = await stripe.accountLinks.create({
-        account: existingUser.stripeId,
-        refresh_url: 'http://localhost:3000/callback/stripe/refresh',
-        return_url: 'http://localhost:3000/callback/stripe/success',
-        type: 'account_onboarding',
-      })
-
-      return NextResponse.json({ url: accountLink.url })
-    }
 
     const account = await stripe.accounts.create({
-      type: 'express',
-      country: 'US',
-      email: user.emailAddresses[0]?.emailAddress,
-      capabilities: {
-        card_payments: { requested: true },
-        transfers: { requested: true },
-      },
+      type: 'standard',
     })
 
-    console.log('✅ Stripe Express account created:', account.id)
+    if (account) {
+      const approve = await client.user.update({
+        where: {
+          clerkId: user.id,
+        },
+        data: {
+          stripeId: account.id,
+        },
+      })
 
-    await client.user.update({
-      where: { clerkId: user.id },
-      data: { stripeId: account.id },
-    })
+      if (approve) {
+        const accountLink = await stripe.accountLinks.create({
+          account: account.id,
+          refresh_url: `${process.env.NEXT_PUBLIC_URL}/callback/stripe/refresh`,
+          return_url: `${process.env.NEXT_PUBLIC_URL}/callback/stripe/success`,
+          type: 'account_onboarding',
+          collection_options: {
+            fields: 'currently_due',
+          },
+        })
 
-    const accountLink = await stripe.accountLinks.create({
-      account: account.id,
-      refresh_url: 'http://localhost:3000/callback/stripe/refresh',
-      return_url: 'http://localhost:3000/callback/stripe/success',
-      type: 'account_onboarding',
-    })
-
-    return NextResponse.json({ 
-      url: accountLink.url,
-      accountId: account.id 
-    })
-
-  } catch (error: any) {
-    console.error('Stripe Connect error:', error)
-    
-    return NextResponse.json(
-      { 
-        error: error.message || 'Failed to create Connect account',
-        type: error.type 
-      },
-      { status: 400 }
-    )
+        return NextResponse.json({
+          url: accountLink.url,
+        })
+      }
+    }
+  } catch (error) {
+    console.error('Error creating Stripe account:', error)
+    return new NextResponse('Internal Error', { status: 500 })
   }
 }

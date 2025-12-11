@@ -144,7 +144,7 @@ export const getUserTotalProductPrices = async () => {
             })
 
             if (products) {
-                const total = products.reduce((total, next) => {
+                const total = products.reduce((total: number, next : { price: number }) => {
                     return total + next.price
                 }, 0)
 

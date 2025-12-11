@@ -16,7 +16,7 @@ import { useClerk, useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-type Props = {}
+type Props = Record<string, never>
 
 const InfoBar = (props: Props) => {
   const { user } = useUser()
