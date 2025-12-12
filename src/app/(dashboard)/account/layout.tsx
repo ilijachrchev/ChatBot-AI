@@ -1,6 +1,6 @@
 import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
-import { AccountLayoutClient } from '@/components/settings/account-layout-client' 
+import { AccountLayoutClient } from '@/components/settings/account-layout-client'
 import { onGetUserProfile } from '@/actions/settings'
 
 export default async function AccountLayout({
@@ -25,8 +25,10 @@ export default async function AccountLayout({
   }
 
   return (
-    <AccountLayoutClient user={userData}>
-      {children}
-    </AccountLayoutClient>
+    <div className="fixed inset-0 z-50 overflow-hidden">
+      <AccountLayoutClient user={userData}>
+        {children}
+      </AccountLayoutClient>
+    </div>
   )
 }

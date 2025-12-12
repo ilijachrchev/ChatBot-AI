@@ -38,14 +38,14 @@ export function AccountLayoutClient({ user, children }: AccountLayoutClientProps
   }
 
   return (
-    <div className='min-h-screen bg-slate-50 dark:bg-slate-950 flex'>
+    <div className='h-full flex bg-slate-50 dark:bg-slate-950'>
       <SettingsSidebar
         userName={user.fullname}
         userEmail={user.email}
         userAvatar={user.imageUrl}
       />
 
-      <main className='flex-1 lg:ml-0'>
+      <main className='flex-1 overflow-y-auto overflow-x-hidden'>
         <div className='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12'>
           <div className='mb-8'>
             <Link
@@ -63,7 +63,7 @@ export function AccountLayoutClient({ user, children }: AccountLayoutClientProps
             </p>
           </div>
 
-          <div>{children}</div>
+          <div className='pb-12'>{children}</div>
         </div>
       </main>
     </div>

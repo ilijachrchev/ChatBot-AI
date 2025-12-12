@@ -24,8 +24,8 @@ const navItems = [
   { id: 'profile', label: 'Profile', icon: User, group: 'Account', href: '/account/profile' },
   { id: 'security', label: 'Security', icon: Shield, group: 'Account', href: '/account/security' },
   { id: 'preferences', label: 'Preferences', icon: Settings, group: 'Experience', href: '/account/preferences' },
-  { id: 'notifications', label: 'Notifications', icon: Bell, group: 'Experience', href: '/account' },
-  { id: 'billing', label: 'Billing', icon: CreditCard, group: 'Billing', href: '/account' },
+  { id: 'notifications', label: 'Notifications', icon: Bell, group: 'Experience', href: '/account/notifications' },
+  { id: 'billing', label: 'Billing', icon: CreditCard, group: 'Billing', href: '/account/billing' },
 ]
 
 const groups = ['Account', 'Experience', 'Billing']
@@ -33,7 +33,6 @@ const groups = ['Account', 'Experience', 'Billing']
 export function SettingsSidebar({
   userName = 'User',
   userEmail = '',
-  userAvatar,
 }: SettingsSidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -44,7 +43,9 @@ export function SettingsSidebar({
     if (pathname?.includes('/profile')) return 'profile'
     if (pathname?.includes('/security')) return 'security'
     if (pathname?.includes('/preferences')) return 'preferences'
-    return 'notifications'
+    if (pathname?.includes('/notifications')) return 'notifications'
+    if (pathname?.includes('/billing')) return 'billing'
+    return 'profile'
   }
 
   const activeSection = getActiveSection()
@@ -67,7 +68,7 @@ export function SettingsSidebar({
 
       <aside
         className={cn(
-          'fixed lg:sticky top-0 left-0 h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-50 transition-all duration-300 ease-out',
+          'fixed lg:sticky top-0 left-0 h-screen bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 z-50 transition-all duration-300 ease-out flex-shrink-0',
           collapsed ? 'w-20' : 'w-72',
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
@@ -141,7 +142,7 @@ export function SettingsSidebar({
                               }}
                               className={cn(
                                 'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200',
-                                collapsed && 'justify-center',
+                                collapsed ? 'justify-center' : 'justify-start',
                                 isActive
                                   ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30'
                                   : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white'
@@ -150,7 +151,7 @@ export function SettingsSidebar({
                             >
                               <Icon className='w-5 h-5 flex-shrink-0' />
                               {!collapsed && (
-                                <span className='truncate'>{item.label}</span>
+                                <span className='truncate text-left flex-1'>{item.label}</span>
                               )}
                             </button>
                           </li>
@@ -166,7 +167,7 @@ export function SettingsSidebar({
           {!collapsed && (
             <div className='p-4 border-t border-slate-200 dark:border-slate-800'>
               <div className='flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50'>
-                <div className='w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm'>
+                <div className='w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0'>
                   {userName.charAt(0).toUpperCase()}
                 </div>
                 <div className='flex-1 min-w-0'>
