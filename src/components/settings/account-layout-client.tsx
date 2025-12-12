@@ -28,6 +28,14 @@ const sectionTitles: Record<string, { title: string; description: string }> = {
     title: 'Preferences',
     description: 'Customize your experience',
   },
+  '/account/notifications': {
+    title: 'Notifications',
+    description: 'Control how you receive updates',
+  },
+  '/account/billing': {
+    title: 'Billing & Subscription',
+    description: 'Manage your plan and payment methods',
+  },
 }
 
 export function AccountLayoutClient({ user, children }: AccountLayoutClientProps) {
