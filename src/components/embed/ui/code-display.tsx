@@ -2,7 +2,7 @@
 
 import { Card } from '@/components/ui/card'
 import { SyntaxHighlighterComponent } from './syntax-highlighter'
-import { CodeButton } from './code-button'
+import { CopyButton } from './copy-button'
 import { CodeSkeleton } from './code-skeleton'
 import { Suspense } from 'react'
 
@@ -34,7 +34,7 @@ export function CodeDisplay({ code, language, isLoading }: CodeDisplayProps) {
             {language}.{getFileExtension(language)}
           </span>
         </div>
-        <CodeButton code={code} />
+        <CopyButton code={code} />
       </div>
       <div className="max-h-[600px] overflow-auto">
         <Suspense fallback={<CodeSkeleton />}>

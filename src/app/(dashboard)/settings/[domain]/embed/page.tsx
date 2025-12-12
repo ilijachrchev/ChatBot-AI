@@ -1,5 +1,5 @@
 import { onGetCurrentDomainInfo } from '@/actions/settings'
-import { EmbedCodePanel } from '@/components/embed/embed-code-panel'
+import { EmbedCodePanel } from '@/components/embed'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
@@ -30,7 +30,7 @@ const DomainEmbedPage = async ({ params }: Props) => {
   const currentDomain = domainInfo.domains[0]
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] opacity-20"
@@ -48,11 +48,11 @@ const DomainEmbedPage = async ({ params }: Props) => {
         />
       </div>
 
-      <div className="container relative z-10 mx-auto px-4 md:px-6 py-8 max-w-7xl">
+      <div className="container relative z-10 mx-auto px-4 md:px-6 py-8">
         <div className="mb-8">
           <Link
-            href={`/settings/${currentDomain.name}`}
-            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors mb-6 group"
+            href={`/settings/${domain}`}
+            className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors group"
           >
             <ArrowLeft className="h-4 w-4 mr-1 group-hover:-translate-x-1 transition-transform" />
             Back to domain settings

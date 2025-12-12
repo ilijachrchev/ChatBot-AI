@@ -184,7 +184,7 @@ const SettingsForm = ({
                   </div>
                 </div>
 
-                <Link href={`/settings/${name}/embed`} className="block mt-4">
+                <Link href={`/settings/${name.replace(/\.(com|net|org|io)$/, '')}/embed`}>
                   <Button 
                     type="button"
                     className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold shadow-lg shadow-purple-500/30 group/btn"
