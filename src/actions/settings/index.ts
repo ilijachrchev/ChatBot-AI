@@ -548,7 +548,7 @@ export const onGetUserProfile = async () => {
     const user = await currentUser()
     if (!user) return null
 
-    const profile = await client.user.findUnique({
+    let profile = await client.user.findUnique({
       where: {
         clerkId: user.id,
       },
@@ -559,8 +559,52 @@ export const onGetUserProfile = async () => {
         type: true,
         createdAt: true,
         avatar: true,
+        lastNameChange: true, 
       },
     })
+
+    if (!profile || profile.fullname === 'User') {
+      const clerkFullName = user.firstName 
+        ? `${user.firstName}${user.lastName ? ' ' + user.lastName : ''}`
+        : 'User'
+
+      if (!profile) {
+        profile = await client.user.create({
+          data: {
+            clerkId: user.id,
+            fullname: clerkFullName,
+            type: 'OWNER',
+            avatar: user.imageUrl,
+          },
+          select: {
+            id: true,
+            fullname: true,
+            clerkId: true,
+            type: true,
+            createdAt: true,
+            avatar: true,
+            lastNameChange: true,
+          },
+        })
+      } else {
+        profile = await client.user.update({
+          where: { clerkId: user.id },
+          data: {
+            fullname: clerkFullName,
+            avatar: profile.avatar || user.imageUrl,
+          },
+          select: {
+            id: true,
+            fullname: true,
+            clerkId: true,
+            type: true,
+            createdAt: true,
+            avatar: true,
+            lastNameChange: true,
+          },
+        })
+      }
+    }
 
     if (profile) {
       const email = user.emailAddresses?.[0]?.emailAddress || ''
@@ -584,12 +628,36 @@ export const onUpdateUserProfile = async (fullname: string) => {
     const user = await currentUser()
     if (!user) return { status: 400, message: 'User not found' }
 
+    const currentProfile = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        lastNameChange: true,
+      },
+    })
+
+    if (currentProfile?.lastNameChange) {
+      const daysSinceLastChange = Math.floor(
+        (Date.now() - new Date(currentProfile.lastNameChange).getTime()) / (1000 * 60 * 60 * 24)
+      )
+      
+      if (daysSinceLastChange < 14) {
+        const daysRemaining = 14 - daysSinceLastChange
+        return {
+          status: 400,
+          message: `You can change your name again in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`,
+        }
+      }
+    }
+
     const updated = await client.user.update({
       where: {
         clerkId: user.id,
       },
       data: {
         fullname,
+        lastNameChange: new Date(), 
       },
     })
 
@@ -618,6 +686,7 @@ export const onUpdateUserProfile = async (fullname: string) => {
     }
   }
 }
+
 export const onUpdateUserAvatar = async (imageUrl: string) => {
   try {
     const user = await currentUser()

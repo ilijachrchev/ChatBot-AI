@@ -21,6 +21,7 @@ model User {
   type      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  lastNameChange DateTime?
 
   avatar String?
 

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Camera, Save, Loader2, Upload, User as UserIcon } from 'lucide-react'
+import { Camera, Save, Loader2, Upload, User as UserIcon, Lock } from 'lucide-react'
 import { toast } from 'sonner'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,7 +20,6 @@ import { z } from 'zod'
 import { onUpdateUserProfile, onUpdateUserAvatar } from '@/actions/settings'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import EmailStatus from './email-status'
 
 const profileSchema = z.object({
   fullname: z
@@ -38,6 +37,7 @@ type Props = {
     email: string
     imageUrl: string
     createdAt: string
+    lastNameChange?: string | null
   }
 }
 
@@ -45,6 +45,8 @@ const ProfileSettings = ({ user }: Props) => {
   const [loading, setLoading] = useState(false)
   const [avatarLoading, setAvatarLoading] = useState(false)
   const [avatarPreview, setAvatarPreview] = useState(user.imageUrl)
+  const [isNameLocked, setIsNameLocked] = useState(false)
+  const [daysRemaining, setDaysRemaining] = useState(0)
   const router = useRouter()
 
   const {
@@ -58,7 +60,29 @@ const ProfileSettings = ({ user }: Props) => {
     },
   })
 
+  useEffect(() => {
+    if (user.lastNameChange) {
+      const lastChange = new Date(user.lastNameChange)
+      const now = new Date()
+      const daysPassed = Math.floor(
+        (now.getTime() - lastChange.getTime()) / (1000 * 60 * 60 * 24)
+      )
+      
+      if (daysPassed < 14) {
+        setIsNameLocked(true)
+        setDaysRemaining(14 - daysPassed)
+      }
+    }
+  }, [user.lastNameChange])
+
   const onSubmit = async (data: ProfileFormData) => {
+    if (isNameLocked) {
+      toast.error('Name change locked', {
+        description: `You can change your name again in ${daysRemaining} day${daysRemaining !== 1 ? 's' : ''}`,
+      })
+      return
+    }
+
     setLoading(true)
     try {
       const result = await onUpdateUserProfile(data.fullname)
@@ -248,7 +272,7 @@ const ProfileSettings = ({ user }: Props) => {
       <Card className='border-slate-200 dark:border-slate-800'>
         <CardHeader>
           <CardTitle className='text-lg'>Personal Information</CardTitle>
-          <CardDescription>Update your personal details</CardDescription>
+          <CardDescription>Update your display name</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
@@ -256,40 +280,45 @@ const ProfileSettings = ({ user }: Props) => {
               <Label htmlFor='fullname' className='text-sm font-medium'>
                 Full Name
               </Label>
-              <Input
-                id='fullname'
-                {...register('fullname')}
-                placeholder='Enter your full name'
-                className={cn(
-                  'h-11',
-                  errors.fullname &&
-                    'border-red-500 focus-visible:ring-red-500'
+              <div className='relative'>
+                <Input
+                  id='fullname'
+                  {...register('fullname')}
+                  placeholder={isNameLocked ? user.fullname : 'Enter your full name'}
+                  disabled={isNameLocked}
+                  className={cn(
+                    'h-11 pr-10',
+                    isNameLocked && 'bg-slate-50 dark:bg-slate-900/50 cursor-not-allowed',
+                    errors.fullname && 'border-red-500 focus-visible:ring-red-500'
+                  )}
+                />
+                {isNameLocked && (
+                  <div className='absolute right-3 top-1/2 -translate-y-1/2'>
+                    <Lock className='w-4 h-4 text-slate-400' />
+                  </div>
                 )}
-              />
+              </div>
               {errors.fullname && (
                 <p className='text-sm text-red-500 flex items-center gap-1'>
                   {errors.fullname.message}
                 </p>
               )}
-            </div>
-
-            <div className='space-y-2'>
-              <Label htmlFor='email' className='text-sm font-medium'>
-                Email Address <EmailStatus />
-              </Label>
-              <Input
-                id='email'
-                type='email'
-                value={user.email}
-                disabled
-                className='h-11 bg-slate-50 dark:bg-slate-900/50 cursor-not-allowed'
-              />
+              {isNameLocked ? (
+                <p className='text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1'>
+                  <Lock className='w-3 h-3' />
+                  You can change your name again in {daysRemaining} day{daysRemaining !== 1 ? 's' : ''}
+                </p>
+              ) : (
+                <p className='text-xs text-slate-500 dark:text-slate-400'>
+                  You can change your name once every 14 days
+                </p>
+              )}
             </div>
 
             <div className='flex justify-end pt-4 border-t border-slate-200 dark:border-slate-800'>
               <Button
                 type='submit'
-                disabled={loading || !isDirty}
+                disabled={loading || !isDirty || isNameLocked}
                 className={cn(
                   'gap-2 bg-gradient-to-r from-blue-600 to-purple-600',
                   'hover:from-blue-700 hover:to-purple-700',

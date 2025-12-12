@@ -19,6 +19,7 @@ const ProfilePage = async () => {
     email: profile.email,
     imageUrl: profile.imageUrl,
     createdAt: profile.createdAt.toISOString(),
+    lastNameChange: profile.lastNameChange?.toISOString() || null, 
   }
 
   return <ProfileSettings user={userData} />
