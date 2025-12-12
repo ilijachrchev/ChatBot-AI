@@ -2,6 +2,9 @@ import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import ProfileSettings from '@/components/account/profile-settings'
 import { onGetUserProfile } from '@/actions/settings'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 
 const ProfilePage = async () => {
   const user = await currentUser()

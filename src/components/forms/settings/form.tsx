@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { ChatbotPreview } from './chatbot-preview'
 import { ColorPicker } from './color-picker'
-import { PersonaSelector } from '@/components/settings/persona-selector'
+import { PersonaSelector } from '@/components/settings/preferences/persona-selector' 
 import { ChatbotCustomization } from './chatbot-customization'
 import { Separator } from '@/components/ui/separator'
 import { VerificationBanner } from '@/components/domain/verification-banner'

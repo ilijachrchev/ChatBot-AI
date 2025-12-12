@@ -1,9 +1,9 @@
 'use client'
 import React from 'react'
-import { CardDescription } from '../ui/card'
-import { Loader } from '../loader'
+import { CardDescription } from '@/components/ui/card' 
+import { Loader } from '@/components/loader'
 import { PaymentElement } from '@stripe/react-stripe-js'
-import { Button } from '../ui/button'
+import { Button } from '@/components/ui/button'
 import { useCompletePayment } from '@/hooks/billing/use-billing'
 
 

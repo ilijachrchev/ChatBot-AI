@@ -3,6 +3,8 @@ import EmailMarketing from '@/components/email-marketing'
 import InfoBar from '@/components/infobar'
 import { currentUser } from '@clerk/nextjs/server'
 import React from 'react'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 type Props = Record<string, never>
 

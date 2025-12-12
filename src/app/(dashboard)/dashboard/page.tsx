@@ -24,6 +24,9 @@ import { RecentTransactionsCard } from '@/components/dashboard/recent-transactio
 import InfoBar from '@/components/infobar'
 import { MessageSquare, TrendingUp, Calendar, DollarSign } from 'lucide-react'
 import React from 'react'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 
 type Props = Record<string, never>
 

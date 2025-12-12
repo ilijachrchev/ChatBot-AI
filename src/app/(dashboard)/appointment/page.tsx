@@ -7,6 +7,9 @@ import { currentUser } from '@clerk/nextjs/server'
 import { Calendar, Clock, Mail, Globe } from 'lucide-react'
 import React from 'react'
 import { cn } from '@/lib/utils'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 
 type Props = Record<string, never>
 

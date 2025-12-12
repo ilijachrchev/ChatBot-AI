@@ -3,6 +3,9 @@ import ConversationMenu from '@/components/conversation'
 import Messenger from '@/components/conversation/messenger'
 import InfoBar from '@/components/infobar'
 import React from 'react'
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 
 type Props = Record<string, never>
 
