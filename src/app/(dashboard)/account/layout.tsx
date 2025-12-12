@@ -1,6 +1,6 @@
 import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
-import { AccountLayoutClient } from '@/components/settings/account-layout-client'
+import { AccountLayoutClient } from '@/components/settings/shared/account-layout-client' 
 import { onGetUserProfile } from '@/actions/settings'
 
 export default async function AccountLayout({

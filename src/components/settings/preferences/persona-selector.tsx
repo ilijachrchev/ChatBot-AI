@@ -1,14 +1,14 @@
 'use client'
-import React, { useState, useEffect } from 'react'
-import { Button } from '../ui/button'
-import { Label } from '../ui/label'
-import { Textarea } from '../ui/textarea'
+import React, { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Label } from '@/components/ui/label' 
+import { Textarea } from '@/components/ui/textarea'
 import { PERSONAS, PersonaType } from '@/constants/personas'
 import { cn } from '@/lib/utils'
 import { Check, Info, Sparkles, Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { onUpdateChatbotPersona } from '@/actions/settings'
-import { Loader } from '../loader'
+import { Loader } from '@/components/loader'
 
 type PersonaSelectorProps = {
   chatBotId: string 

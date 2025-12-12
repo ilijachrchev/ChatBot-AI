@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { Bell } from 'lucide-react'
-import { Switch } from '../ui/switch'
+import { Switch } from '@/components/ui/switch' 
 
 type Props = Record<string, never>
 

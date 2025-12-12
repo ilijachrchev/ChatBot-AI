@@ -1,9 +1,9 @@
 import { onGetSubscriptionPlan } from '@/actions/settings'
 import React from 'react'
 import { CreditCard } from 'lucide-react'
-import { Button } from '../ui/button'
-import Modal from '../modal'
-import SubscriptionForm from '../forms/settings/subscription-form'
+import { Button } from '@/components/ui/button' 
+import Modal from '@/components/modal' 
+import SubscriptionForm from '@/components/forms/settings/subscription-form'
 
 type Props = Record<string, never>
 

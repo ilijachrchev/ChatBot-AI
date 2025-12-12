@@ -1,7 +1,7 @@
 import { CheckCircle2Icon } from 'lucide-react'
 import React from 'react'
 import { Button } from '../ui/button'
-import StripeConnect from '../settings/stripe-connect'
+import StripeConnect from '../settings/billing/stripe-connect'
 
 type IntegrationModalBodyProps = {
   type: string

@@ -797,3 +797,47 @@ export const onUpdateChatbotCustomization = async (
     }
   }
 }
+
+export const onGetUserSessions = async () => {
+  try {
+    const user = await currentUser()
+    if (!user) return null
+
+    const clerk = await clerkClient()
+    
+    const sessions = await clerk.users.getUserList({
+      userId: [user.id],
+    })
+
+    const userSessions = await clerk.sessions.getSessionList({
+      userId: user.id,
+    })
+
+    return userSessions
+  } catch (error) {
+    console.log('Error fetching sessions:', error)
+    return []
+  }
+}
+
+export const onRevokeSession = async (sessionId: string) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const clerk = await clerkClient()
+    
+    await clerk.sessions.revokeSession(sessionId)
+
+    return {
+      status: 200,
+      message: 'Session revoked successfully',
+    }
+  } catch (error) {
+    console.log('Error revoking session:', error)
+    return {
+      status: 500,
+      message: 'Failed to revoke session',
+    }
+  }
+}

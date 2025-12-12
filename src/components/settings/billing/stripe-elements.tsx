@@ -3,7 +3,7 @@
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import React from 'react'
-import { Loader } from '../loader'
+import { Loader } from '../../loader'
 import { useStripeElements } from '@/hooks/billing/use-billing'
 import { PaymentForm } from './payment-form'
 

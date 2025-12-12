@@ -1,10 +1,9 @@
 "use client"
 import { useChangePassword } from '@/hooks/settings/use-settings'
 import React from 'react'
-import { Section } from '../section-label'
-import FormGenerator from '../forms/form-generator'
-import { Button } from '../ui/button'
-import { Loader } from '../loader'
+import FormGenerator from '@/components/forms/form-generator'
+import { Button } from '@/components/ui/button'
+import { Loader } from '@/components/loader'
 import { Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 

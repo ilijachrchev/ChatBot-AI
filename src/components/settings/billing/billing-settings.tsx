@@ -1,13 +1,10 @@
 import { onGetSubscriptionPlan } from '@/actions/settings'
 import React from 'react'
-import { Section } from '../section-label'
-import { Card, CardContent, CardDescription } from '../ui/card'
-import { CheckCircle2, Plus, CreditCard, Crown } from 'lucide-react'
+import { CheckCircle2, CreditCard, Crown } from 'lucide-react'
 import { pricingCards } from '@/constants/landing-page'
-import { Button } from '../ui/button'
-import Modal from '../modal'
-import SubscriptionForm from '../forms/settings/subscription-form'
-import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button' 
+import Modal from '@/components/modal' 
+import SubscriptionForm from '@/components/forms/settings/subscription-form' 
 
 type Props = Record<string, never>
 

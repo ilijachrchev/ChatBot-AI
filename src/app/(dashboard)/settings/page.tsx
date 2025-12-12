@@ -1,7 +1,6 @@
 import InfoBar from '@/components/infobar'
-import BillingSettings from '@/components/settings/billing-settings'
-import ChangePassword from '@/components/settings/change-password'
-import DarkModetoggle from '@/components/settings/dark-mode'
+import BillingSettings from '@/components/settings/billing/billing-settings' 
+import DarkModetoggle from '@/components/settings/preferences/dark-mode' 
 import React from 'react'
 
 type Props = Record<string, never>

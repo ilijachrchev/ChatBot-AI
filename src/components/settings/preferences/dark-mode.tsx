@@ -1,11 +1,11 @@
 "use client"
 import { useThemeMode } from '@/hooks/settings/use-settings'
 import React, { useEffect, useState } from 'react'
-import { Section } from '../section-label'
+import { Section } from '@/components/section-label' 
 import { cn } from '@/lib/utils'
-import { SystemMode } from '../themes-placeholder/systemmode'
-import { LightMode } from '../themes-placeholder/lightmode'
-import { DarkMode } from '../themes-placeholder/darkmode'
+import { SystemMode } from '@/components/themes-placeholder/systemmode' 
+import { LightMode } from '@/components/themes-placeholder/lightmode' 
+import { DarkMode } from '@/components/themes-placeholder/darkmode' 
 
 type Props = Record<string, never>
 

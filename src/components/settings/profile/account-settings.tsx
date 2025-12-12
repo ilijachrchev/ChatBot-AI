@@ -1,10 +1,10 @@
 'use client'
 import React from 'react'
 import { User } from 'lucide-react'
-import FormGenerator from '../forms/form-generator'
-import { Button } from '../ui/button'
+import FormGenerator from '@/components/forms/form-generator'
+import { Button } from '@/components/ui/button'
 import { useForm } from 'react-hook-form'
-import { Loader } from '../loader'
+import { Loader } from '@/components/loader'
 
 type Props = Record<string, never>
 
