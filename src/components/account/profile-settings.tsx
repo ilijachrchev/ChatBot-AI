@@ -14,7 +14,6 @@ import { onUpdateUserProfile, onUpdateUserAvatar } from '@/actions/settings'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import EmailStatus from './email-status'
-import ChangePassword from '../settings/change-password'
 import ChangePasswordCard from './change-password-card'
 
 const profileSchema = z.object({
