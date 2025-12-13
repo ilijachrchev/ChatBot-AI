@@ -8,6 +8,8 @@ import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/checkbox'
 import Link from 'next/link'
+import { useSignIn } from '@clerk/nextjs'
+import { toast } from 'sonner'
 
 const LoginForm = () => {
     const {
@@ -19,6 +21,24 @@ const LoginForm = () => {
     
     const [showPassword, setShowPassword] = useState(false)
     const keepMeLoggedIn = watch('keepMeLoggedIn')
+    const { signIn } = useSignIn()
+
+    const handleOAuthSignIn = async (provider: 'oauth_google' | 'oauth_github' | 'oauth_apple') => {
+        if (!signIn) return
+        
+        try {
+            await signIn.authenticateWithRedirect({
+                strategy: provider,
+                redirectUrl: '/auth/sso-callback',
+                redirectUrlComplete: '/dashboard',
+            })
+        } catch (error) {
+            console.error('OAuth error:', error)
+            toast.error('Failed to sign in', {
+                description: 'Please try again',
+            })
+        }
+    }
 
     return (
         <motion.div
@@ -116,6 +136,7 @@ const LoginForm = () => {
             <div className='grid grid-cols-3 gap-3'>
                 <button
                     type='button'
+                    onClick={() => handleOAuthSignIn('oauth_google')}
                     className='h-12 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all group'
                 >
                     <svg className='w-5 h-5' viewBox='0 0 24 24'>
@@ -144,6 +165,7 @@ const LoginForm = () => {
 
                 <button
                     type='button'
+                    onClick={() => handleOAuthSignIn('oauth_github')}
                     className='h-12 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all group'
                 >
                     <svg className='w-5 h-5 text-white' fill='currentColor' viewBox='0 0 24 24'>
@@ -153,10 +175,11 @@ const LoginForm = () => {
 
                 <button
                     type='button'
+                    onClick={() => handleOAuthSignIn('oauth_apple')}
                     className='h-12 flex items-center justify-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl transition-all group'
                 >
                     <svg className='w-5 h-5 text-white' fill='currentColor' viewBox='0 0 24 24'>
-                        <path d='M23.954 4.569c-.885.389-1.83.654-2.825.775 1.014-.611 1.794-1.574 2.163-2.723-.951.555-2.005.959-3.127 1.184-.896-.959-2.173-1.559-3.591-1.559-2.717 0-4.92 2.203-4.92 4.917 0 .39.045.765.127 1.124C7.691 8.094 4.066 6.13 1.64 3.161c-.427.722-.666 1.561-.666 2.475 0 1.71.87 3.213 2.188 4.096-.807-.026-1.566-.248-2.228-.616v.061c0 2.385 1.693 4.374 3.946 4.827-.413.111-.849.171-1.296.171-.314 0-.615-.03-.916-.086.631 1.953 2.445 3.377 4.604 3.417-1.68 1.319-3.809 2.105-6.102 2.105-.39 0-.779-.023-1.17-.067 2.189 1.394 4.768 2.209 7.557 2.209 9.054 0 13.999-7.496 13.999-13.986 0-.209 0-.42-.015-.63.961-.689 1.8-1.56 2.46-2.548l-.047-.02z'/>
+                        <path d='M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z'/>
                     </svg>
                 </button>
             </div>

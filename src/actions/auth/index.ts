@@ -366,3 +366,98 @@ export const onResendLoginOTP = async (token: string) => {
     }
   }
 }
+
+export const onOAuthLogin = async (clerkId: string, email: string) => {
+  try {
+    let user = await client.user.findUnique({
+      where: { clerkId },
+    })
+
+    if (!user) {
+      const clerkUser = await currentUser()
+      if (!clerkUser) {
+        return { status: 401, error: 'Unauthorized' }
+      }
+
+      const fullname = `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || 'User'
+
+      user = await client.user.create({
+        data: {
+          clerkId,
+          fullname,
+          type: 'OWNER',
+          avatar: clerkUser.imageUrl,
+          subscription: {
+            create: {},
+          },
+        },
+      })
+    }
+
+    let deviceId: string | null = null
+
+    const deviceInfo = await getDeviceInfo()
+    const geoLocation = await getGeoLocation()
+
+    const riskAssessment = await assessLoginRisk(
+      user.id,
+      deviceId,
+      deviceInfo,
+      geoLocation
+    )
+
+    await client.loginAttempt.create({
+      data: {
+        userId: user.id,
+        email,
+        success: !riskAssessment.requireOtp,
+        riskScore: riskAssessment.riskScore,
+        ipAddress: geoLocation.ipAddress,
+        city: geoLocation.city,
+        country: geoLocation.country,
+        userAgent: deviceInfo.userAgent,
+        browserName: deviceInfo.browserName,
+        deviceType: deviceInfo.deviceType,
+        deviceId,
+        isTrustedDevice: !riskAssessment.requireOtp,
+        otpRequired: riskAssessment.requireOtp,
+      },
+    })
+
+    if (riskAssessment.requireOtp) {
+      const { code } = await createOTPCode(user.id)
+      await sendOTPEmail(email, code, user.fullname)
+
+      await client.pendingLogin.create({
+        data: {
+          userId: user.id,
+          email,
+          deviceId,
+          ipAddress: geoLocation.ipAddress,
+          userAgent: deviceInfo.userAgent,
+          expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+        },
+      })
+
+      return {
+        status: 200,
+        requireOtp: true,
+        userId: user.id,
+        email,
+        reason: riskAssessment.reason,
+      }
+    }
+
+    return {
+      status: 200,
+      requireOtp: false,
+      user,
+    }
+  } catch (error) {
+    console.error('OAuth login error:', error)
+    return {
+      status: 500,
+      error: 'Failed to process OAuth login',
+    }
+  }
+}
