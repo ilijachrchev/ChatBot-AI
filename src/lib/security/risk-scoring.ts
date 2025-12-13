@@ -1,6 +1,6 @@
 import { client } from '@/lib/prisma'
-import { GeoLocation } from './ip-geolocation' 
-import { DeviceInfo } from './device-fingerprint'
+import { GeoLocation } from './security/ip-geolocation' 
+import { DeviceInfo } from './security/device-fingerprint'
 
 export interface RiskFactors {
   isNewDevice: boolean

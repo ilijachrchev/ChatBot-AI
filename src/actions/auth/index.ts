@@ -4,6 +4,11 @@ import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { onGetAllAccountDomains } from '../settings'
 import { redirect } from 'next/navigation'
+import { getDeviceInfo } from '@/lib/security/device-fingerprint'
+import { getGeoLocation } from '@/lib/security/ip-geolocation'
+import { assessLoginRisk } from '@/lib/security/risk-scoring' 
+import { createOTPCode, verifyOTPCode } from '@/lib/security/otp'
+import { sendOTPEmail } from '@/lib/security/email'
 
 export const onCompleteUserRegistration = async (
   fullname: string,
@@ -76,3 +81,165 @@ export const onLoginUser = async () => {
         return { status: 400 }
       }
     }
+
+export const onCheckLoginRisk = async (
+  clerkId: string,
+  email: string,
+  deviceId: string | null
+) => {
+  try {
+    const user = await client.user.findUnique({
+      where: {
+        clerkId,
+      },
+    })
+
+    if (!user) {
+      return { 
+        requireOtp: false, 
+        error: 'User not found' 
+      }
+    }
+
+    const deviceInfo = await getDeviceInfo()
+    const geoLocation = await getGeoLocation()
+
+    const riskAssessment = await assessLoginRisk(
+      user.id,
+      deviceId,
+      deviceInfo,
+      geoLocation
+    )
+
+    await client.loginAttempt.create({
+      data: {
+        userId: user.id,
+        email,
+        success: false,
+        riskScore: riskAssessment.riskScore,
+        ipAddress: geoLocation.ipAddress,
+        city: geoLocation.city,
+        country: geoLocation.country,
+        userAgent: deviceInfo.userAgent,
+        browserName: deviceInfo.browserName,
+        deviceType: deviceInfo.deviceType,
+        deviceId,
+        isTrustedDevice: !riskAssessment.requireOtp,
+        otpRequired: riskAssessment.requireOtp,
+      },
+    })
+
+    if (riskAssessment.requireOtp) {
+      const { code } = await createOTPCode(user.id)
+      const emailResult = await sendOTPEmail(email, code, user.fullname)
+
+      if (!emailResult.success) {
+        return {
+          requireOtp: true,
+          error: 'Failed to send verification code',
+        }
+      }
+
+      await client.pendingLogin.create({
+        data: {
+          userId: user.id,
+          email,
+          deviceId,
+          ipAddress: geoLocation.ipAddress,
+          userAgent: deviceInfo.userAgent,
+          expiresAt: new Date(Date.now() + 10 * 60 * 1000), 
+        },
+      })
+
+      return {
+        requireOtp: true,
+        reason: riskAssessment.reason,
+        riskScore: riskAssessment.riskScore,
+        userId: user.id,
+      }
+    }
+
+    return {
+      requireOtp: false,
+      riskScore: riskAssessment.riskScore,
+    }
+  } catch (error) {
+    console.error('Error checking login risk:', error)
+    return {
+      requireOtp: false,
+      error: 'Failed to assess login risk',
+    }
+  }
+}
+
+export const onVerifyLoginOTP = async (
+  userId: string,
+  code: string,
+  deviceId: string | null
+) => {
+  try {
+    const verification = await verifyOTPCode(userId, code)
+
+    if (!verification.success) {
+      return {
+        success: false,
+        error: verification.error,
+      }
+    }
+
+    const deviceInfo = await getDeviceInfo()
+    const geoLocation = await getGeoLocation()
+
+    if (deviceId) {
+      await client.trustedDevice.upsert({
+        where: { deviceId },
+        create: {
+          userId,
+          deviceId,
+          deviceFingerprint: deviceInfo.deviceFingerprint,
+          userAgent: deviceInfo.userAgent,
+          browserName: deviceInfo.browserName,
+          browserVersion: deviceInfo.browserVersion,
+          osName: deviceInfo.osName,
+          osVersion: deviceInfo.osVersion,
+          deviceType: deviceInfo.deviceType,
+          ipAddress: geoLocation.ipAddress,
+          city: geoLocation.city,
+          region: geoLocation.region,
+          country: geoLocation.country,
+          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), 
+        },
+        update: {
+          lastUsedAt: new Date(),
+          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+      })
+    }
+
+    await client.loginAttempt.updateMany({
+      where: {
+        userId,
+        success: false,
+        otpRequired: true,
+      },
+      data: {
+        success: true,
+        otpVerified: true,
+      },
+    })
+
+    await client.pendingLogin.deleteMany({
+      where: { userId },
+    })
+
+    return {
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error verifying OTP:', error)
+    return {
+      success: false,
+      error: 'Failed to verify code',
+    }
+  }
+}
