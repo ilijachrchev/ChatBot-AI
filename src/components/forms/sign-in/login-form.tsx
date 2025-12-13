@@ -6,15 +6,19 @@ import FormGenerator from '../form-generator'
 import { motion } from 'framer-motion'
 import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import Link from 'next/link'
 
 const LoginForm = () => {
     const {
         register,
         formState: { errors },
+        watch,
+        setValue,
     } = useFormContext()
     
     const [showPassword, setShowPassword] = useState(false)
+    const keepMeLoggedIn = watch('keepMeLoggedIn')
 
     return (
         <motion.div
@@ -59,7 +63,22 @@ const LoginForm = () => {
                 )
             })}
 
-            <div className='flex justify-end'>
+            <div className='flex items-center justify-between'>
+                <div className='flex items-center space-x-2'>
+                    <Checkbox
+                        id='keepMeLoggedIn'
+                        checked={keepMeLoggedIn}
+                        onCheckedChange={(checked) => setValue('keepMeLoggedIn', checked)}
+                        className='border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500'
+                    />
+                    <label
+                        htmlFor='keepMeLoggedIn'
+                        className='text-sm text-slate-300 cursor-pointer select-none'
+                    >
+                        Keep me logged in
+                    </label>
+                </div>
+
                 <button
                     type='button'
                     className='text-sm text-blue-500 hover:text-blue-400 transition-colors'
