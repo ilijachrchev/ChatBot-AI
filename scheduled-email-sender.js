@@ -1,4 +1,3 @@
-// scheduled-email-sender.js
 require('dotenv').config()
 const { PrismaClient } = require('./src/generated/prisma')
 const nodemailer = require('nodemailer')

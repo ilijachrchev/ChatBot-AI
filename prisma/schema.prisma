@@ -24,16 +24,17 @@ model User {
   lastNameChange DateTime?
 
   avatar String?
-
   stripeId String?
-
-  domains Domain[]
-
   keepMeLoggedIn Boolean @default(false)
 
   campaign Campaign[]
-
+  domains Domain[]
   subscription Billings?
+
+  trustedDevices TrustedDevice[]
+  loginAttempts LoginAttempt[]
+  pendingLogins PendingLogin[]
+  otpCodes OtpCode[]
 }
 
 model Domain {
@@ -232,4 +233,102 @@ enum Plans {
 enum Role {
   user
   assistant
+}
+
+model TrustedDevice {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  deviceId  String   @unique 
+  deviceFingerprint String? 
+  
+  userAgent String?
+  browserName String?
+  browserVersion String?
+  osName String?
+  osVersion String?
+  deviceType String?
+  
+  ipAddress String?
+  city String?
+  region String?
+  country String?
+  
+  lastUsedAt DateTime @default(now())
+  createdAt DateTime @default(now())
+  expiresAt DateTime 
+  
+  @@index([userId])
+  @@index([deviceId])
+}
+
+model LoginAttempt {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String?  @db.Uuid
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  email     String
+  success   Boolean  @default(false)
+  riskScore Int      @default(0) 
+  
+  ipAddress String?
+  city String?
+  region String?
+  country String?
+  
+  userAgent String?
+  browserName String?
+  deviceType String?
+  
+  deviceId String? 
+  isTrustedDevice Boolean @default(false)
+  
+  otpRequired Boolean @default(false)
+  otpVerified Boolean @default(false)
+  
+  failureReason String?
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([email])
+  @@index([ipAddress])
+  @@index([createdAt])
+}
+
+model PendingLogin {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  email     String
+  clerkSessionId String? 
+  
+  deviceId String?
+  ipAddress String?
+  userAgent String?
+  
+  expiresAt DateTime // 10 minutes
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([email])
+}
+
+model OtpCode {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  codeHash  String  
+  attempts  Int      @default(0)
+  maxAttempts Int    @default(5)
+  
+  expiresAt DateTime 
+  verifiedAt DateTime?
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([expiresAt])
 }
