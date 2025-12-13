@@ -841,3 +841,92 @@ export const onRevokeSession = async (sessionId: string) => {
     }
   }
 }
+
+export const onUpdateKeepMeLoggedIn = async (keepMeLoggedIn: boolean) => {
+  try {
+    const user = await currentUser()
+    
+    if (!user) {
+      return { status: 401, message: 'Unauthorized' }
+    }
+
+    const updated = await client.user.update({
+      where: {
+        clerkId: user.id,
+      },
+      data: {
+        keepMeLoggedIn,
+      },
+    })
+
+    if (updated) {
+      return { status: 200, message: 'Preference updated successfully' }
+    }
+
+    return { status: 400, message: 'Failed to update preference' }
+  } catch (error) {
+    console.error('Error updating keep me logged in preference:', error)
+    return { status: 500, message: 'Failed to update preference' }
+  }
+}
+
+export const onGetKeepMeLoggedInPreference = async () => {
+  try {
+    const user = await currentUser()
+    
+    if (!user) {
+      return { status: 401, keepMeLoggedIn: true }
+    }
+
+    const dbUser = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        keepMeLoggedIn: true,
+      },
+    })
+
+    return { 
+      status: 200, 
+      keepMeLoggedIn: dbUser?.keepMeLoggedIn ?? true 
+    }
+  } catch (error) {
+    console.error('Error fetching keep me logged in preference:', error)
+    return { status: 500, keepMeLoggedIn: true }
+  }
+}
+
+export const onSaveKeepMeLoggedInOnLogin = async (keepMeLoggedIn: boolean) => {
+  try {
+    const user = await currentUser()
+    
+    if (!user) {
+      return { status: 401, message: 'Unauthorized' }
+    }
+
+    const updated = await client.user.upsert({
+      where: {
+        clerkId: user.id,
+      },
+      create: {
+        clerkId: user.id,
+        fullname: user.firstName || 'User',
+        type: 'OWNER',
+        keepMeLoggedIn,
+      },
+      update: {
+        keepMeLoggedIn,
+      },
+    })
+
+    if (updated) {
+      return { status: 200, message: 'Preference saved' }
+    }
+
+    return { status: 400, message: 'Failed to save preference' }
+  } catch (error) {
+    console.error('Error saving keep me logged in preference:', error)
+    return { status: 500, message: 'Failed to save preference' }
+  }
+}

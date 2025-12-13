@@ -39,6 +39,7 @@ export const UserLoginSchema = z.object({
     .max(64, {
       message: 'Your password can not be longer then 64 characters long',
     }),
+    keepMeLoggedIn: z.boolean().default(false),
 })
 
 export type UserLoginProps = z.infer<typeof UserLoginSchema>

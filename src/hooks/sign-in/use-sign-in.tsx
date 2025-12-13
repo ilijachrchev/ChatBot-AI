@@ -3,8 +3,9 @@ import { useSignIn } from '@clerk/nextjs'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { useForm, type Resolver } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { onSaveKeepMeLoggedInOnLogin } from '@/actions/settings'
 
 export const useSignInForm = () => {
   const { isLoaded, setActive, signIn } = useSignIn()
@@ -12,8 +13,13 @@ export const useSignInForm = () => {
   const router = useRouter()
 
   const methods = useForm<UserLoginProps>({
-    resolver: zodResolver(UserLoginSchema),
+    resolver: zodResolver(UserLoginSchema as any),
     mode: 'onChange',
+    defaultValues: {
+      email: '',
+      password: '',
+      keepMeLoggedIn: false, 
+    },
   })
 
   const onHandleSubmit = methods.handleSubmit(async (values) => {
@@ -28,11 +34,13 @@ export const useSignInForm = () => {
       })
 
       if (authenticated.status === 'complete') {
+        await setActive({ session: authenticated.createdSessionId })
+        
+        await onSaveKeepMeLoggedInOnLogin(values.keepMeLoggedIn)
+        
         toast.success('Welcome back! 🎉', {
           description: 'Redirecting to dashboard...',
         })
-        
-        await setActive({ session: authenticated.createdSessionId })
         
         setTimeout(() => {
           router.push('/dashboard')

@@ -29,6 +29,8 @@ model User {
 
   domains Domain[]
 
+  keepMeLoggedIn Boolean @default(false)
+
   campaign Campaign[]
 
   subscription Billings?
