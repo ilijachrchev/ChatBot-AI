@@ -82,3 +82,36 @@ export async function verifyOTPCode(
   
   return { success: true }
 }
+
+export async function resendOTPCode(userId: string): Promise<{ success: boolean; code?: string; error?: string }> {
+  try {
+    const recentCodes = await client.otpCode.count({
+      where: {
+        userId,
+        createdAt: {
+          gte: new Date(Date.now() - 5 * 60 * 1000), 
+        },
+      },
+    })
+
+    if (recentCodes >= 3) {
+      return {
+        success: false,
+        error: 'Too many requests. Please wait a few minutes before requesting a new code.',
+      }
+    }
+
+    const { code } = await createOTPCode(userId)
+
+    return {
+      success: true,
+      code,
+    }
+  } catch (error) {
+    console.error('Error resending OTP:', error)
+    return {
+      success: false,
+      error: 'Failed to resend code',
+    }
+  }
+}

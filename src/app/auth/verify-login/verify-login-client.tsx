@@ -7,7 +7,7 @@ import { Mail, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
-import { onVerifyLoginOTPWithToken } from '@/actions/auth'
+import { onVerifyLoginOTPWithToken, onResendLoginOTP } from '@/actions/auth'
 import Cookies from 'js-cookie'
 
 type Props = {
@@ -17,9 +17,9 @@ type Props = {
 export function VerifyLoginClient({ token }: Props) {
   const [otp, setOtp] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
+  const [resending, setResending] = useState<boolean>(false)
   const router = useRouter()
 
-  // Decode the token to get email for display
   const getEmailFromToken = () => {
     try {
       const decoded = JSON.parse(atob(token))
@@ -68,10 +68,30 @@ export function VerifyLoginClient({ token }: Props) {
   }
 
   const handleResend = async () => {
-    toast.info('Resending code...', {
-      description: 'Please wait',
-    })
-    // TODO: Implement resend OTP
+    try {
+      setResending(true)
+      
+      const result = await onResendLoginOTP(token)
+
+      if (!result.success) {
+        toast.error('Failed to resend code', {
+          description: result.error || 'Please try again later',
+        })
+        setResending(false)
+        return
+      }
+
+      toast.success('Code sent!', {
+        description: 'A new verification code has been sent to your email',
+      })
+      
+      setOtp('')
+      setResending(false)
+    } catch (error) {
+      console.error('Resend error:', error)
+      toast.error('Failed to resend code')
+      setResending(false)
+    }
   }
 
   return (
@@ -124,10 +144,10 @@ export function VerifyLoginClient({ token }: Props) {
             <button
               type='button'
               onClick={handleResend}
-              disabled={loading}
-              className='text-blue-500 hover:text-blue-400 font-semibold transition-colors disabled:opacity-50'
+              disabled={loading || resending}
+              className='text-blue-500 hover:text-blue-400 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
             >
-              Resend
+              {resending ? 'Sending...' : 'Resend'}
             </button>
           </p>
         </div>

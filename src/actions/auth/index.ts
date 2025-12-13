@@ -318,3 +318,51 @@ export const onVerifyLoginOTPWithToken = async (
     }
   }
 }
+
+export const onResendLoginOTP = async (token: string) => {
+  try {
+    const decoded = JSON.parse(atob(token))
+    const { userId, email } = decoded
+
+    const user = await client.user.findUnique({
+      where: { id: userId },
+      select: { fullname: true },
+    })
+
+    if (!user) {
+      return {
+        success: false,
+        error: 'User not found',
+      }
+    }
+
+    const { resendOTPCode } = await import('@/lib/security/otp')
+    const result = await resendOTPCode(userId)
+
+    if (!result.success || !result.code) {
+      return {
+        success: false,
+        error: result.error || 'Failed to resend code',
+      }
+    }
+
+    const emailResult = await sendOTPEmail(email, result.code, user.fullname)
+
+    if (!emailResult.success) {
+      return {
+        success: false,
+        error: 'Failed to send email',
+      }
+    }
+
+    return {
+      success: true,
+    }
+  } catch (error) {
+    console.error('Error resending OTP:', error)
+    return {
+      success: false,
+      error: 'Failed to resend code',
+    }
+  }
+}
