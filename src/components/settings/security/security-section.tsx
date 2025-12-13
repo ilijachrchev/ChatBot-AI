@@ -37,7 +37,6 @@ export function SecuritySection() {
     try {
       setLoading(true)
       
-      // Fetch ALL sessions for this user from Clerk
       const response = await fetch('/api/sessions', {
         method: 'GET',
       })
@@ -144,7 +143,6 @@ export function SecuritySection() {
 
   return (
     <div className='space-y-6'>
-      {/* Security Overview */}
       <Card className='border-slate-200 dark:border-slate-800 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20'>
         <CardHeader>
           <div className='flex items-center gap-3'>
@@ -188,7 +186,6 @@ export function SecuritySection() {
         </CardContent>
       </Card>
 
-      {/* Account Information */}
       <Card className='border-slate-200 dark:border-slate-800'>
         <CardHeader>
           <CardTitle className='text-lg'>Account Information</CardTitle>
@@ -215,10 +212,8 @@ export function SecuritySection() {
         </CardContent>
       </Card>
 
-      {/* Change Password */}
       <ChangePasswordCard />
 
-      {/* Active Sessions */}
       <Card className='border-slate-200 dark:border-slate-800'>
         <CardHeader>
           <div className='flex items-center justify-between'>
@@ -350,7 +345,6 @@ export function SecuritySection() {
         </CardContent>
       </Card>
 
-      {/* Two-Factor Authentication - Coming Soon */}
       <Card className='border-slate-200 dark:border-slate-800'>
         <CardHeader>
           <div className='flex items-center gap-3'>
