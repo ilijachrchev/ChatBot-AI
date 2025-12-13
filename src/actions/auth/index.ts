@@ -2,7 +2,7 @@
 
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
-import { onGetAllAccountDomains } from '../settings'
+import { onGetAllAccountDomains, onSaveKeepMeLoggedInOnLogin } from '../settings'
 import { redirect } from 'next/navigation'
 import { getDeviceInfo } from '@/lib/security/device-fingerprint'
 import { getGeoLocation } from '@/lib/security/ip-geolocation'
@@ -237,6 +237,81 @@ export const onVerifyLoginOTP = async (
     }
   } catch (error) {
     console.error('Error verifying OTP:', error)
+    return {
+      success: false,
+      error: 'Failed to verify code',
+    }
+  }
+}
+
+export const onVerifyLoginOTPWithToken = async (
+  token: string,
+  code: string,
+  deviceId: string | null
+) => {
+  try {
+    const decoded = JSON.parse(atob(token))
+    const { userId, sessionId, keepMeLoggedIn } = decoded
+
+    const verification = await verifyOTPCode(userId, code)
+
+    if (!verification.success) {
+      return {
+        success: false,
+        error: verification.error,
+      }
+    }
+
+    if (deviceId) {
+      const deviceInfo = await getDeviceInfo()
+      const geoLocation = await getGeoLocation()
+
+      await client.trustedDevice.upsert({
+        where: { deviceId },
+        create: {
+          userId,
+          deviceId,
+          deviceFingerprint: deviceInfo.deviceFingerprint,
+          userAgent: deviceInfo.userAgent,
+          browserName: deviceInfo.browserName,
+          browserVersion: deviceInfo.browserVersion,
+          osName: deviceInfo.osName,
+          osVersion: deviceInfo.osVersion,
+          deviceType: deviceInfo.deviceType,
+          ipAddress: geoLocation.ipAddress,
+          city: geoLocation.city,
+          region: geoLocation.region,
+          country: geoLocation.country,
+          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+        update: {
+          lastUsedAt: new Date(),
+          expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        },
+      })
+    }
+
+    await client.loginAttempt.updateMany({
+      where: {
+        userId,
+        success: false,
+        otpRequired: true,
+      },
+      data: {
+        success: true,
+        otpVerified: true,
+      },
+    })
+
+    await client.pendingLogin.deleteMany({
+      where: { userId },
+    })
+
+    await onSaveKeepMeLoggedInOnLogin(keepMeLoggedIn)
+
+    return { success: true }
+  } catch (error) {
+    console.error('Error verifying OTP with token:', error)
     return {
       success: false,
       error: 'Failed to verify code',
