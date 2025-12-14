@@ -385,7 +385,7 @@ export const onOAuthLogin = async (clerkId: string, email: string) => {
         data: {
           clerkId,
           fullname,
-          type: 'OWNER',
+          type: 'OWNER', 
           avatar: clerkUser.imageUrl,
           subscription: {
             create: {},
@@ -459,5 +459,18 @@ export const onOAuthLogin = async (clerkId: string, email: string) => {
       status: 500,
       error: 'Failed to process OAuth login',
     }
+  }
+}
+
+export const onUpdateUserTypeAfterOAuth = async (clerkId: string, type: string) => {
+  try {
+    await client.user.update({
+      where: { clerkId },
+      data: { type },
+    })
+    return { status: 200 }
+  } catch (error) {
+    console.error('Error updating user type:', error)
+    return { status: 500 }
   }
 }

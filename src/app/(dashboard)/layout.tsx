@@ -1,6 +1,7 @@
 import { onLoginUser } from '@/actions/auth'
 import SideBar from '@/components/sidebar'
 import { ChatProvider } from '@/context/user-chat-context'
+import { OAuthTypeUpdater } from '@/components/auth/oauth-tpy-updater' 
 import React from 'react'
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -15,6 +16,7 @@ const OwnerLayout = async ({ children }: Props) => {
 
   return (
     <ChatProvider>
+      <OAuthTypeUpdater />
       <div className="flex h-screen w-full overflow-hidden">
         <SideBar domains={authenticated.domains} />
         <div className="w-full h-screen flex flex-col pl-20 md:pl-4 overflow-y-auto">
