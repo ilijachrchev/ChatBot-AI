@@ -35,6 +35,8 @@ model User {
   loginAttempts LoginAttempt[]
   pendingLogins PendingLogin[]
   otpCodes OtpCode[]
+
+  preferences UserPreferences?
 }
 
 model Domain {
@@ -331,4 +333,33 @@ model OtpCode {
   
   @@index([userId])
   @@index([expiresAt])
+}
+
+model UserPreferences {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @unique @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  language  String   @default("en")
+  timezone  String   @default("UTC")
+  dateFormat String  @default("MM/DD/YYYY")
+  timeFormat String  @default("12h")
+  
+  emailNotifications Boolean @default(true)
+  desktopNotifications Boolean @default(true)
+  soundEnabled Boolean @default(true)
+  
+  defaultView String @default("conversations")
+  conversationSort String @default("newest")
+  itemsPerPage Int @default(25)
+  
+  workingHoursEnabled Boolean @default(false)
+  workingHoursStart String? 
+  workingHoursEnd String? 
+  workingDays String[] @default(["monday", "tuesday", "wednesday", "thursday", "friday"])
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
 }
