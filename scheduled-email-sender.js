@@ -9,6 +9,7 @@ async function sendScheduledEmails() {
   
   try {
     const now = new Date()
+    
     const campaignsToSend = await prisma.campaign.findMany({
       where: {
         status: 'SCHEDULED',
@@ -36,7 +37,8 @@ async function sendScheduledEmails() {
     for (const campaign of campaignsToSend) {
       console.log(`\n🚀 Processing campaign: ${campaign.name}`)
       console.log(`   Campaign ID: ${campaign.id}`)
-      console.log(`   Scheduled for: ${campaign.scheduledAt}`)
+      console.log(`   Scheduled for (UTC): ${campaign.scheduledAt}`)
+      console.log(`   Timezone: ${campaign.timezone || 'UTC'}`)
       console.log(`   Recipients: ${campaign.customers.length}`)
       
       try {
@@ -136,7 +138,8 @@ async function sendScheduledEmails() {
 
 async function main() {
   console.log('⏰ Scheduled Email Sender Started!')
-  console.log('🔄 Checking every minute for campaigns to send...\n')
+  console.log('🔄 Checking every minute for campaigns to send...')
+  console.log('🌍 All times are in UTC\n')
 
   await sendScheduledEmails()
 

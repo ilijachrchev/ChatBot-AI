@@ -37,9 +37,10 @@ type Props = {
     plan: 'STANDARD' | 'PRO' | 'ULTIMATE'
     credits: number
   } | null
+  userTimezone: string
 }
 
-const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
+const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props) => {
   const [scheduleModalOpen, setScheduleModalOpen] = useState<string | null>(null)
   
   const {
@@ -79,50 +80,63 @@ const EmailMarketing = ({ campaign, domains, subscription }: Props) => {
   }
 
   const getStatusBadge = (status?: string, scheduledAt?: Date | null, sentAt?: Date | null) => {
-  if (status === 'SCHEDULED' && scheduledAt) {
-    return {
-      icon: Clock,
-      text: 'Scheduled',
-      subtext: new Date(scheduledAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }),
-      className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+    if (status === 'SCHEDULED' && scheduledAt) {
+      const scheduledDate = new Date(scheduledAt)
+      const formattedDate = scheduledDate.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: '2-digit',
+        timeZone: userTimezone 
+      })
+      
+      return {
+        icon: Clock,
+        text: 'Scheduled',
+        subtext: formattedDate,
+        className: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+      }
     }
-  }
-  if (status === 'SENT' && sentAt) {
-    return {
-      icon: Send,
-      text: 'Sent',
-      subtext: getTimeAgo(new Date(sentAt)),
-      className: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+    if (status === 'SENT' && sentAt) {
+      return {
+        icon: Send,
+        text: 'Sent',
+        subtext: getTimeAgo(new Date(sentAt)),
+        className: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+      }
     }
-  }
-  if (status === 'SENDING') {
-    return {
-      icon: Send,
-      text: 'Sending',
-      subtext: 'In progress...',
-      className: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
+    if (status === 'SENDING') {
+      return {
+        icon: Send,
+        text: 'Sending',
+        subtext: 'In progress...',
+        className: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
+      }
     }
-  }
-  if (status === 'FAILED') {
+    if (status === 'FAILED') {
+      return {
+        icon: Mail,
+        text: 'Failed',
+        subtext: 'Error occurred',
+        className: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300',
+      }
+    }
     return {
       icon: Mail,
-      text: 'Failed',
-      subtext: 'Error occurred',
-      className: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300',
+      text: 'Draft',
+      subtext: 'Not sent',
+      className: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
     }
   }
-  return {
-    icon: Mail,
-    text: 'Draft',
-    subtext: 'Not sent',
-    className: 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
-  }
-}
 
-  const handleSchedule = async (campaignId: string, scheduledAt: Date | null) => {
-    await onSchedule(campaignId, scheduledAt)
-    setScheduleModalOpen(null) 
-  }
+  const handleSchedule = async (
+  campaignId: string, 
+  scheduledData: { date: string; time: string } | null,
+  timezone: string
+) => {
+  await onSchedule(campaignId, scheduledData, timezone)
+  setScheduleModalOpen(null) 
+}
 
 const getTimeAgo = (date: Date) => {
   const now = new Date()
@@ -396,6 +410,7 @@ const getTimeAgo = (date: Date) => {
                               campaignId={camp.id}
                               onSchedule={handleSchedule}
                               onClose={() => setScheduleModalOpen(null)}
+                              userTimezone={userTimezone} 
                             />
                           </Modal>
                         </div>

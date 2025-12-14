@@ -4,6 +4,8 @@ import { CampaignStatus } from '@/generated/prisma'
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import nodemailer from 'nodemailer'
+import { onGetUserTimezone } from '../preferences'
+import { convertUserTimezoneToUTC } from '@/lib/timezone-utils'
 
 export const onGetAllCustomers = async (id: string) => {
   try {
@@ -301,7 +303,8 @@ export const onGetEmailTemplate = async (id: string) => {
 
 export const onScheduleCampaign = async (
   campaignId: string,
-  scheduledAt: Date | null
+  scheduledData: { date: string; time: string } | null,
+  timezone: string
 ) => {
   try {
     const user = await currentUser()
@@ -312,7 +315,8 @@ export const onScheduleCampaign = async (
 
     console.log('✅ User found:', user.id)
     console.log('📧 Campaign ID:', campaignId)
-    console.log('📅 Scheduled At:', scheduledAt)
+    console.log('📅 Schedule Data:', scheduledData)
+    console.log('🌍 Timezone:', timezone)
 
     const existingCampaign = await client.campaign.findFirst({
       where: {
@@ -337,7 +341,26 @@ export const onScheduleCampaign = async (
 
     console.log('✅ Campaign found, belongs to user')
 
-    const status: CampaignStatus = scheduledAt ? 'SCHEDULED' : 'SENDING'
+    let scheduledAtUTC: Date | null = null
+    if (scheduledData) {
+      const { date, time } = scheduledData
+      const [year, month, day] = date.split('-').map(Number)
+      const [hours, minutes] = time.split(':').map(Number)
+      
+      console.log('📅 Parsed:', { year, month, day, hours, minutes })
+      
+      const { fromZonedTime } = await import('date-fns-tz')
+      
+      const dateString = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}T${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`
+      
+      console.log('📅 Date string in user timezone:', dateString)
+      
+      scheduledAtUTC = fromZonedTime(dateString, timezone)
+      
+      console.log('🔄 Converted to UTC:', scheduledAtUTC.toISOString())
+    }
+
+    const status: CampaignStatus = scheduledAtUTC ? 'SCHEDULED' : 'SENDING'
     
     console.log('🎯 Setting status to:', status)
 
@@ -346,16 +369,17 @@ export const onScheduleCampaign = async (
         id: campaignId,
       },
       data: {
-        scheduledAt: scheduledAt,
+        scheduledAt: scheduledAtUTC,
+        timezone: timezone,
         status: status,
         sentAt: null,
         updatedAt: new Date(),
       },
     })
 
-    console.log('✅ Campaign updated:', campaign)
+    console.log('✅ Campaign updated')
 
-    if (!scheduledAt) {
+    if (!scheduledAtUTC) {
       console.log('📨 Sending emails immediately...')
       
       const campaignDetails = await client.campaign.findUnique({
@@ -402,9 +426,15 @@ export const onScheduleCampaign = async (
       }
     }
 
+    const { format } = await import('date-fns')
+    const { toZonedTime } = await import('date-fns-tz')
+    
+    const zonedDate = toZonedTime(scheduledAtUTC, timezone)
+    const formattedDate = format(zonedDate, 'EEEE, MMMM d, yyyy \'at\' h:mm a')
+
     return {
       status: 200,
-      message: `Campaign scheduled for ${scheduledAt.toLocaleString()}`,
+      message: `Campaign scheduled for ${formattedDate} ${timezone}`,
     }
   } catch (error: any) {
     console.error('❌ Error scheduling campaign:', error)

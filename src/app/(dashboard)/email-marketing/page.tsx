@@ -1,4 +1,5 @@
 import { onGetAllCampaigns, onGetAllCustomers } from '@/actions/mail'
+import { onGetUserTimezone } from '@/actions/preferences'
 import EmailMarketing from '@/components/email-marketing'
 import InfoBar from '@/components/infobar'
 import { currentUser } from '@clerk/nextjs/server'
@@ -14,6 +15,7 @@ const Page = async (props: Props) => {
   if (!user) return null
   const customers = await onGetAllCustomers(user.id)
   const campaigns = await onGetAllCampaigns(user.id)
+  const userTimezone = await onGetUserTimezone()
 
   return (
     <>
@@ -22,6 +24,7 @@ const Page = async (props: Props) => {
         campaign={campaigns?.campaign!}
         subscription={customers?.subscription!}
         domains={customers?.domains!}
+        userTimezone={userTimezone}
       />
     </>
   )

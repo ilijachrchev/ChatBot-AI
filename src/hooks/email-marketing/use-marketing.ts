@@ -124,18 +124,23 @@ export const useEmailMarketing = () => {
   }
 
 
- const onSchedule = async (campaignId: string, scheduledAt: Date | null) => {
+const onSchedule = async (
+  campaignId: string, 
+  scheduledData: { date: string; time: string } | null,
+  timezone: string
+) => {
   console.log('🎯 Hook onSchedule called')
   console.log('Campaign:', campaignId)
-  console.log('Date:', scheduledAt)
+  console.log('Schedule Data:', scheduledData)
+  console.log('Timezone:', timezone)
   
   try {
-    const result = await onScheduleCampaign(campaignId, scheduledAt)
+    const result = await onScheduleCampaign(campaignId, scheduledData, timezone)
     console.log('📬 Result:', result)
     
     if (result?.status === 200) {
       toast.success(
-        scheduledAt ? 'Campaign scheduled! 📅' : 'Campaign sent! 🚀',
+        scheduledData ? 'Campaign scheduled! 📅' : 'Campaign sent! 🚀',
         {
           description: result.message,
         }

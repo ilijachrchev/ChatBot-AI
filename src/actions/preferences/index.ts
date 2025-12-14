@@ -80,3 +80,46 @@ export const onUpdateUserPreferences = async (
     return { success: false, error: 'Failed to update preferences' }
   }
 }
+
+export const onGetUserTimezone = async () => {
+  try {
+    const user = await currentUser()
+    if (!user) return 'UTC'
+
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      include: {
+        preferences: {
+          select: {
+            timezone: true,
+          },
+        },
+      },
+    })
+
+    return dbUser?.preferences?.timezone || 'UTC'
+  } catch (error) {
+    console.error('Error fetching user timezone:', error)
+    return 'UTC'
+  }
+}
+
+export const onGetUserPreferencesForDomain = async (domainId: string) => {
+  try {
+    const domain = await client.domain.findUnique({
+      where: { id: domainId },
+      include: {
+        User: {
+          include: {
+            preferences: true,
+          },
+        },
+      },
+    })
+
+    return domain?.User?.preferences || null
+  } catch (error) {
+    console.error('Error fetching domain user preferences:', error)
+    return null
+  }
+}
