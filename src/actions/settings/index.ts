@@ -160,6 +160,7 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
             verificationMethod: true,
             verificationStatus: true,
             verifiedAt: true,
+            timezone: true, 
             chatBot: {
               select: {
                 id: true,
@@ -177,6 +178,10 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 buttonStyle: true,
                 bubbleStyle: true,
                 showAvatars: true,
+                presenceMode: true, 
+                offlineBehavior: true,
+                offlineCustomMessage: true, 
+                showPresenceBadge: true, 
               },
             },
           },
