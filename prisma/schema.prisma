@@ -68,6 +68,9 @@ model Domain {
 
   @@index([userId])
   @@index([verificationStatus])
+
+  workingHours WorkingHours?
+  timezone String @default("UTC")
 }
 
 enum VerificationStatus {
@@ -102,6 +105,13 @@ model ChatBot {
 
   widgetSize String? @default("MEDIUM")
   widgetStyle String? @default("SOLID")
+
+  presenceMode String @default("AUTO")
+
+  offlineBehavior String @default("SHOW_HOURS_AND_EMAIL")
+  offlineCustomMessage String? @db.Text
+
+  showPresenceBadge Boolean @default(true)
 }
 
 model Billings {
@@ -362,4 +372,40 @@ model UserPreferences {
   updatedAt DateTime @updatedAt
   
   @@index([userId])
+}
+
+model WorkingHours {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  domainId  String   @unique @db.Uuid
+  domain    Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  
+  enabled   Boolean  @default(false)
+  
+  mondayRanges    String[] @default([])
+  mondayClosed    Boolean  @default(false)
+  
+  tuesdayRanges   String[] @default([])
+  tuesdayClosed   Boolean  @default(false)
+  
+  wednesdayRanges String[] @default([])
+  wednesdayClosed Boolean  @default(false)
+  
+  thursdayRanges  String[] @default([])
+  thursdayClosed  Boolean  @default(false)
+  
+  fridayRanges    String[] @default([])
+  fridayClosed    Boolean  @default(false)
+  
+  saturdayRanges  String[] @default([])
+  saturdayClosed  Boolean  @default(true) 
+  
+  sundayRanges    String[] @default([])
+  sundayClosed    Boolean  @default(true)
+  
+  blackoutDates   DateTime[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([domainId])
 }
