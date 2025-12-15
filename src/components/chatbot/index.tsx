@@ -25,16 +25,16 @@ const AiChatBot = (props: Props) => {
         removeImage,
     } = useChatBot()
 
-    console.log('🔍 Chatbot - onRealTime:', onRealTime)
+    console.log('🔍 Chatbot - currentBot:', currentBot)
     const themeColor =
       currentBot?.chatBot?.backgroundColor ??
       currentBot?.chatBot?.background ?? 
       '#3B82F6'
+
     const textColor = currentBot?.chatBot?.textColor || '#FFFFFF'
-
     const botIcon = currentBot?.chatBot?.icon || undefined
-
     const plan = currentBot?.subscription?.plan || 'STANDARD'
+    const domainId = (currentBot as any)?.id || undefined
 
   return (
     <div className='h-screen flex flex-col justify-end items-end gap-4'>
@@ -44,6 +44,7 @@ const AiChatBot = (props: Props) => {
                 realtimeMode={onRealTime}
                 helpdesk={currentBot?.helpdesk!}
                 domainName={currentBot?.name!}
+                domainId={domainId}
                 ref={messageWindowRef}
                 help={currentBot?.chatBot?.helpdesk}
                 theme={themeColor}
@@ -68,6 +69,7 @@ const AiChatBot = (props: Props) => {
                 showAvatars={currentBot?.chatBot?.showAvatars}
                 widgetSize={currentBot?.chatBot?.widgetSize}
                 widgetStyle={currentBot?.chatBot?.widgetStyle}
+                showPresenceBadge={currentBot?.chatBot?.showPresenceBadge ?? true}
             />
         )}
     <div

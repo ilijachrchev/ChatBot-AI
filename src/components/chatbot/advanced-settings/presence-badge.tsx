@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 type PresenceStatus = 'ONLINE' | 'AWAY' | 'OFFLINE'
 
 interface PresenceBadgeProps {
-  domainId: string
+  domainId?: string
   showBadge?: boolean
   className?: string
 }
@@ -20,6 +20,8 @@ export function PresenceBadge({ domainId, showBadge = true, className }: Presenc
   } | null>(null)
 
   useEffect(() => {
+    if (!domainId) return
+    
     const fetchPresence = async () => {
       try {
         const response = await fetch(`/api/chatbot/presence?domainId=${domainId}`)

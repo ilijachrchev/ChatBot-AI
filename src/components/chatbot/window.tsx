@@ -17,6 +17,8 @@ import { Label } from '../ui/label'
 import { CardDescription, CardTitle } from '../ui/card'
 import Accordion from '../accordian'
 import { cn } from '@/lib/utils'
+import { useChatbotPresence } from '@/hooks/chatbot/use-chatbot-presence'
+import { OfflineMessage } from './advanced-settings/offline-message'
 
 type Props = {
   register: UseFormRegister<ChatBotMessageProps>
@@ -24,6 +26,7 @@ type Props = {
   onChat(): void
   onResponding: boolean
   domainName?: string
+  domainId?: string
   theme?: string | null
   textColor?: string | null
   help?: boolean
@@ -64,6 +67,7 @@ type Props = {
   showAvatars?: boolean | null
   widgetSize?: string | null
   widgetStyle?: string | null
+  showPresenceBadge?: boolean
 }
 
 export const BotWindow = forwardRef<HTMLDivElement, Props>(
@@ -74,6 +78,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       onChat,
       onResponding,
       domainName,
+      domainId,
       helpdesk,
       realtimeMode,
       setChat,
@@ -96,9 +101,13 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       showAvatars,
       widgetSize,
       widgetStyle,
+      showPresenceBadge,
     },
     ref
   ) => {
+
+    const { presence, shouldShowOfflineMessage } = useChatbotPresence(domainId || '')
+
     const showPoweredBy = plan === 'STANDARD'
 
     const getButtonClass = () => {
@@ -137,6 +146,18 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
 
     const displayTitle = chatbotTitle || 'SendWise-AI'
     const displaySubtitle = chatbotSubtitle || 'Your AI assistant'
+
+    const handleEmailSubmit = async (email: string) => {
+      console.log('Email collected:', email)
+      
+      setChat((prev) => [
+        ...prev,
+        {
+          role: 'assistant',
+          content: `Thank you! We'll contact you at ${email} during our business hours.`,
+        },
+      ])
+    }
 
     return (
       <div className={cn(
@@ -194,6 +215,14 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 className="px-4 flex h-[420px] flex-col py-4 gap-3 chat-window overflow-y-auto bg-white"
                 ref={ref}
               >
+                {shouldShowOfflineMessage && presence?.message && (
+                  <OfflineMessage
+                    message={presence.message}
+                    shouldCollectEmail={presence.status === 'OFFLINE' || presence.status === 'AWAY'}
+                    onEmailSubmit={handleEmailSubmit}
+                    className="mb-2"
+                  />
+                )}
                 {chats.map((chat, key) => (
                   <Bubble
                     key={key}
