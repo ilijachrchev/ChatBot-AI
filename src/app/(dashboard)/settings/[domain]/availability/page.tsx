@@ -33,7 +33,7 @@ const AvailabilityPage = async ({ params }: PageProps) => {
         domainId={domainData.id}
         timezone={domainData.timezone}
         workingHours={workingHours}
-        offlineBehavior={domainData.chatBot?.presenceMode}
+        offlineBehavior={domainData.chatBot?.offlineBehavior || 'SHOW_HOURS_AND_EMAIL'}
         offlineMessage={domainData.chatBot?.offlineCustomMessage ?? undefined}
       />
     </div>

@@ -7,6 +7,8 @@ import { clerkClient } from "@clerk/nextjs/server"
 import { onMailer } from "../mailer"
 import OpenAi from "openai"
 import { getPersonaSystemPrompt } from "@/constants/personas"
+import { onGetChatbotPresence } from "../chatbot/presence"
+import { off } from "process"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
@@ -143,6 +145,34 @@ export const onAiChatBotAssistant = async (
       console.log('🤖 onAiChatBotAssistant called with domainId:', id)
       console.log('🤖 chatroomId:', chatroomId)
 
+      const presence = await onGetChatbotPresence(id)
+      console.log('🔍 Chatbot Presence:', presence)
+
+      const domainWithHours = await db.domain.findUnique({
+        where: { id },
+        select: {
+          timezone: true,
+          workingHours: true,
+        },
+      })
+
+      let workingHoursText = ''
+      if (domainWithHours?.workingHours && domainWithHours.workingHours.enabled) {
+        const days = []
+        if (!domainWithHours.workingHours.mondayClosed) days.push('Monday')
+        if (!domainWithHours.workingHours.tuesdayClosed) days.push('Tuesday')
+        if (!domainWithHours.workingHours.wednesdayClosed) days.push('Wednesday')
+        if (!domainWithHours.workingHours.thursdayClosed) days.push('Thursday')
+        if (!domainWithHours.workingHours.fridayClosed) days.push('Friday')
+        if (!domainWithHours.workingHours.saturdayClosed) days.push('Saturday')
+        if (!domainWithHours.workingHours.sundayClosed) days.push('Sunday')
+
+        const range = domainWithHours.workingHours.mondayRanges?.[0] || '09:00-18:00'
+        const [start, end] = range.split('-')
+        
+        workingHoursText = `${days.join(', ')}, ${start} - ${end} ${domainWithHours.timezone}`
+      }
+
       if (!id || id === 'undefined') {
         console.error('Invalid bot Id provided:', id);
         return {
@@ -228,24 +258,33 @@ export const onAiChatBotAssistant = async (
         'human representative',
       ];
 
-      const SOFT_HANDOFF_PHRASES = [
-        'can i talk to someone',
-        'can i talk to a person',
-        'can i talk to an agent',
-        'talk to someone from your team',
-      ];
-
       const messageLower = message.toLowerCase();
 
       const explicitHardRequest = HARD_HANDOFF_PHRASES.some(p =>
         messageLower.includes(p)
       );
 
-      const explicitSoftRequest = SOFT_HANDOFF_PHRASES.some(p =>
-        messageLower.includes(p)
-      );
-
       if (explicitHardRequest) {
+        if (presence && !presence.canHandoff) {
+          const offlineContent = 
+            presence.message || 
+            `I understand you'd like to speak with someone from our team. Unfortunately, we're currently outside of our business hours.
+             Our team is available (${workingHoursText}). I'm still here to help answer your questions!`;
+
+            await onStoreConversations(room.id, message, 'user');
+            await onStoreConversations(room.id, offlineContent, 'assistant');
+
+            const offlineResponse: { role: 'assistant'; content: string } = {
+              role: 'assistant',
+              content: offlineContent, 
+            };
+
+          return {
+            response: offlineResponse,
+            live: false,
+            chatRoom: room.id,
+          };
+        };
         await db.chatRoom.update({
           where: { id: room.id },
           data: { live: true },
@@ -284,6 +323,8 @@ export const onAiChatBotAssistant = async (
                   select: {
                     persona: true,
                     customPrompt: true,
+                    offlineCustomMessage: true,
+                    offlineBehavior: true,
                   },
                 },
                 filterQuestions: {
@@ -296,13 +337,31 @@ export const onAiChatBotAssistant = async (
                 },
             },
         })
+        console.log('📝 Offline message from DB:', chatBotDomain?.chatBot?.offlineCustomMessage)
+        console.log('📝 Offline behavior:', chatBotDomain?.chatBot?.offlineBehavior)
         if (!chatBotDomain) return
 
-        const personaPrompt = getPersonaSystemPrompt(
+        let personaPrompt = getPersonaSystemPrompt(
           (chatBotDomain.chatBot?.persona as any) || 'SALES_AGENT',
           chatBotDomain.chatBot?.customPrompt,
           chatBotDomain.name
         )
+
+        if (presence) {
+          if (presence?.status === 'OFFLINE') {
+          const offlineMessage = chatBotDomain?.chatBot?.offlineCustomMessage || 
+            `Our team is available ${workingHoursText}`
+          
+          personaPrompt += `\n\nIMPORTANT WORKING HOURS STATUS:
+            - The business is currently OFFLINE (outside working hours)
+            - Working hours: ${workingHoursText}
+            - Human support is NOT available right now
+            - If asked about working hours, respond: "${offlineMessage}"
+            - If asked about human support, say: "I understand you'd like to speak with our team. ${offlineMessage}"
+            - You can still help with questions, but be clear that human agents are offline
+            - NEVER use (handoff:require) or (handoff:suggest) when offline`
+          }
+        }
 
         const extractedEmail = extractEmailsFromString(message)
         const customerEmail = extractedEmail ? extractedEmail[0] : undefined
