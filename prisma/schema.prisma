@@ -37,6 +37,8 @@ model User {
   otpCodes OtpCode[]
 
   preferences UserPreferences?
+
+  billingAddress BillingAddress?
 }
 
 model Domain {
@@ -408,4 +410,23 @@ model WorkingHours {
   updatedAt DateTime @updatedAt
   
   @@index([domainId])
+}
+
+model BillingAddress {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @unique @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name      String
+  street    String?
+  city      String?
+  state     String?
+  country   String?
+  zipCode   String?
+  vatNumber String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
 }

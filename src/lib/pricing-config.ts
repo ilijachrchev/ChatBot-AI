@@ -3,7 +3,7 @@ export type PlanType = 'STANDARD' | 'PRO' | 'ULTIMATE'
 export interface PlanFeatures {
   conversations: number | 'unlimited'
   domains: number
-  emailCampaigns: number | 'unlimited'
+  emailCampaigns: number
   chatbotCustomization: boolean
   analytics: boolean
   prioritySupport: boolean
@@ -78,7 +78,7 @@ export const PRICING_CONFIG: Record<PlanType, PlanDetails> = {
     features: {
       conversations: 'unlimited',
       domains: 10,
-      emailCampaigns: 'unlimited',
+      emailCampaigns: 500,
       chatbotCustomization: true,
       analytics: true,
       prioritySupport: true,
