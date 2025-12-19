@@ -92,6 +92,23 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+section[id] {
+  scroll-margin-top: 5rem;
+}
+
 @keyframes float {
   0% {
     transform: translateY(0) translateX(0) scale(1);
@@ -193,4 +210,3 @@
 .button-pulse-disabled {
   animation: pulse-border 2s ease-in-out infinite;
 }
-
