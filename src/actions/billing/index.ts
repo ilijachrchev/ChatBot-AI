@@ -4,6 +4,7 @@ import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { PRICING_CONFIG, type PlanType } from '@/lib/pricing-config'
 import Stripe from 'stripe'
+import { de } from 'date-fns/locale'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   typescript: true,
@@ -90,26 +91,150 @@ export const onGetPaymentMethods = async () => {
       },
     })
 
-    if (!profile?.stripeId) return []
+    if (!profile?.stripeId) {
+      return { 
+        success: true,
+        methods: [],
+        defaultPaymentMethodId: null
+      }
+    }
+
+    const customer = await stripe.customers.retrieve(profile.stripeId) 
+    const defaultPaymentMethodId = customer.deleted 
+        ? null
+        : (customer.invoice_settings.default_payment_method as string | null)
 
     const paymentMethods = await stripe.paymentMethods.list({
       customer: profile.stripeId,
       type: 'card',
     })
 
-    return paymentMethods.data.map((pm) => ({
+    const methods = paymentMethods.data.map((pm) => ({
       id: pm.id,
       brand: pm.card?.brand || 'card',
       last4: pm.card?.last4 || '****',
-      expMonth: pm.card?.exp_month,
-      expYear: pm.card?.exp_year,
+      expMonth: pm.card?.exp_month || 0,
+      expYear: pm.card?.exp_year || 0,
       isDefault: false,
     }))
+
+    return {
+      success: true,
+      methods,
+      defaultPaymentMethodId,
+    }
   } catch (error) {
     console.log(error)
-    return []
+    return {
+      success: false,
+      methods: [],
+      defaultPaymentMethodId: null
+    }
   }
 }
+
+export const onSetDefaultPaymentMethod = async (paymentMethodId: string) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { success: false, message: 'Unauthorized' }
+    const profile = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        stripeId: true,
+      },
+    })
+
+    if (!profile?.stripeId) {
+      return { success: false, message: 'Stripe customer not found' }
+    }
+
+    await stripe.customers.update(profile.stripeId, {
+      invoice_settings: {
+        default_payment_method: paymentMethodId,
+      },
+    })
+
+    return { success: true, message: 'Default payment method updated successfully' }
+  } catch (error) {
+    console.log(error)
+    return { success: false, message: 'Failed to update default payment method' }
+  }
+}
+
+export const onDeletePaymentMethod = async (paymentMethodId: string) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { success: false, message: 'Unauthorized' }
+    const profile = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        stripeId: true,
+      },
+    })
+
+    if (!profile?.stripeId) {
+      return { success: false, message: 'Stripe customer not found' }
+    }
+
+    await stripe.paymentMethods.detach(paymentMethodId)
+
+    return { success: true, message: 'Payment method deleted successfully' }
+} catch (error) {
+    console.log(error)
+    return { success: false, message: 'Failed to delete payment method' }
+  }
+}
+
+export const onCreateSetupIntent = async () => {
+  try {
+    const user = await currentUser()
+    if (!user) return { success: false, clientSecret: null }
+    const profile = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        stripeId: true,
+      },
+    })
+    let stripeId = profile?.stripeId
+
+    if (!stripeId) {
+      const customer = await stripe.customers.create({
+        email: user.emailAddresses[0]?.emailAddress || undefined,
+        name: user.fullName || 'User',
+        metadata: {
+          clerkId: user.id,
+        },
+      })
+      stripeId = customer.id
+
+      await client.user.update({
+        where: {
+          clerkId: user.id,
+        },
+        data: {
+          stripeId: stripeId,
+        },
+      })
+    }
+
+    const setupIntent = await stripe.setupIntents.create({
+      customer: stripeId,
+      payment_method_types: ['card'],
+    })
+
+    return { success: true, clientSecret: setupIntent.client_secret }
+  } catch (error) {
+    console.log(error)
+    return { success: false, clientSecret: null }
+  }
+}
+
 
 export const onUpdateBillingAddress = async (data: {
   name: string
