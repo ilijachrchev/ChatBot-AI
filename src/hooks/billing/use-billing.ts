@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
 import axios from 'axios'
-import { onCreateCustomerPaymentIntentSecret, onGetStripeClientSecret, onUpdateSubscription,  } from "@/actions/stripe";
-import { useElements, useStripe as useStripeHook } from "@stripe/react-stripe-js";
-import { PaymentIntent } from "@stripe/stripe-js";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { onCreateCustomerPaymentIntentSecret, onGetStripeClientSecret, onUpdateSubscription } from "@/actions/stripe"
+import { useElements, useStripe as useStripeHook } from "@stripe/react-stripe-js"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import type { PlanType } from "@/lib/pricing-config"
 
 export const useStripe = () => {
-    const [onStripeAccountPending, setOnStripeAccountPending] = useState<boolean>(false);
+    const [onStripeAccountPending, setOnStripeAccountPending] = useState<boolean>(false)
 
     const onStripeConnect = async () => {
         try {
@@ -60,7 +60,6 @@ export const useCompleteCustomerPayment = (onNext: () => void) => {
     if (!stripe || !elements) {
       return null
     }
-    console.log('no reload')
 
     try {
       setProcessing(true)
@@ -68,13 +67,14 @@ export const useCompleteCustomerPayment = (onNext: () => void) => {
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: 'http://localhost:3000/settings'
+          return_url: `${window.location.origin}/settings/billing`,
         },
         redirect: 'if_required',
       })
 
       if (error) {
         console.log(error)
+        toast.error('Payment failed. Please try again.')
       }
 
       if (paymentIntent?.status === 'succeeded') {
@@ -85,17 +85,20 @@ export const useCompleteCustomerPayment = (onNext: () => void) => {
       setProcessing(false)
     } catch (error) {
       console.log(error)
+      toast.error('An error occurred during payment.')
+      setProcessing(false)
     }
   }
 
   return { processing, onMakePayment }
 }
 
-export const useSubscriptions = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
+export const useSubscriptions = (plan: PlanType) => {
   const [loading, setLoading] = useState<boolean>(false)
-  const [payment, setPayment] = useState<'STANDARD' | 'PRO' | 'ULTIMATE'>(plan)
+  const [payment, setPayment] = useState<PlanType>(plan)
   const router = useRouter()
-  const onUpdatetToFreTier = async () => {
+  
+  const onUpdateToFreeTier = async () => {
     try {
       setLoading(true)
       const free = await onUpdateSubscription('STANDARD')
@@ -106,34 +109,36 @@ export const useSubscriptions = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
       }
     } catch (error) {
       console.log(error)
+      setLoading(false)
+      toast.error('Failed to update subscription')
     }
   }
 
-  const onSetPayment = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') =>
-    setPayment(payment)
+  const onSetPayment = (payment: PlanType) => setPayment(payment)
 
   return {
     loading,
     onSetPayment,
     payment,
-    onUpdatetToFreTier,
+    onUpdateToFreeTier,
   }
 }
 
-export const useStripeElements = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
+export const useStripeElements = (payment: PlanType) => {
   const [stripeSecret, setStripeSecret] = useState<string>('')
   const [loadForm, setLoadForm] = useState<boolean>(false)
 
-  const onGetBillingIntent = async (plans: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
+  const onGetBillingIntent = async (plan: PlanType) => {
     try {
       setLoadForm(true)
-      const intent = await onGetStripeClientSecret(plans)
+      const intent = await onGetStripeClientSecret(plan)
       if (intent) {
         setLoadForm(false)
         setStripeSecret(intent.secret!)
       }
     } catch (error) {
       console.log(error)
+      setLoadForm(false)
     }
   }
 
@@ -145,7 +150,7 @@ export const useStripeElements = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
 }
 
 export const useCompletePayment = (
-  payment: 'STANDARD' | 'PRO' | 'ULTIMATE'
+  payment: PlanType
 ) => {
   const [processing, setProcessing] = useState<boolean>(false)
   const router = useRouter()
@@ -158,20 +163,22 @@ export const useCompletePayment = (
       return null
     }
 
-
     try {
       setProcessing(true)
 
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: 'http://localhost:3000/settings',
+          return_url: `${window.location.origin}/settings/billing`,
         },
         redirect: 'if_required',
       })
 
       if (error) {
         console.log(error)
+        toast.error('Payment failed. Please try again.')
+        setProcessing(false)
+        return
       }
 
       if (paymentIntent?.status === 'succeeded') {
@@ -185,6 +192,8 @@ export const useCompletePayment = (
       router.refresh()
     } catch (error) {
       console.log(error)
+      toast.error('An error occurred during payment.')
+      setProcessing(false)
     }
   }
 

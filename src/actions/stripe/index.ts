@@ -2,6 +2,7 @@
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import Stripe from 'stripe'
+import { getPlanPrice, getPlanCredits, type PlanType } from '@/lib/pricing-config' 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
     typescript: true,
@@ -22,7 +23,6 @@ export const onCreateCustomerPaymentIntentSecret = async (
                 },
             },
         )
-
         if (paymentIntent) {
             return {
                 secret: paymentIntent.client_secret
@@ -34,11 +34,14 @@ export const onCreateCustomerPaymentIntentSecret = async (
 }
 
 export const onUpdateSubscription = async (
-  plan: 'STANDARD' | 'PRO' | 'ULTIMATE'
+  plan: PlanType
 ) => {
   try {
     const user = await currentUser()
     if (!user) return
+    
+    const credits = getPlanCredits(plan)
+    
     const update = await client.user.update({
       where: {
         clerkId: user.id,
@@ -48,7 +51,7 @@ export const onUpdateSubscription = async (
           update: {
             data: {
               plan,
-              credits: plan == 'PRO' ? 50 : plan == 'ULTIMATE' ? 500 : 10,
+              credits,
             },
           },
         },
@@ -61,6 +64,7 @@ export const onUpdateSubscription = async (
         },
       },
     })
+    
     if (update) {
       return {
         status: 200,
@@ -73,21 +77,12 @@ export const onUpdateSubscription = async (
   }
 }
 
-const setPlanAmount = (item: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
-  if (item == 'PRO') {
-    return 1500
-  }
-  if (item == 'ULTIMATE') {
-    return 3500
-  }
-  return 0
-}
-
 export const onGetStripeClientSecret = async (
-  item: 'STANDARD' | 'PRO' | 'ULTIMATE'
+  plan: PlanType
 ) => {
   try {
-    const amount = setPlanAmount(item)
+    const amount = getPlanPrice(plan)
+    
     const paymentIntent = await stripe.paymentIntents.create({
       currency: 'usd',
       amount: amount,
@@ -95,7 +90,7 @@ export const onGetStripeClientSecret = async (
         enabled: true,
       },
     })
-
+    
     if (paymentIntent) {
       return { secret: paymentIntent.client_secret }
     }
