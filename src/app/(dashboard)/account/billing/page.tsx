@@ -1,7 +1,7 @@
 import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { BillingPageClient } from '@/components/settings/billing/billing-page-client'
-import { onGetBillingInfo } from '@/actions/billing'
+import { onGetBillingInfo, onGetPaymentMethods } from '@/actions/billing'
 
 export const dynamic = "force-dynamic"
 export const revalidate = 0
@@ -16,5 +16,10 @@ export default async function BillingPage() {
     redirect('/dashboard')
   }
 
-  return <BillingPageClient billingData={billingInfo} />
+  const paymentMethodsData = await onGetPaymentMethods()
+
+  return <BillingPageClient
+    billingData={billingInfo}
+    paymentMethods={paymentMethodsData.methods}   
+  />
 }

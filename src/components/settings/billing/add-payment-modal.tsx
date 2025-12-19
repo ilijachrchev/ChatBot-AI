@@ -9,13 +9,20 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Loader2, CreditCard, Lock } from 'lucide-react'
+import { Loader2, CreditCard, Lock, AlertCircle } from 'lucide-react'
 import { toast } from 'sonner'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { onCreateSetupIntent } from '@/actions/billing'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY
+
+if (!publishableKey) {
+  console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set in environment variables')
+}
+
+const stripePromise = publishableKey ? loadStripe(publishableKey) : null
 
 interface AddPaymentModalProps {
   open: boolean
@@ -118,6 +125,7 @@ function PaymentForm({ onSuccess, onCancel }: { onSuccess: () => void; onCancel:
 export function AddPaymentModal({ open, onOpenChange, onSuccess }: AddPaymentModalProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     if (open && !clientSecret) {
@@ -127,13 +135,27 @@ export function AddPaymentModal({ open, onOpenChange, onSuccess }: AddPaymentMod
 
   const loadSetupIntent = async () => {
     setLoading(true)
+    setError(null)
+
+    if (!publishableKey) {
+      setError('Stripe is not configured. Please contact support.')
+      setLoading(false)
+      return
+    }
+
+    if (!stripePromise) {
+      setError('Failed to load Stripe. Please refresh and try again.')
+      setLoading(false)
+      return
+    }
+
     const result = await onCreateSetupIntent()
     
     if (result.success && result.clientSecret) {
       setClientSecret(result.clientSecret)
     } else {
+      setError('Failed to initialize payment form. Please try again.')
       toast.error('Failed to initialize payment form')
-      onOpenChange(false)
     }
     
     setLoading(false)
@@ -141,12 +163,14 @@ export function AddPaymentModal({ open, onOpenChange, onSuccess }: AddPaymentMod
 
   const handleSuccess = () => {
     setClientSecret(null)
+    setError(null)
     onSuccess?.()
     onOpenChange(false)
   }
 
   const handleCancel = () => {
     setClientSecret(null)
+    setError(null)
     onOpenChange(false)
   }
 
@@ -161,11 +185,16 @@ export function AddPaymentModal({ open, onOpenChange, onSuccess }: AddPaymentMod
         </DialogHeader>
 
         <div className="py-4">
-          {loading ? (
+          {error ? (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          ) : loading ? (
             <div className="flex items-center justify-center py-8">
               <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
             </div>
-          ) : clientSecret ? (
+          ) : clientSecret && stripePromise ? (
             <Elements
               stripe={stripePromise}
               options={{

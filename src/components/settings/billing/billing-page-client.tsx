@@ -26,6 +26,17 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { UpgradePlanModal } from './upgrade-plan-modal'
 import { UpdateBillingModal } from './update-billing-modal'
+import { AddPaymentModal } from './add-payment-modal'
+import { PaymentMethodCard } from './payment-method-card'
+
+interface PaymentMethod {
+  id: string
+  brand: string
+  last4: string
+  expMonth: number
+  expYear: number
+  isDefault: boolean
+}
 
 interface BillingPageClientProps {
   billingData: {
@@ -56,6 +67,7 @@ interface BillingPageClientProps {
       } | null
     } | null
   }
+  paymentMethods: PaymentMethod[]
 }
 
 const featureIcons: Record<string, any> = {
@@ -71,11 +83,12 @@ const featureIcons: Record<string, any> = {
   integrations: Zap,
 }
 
-export function BillingPageClient({ billingData }: BillingPageClientProps) {
+export function BillingPageClient({ billingData, paymentMethods: initialPaymentMethods }: BillingPageClientProps) {
   const { currentPlan, credits, planDetails, billingAddress, stripeBillingInfo } = billingData
   const [selectedPlan, setSelectedPlan] = useState<PlanType>(currentPlan)
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false)
   const [billingModalOpen, setBillingModalOpen] = useState(false)
+  const [addPaymentModalOpen, setAddPaymentModalOpen] = useState(false)
   const [targetUpgradePlan, setTargetUpgradePlan] = useState<PlanType | null>(null)
   const router = useRouter()
   
@@ -110,6 +123,10 @@ export function BillingPageClient({ billingData }: BillingPageClientProps) {
   }
 
   const handleBillingUpdateSuccess = () => {
+    router.refresh()
+  }
+
+  const handlePaymentMethodUpdate = () => {
     router.refresh()
   }
 
@@ -365,51 +382,54 @@ export function BillingPageClient({ billingData }: BillingPageClientProps) {
                 <CardTitle>Payment Methods</CardTitle>
                 <CardDescription>Manage your saved payment methods</CardDescription>
               </div>
-              <Button size="sm">
+              <Button 
+                size="sm"
+                onClick={() => setAddPaymentModalOpen(true)}
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Card
               </Button>
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="relative p-4 rounded-xl border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-                <Badge className="absolute top-3 right-3 bg-green-500 text-white text-xs">
-                  Default
-                </Badge>
-                <div className="flex items-start justify-between mb-8">
-                  <p className="text-sm font-medium">Mastercard</p>
-                  <div className="flex gap-1">
-                    <div className="w-2 h-2 rounded-full bg-white/60" />
-                    <div className="w-2 h-2 rounded-full bg-white/60" />
-                    <div className="w-2 h-2 rounded-full bg-white/60" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xs text-white/60">CARD NUMBER</p>
-                  <p className="font-mono">•••• •••• •••• 9029</p>
-                </div>
-                <div className="flex items-center justify-between mt-4">
-                  <div>
-                    <p className="text-xs text-white/60">EXPIRES</p>
-                    <p className="text-sm">01/24</p>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="ghost" className="h-8 text-white hover:bg-white/10">
-                      <Edit className="w-3 h-3" />
-                    </Button>
-                    <Button size="sm" variant="ghost" className="h-8 text-white hover:bg-white/10">
-                      <Trash2 className="w-3 h-3" />
-                    </Button>
-                  </div>
-                </div>
+            {initialPaymentMethods.length > 0 ? (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {initialPaymentMethods.map((method) => (
+                  <PaymentMethodCard
+                    key={method.id}
+                    id={method.id}
+                    brand={method.brand}
+                    last4={method.last4}
+                    expMonth={method.expMonth}
+                    expYear={method.expYear}
+                    isDefault={method.isDefault}
+                    onUpdate={handlePaymentMethodUpdate}
+                  />
+                ))}
+                
+                <button 
+                  onClick={() => setAddPaymentModalOpen(true)}
+                  className="p-6 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 transition-colors flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300"
+                >
+                  <Plus className="w-6 h-6" />
+                  <p className="text-sm font-medium">Add Payment Method</p>
+                </button>
               </div>
-
-              <button className="p-6 rounded-xl border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 transition-colors flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300">
-                <Plus className="w-6 h-6" />
-                <p className="text-sm font-medium">Add Payment Method</p>
-              </button>
-            </div>
+            ) : (
+              <div className="text-center py-12">
+                <CreditCard className="w-12 h-12 mx-auto text-slate-300 dark:text-slate-700 mb-4" />
+                <p className="text-slate-500 dark:text-slate-400 mb-4">
+                  No payment methods added yet
+                </p>
+                <Button 
+                  variant="outline"
+                  onClick={() => setAddPaymentModalOpen(true)}
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Your First Card
+                </Button>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -437,6 +457,12 @@ export function BillingPageClient({ billingData }: BillingPageClientProps) {
           vatNumber: null,
         } : null)}
         onSuccess={handleBillingUpdateSuccess}
+      />
+
+      <AddPaymentModal
+        open={addPaymentModalOpen}
+        onOpenChange={setAddPaymentModalOpen}
+        onSuccess={handlePaymentMethodUpdate}
       />
     </>
   )

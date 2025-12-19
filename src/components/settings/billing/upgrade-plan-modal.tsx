@@ -18,13 +18,21 @@ import {
   Zap,
   ArrowRight,
   Loader2,
+  AlertCircle,
 } from 'lucide-react'
 import { PRICING_CONFIG, type PlanType, getPlanDetails } from '@/lib/pricing-config'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
 import { UpgradePaymentForm } from './upgrade-payment-form'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
+const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY
+
+if (!publishableKey) {
+  console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set')
+}
+
+const stripePromise = publishableKey ? loadStripe(publishableKey) : null
 
 interface UpgradePlanModalProps {
   open: boolean
@@ -55,6 +63,10 @@ export function UpgradePlanModal({
   const TargetIcon = planIcons[targetPlan]
 
   const handleContinue = () => {
+    if (!publishableKey || !stripePromise) {
+      alert('Stripe is not configured. Please contact support.')
+      return
+    }
     setStep('payment')
     setShowPaymentForm(true)
   }
@@ -152,7 +164,7 @@ export function UpgradePlanModal({
               {newFeatures.length > 0 && (
                 <div>
                   <h4 className="font-semibold text-slate-900 dark:text-white mb-3">
-                    What you'll get:
+                    What you&apos;ll get:
                   </h4>
                   <ul className="space-y-2">
                     {newFeatures.map(([key, value]) => {
@@ -204,6 +216,7 @@ export function UpgradePlanModal({
               <Button
                 onClick={handleContinue}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                disabled={!publishableKey || !stripePromise}
               >
                 Continue to Payment
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -220,7 +233,14 @@ export function UpgradePlanModal({
             </DialogHeader>
 
             <div className="py-4">
-              {showPaymentForm && (
+              {!publishableKey || !stripePromise ? (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>
+                    Stripe is not configured. Please contact support.
+                  </AlertDescription>
+                </Alert>
+              ) : showPaymentForm ? (
                 <Elements
                   stripe={stripePromise}
                   options={{
@@ -242,7 +262,7 @@ export function UpgradePlanModal({
                     onBack={handleBack}
                   />
                 </Elements>
-              )}
+              ) : null}
             </div>
           </>
         )}

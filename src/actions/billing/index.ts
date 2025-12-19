@@ -4,7 +4,6 @@ import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { PRICING_CONFIG, type PlanType } from '@/lib/pricing-config'
 import Stripe from 'stripe'
-import { de } from 'date-fns/locale'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   typescript: true,
@@ -61,6 +60,16 @@ export const onGetBillingInfo = async () => {
       }
     }
 
+    const formattedBillingAddress = profile.billingAddress ? {
+      name: profile.billingAddress.name,
+      street: profile.billingAddress.street,
+      city: profile.billingAddress.city,
+      state: profile.billingAddress.state,
+      country: profile.billingAddress.country,
+      zipCode: profile.billingAddress.zipCode,
+      vatNumber: profile.billingAddress.vatNumber,
+    } : null
+
     return {
       userId: profile.id,
       fullname: profile.fullname,
@@ -68,7 +77,7 @@ export const onGetBillingInfo = async () => {
       credits: profile.subscription?.credits || 0,
       planDetails,
       stripeId: profile.stripeId,
-      billingAddress: profile.billingAddress || stripeBillingInfo?.address || null,
+      billingAddress: formattedBillingAddress,
       stripeBillingInfo,
     }
   } catch (error) {
@@ -80,7 +89,7 @@ export const onGetBillingInfo = async () => {
 export const onGetPaymentMethods = async () => {
   try {
     const user = await currentUser()
-    if (!user) return []
+    if (!user) return { success: false, methods: [], defaultPaymentMethodId: null }
 
     const profile = await client.user.findUnique({
       where: {
@@ -92,17 +101,13 @@ export const onGetPaymentMethods = async () => {
     })
 
     if (!profile?.stripeId) {
-      return { 
-        success: true,
-        methods: [],
-        defaultPaymentMethodId: null
-      }
+      return { success: true, methods: [], defaultPaymentMethodId: null }
     }
 
-    const customer = await stripe.customers.retrieve(profile.stripeId) 
+    const customer = await stripe.customers.retrieve(profile.stripeId)
     const defaultPaymentMethodId = customer.deleted 
-        ? null
-        : (customer.invoice_settings.default_payment_method as string | null)
+      ? null 
+      : (customer.invoice_settings?.default_payment_method as string | null)
 
     const paymentMethods = await stripe.paymentMethods.list({
       customer: profile.stripeId,
@@ -115,21 +120,17 @@ export const onGetPaymentMethods = async () => {
       last4: pm.card?.last4 || '****',
       expMonth: pm.card?.exp_month || 0,
       expYear: pm.card?.exp_year || 0,
-      isDefault: false,
+      isDefault: pm.id === defaultPaymentMethodId,
     }))
 
-    return {
-      success: true,
+    return { 
+      success: true, 
       methods,
-      defaultPaymentMethodId,
+      defaultPaymentMethodId 
     }
   } catch (error) {
     console.log(error)
-    return {
-      success: false,
-      methods: [],
-      defaultPaymentMethodId: null
-    }
+    return { success: false, methods: [], defaultPaymentMethodId: null }
   }
 }
 
@@ -137,6 +138,7 @@ export const onSetDefaultPaymentMethod = async (paymentMethodId: string) => {
   try {
     const user = await currentUser()
     if (!user) return { success: false, message: 'Unauthorized' }
+
     const profile = await client.user.findUnique({
       where: {
         clerkId: user.id,
@@ -147,7 +149,7 @@ export const onSetDefaultPaymentMethod = async (paymentMethodId: string) => {
     })
 
     if (!profile?.stripeId) {
-      return { success: false, message: 'Stripe customer not found' }
+      return { success: false, message: 'No Stripe customer found' }
     }
 
     await stripe.customers.update(profile.stripeId, {
@@ -156,7 +158,7 @@ export const onSetDefaultPaymentMethod = async (paymentMethodId: string) => {
       },
     })
 
-    return { success: true, message: 'Default payment method updated successfully' }
+    return { success: true, message: 'Default payment method updated' }
   } catch (error) {
     console.log(error)
     return { success: false, message: 'Failed to update default payment method' }
@@ -167,6 +169,7 @@ export const onDeletePaymentMethod = async (paymentMethodId: string) => {
   try {
     const user = await currentUser()
     if (!user) return { success: false, message: 'Unauthorized' }
+
     const profile = await client.user.findUnique({
       where: {
         clerkId: user.id,
@@ -177,15 +180,15 @@ export const onDeletePaymentMethod = async (paymentMethodId: string) => {
     })
 
     if (!profile?.stripeId) {
-      return { success: false, message: 'Stripe customer not found' }
+      return { success: false, message: 'No Stripe customer found' }
     }
 
     await stripe.paymentMethods.detach(paymentMethodId)
 
-    return { success: true, message: 'Payment method deleted successfully' }
-} catch (error) {
+    return { success: true, message: 'Payment method removed' }
+  } catch (error) {
     console.log(error)
-    return { success: false, message: 'Failed to delete payment method' }
+    return { success: false, message: 'Failed to remove payment method' }
   }
 }
 
@@ -193,6 +196,7 @@ export const onCreateSetupIntent = async () => {
   try {
     const user = await currentUser()
     if (!user) return { success: false, clientSecret: null }
+
     const profile = await client.user.findUnique({
       where: {
         clerkId: user.id,
@@ -201,16 +205,20 @@ export const onCreateSetupIntent = async () => {
         stripeId: true,
       },
     })
+
     let stripeId = profile?.stripeId
 
     if (!stripeId) {
       const customer = await stripe.customers.create({
-        email: user.emailAddresses[0]?.emailAddress || undefined,
-        name: user.fullName || 'User',
+        email: user.emailAddresses[0]?.emailAddress,
+        name: user.firstName && user.lastName 
+          ? `${user.firstName} ${user.lastName}` 
+          : user.firstName || 'User',
         metadata: {
           clerkId: user.id,
         },
       })
+
       stripeId = customer.id
 
       await client.user.update({
@@ -218,7 +226,7 @@ export const onCreateSetupIntent = async () => {
           clerkId: user.id,
         },
         data: {
-          stripeId: stripeId,
+          stripeId: customer.id,
         },
       })
     }
@@ -228,13 +236,15 @@ export const onCreateSetupIntent = async () => {
       payment_method_types: ['card'],
     })
 
-    return { success: true, clientSecret: setupIntent.client_secret }
+    return { 
+      success: true, 
+      clientSecret: setupIntent.client_secret 
+    }
   } catch (error) {
     console.log(error)
     return { success: false, clientSecret: null }
   }
 }
-
 
 export const onUpdateBillingAddress = async (data: {
   name: string
