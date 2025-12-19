@@ -4,7 +4,6 @@ import DashboardIcon from '@/icons/dashboard-icon'
 import EmailIcon from '@/icons/email-icon'
 import HelpDeskIcon from '@/icons/help-desk-icon'
 import IntegrationsIcon from '@/icons/integrations-icon'
-import SettingsIcon from '@/icons/settings-icon'
 import StarIcon from '@/icons/star-icon'
 import TimerIcon from '@/icons/timer-icon'
 import { JSX } from 'react'
@@ -30,11 +29,6 @@ export const SIDE_BAR_MENU: SIDE_BAR_MENU_PROPS[] = [
     label: 'Integrations',
     icon: <IntegrationsIcon />,
     path: 'integrations',
-  },
-  {
-    label: 'Settings',
-    icon: <SettingsIcon />,
-    path: 'settings',
   },
   {
     label: 'Appointments',

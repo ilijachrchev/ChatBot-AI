@@ -6,6 +6,7 @@ import { LanguageRegionCard } from './language-region-card'
 import { NotificationsCard } from './notification-card' 
 import { DashboardBehaviorCard } from './dashboard-behaviour-card'
 import { WorkingHoursCard } from './working-hours-card'
+import DarkModetoggle from './dark-mode'
 
 interface PreferencesSectionProps {
   preferences: UserPreferences
@@ -18,6 +19,7 @@ export function PreferencesSection({ preferences }: PreferencesSectionProps) {
       <NotificationsCard preferences={preferences} />
       <DashboardBehaviorCard preferences={preferences} />
       <WorkingHoursCard preferences={preferences} />
+      <DarkModetoggle />
     </div>
   )
 }
