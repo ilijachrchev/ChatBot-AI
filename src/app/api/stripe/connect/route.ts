@@ -15,7 +15,6 @@ export async function GET() {
     const Stripe = (await import('stripe')).default
     const stripe = new Stripe(process.env.STRIPE_SECRET!, {
       typescript: true,
-      apiVersion: '2025-10-29.clover',
     })
 
     const account = await stripe.accounts.create({
