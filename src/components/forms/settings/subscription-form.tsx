@@ -13,7 +13,7 @@ type Props = {
 
 const SubscriptionForm = ({ plan }: Props) => {
 
-    const { loading, onSetPayment, payment, onUpdatetToFreTier } = useSubscriptions(plan)
+    const { loading, onSetPayment, payment, onUpdateToFreeTier } = useSubscriptions(plan)
 
   return (
     <Loader loading={loading}>
@@ -48,7 +48,7 @@ const SubscriptionForm = ({ plan }: Props) => {
         </div>
         <StripeElements payment={payment} />
         {payment === 'STANDARD' && (
-          <Button onClick={onUpdatetToFreTier}>
+          <Button onClick={onUpdateToFreeTier}>
             <Loader loading={loading}>Confirm</Loader>
           </Button>
         )}
