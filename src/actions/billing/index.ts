@@ -5,6 +5,7 @@ import { currentUser } from '@clerk/nextjs/server'
 import { PRICING_CONFIG, type PlanType } from '@/lib/pricing-config'
 import Stripe from 'stripe'
 import { onUpdateSubscription } from '../stripe'
+import { sendSubscriptionReceipt } from '@/lib/email'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   typescript: true,
@@ -361,7 +362,19 @@ export const onChargeWithSavedCard = async (
     })
 
     if (paymentIntent.status === 'succeeded') {
-      const result = await onUpdateSubscription(plan)
+       const result = await onUpdateSubscription(plan)
+      
+      await onSavePaymentHistory({
+        userId: profile.id,
+        amount: amount,
+        plan: plan,
+        paymentIntentId: paymentIntent.id,
+        paymentMethod: paymentIntent.payment_method ? 
+          (await stripe.paymentMethods.retrieve(paymentIntent.payment_method as string)).card?.last4 : undefined,
+        paymentBrand: paymentIntent.payment_method ?
+          (await stripe.paymentMethods.retrieve(paymentIntent.payment_method as string)).card?.brand : undefined,
+        status: 'succeeded',
+      })
       
       await sendPaymentReceipt({
         email: user.emailAddresses[0]?.emailAddress || '',
@@ -395,18 +408,84 @@ async function sendPaymentReceipt(data: {
   plan: PlanType
   paymentIntentId: string
 }) {
+  await sendSubscriptionReceipt(data)
+}
+
+
+export const onSavePaymentHistory = async (data: {
+  userId: string
+  amount: number
+  plan: PlanType
+  paymentIntentId: string
+  paymentMethod?: string
+  paymentBrand?: string
+  status: string
+}) => {
   try {
     const planDetails = PRICING_CONFIG[data.plan]
     
-    console.log('Sending receipt to:', data.email)
-    console.log('Payment details:', {
-      amount: data.amount / 100,
-      plan: planDetails.displayName,
-      paymentIntentId: data.paymentIntentId,
+    await client.paymentHistory.create({
+      data: {
+        userId: data.userId,
+        amount: data.amount,
+        currency: 'usd',
+        status: data.status,
+        plan: data.plan,
+        description: `${planDetails.displayName} Plan Subscription`,
+        stripePaymentIntentId: data.paymentIntentId,
+        paymentMethod: data.paymentMethod,
+        paymentBrand: data.paymentBrand,
+      },
     })
-    
-    // TODO: Implement actual email sending
+
+    return { success: true }
   } catch (error) {
-    console.error('Error sending receipt:', error)
+    console.error('Error saving payment history:', error)
+    return { success: false }
+  }
+}
+
+export const onGetPaymentHistory = async () => {
+  try {
+    const user = await currentUser()
+    if (!user) return { success: false, payments: [] }
+
+    const profile = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        id: true,
+      },
+    })
+
+    if (!profile) return { success: false, payments: [] }
+
+    const payments = await client.paymentHistory.findMany({
+      where: {
+        userId: profile.id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: 50,
+    })
+
+    return {
+      success: true,
+      payments: payments.map(p => ({
+        id: p.id,
+        amount: p.amount,
+        status: p.status,
+        plan: p.plan,
+        description: p.description,
+        paymentMethod: p.paymentMethod,
+        paymentBrand: p.paymentBrand,
+        date: p.createdAt,
+      })),
+    }
+  } catch (error) {
+    console.error('Error getting payment history:', error)
+    return { success: false, payments: [] }
   }
 }

@@ -40,6 +40,8 @@ model User {
   preferences UserPreferences?
 
   billingAddress BillingAddress?
+
+  paymentHistory PaymentHistory[]
 }
 
 model Domain {
@@ -430,4 +432,29 @@ model BillingAddress {
   updatedAt DateTime @updatedAt
   
   @@index([userId])
+}
+
+model PaymentHistory {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  amount    Int      
+  currency  String   @default("usd")
+  status    String   
+  plan      Plans?
+  description String?
+  
+  stripePaymentIntentId String @unique
+  stripeInvoiceId String?
+  
+  paymentMethod String? 
+  paymentBrand  String? 
+  
+  receiptUrl String?
+  
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([createdAt])
 }
