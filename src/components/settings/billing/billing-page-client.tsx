@@ -45,7 +45,7 @@ interface BillingPageClientProps {
     currentPlan: PlanType
     credits: number
     planDetails: PlanDetails
-    stripeId: string | null
+    stripeCustomerId: string | null
     billingAddress: {
       name: string
       street?: string | null

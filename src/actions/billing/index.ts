@@ -27,7 +27,7 @@ export const onGetBillingInfo = async () => {
             credits: true,
           },
         },
-        stripeId: true,
+        stripeCustomerId: true,
         billingAddress: true,
       },
     })
@@ -38,9 +38,9 @@ export const onGetBillingInfo = async () => {
     const planDetails = PRICING_CONFIG[plan]
 
     let stripeBillingInfo = null
-    if (profile.stripeId) {
+    if (profile.stripeCustomerId) {
       try {
-        const customer = await stripe.customers.retrieve(profile.stripeId)
+        const customer = await stripe.customers.retrieve(profile.stripeCustomerId)
         if (customer && !customer.deleted) {
           stripeBillingInfo = {
             name: customer.name || profile.fullname,
@@ -75,7 +75,7 @@ export const onGetBillingInfo = async () => {
       currentPlan: plan,
       credits: profile.subscription?.credits || 0,
       planDetails,
-      stripeId: profile.stripeId,
+      stripeCustomerId: profile.stripeCustomerId,
       billingAddress: formattedBillingAddress,
       stripeBillingInfo,
     }
@@ -95,21 +95,21 @@ export const onGetPaymentMethods = async () => {
         clerkId: user.id,
       },
       select: {
-        stripeId: true,
+        stripeCustomerId: true,
       },
     })
 
-    if (!profile?.stripeId) {
+    if (!profile?.stripeCustomerId) {
       return { success: true, methods: [], defaultPaymentMethodId: null }
     }
 
-    const customer = await stripe.customers.retrieve(profile.stripeId)
+    const customer = await stripe.customers.retrieve(profile.stripeCustomerId)
     const defaultPaymentMethodId = customer.deleted 
       ? null 
       : (customer.invoice_settings?.default_payment_method as string | null)
 
     const paymentMethods = await stripe.paymentMethods.list({
-      customer: profile.stripeId,
+      customer: profile.stripeCustomerId,
       type: 'card',
     })
 
@@ -143,15 +143,15 @@ export const onSetDefaultPaymentMethod = async (paymentMethodId: string) => {
         clerkId: user.id,
       },
       select: {
-        stripeId: true,
+        stripeCustomerId: true,
       },
     })
 
-    if (!profile?.stripeId) {
+    if (!profile?.stripeCustomerId) {
       return { success: false, message: 'No Stripe customer found' }
     }
 
-    await stripe.customers.update(profile.stripeId, {
+    await stripe.customers.update(profile.stripeCustomerId, {
       invoice_settings: {
         default_payment_method: paymentMethodId,
       },
@@ -174,11 +174,11 @@ export const onDeletePaymentMethod = async (paymentMethodId: string) => {
         clerkId: user.id,
       },
       select: {
-        stripeId: true,
+        stripeCustomerId: true,
       },
     })
 
-    if (!profile?.stripeId) {
+    if (!profile?.stripeCustomerId) {
       return { success: false, message: 'No Stripe customer found' }
     }
 
@@ -201,13 +201,13 @@ export const onCreateSetupIntent = async () => {
         clerkId: user.id,
       },
       select: {
-        stripeId: true,
+        stripeCustomerId: true,
       },
     })
 
-    let stripeId = profile?.stripeId
+    let stripeCustomerId = profile?.stripeCustomerId
 
-    if (!stripeId) {
+    if (!stripeCustomerId) {
       const customer = await stripe.customers.create({
         email: user.emailAddresses[0]?.emailAddress,
         name: user.firstName && user.lastName 
@@ -218,20 +218,20 @@ export const onCreateSetupIntent = async () => {
         },
       })
 
-      stripeId = customer.id
+      stripeCustomerId = customer.id
 
       await client.user.update({
         where: {
           clerkId: user.id,
         },
         data: {
-          stripeId: customer.id,
+          stripeCustomerId: customer.id,
         },
       })
     }
 
     const setupIntent = await stripe.setupIntents.create({
-      customer: stripeId,
+      customer: stripeCustomerId,
       payment_method_types: ['card'],
     })
 
@@ -264,7 +264,7 @@ export const onUpdateBillingAddress = async (data: {
       },
       select: {
         id: true,
-        stripeId: true,
+        stripeCustomerId: true,
         billingAddress: true,
       },
     })
@@ -296,9 +296,9 @@ export const onUpdateBillingAddress = async (data: {
       },
     })
 
-    if (profile.stripeId) {
+    if (profile.stripeCustomerId) {
       try {
-        await stripe.customers.update(profile.stripeId, {
+        await stripe.customers.update(profile.stripeCustomerId, {
           name: data.name,
           address: {
             line1: data.street || '',

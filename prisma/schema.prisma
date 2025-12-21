@@ -25,6 +25,7 @@ model User {
 
   avatar String?
   stripeId String?
+  stripeCustomerId String?
   keepMeLoggedIn Boolean @default(false)
 
   campaign Campaign[]
