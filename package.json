@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "postinstall": "prisma generate",
     "email-scheduler": "node scheduled-email-sender.js",
-    "import-payments": "tsx src/scripts/import-stripe-payments.ts"
+    "import-payments": "tsx src/scripts/import-stripe-payments.ts",
+    "setup-stripe": "tsx src/scripts/setup-stripe-products.ts"
   },
   "dependencies": {
     "@clerk/backend": "2.29.0",
@@ -56,6 +57,7 @@
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "dotenv": "^17.2.3",
     "embla-carousel-react": "^8.6.0",
     "express": "^5.1.0",
     "framer-motion": "^12.23.25",
