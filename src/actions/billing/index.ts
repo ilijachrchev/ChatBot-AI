@@ -4,6 +4,7 @@ import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { PRICING_CONFIG, type PlanType } from '@/lib/pricing-config'
 import Stripe from 'stripe'
+import { onUpdateSubscription } from '../stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   typescript: true,
@@ -317,5 +318,95 @@ export const onUpdateBillingAddress = async (data: {
   } catch (error) {
     console.log(error)
     return { success: false, message: 'Failed to update billing address' }
+  }
+}
+
+export const onChargeWithSavedCard = async (
+  paymentMethodId: string,
+  amount: number,
+  plan: PlanType
+) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { success: false, message: 'Unauthorized' }
+
+    const profile = await client.user.findUnique({
+      where: {
+        clerkId: user.id,
+      },
+      select: {
+        id: true,
+        fullname: true,
+        stripeCustomerId: true,
+      },
+    })
+
+    if (!profile?.stripeCustomerId) {
+      return { success: false, message: 'No Stripe customer found' }
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'usd',
+      customer: profile.stripeCustomerId,
+      payment_method: paymentMethodId,
+      off_session: true,
+      confirm: true,
+      metadata: {
+        userId: profile.id,
+        plan: plan,
+        userName: profile.fullname,
+        userEmail: user.emailAddresses[0]?.emailAddress || '',
+      },
+    })
+
+    if (paymentIntent.status === 'succeeded') {
+      const result = await onUpdateSubscription(plan)
+      
+      await sendPaymentReceipt({
+        email: user.emailAddresses[0]?.emailAddress || '',
+        name: profile.fullname,
+        amount: amount,
+        plan: plan,
+        paymentIntentId: paymentIntent.id,
+      })
+
+      return {
+        success: true,
+        message: 'Payment successful',
+        paymentIntent: paymentIntent.id,
+      }
+    }
+
+    return { success: false, message: 'Payment failed' }
+  } catch (error: any) {
+    console.error('Error charging saved card:', error)
+    return {
+      success: false,
+      message: error.message || 'Failed to process payment',
+    }
+  }
+}
+
+async function sendPaymentReceipt(data: {
+  email: string
+  name: string
+  amount: number
+  plan: PlanType
+  paymentIntentId: string
+}) {
+  try {
+    const planDetails = PRICING_CONFIG[data.plan]
+    
+    console.log('Sending receipt to:', data.email)
+    console.log('Payment details:', {
+      amount: data.amount / 100,
+      plan: planDetails.displayName,
+      paymentIntentId: data.paymentIntentId,
+    })
+    
+    // TODO: Implement actual email sending
+  } catch (error) {
+    console.error('Error sending receipt:', error)
   }
 }
