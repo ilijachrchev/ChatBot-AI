@@ -42,6 +42,12 @@
     --chart-3: 262 83% 58%;
     --chart-4: 39 84% 52%;
     --chart-5: 346 77% 50%;
+
+    --payment-bg: #FDFFFC;
+    --payment-accent: #4D7298;
+    --payment-text-primary: #001242;
+    --payment-text-secondary: #000022;
+    --payment-divider: #0D0709;
   }
   
   .dark {

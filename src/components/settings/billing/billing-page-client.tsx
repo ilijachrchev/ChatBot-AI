@@ -28,6 +28,7 @@ import { UpgradePlanModal } from './upgrade-plan-modal'
 import { UpdateBillingModal } from './update-billing-modal'
 import { AddPaymentModal } from './add-payment-modal'
 import { PaymentMethodCard } from './payment-method-card'
+import { PaymentHistory } from './payment-history'
 
 interface PaymentMethod {
   id: string
@@ -432,6 +433,8 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
             )}
           </CardContent>
         </Card>
+
+        <PaymentHistory />
       </div>
 
       {targetUpgradePlan && (
