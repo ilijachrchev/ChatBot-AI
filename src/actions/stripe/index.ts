@@ -2,9 +2,7 @@
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import Stripe from 'stripe'
-import { getPlanPrice, getPlanCredits, type PlanType } from '@/lib/pricing-config' 
-import { success } from 'zod'
-import { profileEnd } from 'console'
+import { getPlanPrice, getPlanCredits, type PlanType } from '@/lib/pricing-config'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
     typescript: true,
@@ -13,6 +11,16 @@ const stripe = new Stripe(process.env.STRIPE_SECRET!, {
 const PRICE_IDS = {
   PRO: process.env.STRIPE_PRO_PRICE_ID!,
   ULTIMATE: process.env.STRIPE_ULTIMATE_PRICE_ID!,
+}
+
+function getSubscriptionPeriodEndUnix(sub: Stripe.Subscription): number | null {
+  const ends = 
+    sub.items?.data
+      ?.map((item) => item.current_period_end)
+      .filter((v): v is number => typeof v === "number") ?? []
+
+  if (ends.length === 0) return null
+  return Math.max(...ends)
 }
 
 export const onCreateCustomerPaymentIntentSecret = async (
@@ -42,7 +50,7 @@ export const onCreateCustomerPaymentIntentSecret = async (
 export const onCreateSubscription = async (plan: PlanType) => {
   try {
     const user = await currentUser()
-    if (!user) return {success: false, message: "Unauthorized" }
+    if (!user) return { success: false, message: "Unauthorized" }
 
     if (plan === 'STANDARD') {
       return {
@@ -51,60 +59,68 @@ export const onCreateSubscription = async (plan: PlanType) => {
       }
     }
 
-      const profile = await client.user.findUnique({
-        where: { clerkId: user.id },
-        select: { 
-          id: true,
-          stripeCustomerId: true,
-          subscription: true, 
-        },
-      })  
+    const profile = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { 
+        id: true,
+        stripeCustomerId: true,
+        subscription: true, 
+      },
+    })  
 
-      if (!profile) return { success: false, message: "User profile not found" }
+    if (!profile) return { success: false, message: "User profile not found" }
 
-      let stripeCustomerId = profile.stripeCustomerId
+    let stripeCustomerId = profile.stripeCustomerId
 
-      if (!stripeCustomerId) {
-        const customer = await stripe.customers.create({
-          email: user.emailAddresses[0]?.emailAddress,
-          name: user.firstName && user.lastName 
-            ? `${user.firstName} ${user.lastName}` 
-            : user.firstName || 'User',
-          metadata: {
-            clerkId: user.id,
-            userId: profile.id,
-          },
-        })
-
-        stripeCustomerId = customer.id
-
-        await client.user.update({
-          where: { clerkId: user.id },
-          data: { stripeCustomerId: customer.id },
-        })
-      }
-
-      const subscription = await stripe.subscriptions.create({
-        customer: stripeCustomerId,
-        items: [{ price: PRICE_IDS[plan] }],
-        payment_behavior: 'default_incomplete',
-        payment_settings: {
-          save_default_payment_method: 'on_subscription',
-        },
-        expand: ['latest_invoice.payment_intent'],
+    if (!stripeCustomerId) {
+      const customer = await stripe.customers.create({
+        email: user.emailAddresses[0]?.emailAddress,
+        name: user.firstName && user.lastName 
+          ? `${user.firstName} ${user.lastName}` 
+          : user.firstName || 'User',
         metadata: {
+          clerkId: user.id,
           userId: profile.id,
-          plan: plan,
         },
       })
-      
-      const invoice = subscription.latest_invoice as Stripe.Invoice | null
-      const paymentIntent =
-       invoice && typeof invoice.payment_intent !== "string"
-        ? invoice.payment_intent as Stripe.PaymentIntent
-        : null
 
-      const credits = getPlanCredits(plan)
+      stripeCustomerId = customer.id
+
+      await client.user.update({
+        where: { clerkId: user.id },
+        data: { stripeCustomerId: customer.id },
+      })
+    }
+
+    const subscription = await stripe.subscriptions.create({
+      customer: stripeCustomerId,
+      items: [{ price: PRICE_IDS[plan] }],
+      payment_behavior: 'default_incomplete',
+      payment_settings: {
+        save_default_payment_method: 'on_subscription',
+      },
+      expand: ['latest_invoice.payment_intent'],
+      metadata: {
+        userId: profile.id,
+        plan: plan,
+      },
+    })
+    
+    const invoice = subscription.latest_invoice as Stripe.Invoice | null
+    const paymentIntent = (invoice as any)?.payment_intent as Stripe.PaymentIntent | undefined
+
+    if (!paymentIntent?.client_secret) {
+      return {
+        success: false,
+        message: 'Failed to create payment intent'
+      }
+    }
+
+    const credits = getPlanCredits(plan)
+    const currentPeriodEnd = getSubscriptionPeriodEndUnix(subscription)
+    if (!currentPeriodEnd) {
+      return { success: false, message: "Missing subscription period end" }
+    }
 
     await client.billings.upsert({
       where: { userId: profile.id },
@@ -113,7 +129,7 @@ export const onCreateSubscription = async (plan: PlanType) => {
         plan: plan,
         credits: credits,
         stripeSubscriptionId: subscription.id,
-        stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
         stripePriceId: PRICE_IDS[plan],
         stripeCustomerId: stripeCustomerId,
         status: subscription.status,
@@ -122,7 +138,7 @@ export const onCreateSubscription = async (plan: PlanType) => {
         plan: plan,
         credits: credits,
         stripeSubscriptionId: subscription.id,
-        stripeCurrentPeriodEnd: new Date(subscription.current_period_end * 1000),
+        stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
         stripePriceId: PRICE_IDS[plan],
         status: subscription.status,
       },
@@ -135,6 +151,62 @@ export const onCreateSubscription = async (plan: PlanType) => {
     }
   } catch (error: any) {
     console.error('Error creating subscription:', error)
+    return { success: false, message: error.message }
+  }
+}
+
+export const onCancelSubscription = async () => {
+  try {
+    const user = await currentUser()
+    if (!user) return { success: false, message: 'Unauthorized' }
+
+    const profile = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: {
+        id: true,
+        subscription: {
+          select: {
+            stripeSubscriptionId: true,
+            plan: true,
+          },
+        },
+      },
+    })
+
+    if (!profile?.subscription?.stripeSubscriptionId) {
+      return { success: false, message: 'No active subscription found' }
+    }
+
+    const updatedSubscription = await stripe.subscriptions.update(
+      profile.subscription.stripeSubscriptionId,
+      {
+        cancel_at_period_end: true,
+      }
+    )
+
+    // Update database
+    await client.billings.update({
+      where: { userId: profile.id },
+      data: {
+        cancelAtPeriodEnd: true,
+        canceledAt: new Date(),
+        status: 'canceled',
+      },
+    })
+
+    const subscriptionData = updatedSubscription as unknown as Stripe.Subscription
+    const currentPeriodEnd = getSubscriptionPeriodEndUnix(updatedSubscription)
+    const periodEndDate = currentPeriodEnd ? new Date(currentPeriodEnd * 1000) : null
+
+    return {
+      success: true,
+      message: periodEndDate
+        ? `Subscription canceled. You'll have access until ${periodEndDate.toLocaleDateString()}`
+        : "Subscription canceled.",
+      periodEnd: periodEndDate,
+    }
+  } catch (error: any) {
+    console.error('Error canceling subscription:', error)
     return { success: false, message: error.message }
   }
 }
@@ -233,57 +305,13 @@ export const onGetStripeClientSecret = async (
   plan: PlanType
 ) => {
   try {
-    const user = await currentUser()
-    if (!user) return null
-
-    const profile = await client.user.findUnique({
-      where: { clerkId: user.id },
-      select: { 
-        id: true,
-        stripeCustomerId: true 
-      },
-    })
-
-    let stripeCustomerId = profile?.stripeCustomerId
-
-    if (!stripeCustomerId) {
-      const customer = await stripe.customers.create({
-        email: user.emailAddresses[0]?.emailAddress,
-        name: user.firstName && user.lastName 
-          ? `${user.firstName} ${user.lastName}` 
-          : user.firstName || 'User',
-        metadata: {
-          clerkId: user.id,
-        },
-      })
-
-      stripeCustomerId = customer.id
-
-      await client.user.update({
-        where: { clerkId: user.id },
-        data: { stripeCustomerId: customer.id },
-      })
+    const result = await onCreateSubscription(plan)
+    if (result.success && result.clientSecret) {
+      return { secret: result.clientSecret }
     }
-
-    const amount = getPlanPrice(plan)
-    
-    const paymentIntent = await stripe.paymentIntents.create({
-      currency: 'usd',
-      amount: amount,
-      customer: stripeCustomerId, 
-      automatic_payment_methods: {
-        enabled: true,
-      },
-      metadata: { 
-        plan: plan,
-        userId: profile?.id || '',
-      },
-    })
-    
-    if (paymentIntent) {
-      return { secret: paymentIntent.client_secret }
-    }
+    return null
   } catch (error) {
     console.log(error)
+    return null
   }
 }

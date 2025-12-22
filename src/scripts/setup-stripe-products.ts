@@ -3,7 +3,7 @@ import { PRICING_CONFIG } from '../lib/pricing-config'
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') })
+dotenv.config({ path: path.resolve(process.cwd(), '.env') })
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   typescript: true,
@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET!, {
 
 async function setupStripeProducts() {
   if (!process.env.STRIPE_SECRET) {
-    console.error('STRIPE_SECRET not found in .env.local')
+    console.error('STRIPE_SECRET not found in .env')
     process.exit(1)
   }
 
@@ -37,9 +37,9 @@ async function setupStripeProducts() {
     },
   })
 
-  console.log('PRO Plan created')
-  console.log(`Product ID: ${proProduct.id}`)
-  console.log(`Price ID: ${proPrice.id}\n`)
+  console.log('✅ PRO Plan created')
+  console.log(`   Product ID: ${proProduct.id}`)
+  console.log(`   Price ID: ${proPrice.id}\n`)
 
   const ultimateProduct = await stripe.products.create({
     name: 'Ultimate Plan',
@@ -65,14 +65,14 @@ async function setupStripeProducts() {
   console.log(`Product ID: ${ultimateProduct.id}`)
   console.log(`Price ID: ${ultimatePrice.id}\n`)
 
-  console.log('Add these to your .env.local:')
+  console.log('Add these to your .env:')
   console.log(`STRIPE_PRO_PRICE_ID=${proPrice.id}`)
   console.log(`STRIPE_ULTIMATE_PRICE_ID=${ultimatePrice.id}`)
 }
 
 setupStripeProducts()
-  .then(() => console.log('\nSetup complete!'))
+  .then(() => console.log('\n✨ Setup complete!'))
   .catch((error) => {
-    console.error('Error:', error.message)
+    console.error('❌ Error:', error.message)
     process.exit(1)
   })
