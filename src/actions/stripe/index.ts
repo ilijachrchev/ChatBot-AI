@@ -49,85 +49,148 @@ export const onCreateCustomerPaymentIntentSecret = async (
 
 export const onCreateSubscription = async (plan: PlanType) => {
   try {
+    console.log('1. Starting subscription creation for plan:', plan)
     const user = await currentUser()
-    if (!user) return { success: false, message: "Unauthorized" }
-
+    if (!user) return { success: false, message: 'Unauthorized' }
+    
     if (plan === 'STANDARD') {
+      return { success: false, message: 'Cannot create subscription for free plan' }
+    }
+    
+    if (!PRICE_IDS[plan]) {
       return {
         success: false,
-        message: 'Cannot create subscription for free plan'
+        message: `Price ID not configured for ${plan} plan.`,
       }
     }
-
+    
     const profile = await client.user.findUnique({
       where: { clerkId: user.id },
-      select: { 
-        id: true,
-        stripeCustomerId: true,
-        subscription: true, 
-      },
-    })  
-
-    if (!profile) return { success: false, message: "User profile not found" }
-
+      select: { id: true, stripeCustomerId: true, subscription: true },
+    })
+    
+    if (!profile) return { success: false, message: 'User profile not found' }
+    
     let stripeCustomerId = profile.stripeCustomerId
-
+    
     if (!stripeCustomerId) {
       const customer = await stripe.customers.create({
         email: user.emailAddresses[0]?.emailAddress,
-        name: user.firstName && user.lastName 
-          ? `${user.firstName} ${user.lastName}` 
+        name: user.firstName && user.lastName
+          ? `${user.firstName} ${user.lastName}`
           : user.firstName || 'User',
         metadata: {
           clerkId: user.id,
           userId: profile.id,
         },
       })
-
       stripeCustomerId = customer.id
-
       await client.user.update({
         where: { clerkId: user.id },
         data: { stripeCustomerId: customer.id },
       })
     }
 
+    console.log('2. Creating subscription with payment_behavior: default_incomplete')
+
+    // Create subscription in incomplete state
     const subscription = await stripe.subscriptions.create({
       customer: stripeCustomerId,
       items: [{ price: PRICE_IDS[plan] }],
       payment_behavior: 'default_incomplete',
       payment_settings: {
+        payment_method_types: ['card'],
         save_default_payment_method: 'on_subscription',
       },
-      expand: ['latest_invoice.payment_intent'],
+      expand: ['latest_invoice', 'pending_setup_intent'],
       metadata: {
         userId: profile.id,
-        plan: plan,
+        plan,
       },
     })
-    
-    const invoice = subscription.latest_invoice as Stripe.Invoice | null
-    const paymentIntent = (invoice as any)?.payment_intent as Stripe.PaymentIntent | undefined
 
-    if (!paymentIntent?.client_secret) {
-      return {
-        success: false,
-        message: 'Failed to create payment intent'
+    console.log('3. Subscription created:', subscription.id)
+    console.log('3a. Subscription status:', subscription.status)
+
+    let clientSecret: string | null = null
+
+    // Check for pending_setup_intent first (for $0 trials or when payment_behavior is default_incomplete)
+    if (subscription.pending_setup_intent) {
+      const setupIntent = subscription.pending_setup_intent
+      if (typeof setupIntent === 'string') {
+        const si = await stripe.setupIntents.retrieve(setupIntent)
+        clientSecret = si.client_secret
+        console.log('4a. Using setup intent client secret')
+      } else if (setupIntent.client_secret) {
+        clientSecret = setupIntent.client_secret
+        console.log('4b. Using expanded setup intent client secret')
       }
     }
 
+    // If no setup intent, check for payment intent on the invoice
+    if (!clientSecret && subscription.latest_invoice) {
+      const latestInvoice = subscription.latest_invoice
+      let invoiceObject: any = latestInvoice
+
+      if (typeof latestInvoice === 'string') {
+        invoiceObject = await stripe.invoices.retrieve(latestInvoice, {
+          expand: ['payment_intent'],
+        })
+      }
+
+      if (invoiceObject.payment_intent) {
+        const paymentIntent = invoiceObject.payment_intent
+        if (typeof paymentIntent === 'string') {
+          const pi = await stripe.paymentIntents.retrieve(paymentIntent)
+          clientSecret = pi.client_secret
+          console.log('4c. Using payment intent client secret')
+        } else if (paymentIntent.client_secret) {
+          clientSecret = paymentIntent.client_secret
+          console.log('4d. Using expanded payment intent client secret')
+        }
+      }
+    }
+
+    // If still no client secret, manually create a setup intent
+    if (!clientSecret) {
+      console.log('4e. No intent found, creating setup intent manually')
+      const setupIntent = await stripe.setupIntents.create({
+        customer: stripeCustomerId,
+        payment_method_types: ['card'],
+        usage: 'off_session',
+        metadata: {
+          subscription_id: subscription.id,
+          plan,
+          userId: profile.id,
+        },
+      })
+      clientSecret = setupIntent.client_secret
+      console.log('4f. Manual setup intent created:', setupIntent.id)
+    }
+
+    console.log('5. Client secret obtained:', !!clientSecret)
+
+    if (!clientSecret) {
+      return {
+        success: false,
+        message: 'Failed to create payment setup for subscription',
+      }
+    }
+
+    // Store subscription in incomplete state
     const credits = getPlanCredits(plan)
     const currentPeriodEnd = getSubscriptionPeriodEndUnix(subscription)
+    
     if (!currentPeriodEnd) {
-      return { success: false, message: "Missing subscription period end" }
+      return { success: false, message: 'Missing subscription period end' }
     }
 
     await client.billings.upsert({
       where: { userId: profile.id },
       create: {
         userId: profile.id,
-        plan: plan,
-        credits: credits,
+        plan,
+        credits,
         stripeSubscriptionId: subscription.id,
         stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
         stripePriceId: PRICE_IDS[plan],
@@ -135,8 +198,8 @@ export const onCreateSubscription = async (plan: PlanType) => {
         status: subscription.status,
       },
       update: {
-        plan: plan,
-        credits: credits,
+        plan,
+        credits,
         stripeSubscriptionId: subscription.id,
         stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
         stripePriceId: PRICE_IDS[plan],
@@ -144,14 +207,16 @@ export const onCreateSubscription = async (plan: PlanType) => {
       },
     })
 
+    console.log('6. SUCCESS - subscription created in incomplete state')
+
     return {
       success: true,
       subscriptionId: subscription.id,
-      clientSecret: paymentIntent.client_secret,
+      clientSecret: clientSecret,
     }
   } catch (error: any) {
-    console.error('Error creating subscription:', error)
-    return { success: false, message: error.message }
+    console.error('SUBSCRIPTION ERROR:', error)
+    return { success: false, message: error?.message || 'Unknown error' }
   }
 }
 
@@ -184,7 +249,6 @@ export const onCancelSubscription = async () => {
       }
     )
 
-    // Update database
     await client.billings.update({
       where: { userId: profile.id },
       data: {

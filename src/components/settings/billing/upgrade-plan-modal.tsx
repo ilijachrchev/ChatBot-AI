@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import {
   Check,
@@ -18,18 +17,19 @@ import {
   Zap,
   ArrowRight,
   Loader2,
-  AlertCircle,
 } from 'lucide-react'
 import { PRICING_CONFIG, type PlanType, getPlanDetails } from '@/lib/pricing-config'
+import { onCreateSubscription } from '@/actions/stripe'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 import { Elements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
-import { UpgradePaymentForm } from './upgrade-payment-form'
-import { Alert, AlertDescription } from '@/components/ui/alert'
+import { SubscriptionPaymentForm } from './subscription-payment-form'
 
 const publishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY
 
 if (!publishableKey) {
-  console.error('NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set')
+  console.error('NEXT_PUBLIC_STRIPE_PUBLISH_KEY is not set')
 }
 
 const stripePromise = publishableKey ? loadStripe(publishableKey) : null
@@ -55,33 +55,14 @@ export function UpgradePlanModal({
   targetPlan,
   onSuccess,
 }: UpgradePlanModalProps) {
+  const router = useRouter()
   const [step, setStep] = useState<'confirm' | 'payment'>('confirm')
-  const [showPaymentForm, setShowPaymentForm] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [clientSecret, setClientSecret] = useState<string | null>(null)
   
   const currentPlanDetails = getPlanDetails(currentPlan)
   const targetPlanDetails = getPlanDetails(targetPlan)
   const TargetIcon = planIcons[targetPlan]
-
-  const handleContinue = () => {
-    if (!publishableKey || !stripePromise) {
-      alert('Stripe is not configured. Please contact support.')
-      return
-    }
-    setStep('payment')
-    setShowPaymentForm(true)
-  }
-
-  const handleBack = () => {
-    setStep('confirm')
-    setShowPaymentForm(false)
-  }
-
-  const handleSuccess = () => {
-    onSuccess?.()
-    onOpenChange(false)
-    setStep('confirm')
-    setShowPaymentForm(false)
-  }
 
   const newFeatures = Object.entries(targetPlanDetails.features)
     .filter(([key, targetValue]) => {
@@ -98,6 +79,45 @@ export function UpgradePlanModal({
       return false
     })
     .slice(0, 5)
+
+  const handleContinue = async () => {
+    if (!publishableKey || !stripePromise) {
+      toast.error('Stripe is not configured')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      const result = await onCreateSubscription(targetPlan)
+
+      if (result.success && result.clientSecret) {
+        setClientSecret(result.clientSecret)
+        setStep('payment')
+      } else {
+        toast.error(result.message || 'Failed to create subscription')
+      }
+    } catch (error: any) {
+      console.error(error)
+      toast.error('An error occurred')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleBack = () => {
+    setStep('confirm')
+    setClientSecret(null)
+  }
+
+  const handleSuccess = () => {
+    toast.success('Subscription upgraded successfully!')
+    onSuccess?.()
+    onOpenChange(false)
+    setStep('confirm')
+    setClientSecret(null)
+    router.refresh()
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -209,60 +229,53 @@ export function UpgradePlanModal({
               <Button
                 variant="outline"
                 onClick={() => onOpenChange(false)}
+                disabled={loading}
                 className="flex-1"
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleContinue}
+                disabled={loading || !publishableKey || !stripePromise}
                 className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-                disabled={!publishableKey || !stripePromise}
               >
-                Continue to Payment
-                <ArrowRight className="w-4 h-4 ml-2" />
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Creating subscription...
+                  </>
+                ) : (
+                  <>
+                    Continue to Payment
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                )}
               </Button>
             </div>
           </>
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Payment Details</DialogTitle>
+              <DialogTitle>Complete Payment</DialogTitle>
               <DialogDescription>
-                Enter your payment information to complete the upgrade
+                Confirm your payment to activate your subscription
               </DialogDescription>
             </DialogHeader>
 
             <div className="py-4">
-              {!publishableKey || !stripePromise ? (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>
-                    Stripe is not configured. Please contact support.
-                  </AlertDescription>
-                </Alert>
-              ) : showPaymentForm ? (
-                <Elements
-                  stripe={stripePromise}
-                  options={{
-                    mode: 'payment',
-                    amount: targetPlanDetails.price,
-                    currency: 'usd',
-                    appearance: {
-                      theme: 'stripe',
-                      variables: {
-                        colorPrimary: '#3b82f6',
-                      },
-                    },
-                  }}
-                >
-                  <UpgradePaymentForm
-                    targetPlan={targetPlan}
+              {!clientSecret || !stripePromise ? (
+                <div className="flex items-center justify-center py-8">
+                  <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+                </div>
+              ) : (
+                <Elements stripe={stripePromise} options={{ clientSecret }}>
+                  <SubscriptionPaymentForm
                     amount={targetPlanDetails.price}
                     onSuccess={handleSuccess}
                     onBack={handleBack}
                   />
                 </Elements>
-              ) : null}
+              )}
             </div>
           </>
         )}
