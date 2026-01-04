@@ -37,12 +37,12 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate file type
+    // Validate file type - stricter validation
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
-    if (
-      !ALLOWED_TYPES.includes(file.type) &&
-      !ALLOWED_EXTENSIONS.includes(fileExtension)
-    ) {
+    const isValidType = ALLOWED_TYPES.includes(file.type)
+    const isValidExtension = ALLOWED_EXTENSIONS.includes(fileExtension)
+    
+    if (!isValidType || !isValidExtension) {
       return NextResponse.json(
         { error: 'Invalid file type. Only PDF, DOCX, and TXT files are allowed.' },
         { status: 400 }
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 
     const url = `/uploads/knowledge-base/${filename}`
 
-    // Save file record to database
+    // Save file record to database with PROCESSING status
     const result = await createKnowledgeBaseFile(
       file.name,
       file.type || `application/${ext}`,
@@ -94,6 +94,14 @@ export async function POST(request: NextRequest) {
         { error: result.message || 'Failed to save file record' },
         { status: result.status }
       )
+    }
+
+    // Trigger ingestion in background (fire-and-forget)
+    if (result.file?.id) {
+      const { ingestKnowledgeBaseFile } = await import('@/lib/knowledge-base/ingest')
+      ingestKnowledgeBaseFile(result.file.id).catch((error) => {
+        console.error('Background ingestion error:', error)
+      })
     }
 
     return NextResponse.json({

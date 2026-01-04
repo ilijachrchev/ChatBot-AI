@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Upload, FileText, Trash2, Power, PowerOff } from 'lucide-react'
+import { Upload, FileText, Trash2, Power, PowerOff, RefreshCw } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DataTable } from '../table'
 import { TableCell, TableRow } from '../ui/table'
@@ -10,6 +10,7 @@ import {
   deleteKnowledgeBaseFile,
   toggleKnowledgeBaseFileStatus,
   getKnowledgeBaseFiles,
+  reprocessKnowledgeBaseFile,
 } from '@/actions/knowledge-base'
 import { toast } from 'sonner'
 import {
@@ -29,7 +30,7 @@ type KnowledgeBaseFile = {
   fileType: string
   filePath: string
   fileSize: number
-  status: 'READY' | 'PROCESSING' | 'DISABLED'
+  status: 'READY' | 'PROCESSING' | 'DISABLED' | 'FAILED'
   createdAt: Date
   Domain: {
     id: string
@@ -47,6 +48,7 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [fileToDelete, setFileToDelete] = useState<string | null>(null)
+  const [reprocessingId, setReprocessingId] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const formatFileSize = (bytes: number) => {
@@ -155,6 +157,36 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
     } catch (error) {
       console.error('Toggle status error:', error)
       toast.error('Failed to update file status')
+    }
+  }
+
+  const handleReprocess = async (fileId: string) => {
+    setReprocessingId(fileId)
+    try {
+      const result = await reprocessKnowledgeBaseFile(fileId)
+      if (result.status === 200) {
+        toast.success('Reprocessing started')
+        // Update status to PROCESSING
+        setFiles(
+          files.map((f) =>
+            f.id === fileId ? { ...f, status: 'PROCESSING' } : f
+          )
+        )
+        // Refresh files after a delay to check status
+        setTimeout(async () => {
+          const refreshResult = await getKnowledgeBaseFiles()
+          if (refreshResult.status === 200 && refreshResult.files) {
+            setFiles(refreshResult.files)
+          }
+        }, 2000)
+      } else {
+        toast.error(result.message || 'Failed to start reprocessing')
+      }
+    } catch (error) {
+      console.error('Reprocess error:', error)
+      toast.error('Failed to start reprocessing')
+    } finally {
+      setReprocessingId(null)
     }
   }
 
@@ -307,7 +339,9 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
                       file.status === 'PROCESSING' &&
                         'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
                       file.status === 'DISABLED' &&
-                        'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                        'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
+                      file.status === 'FAILED' &&
+                        'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                     )}
                   >
                     {file.status}
@@ -316,19 +350,37 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
 
                 <TableCell className="text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={() => handleToggleStatus(file.id, file.status)}
-                      className="h-8 w-8"
-                      title={file.status === 'READY' ? 'Disable' : 'Enable'}
-                    >
-                      {file.status === 'READY' ? (
-                        <PowerOff className="h-4 w-4 text-slate-600 dark:text-slate-400" />
-                      ) : (
-                        <Power className="h-4 w-4 text-slate-600 dark:text-slate-400" />
-                      )}
-                    </Button>
+                    {file.status === 'FAILED' && (
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => handleReprocess(file.id)}
+                        className="h-8 w-8"
+                        disabled={reprocessingId === file.id}
+                        title="Reprocess"
+                      >
+                        {reprocessingId === file.id ? (
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                        ) : (
+                          <RefreshCw className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                        )}
+                      </Button>
+                    )}
+                    {file.status !== 'PROCESSING' && file.status !== 'FAILED' && (
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        onClick={() => handleToggleStatus(file.id, file.status)}
+                        className="h-8 w-8"
+                        title={file.status === 'READY' ? 'Disable' : 'Enable'}
+                      >
+                        {file.status === 'READY' ? (
+                          <PowerOff className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                        ) : (
+                          <Power className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                        )}
+                      </Button>
+                    )}
                     <Button
                       variant="ghost"
                       size="icon-sm"

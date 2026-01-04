@@ -1,0 +1,15 @@
+ILIJACHRCHEV.COM KNOWLEDGE BASE TEST
+
+Contact email for collaborations: hello@ilijachrchev.com
+
+Primary focus areas:
+1) Building SendWise-AI, a SaaS platform for AI chatbots and email marketing
+2) Full-stack development (Next.js, React, Prisma, Postgres)
+3) University projects in algorithms and systems programming
+
+Preferred response style for this site’s chatbot:
+- Be concise and practical.
+- If the answer is not in the knowledge base, say you do not know and ask one clarifying question.
+
+Unique verification phrase (must be quoted exactly if asked):
+"ORANGE-AURORA-73"

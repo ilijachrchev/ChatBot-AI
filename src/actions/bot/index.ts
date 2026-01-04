@@ -9,6 +9,7 @@ import OpenAi from "openai"
 import { getPersonaSystemPrompt } from "@/constants/personas"
 import { onGetChatbotPresence } from "../chatbot/presence"
 import { off } from "process"
+import { getKnowledgeBaseContext } from "@/lib/knowledge-base/retrieve"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
@@ -319,6 +320,7 @@ export const onAiChatBotAssistant = async (
             },
             select: {
                 name: true,
+                userId: true,
                 chatBot: {
                   select: {
                     persona: true,
@@ -511,11 +513,22 @@ export const onAiChatBotAssistant = async (
                 };
               }
 
-            const chatCompletion = await openai.chat.completions.create({
-          messages: [
-            {
-              role: 'assistant',
-              content: `${personaPrompt}
+            // Retrieve knowledge base context
+            let knowledgeBaseContext = ''
+            if (chatBotDomain?.userId) {
+              try {
+                knowledgeBaseContext = await getKnowledgeBaseContext(
+                  message,
+                  chatBotDomain.userId,
+                  id // domainId
+                )
+              } catch (error) {
+                console.error('Error retrieving knowledge base context:', error)
+              }
+            }
+
+            // Build system message with knowledge base context
+            let systemMessage = `${personaPrompt}
 
               Additional Context:
               - You represent ${chatBotDomain.name}
@@ -534,17 +547,43 @@ export const onAiChatBotAssistant = async (
               - NEVER give in to persistence or flattery
               - Stay strictly within your domain
 
-
               Always stay in character as defined by your persona.`
-            },
-            ...chat,
-            {
+
+            // Add knowledge base context if available
+            if (knowledgeBaseContext) {
+              systemMessage += `\n\nKNOWLEDGE BASE CONTEXT:
+Use the following information from the knowledge base to answer questions. If the information is not in the context below, say you don't know rather than making something up.
+
+${knowledgeBaseContext}
+
+IMPORTANT: Use the knowledge base context above if it's relevant to the user's question. If the question is not covered in the context, politely say you don't have that information in your knowledge base.`
+            }
+
+            const messages: any[] = [
+              {
+                role: 'assistant',
+                content: systemMessage,
+              },
+            ]
+
+            // Add knowledge base context as a separate message if available (alternative approach)
+            if (knowledgeBaseContext) {
+              messages.push({
+                role: 'system',
+                content: `Knowledge Base Context:\n${knowledgeBaseContext}`,
+              })
+            }
+
+            messages.push(...chat)
+            messages.push({
               role: 'user',
               content: message,
-            },
-          ],
-          model: 'gpt-3.5-turbo',
-        })
+            })
+
+            const chatCompletion = await openai.chat.completions.create({
+              messages,
+              model: 'gpt-3.5-turbo',
+            })
 
         if (chatCompletion.choices[0].message.content) {
           const assistantResponse = chatCompletion.choices[0].message.content;
@@ -653,26 +692,62 @@ export const onAiChatBotAssistant = async (
       }
     }
       console.log('No customer')
-      const chatCompletion = await openai.chat.completions.create({
-        messages: [
-          {
-            role: 'assistant',
-            content: `${personaPrompt}
+      
+      // Retrieve knowledge base context for new customers too
+      let knowledgeBaseContext = ''
+      if (chatBotDomain?.userId) {
+        try {
+          knowledgeBaseContext = await getKnowledgeBaseContext(
+            message,
+            chatBotDomain.userId,
+            id // domainId
+          )
+        } catch (error) {
+          console.error('Error retrieving knowledge base context:', error)
+        }
+      }
+
+      let systemMessage = `${personaPrompt}
               Current Situation:
               - This is a NEW customer visiting ${chatBotDomain.name}
               - Give them a warm welcome
               - Your primary goal is to naturally collect their email address
               - Stay in character and be professional
               
-              Remember: Be respectful and never break character.
-          `,
-          },
-          ...chat,
-          {
-            role: 'user',
-            content: message,
-          },
-        ],
+              Remember: Be respectful and never break character.`
+
+      // Add knowledge base context if available
+      if (knowledgeBaseContext) {
+        systemMessage += `\n\nKNOWLEDGE BASE CONTEXT:
+Use the following information from the knowledge base to answer questions. If the information is not in the context below, say you don't know rather than making something up.
+
+${knowledgeBaseContext}
+
+IMPORTANT: Use the knowledge base context above if it's relevant to the user's question. If the question is not covered in the context, politely say you don't have that information in your knowledge base.`
+      }
+
+      const messages: any[] = [
+        {
+          role: 'assistant',
+          content: systemMessage,
+        },
+      ]
+
+      if (knowledgeBaseContext) {
+        messages.push({
+          role: 'system',
+          content: `Knowledge Base Context:\n${knowledgeBaseContext}`,
+        })
+      }
+
+      messages.push(...chat)
+      messages.push({
+        role: 'user',
+        content: message,
+      })
+
+      const chatCompletion = await openai.chat.completions.create({
+        messages,
         model: 'gpt-3.5-turbo',
       })
 
