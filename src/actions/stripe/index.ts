@@ -93,7 +93,6 @@ export const onCreateSubscription = async (plan: PlanType) => {
 
     console.log('2. Creating subscription with payment_behavior: default_incomplete')
 
-    // Create subscription in incomplete state
     const subscription = await stripe.subscriptions.create({
       customer: stripeCustomerId,
       items: [{ price: PRICE_IDS[plan] }],
@@ -114,7 +113,6 @@ export const onCreateSubscription = async (plan: PlanType) => {
 
     let clientSecret: string | null = null
 
-    // Check for pending_setup_intent first (for $0 trials or when payment_behavior is default_incomplete)
     if (subscription.pending_setup_intent) {
       const setupIntent = subscription.pending_setup_intent
       if (typeof setupIntent === 'string') {
@@ -127,7 +125,6 @@ export const onCreateSubscription = async (plan: PlanType) => {
       }
     }
 
-    // If no setup intent, check for payment intent on the invoice
     if (!clientSecret && subscription.latest_invoice) {
       const latestInvoice = subscription.latest_invoice
       let invoiceObject: any = latestInvoice
@@ -151,7 +148,6 @@ export const onCreateSubscription = async (plan: PlanType) => {
       }
     }
 
-    // If still no client secret, manually create a setup intent
     if (!clientSecret) {
       console.log('4e. No intent found, creating setup intent manually')
       const setupIntent = await stripe.setupIntents.create({
@@ -177,7 +173,6 @@ export const onCreateSubscription = async (plan: PlanType) => {
       }
     }
 
-    // Store subscription in incomplete state
     const credits = getPlanCredits(plan)
     const currentPeriodEnd = getSubscriptionPeriodEndUnix(subscription)
     

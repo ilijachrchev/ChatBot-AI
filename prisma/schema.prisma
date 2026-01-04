@@ -42,6 +42,7 @@ model User {
   billingAddress BillingAddress?
 
   paymentHistory PaymentHistory[]
+  knowledgeBaseFiles KnowledgeBaseFile[]
 }
 
 model Domain {
@@ -76,6 +77,7 @@ model Domain {
 
   workingHours WorkingHours?
   timezone String @default("UTC")
+  knowledgeBaseFiles KnowledgeBaseFile[]
 }
 
 enum VerificationStatus {
@@ -469,4 +471,32 @@ model PaymentHistory {
   
   @@index([userId])
   @@index([createdAt])
+}
+
+model KnowledgeBaseFile {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  filename  String
+  fileType  String
+  filePath  String
+  fileSize  Int
+  status    KnowledgeBaseFileStatus @default(READY)
+  
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  
+  Domain    Domain?  @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  domainId  String?  @db.Uuid
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([domainId])
+  @@index([status])
+}
+
+enum KnowledgeBaseFileStatus {
+  READY
+  PROCESSING
+  DISABLED
 }
