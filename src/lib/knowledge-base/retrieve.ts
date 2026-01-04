@@ -6,13 +6,9 @@ const openai = new OpenAi({
   apiKey: process.env.OPEN_AI_KEY,
 })
 
-// Retrieval configuration
-const MAX_CHUNKS = 6 // Top K chunks to retrieve
-const MAX_CONTEXT_LENGTH = 4000 // Maximum characters for context (to avoid token explosion)
+const MAX_CHUNKS = 6 
+const MAX_CONTEXT_LENGTH = 4000 
 
-/**
- * Create embedding for a query string
- */
 async function createQueryEmbedding(query: string): Promise<number[]> {
   try {
     const response = await openai.embeddings.create({
@@ -27,9 +23,6 @@ async function createQueryEmbedding(query: string): Promise<number[]> {
   }
 }
 
-/**
- * Retrieve relevant chunks using vector similarity search
- */
 export async function retrieveRelevantChunks(
   query: string,
   userId: string,
@@ -44,13 +37,9 @@ export async function retrieveRelevantChunks(
   }>
 > {
   try {
-    // Create query embedding
     const queryEmbedding = await createQueryEmbedding(query)
     const embeddingStr = `[${queryEmbedding.join(',')}]`
 
-    // Build the query with proper scoping
-    // Only get chunks from files with status READY (not DISABLED or PROCESSING)
-    // Note: Using Prisma's $queryRawUnsafe with proper escaping for vector type
     let sqlQuery = `
       SELECT 
         kbchunk.content,
@@ -64,17 +53,14 @@ export async function retrieveRelevantChunks(
         AND kbfile.status = 'READY'
     `
 
-    // Add domainId filter if provided
     if (domainId) {
       sqlQuery += ` AND (kbchunk."domainId" = '${domainId}'::uuid OR kbchunk."domainId" IS NULL)`
     } else {
       sqlQuery += ` AND kbchunk."domainId" IS NULL`
     }
 
-    // Order by similarity (cosine distance) and limit
     sqlQuery += ` ORDER BY kbchunk.embedding <=> '${embeddingStr}'::vector LIMIT ${maxChunks}`
 
-    // Execute query
     const results = await client.$queryRawUnsafe(sqlQuery)
 
     return (results as any[]).map((row: any) => ({
@@ -89,9 +75,6 @@ export async function retrieveRelevantChunks(
   }
 }
 
-/**
- * Build context string from retrieved chunks with citations
- */
 export function buildContextString(
   chunks: Array<{
     content: string
@@ -104,14 +87,12 @@ export function buildContextString(
     return ''
   }
 
-  // Filter chunks by minimum similarity threshold (optional)
   const relevantChunks = chunks.filter((chunk) => chunk.similarity > 0.7)
 
   if (relevantChunks.length === 0) {
     return ''
   }
 
-  // Build context with citations
   const contextParts = relevantChunks.map(
     (chunk) =>
       `[KB:${chunk.filename}#${chunk.chunkIndex}]\n${chunk.content}`
@@ -119,10 +100,8 @@ export function buildContextString(
 
   let context = contextParts.join('\n\n---\n\n')
 
-  // Truncate if too long
   if (context.length > MAX_CONTEXT_LENGTH) {
     context = context.slice(0, MAX_CONTEXT_LENGTH)
-    // Try to cut at a reasonable boundary
     const lastBreak = Math.max(
       context.lastIndexOf('\n\n---\n\n'),
       context.lastIndexOf('\n')
@@ -135,9 +114,6 @@ export function buildContextString(
   return context
 }
 
-/**
- * Main retrieval function - gets context for a query
- */
 export async function getKnowledgeBaseContext(
   query: string,
   userId: string,

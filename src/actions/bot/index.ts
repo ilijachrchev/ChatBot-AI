@@ -15,27 +15,48 @@ const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
 })
 
+class DomainNotFoundError extends Error {
+  domainId: string
+  constructor(domainId: string) {
+    super(`Domain not found: ${domainId}`)
+    this.name = 'DomainNotFoundError'
+    this.domainId = domainId
+  }
+}
+
 const ensureChatRoom = async (chatroomId: string, domainId: string, customerId?: string) => {
   console.log('🔧 ensureChatRoom called with:', { chatroomId, domainId })
+
+  const domain = await db.domain.findUnique({
+    where: { id: domainId },
+    select: { id: true },
+  })
+
+  if (!domain) {
+    console.error('❌ Domain not found for domainId:', domainId)
+    throw new DomainNotFoundError(domainId)
+  }
 
   const room = await db.chatRoom.upsert({
     where: { id: chatroomId },
     update: {
-      domainId: domainId,
+      domainId,
+      ...(customerId ? { customerId } : {}),
     },
     create: {
-       id: chatroomId ,
-       live: false,
-       mailed: false,
-       domainId: domainId,
-       customerId: customerId,
-      },
+      id: chatroomId,
+      live: false,
+      mailed: false,
+      domainId,
+      customerId: customerId ?? null,
+    },
     select: { id: true, live: true, mailed: true, domainId: true },
-  });
+  })
 
   console.log('✅ ChatRoom created/updated:', room)
-  return room;
-};
+  return room
+}
+
 
 export const onStoreConversations = async (
     id: string,
@@ -192,7 +213,25 @@ export const onAiChatBotAssistant = async (
       }
 
       console.log('🔧 Calling ensureChatRoom with:', { chatroomId, domainId: id })
-      const room = await ensureChatRoom(chatroomId, id);
+      let room
+      try {
+        room = await ensureChatRoom(chatroomId, id)
+      } catch (e: any) {
+        if (e?.name === 'DomainNotFoundError') {
+          console.error('🚨 Domain not found error caught:', e.domainId)
+          return {
+            response: {
+              role: 'assistant' as const,
+              content: "⚠️ Configuration Error: This chatbot widget is not properly connected to your account. Please contact the website administrator to resolve this issue.",
+            },
+            chatRoom: chatroomId || crypto.randomUUID(),
+            error: 'DOMAIN_NOT_FOUND',
+            live: false,
+          }
+        }
+        throw e
+      }
+
       console.log('✅ Room from ensureChatRoom:', room)
 
       if (isImage) {
