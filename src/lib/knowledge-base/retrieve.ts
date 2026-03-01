@@ -6,7 +6,7 @@ const openai = new OpenAi({
   apiKey: process.env.OPEN_AI_KEY,
 })
 
-const MAX_CHUNKS = 6 
+const MAX_CHUNKS = 8 
 const MAX_CONTEXT_LENGTH = 4000 
 
 async function createQueryEmbedding(query: string): Promise<number[]> {
@@ -36,6 +36,10 @@ export async function retrieveRelevantChunks(
     similarity: number
   }>
 > {
+  const countCheck = await client.knowledgeBaseChunk.count({
+  where: { userId }
+})
+console.log('🗄️ Total chunks for userId:', countCheck)
   try {
     const queryEmbedding = await createQueryEmbedding(query)
     const embeddingStr = `[${queryEmbedding.join(',')}]`
@@ -73,6 +77,10 @@ export async function retrieveRelevantChunks(
     console.error('Error retrieving chunks:', error)
     return []
   }
+  const countCheck1 = await client.knowledgeBaseChunk.count({
+  where: { userId }
+})
+console.log('🗄️ Total chunks for userId:', countCheck1)
 }
 
 export function buildContextString(
@@ -87,7 +95,7 @@ export function buildContextString(
     return ''
   }
 
-  const relevantChunks = chunks.filter((chunk) => chunk.similarity > 0.7)
+  const relevantChunks = chunks.filter((chunk) => chunk.similarity > 0.2)
 
   if (relevantChunks.length === 0) {
     return ''
@@ -119,7 +127,16 @@ export async function getKnowledgeBaseContext(
   userId: string,
   domainId: string | null
 ): Promise<string> {
+  console.log('🔍 KB lookup:', { query, userId, domainId })
   const chunks = await retrieveRelevantChunks(query, userId, domainId)
-  return buildContextString(chunks)
+  console.log('📦 Chunks found:', chunks.length, chunks.map(c => ({ file: c.filename, similarity: c.similarity })))
+  const context = buildContextString(chunks)
+  console.log('📝 Context length:', context.length)
+  console.log('📦 All chunks before filter:', chunks.map(c => ({ 
+  file: c.filename, 
+  similarity: c.similarity,
+  preview: c.content.slice(0, 50)
+})))
+  return context
 }
 
