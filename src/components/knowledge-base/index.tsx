@@ -2,7 +2,8 @@
 
 import React, { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
-import { Upload, FileText, Trash2, Power, PowerOff, RefreshCw } from 'lucide-react'
+import { Input } from '@/components/ui/input'
+import { Upload, FileText, Trash2, Power, PowerOff, RefreshCw, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DataTable } from '../table'
 import { TableCell, TableRow } from '../ui/table'
@@ -11,6 +12,7 @@ import {
   toggleKnowledgeBaseFileStatus,
   getKnowledgeBaseFiles,
   reprocessKnowledgeBaseFile,
+  scrapeWebsiteToKnowledgeBase,
 } from '@/actions/knowledge-base'
 import { toast } from 'sonner'
 import {
@@ -50,6 +52,9 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
   const [fileToDelete, setFileToDelete] = useState<string | null>(null)
   const [reprocessingId, setReprocessingId] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [scrapeUrl, setScrapeUrl] = useState('')
+  const [scrapeMaxPages, setScrapeMaxPages] = useState(5)
+  const [scraping, setScraping] = useState(false)
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return bytes + ' B'
@@ -100,13 +105,11 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
       await Promise.all(uploadPromises)
       toast.success('Files uploaded successfully')
 
-      // Refresh files list
       const result = await getKnowledgeBaseFiles()
       if (result.status === 200 && result.files) {
         setFiles(result.files)
       }
 
-      // Reset file input
       if (fileInputRef.current) {
         fileInputRef.current.value = ''
       }
@@ -166,13 +169,11 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
       const result = await reprocessKnowledgeBaseFile(fileId)
       if (result.status === 200) {
         toast.success('Reprocessing started')
-        // Update status to PROCESSING
         setFiles(
           files.map((f) =>
             f.id === fileId ? { ...f, status: 'PROCESSING' } : f
           )
         )
-        // Refresh files after a delay to check status
         setTimeout(async () => {
           const refreshResult = await getKnowledgeBaseFiles()
           if (refreshResult.status === 200 && refreshResult.files) {
@@ -187,6 +188,34 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
       toast.error('Failed to start reprocessing')
     } finally {
       setReprocessingId(null)
+    }
+  }
+
+  const handleScrape = async () => {
+    if (!scrapeUrl.trim()) {
+      toast.error('Please enter a website URL')
+      return
+    }
+    setScraping(true)
+    try {
+      console.log('Scraping URL:', scrapeUrl)
+      const result = await scrapeWebsiteToKnowledgeBase(scrapeUrl.trim(), scrapeMaxPages)
+      if (result.status === 200) {
+        toast.success('Website scraping started — file will appear once ready')
+        setScrapeUrl('')
+        setScrapeMaxPages(5)
+        const refreshResult = await getKnowledgeBaseFiles()
+        if (refreshResult.status === 200 && refreshResult.files) {
+          setFiles(refreshResult.files)
+        }
+      } else {
+        toast.error(result.message || 'Failed to scrape website')
+      }
+    } catch (error) {
+      console.error('Scrape error:', error)
+      toast.error('Failed to scrape website')
+    } finally {
+      setScraping(false)
     }
   }
 
@@ -228,6 +257,57 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
         onChange={handleFileSelect}
         className="hidden"
       />
+
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+          Scrape Website
+        </h2>
+        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+              <Input
+                type="url"
+                placeholder="https://yourwebsite.com"
+                value={scrapeUrl}
+                onChange={(e) => setScrapeUrl(e.target.value)}
+                disabled={scraping}
+                className="pl-9"
+              />
+            </div>
+            <Input
+              type="number"
+              min={1}
+              max={20}
+              value={scrapeMaxPages}
+              onChange={(e) =>
+                setScrapeMaxPages(Math.min(20, Math.max(1, Number(e.target.value))))
+              }
+              disabled={scraping}
+              className="w-full sm:w-28"
+              title="Max pages"
+              aria-label="Max pages"
+            />
+            <Button onClick={handleScrape} disabled={scraping} className="shrink-0">
+              {scraping ? (
+                <>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Scraping...
+                </>
+              ) : (
+                <>
+                  <Globe className="h-4 w-4" />
+                  Scrape Website
+                </>
+              )}
+            </Button>
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+            Enter a URL and the number of pages to crawl (max&nbsp;20). The scraped content
+            will be saved and ingested into your knowledge base.
+          </p>
+        </div>
+      </div>
 
       <div className="mb-6">
         <div

@@ -2,7 +2,7 @@
 
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
-import { unlink } from 'fs/promises'
+import { mkdir, unlink, writeFile } from 'fs/promises'
 import { join } from 'path'
 
 export const getKnowledgeBaseFiles = async () => {
@@ -75,7 +75,7 @@ export const createKnowledgeBaseFile = async (
         fileSize,
         userId: dbUser.id,
         domainId: domainId || null,
-        status: 'PROCESSING', // Will be updated to READY after ingestion
+        status: 'PROCESSING', 
       },
     })
 
@@ -102,7 +102,6 @@ export const deleteKnowledgeBaseFile = async (fileId: string) => {
       return { status: 404, message: 'User not found' }
     }
 
-    // Verify the file belongs to the user
     const file = await client.knowledgeBaseFile.findFirst({
       where: {
         id: fileId,
@@ -114,23 +113,18 @@ export const deleteKnowledgeBaseFile = async (fileId: string) => {
       return { status: 404, message: 'File not found' }
     }
 
-    // Delete chunks first (cascade should handle this, but being explicit)
-    // Using raw SQL since Prisma client may not be regenerated yet
     await client.$executeRawUnsafe(
       `DELETE FROM "KnowledgeBaseChunk" WHERE "fileId" = $1::uuid`,
       fileId
     )
 
-    // Delete physical file from disk
     try {
       const fullPath = join(process.cwd(), 'public', file.filePath.replace(/^\//, ''))
       await unlink(fullPath)
     } catch (fileError) {
       console.error('Error deleting physical file:', fileError)
-      // Continue with database deletion even if file deletion fails
     }
 
-    // Delete database record
     await client.knowledgeBaseFile.delete({
       where: { id: fileId },
     })
@@ -161,7 +155,6 @@ export const toggleKnowledgeBaseFileStatus = async (
       return { status: 404, message: 'User not found' }
     }
 
-    // Verify the file belongs to the user
     const file = await client.knowledgeBaseFile.findFirst({
       where: {
         id: fileId,
@@ -185,6 +178,66 @@ export const toggleKnowledgeBaseFileStatus = async (
   }
 }
 
+export const scrapeWebsiteToKnowledgeBase = async (
+  url: string,
+  maxPages: number,
+  domainId?: string
+) => {
+  try {
+    const scrapeRes = await fetch('http://localhost:3001/scrape', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url, maxPages }),
+    })
+
+    if (!scrapeRes.ok) {
+      const err = await scrapeRes.text()
+      console.error('Scraper error:', err)
+      return { status: 500, message: 'Scraper service returned an error' }
+    }
+
+    const { pages } = (await scrapeRes.json()) as Array<{ url: string; content: string }> & {
+      pages: Array<{ url: string; content: string }>
+    }
+
+    const combined = pages
+      .map((p) => `=== PAGE: ${p.url} ===\n${p.content}\n\n`)
+      .join('')
+
+    const timestamp = Date.now()
+    const filename = `${timestamp}-scraped.txt`
+    const relativeDir = 'uploads/knowledge-base'
+    const absoluteDir = join(process.cwd(), 'public', relativeDir)
+    await mkdir(absoluteDir, { recursive: true })
+    await writeFile(join(absoluteDir, filename), combined, 'utf8')
+
+    const filePath = `/${relativeDir}/${filename}`
+    const fileSize = Buffer.byteLength(combined, 'utf8')
+
+    const result = await createKnowledgeBaseFile(
+      filename,
+      'text/plain',
+      filePath,
+      fileSize,
+      domainId
+    )
+
+    if (result.status !== 200 || !result.file) {
+      return { status: 500, message: 'Failed to create knowledge base record' }
+    }
+
+    const { ingestKnowledgeBaseFile } = await import('@/lib/knowledge-base/ingest')
+    ingestKnowledgeBaseFile(result.file.id).catch((error) => {
+      console.error('Background ingestion error:', error)
+    })
+
+    return { status: 200, message: 'Scraping started', filename }
+  } catch (error) {
+    console.error('Error scraping website:', error)
+    return { status: 500, message: 'Failed to scrape website' }
+  }
+}
+
 export const reprocessKnowledgeBaseFile = async (fileId: string) => {
   try {
     const user = await currentUser()
@@ -201,7 +254,6 @@ export const reprocessKnowledgeBaseFile = async (fileId: string) => {
       return { status: 404, message: 'User not found' }
     }
 
-    // Verify the file belongs to the user
     const file = await client.knowledgeBaseFile.findFirst({
       where: {
         id: fileId,
@@ -213,7 +265,6 @@ export const reprocessKnowledgeBaseFile = async (fileId: string) => {
       return { status: 404, message: 'File not found' }
     }
 
-    // Trigger ingestion in background
     const { ingestKnowledgeBaseFile } = await import('@/lib/knowledge-base/ingest')
     ingestKnowledgeBaseFile(fileId).catch((error) => {
       console.error('Background reprocessing error:', error)

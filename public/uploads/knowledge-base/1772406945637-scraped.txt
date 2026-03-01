@@ -1,0 +1,392 @@
+=== PAGE: https://ilijachrchev.com ===
+Hi! I am Ilija Chrchev
+Computer Science Student in Slovenia, Koper
+
+I’m building my path through curiosity, discipline, and creation! One step, one project, one dream at a time.
+
+Contact Me My Resume
+Introduction
+About Me
+
+Hi, I’m Ilija Chrchev. A computer science student with a passion for continuous learning and creation. Originally from Macedonia and now studying in Slovenia, I’ve learned to embrace change, adapt quickly, and stay curious. Each project I work on pushes me to grow, explore new ideas, and become a better version of myself. Progress keeps me motivated, and every challenge is another step forward.
+
+Tools I use
+Building skills by helping others
+Volunteering & Organizations
+
+Volunteering is a way for me to give back, connect with others, and grow both personally and professionally. It continues to strengthen my communication, teamwork, and leadership skills while reminding me of the value of community.
+
+President on Board
+
+Organization: IAESTE LC Koper
+
+Leading the local IAESTE committee by coordinating student volunteers, managing partnerships and events, and representing the organization at the national level.
+
+Read More
+Student Council Representative (Computer Science)
+
+Organization: Student Council (Študentski svet) – UP FAMNIT
+
+Elected as the only Computer Science student representative, actively contributing to council discussions, academic improvements, and representing CS student interests.
+
+Read More
+Student Tutor
+
+Organization: FAMNIT - University of Primorska
+
+Supporting fellow students by explaining course topics, answering questions, and sharing study strategies to make learning easier and more enjoyable.
+
+Read More
+GDG on Campus – Social Media Manager
+
+Organization: Google Developer Group
+
+As part of the organizing team, I help plan and run developer events, manage registrations, and assist attendees during workshops. I also handle social media promotion to boost event engagement and create a welcoming community atmosphere.
+
+Read More
+IT Team Member
+
+Organization: IAESTE Slovenia
+
+As part of IAESTE Slovenia’s IT team, I help maintain and improve the organization’s digital tools, ensuring smooth communication and collaboration across student members and international partners.
+
+Read More
+Active Member
+
+Organization: MSOS - Macedonian Student Organization in Slovenia
+
+Being an active part of a motivated team that brings students closer through meaningful events and shared experiences. Through these activities, I’ve developed strong teamwork and organizational skills while helping create a more connected and supportive student community.
+
+Read More
+Featured Projects
+
+Showcasing innovative solutions and technical expertise through hands-on projects.
+
+HackathonFeatured
+Port Optimization with AI
+
+GDG Hackathon 2025
+
+Role:Team Lead, Backend & Database, System Integrator
+
+Intelligent port management system addressing berth allocation, vessel queuing, and port optimization using AI predictions. Built a comprehensive solution integrating multiple technologies.
+
+C# .NETMySQLReactPythonUnityAI
+View on GitHub
+Web AppFeatured
+Personal Portfolio Website
+
+Side Project
+
+Role:Designer & Developer
+
+Responsie portfolio built with Next.js and Tailwind 4 featuring a frosted glass nabar,smooth section naigation, dark mode and reusable card components.
+
+ReactNext.jsTailwindCSS
+View on GitHub
+SaaS
+SendWise-AI
+
+In Development– SaaS Chatbot Platform
+
+Role:Builder
+
+Developing an intelligent email automation platform that uses AI to craft, optimize, and schedule marketing campaigns. Focused on enhancing personalization and efficiency for small businesses.
+
+Next.jsReactClerk AuthStripePostrgreSQLOpenAI API
+Coming Soon
+What People Say
+0–0 of 0
+Leave an endorsement! →
+Connect with me
+Get in Touch
+
+I would love to hear from you! If you have any questions, comments, or feedback, please use the form below.
+
+Submit Now
+ilijachrchev@gmail.com
+
+© 2025 Ilija Chrchev. All rights reserved.
+
+GitHub
+LinkedIn
+Instagram
+
+=== PAGE: https://ilijachrchev.com/Ilija_Chrchev_CV.pdf ===
+
+
+=== PAGE: https://ilijachrchev.com/endorsements-submit-test ===
+What people say
+
+Share your experience and join our community of supporters
+
+Leave an Endorsement
+Name *
+Email *
+
+Your email won’t be shown publicly.
+
+Country (optional)
+Select Country...
+Your Comment *
+20-500 characters required0/500
+I agree my endorsement may be displayed on this site *Submit endorsement
+Recent Endorsements
+All Countries
+🇦🇫 Afghanistan
+🇦🇽 Åland Islands
+🇦🇱 Albania
+🇩🇿 Algeria
+🇦🇸 American Samoa
+🇦🇩 Andorra
+🇦🇴 Angola
+🇦🇮 Anguilla
+🇦🇶 Antarctica
+🇦🇬 Antigua and Barbuda
+🇦🇷 Argentina
+🇦🇲 Armenia
+🇦🇼 Aruba
+🇦🇨 Ascension Island
+🇦🇺 Australia
+🇦🇹 Austria
+🇦🇿 Azerbaijan
+🇧🇸 Bahamas (the)
+🇧🇭 Bahrain
+🇧🇩 Bangladesh
+🇧🇧 Barbados
+🇧🇾 Belarus
+🇧🇪 Belgium
+🇧🇿 Belize
+🇧🇯 Benin
+🇧🇲 Bermuda
+🇧🇹 Bhutan
+🇧🇴 Bolivia (Plurinational State of)
+🇧🇶 Bonaire, Sint Eustatius and Saba
+🇧🇦 Bosnia and Herzegovina
+🇧🇼 Botswana
+🇧🇻 Bouvet Island
+🇧🇷 Brazil
+🇮🇴 British Indian Ocean Territory (the)
+🇧🇳 Brunei Darussalam
+🇧🇬 Bulgaria
+🇧🇫 Burkina Faso
+🇧🇮 Burundi
+🇨🇻 Cabo Verde
+🇰🇭 Cambodia
+🇨🇲 Cameroon
+🇨🇦 Canada
+🇰🇾 Cayman Islands (the)
+🇨🇫 Central African Republic (the)
+🇹🇩 Chad
+🇨🇱 Chile
+🇨🇳 China
+🇨🇽 Christmas Island
+🇨🇨 Cocos (Keeling) Islands (the)
+🇨🇴 Colombia
+🇰🇲 Comoros (the)
+🇨🇩 Congo (the Democratic Republic of the)
+🇨🇬 Congo (the)
+🇨🇰 Cook Islands (the)
+🇨🇷 Costa Rica
+🇨🇮 Côte d'Ivoire
+🇭🇷 Croatia
+🇨🇺 Cuba
+🇨🇼 Curaçao
+🇨🇾 Cyprus
+🇨🇿 Czechia
+🇩🇰 Denmark
+🇩🇯 Djibouti
+🇩🇲 Dominica
+🇩🇴 Dominican Republic (the)
+🇪🇨 Ecuador
+🇪🇬 Egypt
+🇸🇻 El Salvador
+🇬🇶 Equatorial Guinea
+🇪🇷 Eritrea
+🇪🇪 Estonia
+🇸🇿 Eswatini
+🇪🇹 Ethiopia
+🇫🇰 Falkland Islands (the) [Malvinas]
+🇫🇴 Faroe Islands (the)
+🇫🇯 Fiji
+🇫🇮 Finland
+🇫🇷 France
+🇬🇫 French Guiana
+🇵🇫 French Polynesia
+🇹🇫 French Southern Territories (the)
+🇬🇦 Gabon
+🇬🇲 Gambia (the)
+🇬🇪 Georgia
+🇩🇪 Germany
+🇬🇭 Ghana
+🇬🇮 Gibraltar
+🇬🇷 Greece
+🇬🇱 Greenland
+🇬🇩 Grenada
+🇬🇵 Guadeloupe
+🇬🇺 Guam
+🇬🇹 Guatemala
+🇬🇬 Guernsey
+🇬🇳 Guinea
+🇬🇼 Guinea-Bissau
+🇬🇾 Guyana
+🇭🇹 Haiti
+🇭🇲 Heard Island and McDonald Islands
+🇻🇦 Holy See (the)
+🇭🇳 Honduras
+🇭🇰 Hong Kong
+🇭🇺 Hungary
+🇮🇸 Iceland
+🇮🇳 India
+🇮🇩 Indonesia
+🇮🇷 Iran (Islamic Republic of)
+🇮🇶 Iraq
+🇮🇪 Ireland
+🇮🇲 Isle of Man
+🇮🇱 Israel
+🇮🇹 Italy
+🇯🇲 Jamaica
+🇯🇵 Japan
+🇯🇪 Jersey
+🇯🇴 Jordan
+🇰🇿 Kazakhstan
+🇰🇪 Kenya
+🇰🇮 Kiribati
+🇰🇵 Korea (the Democratic People's Republic of)
+🇰🇷 Korea (the Republic of)
+🇽🇰 Kosovo
+🇰🇼 Kuwait
+🇰🇬 Kyrgyzstan
+🇱🇦 Lao People's Democratic Republic (the)
+🇱🇻 Latvia
+🇱🇧 Lebanon
+🇱🇸 Lesotho
+🇱🇷 Liberia
+🇱🇾 Libya
+🇱🇮 Liechtenstein
+🇱🇹 Lithuania
+🇱🇺 Luxembourg
+🇲🇴 Macao
+🇲🇬 Madagascar
+🇲🇼 Malawi
+🇲🇾 Malaysia
+🇲🇻 Maldives
+🇲🇱 Mali
+🇲🇹 Malta
+🇲🇭 Marshall Islands (the)
+🇲🇶 Martinique
+🇲🇷 Mauritania
+🇲🇺 Mauritius
+🇾🇹 Mayotte
+🇲🇽 Mexico
+🇫🇲 Micronesia (Federated States of)
+🇲🇩 Moldova (the Republic of)
+🇲🇨 Monaco
+🇲🇳 Mongolia
+🇲🇪 Montenegro
+🇲🇸 Montserrat
+🇲🇦 Morocco
+🇲🇿 Mozambique
+🇲🇲 Myanmar
+🇳🇦 Namibia
+🇳🇷 Nauru
+🇳🇵 Nepal
+🇳🇱 Netherlands (the)
+🇳🇨 New Caledonia
+🇳🇿 New Zealand
+🇳🇮 Nicaragua
+🇳🇪 Niger (the)
+🇳🇬 Nigeria
+🇳🇺 Niue
+🇳🇫 Norfolk Island
+🇲🇰 North Macedonia
+🇲🇵 Northern Mariana Islands (the)
+🇳🇴 Norway
+🇴🇲 Oman
+🇵🇰 Pakistan
+🇵🇼 Palau
+🇵🇸 Palestine, State of
+🇵🇦 Panama
+🇵🇬 Papua New Guinea
+🇵🇾 Paraguay
+🇵🇪 Peru
+🇵🇭 Philippines (the)
+🇵🇳 Pitcairn
+🇵🇱 Poland
+🇵🇹 Portugal
+🇵🇷 Puerto Rico
+🇶🇦 Qatar
+🇷🇪 Réunion
+🇷🇴 Romania
+🇷🇺 Russian Federation (the)
+🇷🇼 Rwanda
+🇧🇱 Saint Barthélemy
+🇸🇭 Saint Helena, Ascension and Tristan da Cunha
+🇰🇳 Saint Kitts and Nevis
+🇱🇨 Saint Lucia
+🇲🇫 Saint Martin (French part)
+🇵🇲 Saint Pierre and Miquelon
+🇻🇨 Saint Vincent and the Grenadines
+🇼🇸 Samoa
+🇸🇲 San Marino
+🇸🇹 Sao Tome and Principe
+🇸🇦 Saudi Arabia
+🇸🇳 Senegal
+🇷🇸 Serbia
+🇸🇨 Seychelles
+🇸🇱 Sierra Leone
+🇸🇬 Singapore
+🇸🇽 Sint Maarten (Dutch part)
+🇸🇰 Slovakia
+🇸🇮 Slovenia
+🇸🇧 Solomon Islands
+🇸🇴 Somalia
+🇿🇦 South Africa
+🇬🇸 South Georgia and the South Sandwich Islands
+🇸🇸 South Sudan
+🇪🇸 Spain
+🇱🇰 Sri Lanka
+🇸🇩 Sudan (the)
+🇸🇷 Suriname
+🇸🇯 Svalbard and Jan Mayen
+🇸🇪 Sweden
+🇨🇭 Switzerland
+🇸🇾 Syrian Arab Republic
+🇹🇼 Taiwan (Province of China)
+🇹🇯 Tajikistan
+🇹🇿 Tanzania, United Republic of
+🇹🇭 Thailand
+🇹🇱 Timor-Leste
+🇹🇬 Togo
+🇹🇰 Tokelau
+🇹🇴 Tonga
+🇹🇹 Trinidad and Tobago
+🇹🇦 Tristan da Cunha
+🇹🇳 Tunisia
+🇹🇷 Turkey
+🇹🇲 Turkmenistan
+🇹🇨 Turks and Caicos Islands (the)
+🇹🇻 Tuvalu
+🇺🇬 Uganda
+🇺🇦 Ukraine
+🇦🇪 United Arab Emirates (the)
+🇬🇧 United Kingdom of Great Britain and Northern Ireland (the)
+🇺🇲 United States Minor Outlying Islands (the)
+🇺🇸 United States of America (the)
+🇺🇾 Uruguay
+🇺🇿 Uzbekistan
+🇻🇺 Vanuatu
+🇻🇪 Venezuela (Bolivarian Republic of)
+🇻🇳 Viet Nam
+🇻🇬 Virgin Islands (British)
+🇻🇮 Virgin Islands (U.S.)
+🇼🇫 Wallis and Futuna
+🇪🇭 Western Sahara
+🇾🇪 Yemen
+🇿🇲 Zambia
+🇿🇼 Zimbabwe
+Newest
+Oldest
+Featured
+No results
+
