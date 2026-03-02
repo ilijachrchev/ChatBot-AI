@@ -1,9 +1,10 @@
 'use client'
 
 import React, { useState, useRef } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Upload, FileText, Trash2, Power, PowerOff, RefreshCw, Globe } from 'lucide-react'
+import { Upload, FileText, Trash2, Power, PowerOff, RefreshCw, Globe, Lock } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DataTable } from '../table'
 import { TableCell, TableRow } from '../ui/table'
@@ -42,9 +43,11 @@ type KnowledgeBaseFile = {
 
 type Props = {
   initialFiles: KnowledgeBaseFile[]
+  domainId?: string
+  userPlan?: string
 }
 
-const KnowledgeBaseContent = ({ initialFiles }: Props) => {
+const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
   const [files, setFiles] = useState<KnowledgeBaseFile[]>(initialFiles)
   const [uploading, setUploading] = useState(false)
   const [deletingId, setDeletingId] = useState<string | null>(null)
@@ -88,6 +91,7 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
       const uploadPromises = Array.from(selectedFiles).map(async (file) => {
         const formData = new FormData()
         formData.append('file', file)
+        if (domainId) formData.append('domainId', domainId)
 
         const response = await fetch('/api/knowledge-base/upload', {
           method: 'POST',
@@ -105,7 +109,7 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
       await Promise.all(uploadPromises)
       toast.success('Files uploaded successfully')
 
-      const result = await getKnowledgeBaseFiles()
+      const result = await getKnowledgeBaseFiles(domainId)
       if (result.status === 200 && result.files) {
         setFiles(result.files)
       }
@@ -175,7 +179,7 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
           )
         )
         setTimeout(async () => {
-          const refreshResult = await getKnowledgeBaseFiles()
+          const refreshResult = await getKnowledgeBaseFiles(domainId)
           if (refreshResult.status === 200 && refreshResult.files) {
             setFiles(refreshResult.files)
           }
@@ -199,12 +203,12 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
     setScraping(true)
     try {
       console.log('Scraping URL:', scrapeUrl)
-      const result = await scrapeWebsiteToKnowledgeBase(scrapeUrl.trim(), scrapeMaxPages)
+      const result = await scrapeWebsiteToKnowledgeBase(scrapeUrl.trim(), scrapeMaxPages, domainId)
       if (result.status === 200) {
         toast.success('Website scraping started — file will appear once ready')
         setScrapeUrl('')
         setScrapeMaxPages(5)
-        const refreshResult = await getKnowledgeBaseFiles()
+        const refreshResult = await getKnowledgeBaseFiles(domainId)
         if (refreshResult.status === 200 && refreshResult.files) {
           setFiles(refreshResult.files)
         }
@@ -258,56 +262,86 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
         className="hidden"
       />
 
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
-          Scrape Website
-        </h2>
-        <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
-          <div className="flex flex-col sm:flex-row gap-3">
-            <div className="relative flex-1">
-              <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+      {userPlan === 'ULTIMATE' ? (
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+            Scrape Website
+          </h2>
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1">
+                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                <Input
+                  type="url"
+                  placeholder="https://yourwebsite.com"
+                  value={scrapeUrl}
+                  onChange={(e) => setScrapeUrl(e.target.value)}
+                  disabled={scraping}
+                  className="pl-9"
+                />
+              </div>
               <Input
-                type="url"
-                placeholder="https://yourwebsite.com"
-                value={scrapeUrl}
-                onChange={(e) => setScrapeUrl(e.target.value)}
+                type="number"
+                min={1}
+                max={20}
+                value={scrapeMaxPages}
+                onChange={(e) =>
+                  setScrapeMaxPages(Math.min(20, Math.max(1, Number(e.target.value))))
+                }
                 disabled={scraping}
-                className="pl-9"
+                className="w-full sm:w-28"
+                title="Max pages"
+                aria-label="Max pages"
               />
+              <Button onClick={handleScrape} disabled={scraping} className="shrink-0">
+                {scraping ? (
+                  <>
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Scraping...
+                  </>
+                ) : (
+                  <>
+                    <Globe className="h-4 w-4" />
+                    Scrape Website
+                  </>
+                )}
+              </Button>
             </div>
-            <Input
-              type="number"
-              min={1}
-              max={20}
-              value={scrapeMaxPages}
-              onChange={(e) =>
-                setScrapeMaxPages(Math.min(20, Math.max(1, Number(e.target.value))))
-              }
-              disabled={scraping}
-              className="w-full sm:w-28"
-              title="Max pages"
-              aria-label="Max pages"
-            />
-            <Button onClick={handleScrape} disabled={scraping} className="shrink-0">
-              {scraping ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                  Scraping...
-                </>
-              ) : (
-                <>
-                  <Globe className="h-4 w-4" />
-                  Scrape Website
-                </>
-              )}
-            </Button>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Enter a URL and the number of pages to crawl (max&nbsp;20). The scraped content
+              will be saved and ingested into your knowledge base.
+            </p>
           </div>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
-            Enter a URL and the number of pages to crawl (max&nbsp;20). The scraped content
-            will be saved and ingested into your knowledge base.
-          </p>
         </div>
-      </div>
+      ) : (
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+            Scrape Website
+          </h2>
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-8 flex flex-col items-center text-center gap-3">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
+              <Lock className="h-6 w-6 text-slate-400" />
+            </div>
+            <p className="font-semibold text-slate-900 dark:text-white">
+              Ultimate plan required
+            </p>
+            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm">
+              Web scraping is available on the Ultimate plan. Upgrade to automatically
+              pull content from any website into your knowledge base.
+            </p>
+            <Link
+              href="/settings/billing"
+              className={cn(
+                'mt-1 inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-700',
+                'bg-transparent px-4 py-2 text-sm font-medium text-slate-900 dark:text-white',
+                'hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'
+              )}
+            >
+              Upgrade to Ultimate
+            </Link>
+          </div>
+        </div>
+      )}
 
       <div className="mb-6">
         <div
@@ -508,4 +542,3 @@ const KnowledgeBaseContent = ({ initialFiles }: Props) => {
 }
 
 export default KnowledgeBaseContent
-

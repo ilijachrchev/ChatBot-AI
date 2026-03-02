@@ -1,7 +1,6 @@
 import CalIcon from '@/icons/cal-icon'
 import ChatIcon from '@/icons/chat-icon'
 import DashboardIcon from '@/icons/dashboard-icon'
-import DocumentsIcon from '@/icons/documents-icon'
 import EmailIcon from '@/icons/email-icon'
 import HelpDeskIcon from '@/icons/help-desk-icon'
 import IntegrationsIcon from '@/icons/integrations-icon'
@@ -40,11 +39,6 @@ export const SIDE_BAR_MENU: SIDE_BAR_MENU_PROPS[] = [
     label: 'Email Marketing',
     icon: <EmailIcon />,
     path: 'email-marketing',
-  },
-  {
-    label: 'Knowledge Base',
-    icon: <DocumentsIcon />,
-    path: 'knowledge-base',
   },
 ]
 

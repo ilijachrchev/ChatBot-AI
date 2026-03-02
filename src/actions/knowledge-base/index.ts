@@ -5,7 +5,7 @@ import { currentUser } from '@clerk/nextjs/server'
 import { mkdir, unlink, writeFile } from 'fs/promises'
 import { join } from 'path'
 
-export const getKnowledgeBaseFiles = async () => {
+export const getKnowledgeBaseFiles = async (domainId?: string) => {
   try {
     const user = await currentUser()
     if (!user) {
@@ -24,6 +24,7 @@ export const getKnowledgeBaseFiles = async () => {
     const files = await client.knowledgeBaseFile.findMany({
       where: {
         userId: dbUser.id,
+        ...(domainId ? { domainId } : {}),
       },
       orderBy: {
         createdAt: 'desc',

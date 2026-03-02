@@ -1,5 +1,5 @@
 "use client"
-import { onGetChatMessages, onGetDomainChatRooms, onOwnerSendMessage, onRealTimeChat, onViewUnReadMessages } from "@/actions/conversation"
+import { onGetChatMessages, onGetDomainChatRooms, onGetDomainRealtimeStatus, onOwnerSendMessage, onRealTimeChat, onViewUnReadMessages } from "@/actions/conversation"
 import { useChatContext } from "@/context/user-chat-context"
 import { getMonthName, getSocketClient } from "@/lib/utils"
 import { ConversationSearchSchema, ChatBotMessageSchema } from "@/schemas/conversation.schema"
@@ -33,12 +33,17 @@ export const useConversation = () => {
         }[]
     >([])
     const [loading, setLoading] = useState<boolean>(false)
+    const [realtimeDisabled, setRealtimeDisabled] = useState<boolean>(false)
     useEffect(() => {
         const search = watch(async (value) => {
           if (!value.domain) return
             setLoading(true)
              try {
-            const rooms = await onGetDomainChatRooms(value.domain!)
+            const [rooms, isRealtimeEnabled] = await Promise.all([
+              onGetDomainChatRooms(value.domain!),
+              onGetDomainRealtimeStatus(value.domain!),
+            ])
+            setRealtimeDisabled(!isRealtimeEnabled)
             if (rooms) {
                 setLoading(false)
                 setChatRooms(rooms.customer)
@@ -91,6 +96,7 @@ export const useConversation = () => {
         register,
         chatRooms,
         loading,
+        realtimeDisabled,
         onGetActiveChatMessages,
     }
 }

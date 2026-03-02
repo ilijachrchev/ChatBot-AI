@@ -160,7 +160,8 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
             verificationMethod: true,
             verificationStatus: true,
             verifiedAt: true,
-            timezone: true, 
+            timezone: true,
+            realtimeEnabled: true,
             chatBot: {
               select: {
                 id: true,
@@ -899,6 +900,33 @@ export const onGetKeepMeLoggedInPreference = async () => {
   } catch (error) {
     console.error('Error fetching keep me logged in preference:', error)
     return { status: 500, keepMeLoggedIn: true }
+  }
+}
+
+export const onUpdateDomainRealtimeEnabled = async (
+  domainId: string,
+  realtimeEnabled: boolean
+) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const updated = await client.domain.update({
+      where: { id: domainId },
+      data: { realtimeEnabled },
+    })
+
+    if (updated) {
+      return {
+        status: 200,
+        message: realtimeEnabled ? 'Realtime mode enabled' : 'Realtime mode disabled',
+      }
+    }
+
+    return { status: 400, message: 'Failed to update setting' }
+  } catch (error) {
+    console.error(error)
+    return { status: 500, message: 'Internal server error' }
   }
 }
 

@@ -10,8 +10,10 @@ import {
   Sparkles,
   Palette,
   Brain,
+  BookOpen,
   Package,
   Clock,
+  Zap,
 } from 'lucide-react'
 
 type NavItem = {
@@ -40,6 +42,12 @@ export const DomainSettingsNav = ({ domain }: DomainSettingsNavProps) => {
       description: 'Domain & basic setup',
     },
     {
+      label: 'Realtime & Handoff',
+      path: '/realtime',
+      icon: <Zap className="h-4 w-4" />,
+      description: 'Live chat & handoff',
+    },
+    {
       label: 'Embed Code',
       path: '/embed',
       icon: <Code className="h-4 w-4" />,
@@ -62,6 +70,12 @@ export const DomainSettingsNav = ({ domain }: DomainSettingsNavProps) => {
       path: '/training',
       icon: <Brain className="h-4 w-4" />,
       description: 'FAQ & questions',
+    },
+    {
+      label: 'Knowledge Base',
+      path: '/knowledge-base',
+      icon: <BookOpen className="h-4 w-4" />,
+      description: 'Docs & web scraping',
     },
     {
       label: 'Products',

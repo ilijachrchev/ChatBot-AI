@@ -9,6 +9,8 @@ import { Loader } from '../loader'
 import { CardDescription } from '../ui/card'
 import ChatCard from './chat-card'
 import { Separator } from '../ui/separator'
+import { WifiOff } from 'lucide-react'
+import Link from 'next/link'
 
 type Props = {
     domains?: 
@@ -25,7 +27,7 @@ const STARRED_IDS = new Set<string>([
 ])
 
 const ConversationMenu = ({ domains }: Props) => {
-  const { register, chatRooms, loading, onGetActiveChatMessages } = useConversation()
+  const { register, chatRooms, loading, realtimeDisabled, onGetActiveChatMessages } = useConversation()
   const getLatest = (row: any) => row?.chatRoom?.[0]?.message?.[0]
   const getRoomId = (row: any) => row?.chatRoom?.[0]?.id as string | undefined
 
@@ -98,6 +100,33 @@ const ConversationMenu = ({ domains }: Props) => {
       </Loader>
     </div>
   )
+
+  if (realtimeDisabled) {
+    return (
+      <div className='flex flex-col py-4 px-0'>
+        <div className='px-4'>
+          <ConversationSearch domains={domains} register={register} />
+        </div>
+        <div className='flex flex-col items-center justify-center gap-3 py-16 px-6 text-center'>
+          <div className='rounded-full bg-slate-100 dark:bg-slate-800 p-4'>
+            <WifiOff className='h-8 w-8 text-slate-400' />
+          </div>
+          <p className='text-sm font-medium text-slate-700 dark:text-slate-300'>
+            Realtime mode is disabled for this domain.
+          </p>
+          <p className='text-xs text-slate-400 dark:text-slate-500 max-w-[220px]'>
+            Enable it in{' '}
+            <Link
+              href='/settings'
+              className='underline underline-offset-2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+            >
+              Domain Settings → Realtime &amp; Handoff
+            </Link>
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className='flex flex-col py-4 px-0'>

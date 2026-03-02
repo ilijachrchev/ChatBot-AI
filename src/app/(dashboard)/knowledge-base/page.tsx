@@ -1,24 +1,9 @@
-import { getKnowledgeBaseFiles } from '@/actions/knowledge-base'
-import InfoBar from '@/components/infobar'
-import KnowledgeBaseContent from '@/components/knowledge-base'
-import React from 'react'
+import { redirect } from 'next/navigation'
 
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
-type Props = Record<string, never>
-
-const Page = async (props: Props) => {
-  const filesResult = await getKnowledgeBaseFiles()
-  const files = filesResult.status === 200 ? filesResult.files : []
-
-  return (
-    <>
-      <InfoBar />
-      <KnowledgeBaseContent initialFiles={files || []} />
-    </>
-  )
+// Knowledge Base has moved to per-domain settings.
+// Any direct visit here is redirected to the dashboard.
+const KnowledgeBasePage = () => {
+  redirect('/dashboard')
 }
 
-export default Page
-
+export default KnowledgeBasePage

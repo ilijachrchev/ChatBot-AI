@@ -178,6 +178,11 @@ export const onAiChatBotAssistant = async (
         },
       })
 
+      const realtimeRows = await db.$queryRaw<Array<{ realtimeEnabled: boolean }>>`
+        SELECT "realtimeEnabled" FROM "Domain" WHERE id = ${id}::uuid LIMIT 1
+      `
+      const realtimeEnabled = realtimeRows[0]?.realtimeEnabled ?? true
+
       let workingHoursText = ''
       if (domainWithHours?.workingHours && domainWithHours.workingHours.enabled) {
         const days = []
@@ -211,6 +216,87 @@ export const onAiChatBotAssistant = async (
         chatroomId = crypto.randomUUID();
         console.log('🆕 Generated new chatroomId:', chatroomId)
       }
+
+      // ── STATELESS AI MODE ─────────────────────────────────────────────────
+      // When realtimeEnabled = false: no DB writes, no socket events.
+      if (realtimeEnabled === false) {
+        const chatBotConfig = await db.domain.findUnique({
+          where: { id },
+          select: {
+            name: true,
+            userId: true,
+            chatBot: {
+              select: {
+                persona: true,
+                customPrompt: true,
+              },
+            },
+            filterQuestions: {
+              where: { answered: null },
+              select: { question: true },
+            },
+          },
+        })
+
+        if (!chatBotConfig) return
+
+        let personaPrompt = getPersonaSystemPrompt(
+          (chatBotConfig.chatBot?.persona as any) || 'SALES_AGENT',
+          chatBotConfig.chatBot?.customPrompt,
+          chatBotConfig.name
+        )
+
+        if (presence?.status === 'OFFLINE') {
+          personaPrompt += `\n\nIMPORTANT: The business is currently OFFLINE. Human support is NOT available. You can still help with questions but be clear that human agents are offline.`
+        }
+
+        let knowledgeBaseContext = ''
+        if (chatBotConfig.userId) {
+          try {
+            knowledgeBaseContext = await getKnowledgeBaseContext(message, chatBotConfig.userId, id)
+          } catch (err) {
+            console.error('Error retrieving knowledge base context (stateless):', err)
+          }
+        }
+
+        let systemMessage = `${personaPrompt}
+
+          Additional Context:
+          - You represent ${chatBotConfig.name}
+          - Ask these qualification questions naturally: [${chatBotConfig.filterQuestions.map((q: { question: string }) => q.question).join(', ')}]
+
+          CRITICAL: You are ONLY a ${chatBotConfig.chatBot?.persona?.replace('_', ' ').toLowerCase() || 'agent'}.
+          - DO NOT help with topics outside your specialization
+          - Stay strictly within your domain`
+
+        if (knowledgeBaseContext) {
+          systemMessage += `\n\nKNOWLEDGE BASE CONTEXT:\nUse the following information to answer questions. If not covered, say you don't know.\n\n${knowledgeBaseContext}`
+        }
+
+        const statelessMessages: any[] = [
+          { role: 'assistant', content: systemMessage },
+          ...chat,
+          { role: 'user', content: message },
+        ]
+
+        const completion = await openai.chat.completions.create({
+          messages: statelessMessages,
+          model: 'gpt-3.5-turbo',
+        })
+
+        const rawContent = completion.choices[0].message.content ?? ''
+        const cleanContent = rawContent
+          .replace(/\(handoff:none\)/gi, '')
+          .replace(/\(handoff:suggest\)/gi, '')
+          .replace(/\(handoff:require\)/gi, '')
+          .trim()
+
+        return {
+          response: { role: 'assistant' as const, content: cleanContent },
+          chatRoom: chatroomId,
+        }
+      }
+      // ── END STATELESS AI MODE ──────────────────────────────────────────────
 
       console.log('🔧 Calling ensureChatRoom with:', { chatroomId, domainId: id })
       let room

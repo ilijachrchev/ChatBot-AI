@@ -48,6 +48,7 @@ model Domain {
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @default(now()) @updatedAt
   timezone           String              @default("UTC")
+  realtimeEnabled    Boolean             @default(true)
   chatBot            ChatBot?
   chatRooms          ChatRoom[]          @relation("DomainToChatRoooms")
   customer           Customer[]

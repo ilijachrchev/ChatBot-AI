@@ -65,6 +65,18 @@ export const onGetConversationMode = async (id: string) => {
   }
 }
 
+export const onGetDomainRealtimeStatus = async (domainId: string): Promise<boolean> => {
+  try {
+    const rows = await client.$queryRaw<Array<{ realtimeEnabled: boolean }>>`
+      SELECT "realtimeEnabled" FROM "Domain" WHERE id = ${domainId}::uuid LIMIT 1
+    `
+    return rows[0]?.realtimeEnabled ?? true
+  } catch (error) {
+    console.log(error)
+    return true
+  }
+}
+
 export const onGetDomainChatRooms = async (id: string) => {
   try {
     const domains = await client.domain.findUnique({
