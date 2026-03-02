@@ -4,7 +4,7 @@ import React, { useState, useRef } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Upload, FileText, Trash2, Power, PowerOff, RefreshCw, Globe, Lock } from 'lucide-react'
+import { Upload, FileText, Trash2, Power, PowerOff, RefreshCw, Globe, Lock, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { DataTable } from '../table'
 import { TableCell, TableRow } from '../ui/table'
@@ -237,9 +237,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
               Knowledge Base
             </h1>
             <p className="text-slate-600 dark:text-slate-400 mt-1">
-              Upload documents to help your chatbot learn business-specific
-              information. Files are stored securely and will be used for AI
-              training.
+              Train your chatbot with your own content
             </p>
           </div>
           <Button
@@ -251,7 +249,59 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
             {uploading ? 'Uploading...' : 'Upload files'}
           </Button>
         </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 mb-3">
+              <Zap className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+            </div>
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1.5">
+              How it works
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Your chatbot reads and indexes the content you provide. When a
+              customer asks a question, the AI searches your knowledge base and
+              uses the most relevant content to generate accurate, grounded
+              answers.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 mb-3">
+              <FileText className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+            </div>
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1.5">
+              File Uploads
+            </h3>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Upload PDF, TXT, or DOCX files containing your product docs, FAQs,
+              policies, or any reference material. Files are processed and
+              chunked into searchable knowledge.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 mb-3">
+              <Globe className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+            </div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+                Website Scraping
+              </h3>
+              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+                Ultimate Plan
+              </span>
+            </div>
+            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+              Enter your website URL and the scraper will crawl your pages,
+              extract all text content, and automatically ingest it into your
+              knowledge base — no manual copy-paste needed.
+            </p>
+          </div>
+        </div>
       </div>
+
+      <div className="border-t border-slate-200 dark:border-slate-800 mb-6" />
 
       <input
         ref={fileInputRef}
