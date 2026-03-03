@@ -48,6 +48,9 @@ export const useChatBot = () => {
                 showAvatars?: boolean | null
                 widgetSize?: string | null
                 widgetStyle?: string | null
+                chatPosition?: string | null
+                removeBranding?: boolean | null
+                customCss?: string | null
                 showPresenceBadge?: boolean | null
             } | null
             helpdesk: {

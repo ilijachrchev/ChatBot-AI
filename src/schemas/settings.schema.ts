@@ -83,6 +83,9 @@ export const DomainSettingsSchema = z
     showAvatars: z.boolean().optional(),
     widgetSize: z.string().optional(),
     widgetStyle: z.string().optional(),
+    removeBranding: z.boolean().optional(),
+    chatPosition: z.string().optional(),
+    customCss: z.string().optional(),
   })
   .refine(
     (schema) => {

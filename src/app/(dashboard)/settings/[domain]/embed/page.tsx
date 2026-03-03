@@ -3,6 +3,7 @@ import { EmbedCodePanel } from '@/components/embed'
 import { redirect } from 'next/navigation'
 import { DomainSettingsNav } from '@/components/domain/domain-settings-nav'
 import InfoBar from '@/components/infobar'
+import { StepTracker } from '@/components/onboarding/step-tracker'
 
 type Props = {
   params: Promise<{ domain: string }>
@@ -23,8 +24,9 @@ const DomainEmbedPage = async ({ params }: Props) => {
 
   return (
     <>
+      <StepTracker step="copiedEmbedCode" />
       <InfoBar />
-      
+
       <DomainSettingsNav domain={domain} />
 
       <div className="relative overflow-y-auto w-full chat-window flex-1 h-0">

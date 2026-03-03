@@ -69,6 +69,8 @@ const AiChatBot = (props: Props) => {
                 showAvatars={currentBot?.chatBot?.showAvatars}
                 widgetSize={currentBot?.chatBot?.widgetSize}
                 widgetStyle={currentBot?.chatBot?.widgetStyle}
+                removeBranding={currentBot?.chatBot?.removeBranding}
+                chatPosition={currentBot?.chatBot?.chatPosition}
                 showPresenceBadge={currentBot?.chatBot?.showPresenceBadge ?? true}
             />
         )}

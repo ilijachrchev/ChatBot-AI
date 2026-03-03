@@ -3,7 +3,10 @@
     "allow": [
       "Bash(npx prisma db push)",
       "Bash(npx prisma generate)",
-      "Bash(test -f \"d:/Projects/chatbot-ai/src/constants/pricing.ts\")"
+      "Bash(test -f \"d:/Projects/chatbot-ai/src/constants/pricing.ts\")",
+      "Bash(pnpm add canvas-confetti @types/canvas-confetti)",
+      "Bash(npx prisma migrate dev --name add_chatbot_branding_position_css)",
+      "Bash(npx prisma generate --skip-generate)"
     ]
   }
 }

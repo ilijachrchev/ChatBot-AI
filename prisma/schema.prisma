@@ -19,8 +19,10 @@ model User {
   avatar             String?
   stripeId           String?
   stripeCustomerId   String?
-  keepMeLoggedIn     Boolean             @default(false)
-  billingAddress     BillingAddress?
+  keepMeLoggedIn       Boolean             @default(false)
+  onboardingCompleted  Boolean             @default(false)
+  onboardingDismissed  Boolean             @default(false)
+  billingAddress       BillingAddress?
   subscription       Billings?
   campaign           Campaign[]
   domains            Domain[]
@@ -31,7 +33,8 @@ model User {
   paymentHistory     PaymentHistory[]
   pendingLogins      PendingLogin[]
   trustedDevices     TrustedDevice[]
-  preferences        UserPreferences?
+  preferences          UserPreferences?
+  onboardingProgress   OnboardingProgress?
 }
 
 model Domain {
@@ -88,6 +91,9 @@ model ChatBot {
   showAvatars          Boolean @default(true)
   widgetSize           String? @default("MEDIUM")
   widgetStyle          String? @default("SOLID")
+  removeBranding       Boolean @default(false)
+  chatPosition         String? @default("BOTTOM_RIGHT")
+  customCss            String? @db.Text
   presenceMode         String  @default("AUTO")
   offlineBehavior      String  @default("SHOW_HOURS_AND_EMAIL")
   offlineCustomMessage String?
@@ -427,6 +433,22 @@ model ConversationUsage {
 
   @@unique([domainId, month, year])
   @@index([domainId])
+}
+
+model OnboardingProgress {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId            String    @unique @db.Uuid
+  addedDomain       Boolean   @default(false)
+  customizedChatbot Boolean   @default(false)
+  uploadedKnowledge Boolean   @default(false)
+  copiedEmbedCode   Boolean   @default(false)
+  exploredPricing   Boolean   @default(false)
+  completedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 enum VerificationStatus {

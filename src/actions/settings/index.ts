@@ -179,10 +179,15 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 buttonStyle: true,
                 bubbleStyle: true,
                 showAvatars: true,
-                presenceMode: true, 
+                widgetSize: true,
+                widgetStyle: true,
+                removeBranding: true,
+                chatPosition: true,
+                customCss: true,
+                presenceMode: true,
                 offlineBehavior: true,
-                offlineCustomMessage: true, 
-                showPresenceBadge: true, 
+                offlineCustomMessage: true,
+                showPresenceBadge: true,
               },
             },
           },
@@ -776,6 +781,9 @@ export const onUpdateChatbotCustomization = async (
     showAvatars?: boolean
     widgetSize?: string
     widgetStyle?: string
+    removeBranding?: boolean
+    chatPosition?: string
+    customCss?: string
   }
 ) => {
   try {

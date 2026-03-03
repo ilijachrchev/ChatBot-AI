@@ -1,6 +1,8 @@
 import { SIDE_BAR_MENU } from '@/constants/menu'
-import { LogOut, Menu, MonitorSmartphone } from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { LogOut, Menu, MonitorSmartphone, Rocket } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 import DomainMenu from './domain-menu'
 import MenuItem from './menu-item'
@@ -9,6 +11,9 @@ type Props = {
   onExpand(): void
   current: string
   onSignOut(): void
+  onboardingCompleted: boolean
+  onboardingDismissed: boolean
+  stepsCompleted: number
   domains:
     | {
         id: string
@@ -19,7 +24,18 @@ type Props = {
     | undefined
 }
 
-const MaxMenu = ({ current, domains, onExpand, onSignOut }: Props) => {
+const MaxMenu = ({
+  current,
+  domains,
+  onExpand,
+  onSignOut,
+  onboardingCompleted,
+  onboardingDismissed,
+  stepsCompleted,
+}: Props) => {
+  const showOnboarding = !onboardingCompleted && !onboardingDismissed
+  const isOnboardingActive = current === 'getting-started'
+
   return (
     <div className="py-2 px-3 md:py-3 md:px-4 flex flex-col h-full">
       <div className="flex justify-between items-center mb-3 md:mb-6">
@@ -33,52 +49,102 @@ const MaxMenu = ({ current, domains, onExpand, onSignOut }: Props) => {
         <button
           onClick={onExpand}
           className={`
-              p-1.5 md:p-2 rounded-lg text-slate-600 dark:text-slate-400
-              hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white
-              transition-all duration-200 cursor-pointer
-              animate-fade-in opacity-0 delay-300 fill-mode-forwards
-            `}
+            p-1.5 md:p-2 rounded-lg text-slate-600 dark:text-slate-400
+            hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white
+            transition-all duration-200 cursor-pointer
+            animate-fade-in opacity-0 delay-300 fill-mode-forwards
+          `}
         >
-          <Menu className='w-5 h-5' />
+          <Menu className="w-5 h-5" />
         </button>
       </div>
 
       <div className="animate-fade-in opacity-0 delay-300 fill-mode-forwards flex flex-col justify-between flex-1 overflow-y-auto">
         <div className="flex flex-col">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Menu</p>
-          <div className='flex flex-col mb-1 md:mb-2'>
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">
+            Menu
+          </p>
+          <div className="flex flex-col mb-1 md:mb-2">
             {SIDE_BAR_MENU.map((menu, key) => (
-              <MenuItem
-                size="max"
-                {...menu}
-                key={key}
-                current={current}
-              />
+              <MenuItem size="max" {...menu} key={key} current={current} />
             ))}
+
+            {showOnboarding && (
+              <Link
+                href="/getting-started"
+                className={cn(
+                  'flex items-center md:gap-3 gap-2 md:px-3 px-2 md:py-2.5 py-1.5 rounded-lg my-0.5',
+                  'transition-all duration-200 ease-in-out',
+                  'group relative overflow-hidden',
+                  isOnboardingActive
+                    ? [
+                        'bg-white dark:bg-slate-800',
+                        'font-semibold text-slate-900 dark:text-white',
+                        'shadow-sm',
+                        'before:absolute before:left-0 before:top-0 before:bottom-0',
+                        'before:w-1 before:bg-gradient-to-b before:from-blue-500 before:to-blue-600',
+                        'before:rounded-l-lg',
+                      ]
+                    : [
+                        'text-slate-600 dark:text-slate-400',
+                        'hover:bg-slate-50 dark:hover:bg-slate-800/50',
+                        'hover:text-slate-900 dark:hover:text-white',
+                      ]
+                )}
+              >
+                <div
+                  className={cn(
+                    'flex items-center justify-center md:w-5 w-4 md:h-5 h-4 transition-transform duration-200',
+                    'group-hover:scale-110',
+                    isOnboardingActive && 'text-blue-600 dark:text-blue-400'
+                  )}
+                >
+                  <Rocket />
+                </div>
+                <span className="text-sm flex-1">Getting Started</span>
+
+                {stepsCompleted === 4 ? (
+                  <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500 text-white text-[10px] font-bold flex-shrink-0">
+                    ✓
+                  </span>
+                ) : (
+                  <span
+                    className={cn(
+                      'inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-blue-500 text-white flex-shrink-0',
+                      stepsCompleted === 0 && 'animate-pulse'
+                    )}
+                  >
+                    {stepsCompleted}/4
+                  </span>
+                )}
+
+                {!isOnboardingActive && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                )}
+              </Link>
+            )}
           </div>
 
           <DomainMenu domains={domains} />
         </div>
 
         <div className="flex flex-col border-t border-slate-200 dark:border-slate-800 pt-2 md:pt-3 mt-2 md:mt-3">
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">Options</p>
+          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 md:mb-2">
+            Options
+          </p>
           <button
             onClick={onSignOut}
             className={`
-                flex items-center gap-2 md:gap-3 px-2 md:px-3 py-1.5 md:py-2.5 rounded-lg text-slate-600 dark:text-slate-400
-                hover:bg-rose-50 dark:hover:bg-rose-950/20 hover:text-rose-600 dark:hover:text-rose-400
-                transition-all duration-250 group
-              `}
+              flex items-center gap-2 md:gap-3 px-2 md:px-3 py-1.5 md:py-2.5 rounded-lg text-slate-600 dark:text-slate-400
+              hover:bg-rose-50 dark:hover:bg-rose-950/20 hover:text-rose-600 dark:hover:text-rose-400
+              transition-all duration-250 group
+            `}
           >
-            <LogOut className='w-4 h-4 md:w-5 md:h-5  group-hover:scale-110 transition-transform' />
-            <span className='text-sm'>Sign Out</span>
+            <LogOut className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform" />
+            <span className="text-sm">Sign Out</span>
           </button>
-          
-          <MenuItem
-            size="max"
-            label="Mobile App"
-            icon={<MonitorSmartphone />}
-          />
+
+          <MenuItem size="max" label="Mobile App" icon={<MonitorSmartphone />} />
         </div>
       </div>
     </div>

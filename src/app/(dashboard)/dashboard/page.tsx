@@ -1,10 +1,10 @@
 import { getUserAppointments } from '@/actions/appointment'
-import { 
-  getUserBalance, 
-  getUserClients, 
-  getUserPlanInfo, 
-  getUserTotalProductPrices, 
-  getUserTransaction 
+import {
+  getUserBalance,
+  getUserClients,
+  getUserPlanInfo,
+  getUserTotalProductPrices,
+  getUserTransaction,
 } from '@/actions/dashboard'
 import {
   getConversationActivity,
@@ -13,9 +13,12 @@ import {
   getSalesTrend,
   getBookingsTrend,
   getConversationsToday,
-  getConversationsThisWeek, 
+  getConversationsThisWeek,
   getTotalChatRooms,
 } from '@/actions/analytics'
+import { onGetOnboardingProgress } from '@/actions/onboarding'
+import { onGetAllAccountDomains } from '@/actions/settings'
+import { GettingStartedCard } from '@/components/onboarding/getting-started-card'
 import { KpiCard } from '@/components/dashboard/kpi-card'
 import { ActivityChart } from '@/components/dashboard/activity-chart'
 import { AIResolutionChart } from '@/components/dashboard/ai-resolution-chart'
@@ -24,9 +27,9 @@ import { QuickActions } from '@/components/dashboard/quick-actions'
 import InfoBar from '@/components/infobar'
 import { MessageSquare, TrendingUp, Calendar, DollarSign } from 'lucide-react'
 import React from 'react'
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 type Props = Record<string, never>
 
@@ -44,8 +47,10 @@ const Page = async (props: Props) => {
     salesTrend,
     bookingsTrend,
     conversationsToday,
-    conversationsThisWeek, 
-    totalChatRooms, 
+    conversationsThisWeek,
+    totalChatRooms,
+    onboardingData,
+    domainsResult,
   ] = await Promise.all([
     getUserClients(),
     getUserBalance(),
@@ -60,7 +65,9 @@ const Page = async (props: Props) => {
     getBookingsTrend(),
     getConversationsToday(),
     getConversationsThisWeek(),
-    getTotalChatRooms(), 
+    getTotalChatRooms(),
+    onGetOnboardingProgress(),
+    onGetAllAccountDomains(),
   ])
 
   const pipelineValue = (products ?? 0) * (clients ?? 0)
@@ -97,36 +104,47 @@ const Page = async (props: Props) => {
   const totalAI = finalResolutionData.reduce((sum, item) => sum + item.ai, 0)
   const totalHuman = finalResolutionData.reduce((sum, item) => sum + item.human, 0)
   const totalResolutions = totalAI + totalHuman
-  const aiResolutionRate = totalResolutions > 0 
-    ? Math.round((totalAI / totalResolutions) * 100)
-    : 0
+  const aiResolutionRate =
+    totalResolutions > 0 ? Math.round((totalAI / totalResolutions) * 100) : 0
 
-  const hasConversationData = conversationTrend && conversationTrend.length > 0 && conversationTrend.some(v => v > 0)
-  const hasSalesData = salesTrend && salesTrend.length > 0 && salesTrend.some(v => v > 0)
-  const hasBookingsData = bookingsTrend && bookingsTrend.length > 0 && bookingsTrend.some(v => v > 0)
+  const hasConversationData =
+    conversationTrend && conversationTrend.length > 0 && conversationTrend.some((v) => v > 0)
+  const hasSalesData = salesTrend && salesTrend.length > 0 && salesTrend.some((v) => v > 0)
+  const hasBookingsData =
+    bookingsTrend && bookingsTrend.length > 0 && bookingsTrend.some((v) => v > 0)
 
   const conversationTrendPercent = conversationsThisWeek > 0 ? 12 : 0
 
-  console.log('Dashboard Data:', {
-    conversationsToday,
-    conversationsThisWeek,
-    totalChatRooms,
-    clients,
-    aiResolutionRate,
-  })
+  const firstDomainSlug = domainsResult?.domains?.[0]?.name?.split('.')?.[0] ?? ''
+  const showOnboarding =
+    !!onboardingData &&
+    !onboardingData.onboardingCompleted &&
+    !onboardingData.onboardingDismissed &&
+    !!firstDomainSlug
 
   return (
-    <div className='w-full h-full flex flex-col p-4 md:p-6 lg:p-8'> 
+    <div className="w-full h-full flex flex-col p-4 md:p-6 lg:p-8">
       <InfoBar />
-      
-      <div className='overflow-y-auto w-full flex-1'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8'>
+
+      <div className="overflow-y-auto w-full flex-1">
+        {showOnboarding && (
+          <GettingStartedCard
+            progress={onboardingData!}
+            firstDomainSlug={firstDomainSlug}
+          />
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
           <KpiCard
             title="Conversations Today"
             value={conversationsToday}
             icon={<MessageSquare />}
             iconColor="blue"
-            trend={conversationsToday > 0 ? { value: conversationTrendPercent, label: 'vs yesterday' } : undefined}
+            trend={
+              conversationsToday > 0
+                ? { value: conversationTrendPercent, label: 'vs yesterday' }
+                : undefined
+            }
             sparklineData={hasConversationData ? conversationTrend : undefined}
           />
           <KpiCard
@@ -142,7 +160,9 @@ const Page = async (props: Props) => {
             value={bookings || 0}
             icon={<Calendar />}
             iconColor="purple"
-            trend={bookings && bookings > 0 ? { value: 4.5, label: 'vs last week' } : undefined}
+            trend={
+              bookings && bookings > 0 ? { value: 4.5, label: 'vs last week' } : undefined
+            }
             sparklineData={hasBookingsData ? bookingsTrend : undefined}
           />
           <KpiCard
@@ -155,15 +175,12 @@ const Page = async (props: Props) => {
           />
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-6 lg:mb-8'>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-6 lg:mb-8">
           <ActivityChart data={finalActivityData} />
-          <AIResolutionChart 
-            data={finalResolutionData} 
-            resolutionRate={aiResolutionRate} 
-          />
+          <AIResolutionChart data={finalResolutionData} resolutionRate={aiResolutionRate} />
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6'>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
           <QuickActions />
           <EnhancedPlanUsage
             plan={currentPlan}

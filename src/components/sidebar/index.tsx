@@ -6,19 +6,21 @@ import MaxMenu from './maximized-menu'
 import { MinMenu } from './minimized-menu'
 
 type Props = {
-    domains:
-        | {
-            id: string
-            name: string
-            icon: string
-        } []
-        | null
-        | undefined
+  domains:
+    | {
+        id: string
+        name: string
+        icon: string
+      }[]
+    | null
+    | undefined
+  onboardingCompleted: boolean
+  onboardingDismissed: boolean
+  stepsCompleted: number
 }
 
-const SideBar = ({ domains }: Props) => {
-
-    const { expand, onExpand, page, onSignOut } = useSideBar()
+const SideBar = ({ domains, onboardingCompleted, onboardingDismissed, stepsCompleted }: Props) => {
+  const { expand, onExpand, page, onSignOut } = useSideBar()
 
   return (
     <div
@@ -30,12 +32,15 @@ const SideBar = ({ domains }: Props) => {
           : expand == false && 'animate-close-sidebar'
       )}
     >
-        {expand ? (
+      {expand ? (
         <MaxMenu
           domains={domains}
           current={page!}
           onExpand={onExpand}
           onSignOut={onSignOut}
+          onboardingCompleted={onboardingCompleted}
+          onboardingDismissed={onboardingDismissed}
+          stepsCompleted={stepsCompleted}
         />
       ) : (
         <MinMenu
@@ -43,6 +48,9 @@ const SideBar = ({ domains }: Props) => {
           onShrink={onExpand}
           current={page!}
           onSignOut={onSignOut}
+          onboardingCompleted={onboardingCompleted}
+          onboardingDismissed={onboardingDismissed}
+          stepsCompleted={stepsCompleted}
         />
       )}
     </div>

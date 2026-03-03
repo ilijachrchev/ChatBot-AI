@@ -15,6 +15,7 @@ import {
   reprocessKnowledgeBaseFile,
   scrapeWebsiteToKnowledgeBase,
 } from '@/actions/knowledge-base'
+import { onUpdateOnboardingStep } from '@/actions/onboarding'
 import { toast } from 'sonner'
 import {
   AlertDialog,
@@ -108,6 +109,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
 
       await Promise.all(uploadPromises)
       toast.success('Files uploaded successfully')
+      onUpdateOnboardingStep('uploadedKnowledge')
 
       const result = await getKnowledgeBaseFiles(domainId)
       if (result.status === 200 && result.files) {

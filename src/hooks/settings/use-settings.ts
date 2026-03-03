@@ -79,6 +79,9 @@ export const useSettings = (id: string, chatBotId: string) => {
         register('showAvatars')
         register('widgetSize')
         register('widgetStyle')
+        register('removeBranding')
+        register('chatPosition')
+        register('customCss')
     }, [register])
     
     const watchedIcon = watch('image')
@@ -95,6 +98,9 @@ export const useSettings = (id: string, chatBotId: string) => {
     const watchedShowAvatars = watch('showAvatars')
     const watchedWidgetSize = watch('widgetSize')
     const watchedWidgetStyle = watch('widgetStyle')
+    const watchedRemoveBranding = watch('removeBranding')
+    const watchedChatPosition = watch('chatPosition')
+    const watchedCustomCss = watch('customCss')
 
     const [previewIcon, setPreviewIcon] = useState<string | null>(null)
 
@@ -110,23 +116,43 @@ export const useSettings = (id: string, chatBotId: string) => {
 
     const onUpdateSettings = handleSubmit(async (values) => {
         setLoading(true)
-        
-        if(values.domain) {
-            const domain = await onUpdateDomain(id, values.domain)
-            if (domain) {
-                toast('Success', { description: domain.message })
+
+        const domain = values.domain
+        const image = values.image
+        const welcomeMessage = values.welcomeMessage
+        const chatbotColor = values.chatbotColor
+        const chatbotTitle = values.chatbotTitle
+        const chatbotSubtitle = values.chatbotSubtitle
+        const userBubbleColor = values.userBubbleColor
+        const botBubbleColor = values.botBubbleColor
+        const userTextColor = values.userTextColor
+        const botTextColor = values.botTextColor
+        const buttonStyle = values.buttonStyle
+        const bubbleStyle = values.bubbleStyle
+        const showAvatars = values.showAvatars
+        const widgetSize = values.widgetSize
+        const widgetStyle = values.widgetStyle
+        const removeBranding = values.removeBranding
+        const chatPosition = values.chatPosition
+        const customCss = values.customCss
+
+        reset()
+
+        if (domain) {
+            const result = await onUpdateDomain(id, domain)
+            if (result) {
+                toast('Success', { description: result.message })
             }
         }
-        
-        if (values.image && values.image[0]) {
+
+        if (image && image[0]) {
             try {
-                const imageUrl = await uploadImageToNode(values.image[0])
-                const image = await onChatBotImageUpdate(chatBotId, imageUrl)
-                
-                if (image) {
-                    const isSuccess = image.status === 200
+                const imageUrl = await uploadImageToNode(image[0])
+                const result = await onChatBotImageUpdate(chatBotId, imageUrl)
+                if (result) {
+                    const isSuccess = result.status === 200
                     toast(isSuccess ? 'Success ✅' : 'Error ❌', {
-                        description: image.message,
+                        description: result.message,
                         duration: 4000,
                     })
                 }
@@ -135,49 +161,56 @@ export const useSettings = (id: string, chatBotId: string) => {
                 console.error(error)
             }
         }
-        
-        if (values.welcomeMessage) {
-            const message = await onUpdateWelcomeMessage(values.welcomeMessage, id)
-            if (message) {
-                toast('Success', { description: message.message })
+
+        if (welcomeMessage) {
+            const result = await onUpdateWelcomeMessage(welcomeMessage, id)
+            if (result) {
+                toast('Success', { description: result.message })
             }
         }
 
-        if (values.chatbotColor) {
-            const color = await onUpdateChatbotColor(chatBotId, values.chatbotColor)
-            if (color) {
-                if (color.status === 200) {
-                    toast.success(color.message)
+        if (chatbotColor) {
+            const result = await onUpdateChatbotColor(chatBotId, chatbotColor)
+            if (result) {
+                if (result.status === 200) {
+                    toast.success(result.message)
                 } else {
-                    toast.error(color.message)
+                    toast.error(result.message)
                 }
             }
         }
+
         if (
-            values.chatbotTitle ||
-            values.chatbotSubtitle ||
-            values.userBubbleColor ||
-            values.botBubbleColor ||
-            values.userTextColor ||
-            values.botTextColor ||
-            values.buttonStyle ||
-            values.bubbleStyle ||
-            values.showAvatars !== undefined ||
-            values.widgetSize ||
-            values.widgetStyle
+            chatbotTitle ||
+            chatbotSubtitle ||
+            userBubbleColor ||
+            botBubbleColor ||
+            userTextColor ||
+            botTextColor ||
+            buttonStyle ||
+            bubbleStyle ||
+            showAvatars !== undefined ||
+            widgetSize ||
+            widgetStyle ||
+            removeBranding !== undefined ||
+            chatPosition ||
+            customCss !== undefined
         ) {
             const customization = await onUpdateChatbotCustomization(chatBotId, {
-                chatbotTitle: values.chatbotTitle,
-                chatbotSubtitle: values.chatbotSubtitle,
-                userBubbleColor: values.userBubbleColor,
-                botBubbleColor: values.botBubbleColor,
-                userTextColor: values.userTextColor,
-                botTextColor: values.botTextColor,
-                buttonStyle: values.buttonStyle,
-                bubbleStyle: values.bubbleStyle,
-                showAvatars: values.showAvatars,
-                widgetSize: values.widgetSize,
-                widgetStyle: values.widgetStyle,
+                chatbotTitle,
+                chatbotSubtitle,
+                userBubbleColor,
+                botBubbleColor,
+                userTextColor,
+                botTextColor,
+                buttonStyle,
+                bubbleStyle,
+                showAvatars,
+                widgetSize,
+                widgetStyle,
+                removeBranding,
+                chatPosition,
+                customCss,
             })
 
             if (customization) {
@@ -188,8 +221,7 @@ export const useSettings = (id: string, chatBotId: string) => {
                 }
             }
         }
-        
-        reset()
+
         router.refresh()
         setLoading(false)
     })
@@ -227,6 +259,9 @@ export const useSettings = (id: string, chatBotId: string) => {
         setValue,
         watchedWidgetSize,
         watchedWidgetStyle,
+        watchedRemoveBranding,
+        watchedChatPosition,
+        watchedCustomCss,
     }
 }
 

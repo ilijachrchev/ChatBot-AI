@@ -67,6 +67,8 @@ type Props = {
   showAvatars?: boolean | null
   widgetSize?: string | null
   widgetStyle?: string | null
+  removeBranding?: boolean | null
+  chatPosition?: string | null
   showPresenceBadge?: boolean
 }
 
@@ -89,7 +91,6 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       onImageChange,
       removeImage,
       botIcon,
-      plan = 'STANDARD',
       chatbotTitle,
       chatbotSubtitle,
       userBubbleColor,
@@ -101,6 +102,8 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       showAvatars,
       widgetSize,
       widgetStyle,
+      removeBranding,
+      chatPosition,
       showPresenceBadge,
     },
     ref
@@ -108,7 +111,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
 
     const { presence, shouldShowOfflineMessage } = useChatbotPresence(domainId || '')
 
-    const showPoweredBy = plan === 'STANDARD'
+    const showPoweredBy = !removeBranding
 
     const getButtonClass = () => {
       switch (buttonStyle) {
@@ -137,10 +140,32 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
         case 'SOFT':
           return 'bg-white/95 backdrop-blur-sm border border-gray-200/50'
         case 'GLASS':
-          return 'bg-white/80 backdrop-blur-md border border-white/20 shadow-2xl'
+          return 'bg-white/70 backdrop-blur-md border border-white/30 shadow-2xl'
         case 'SOLID':
         default:
           return 'bg-white border border-gray-200'
+      }
+    }
+
+    const getContentAreaClass = () => {
+      switch (widgetStyle) {
+        case 'SOFT':
+          return 'bg-slate-50/80'
+        case 'GLASS':
+          return 'bg-white/40 backdrop-blur-sm'
+        default:
+          return 'bg-white'
+      }
+    }
+
+    const getInputAreaClass = () => {
+      switch (widgetStyle) {
+        case 'SOFT':
+          return 'bg-white/60 border-t border-gray-200/60'
+        case 'GLASS':
+          return 'bg-white/20 backdrop-blur-sm border-t border-white/20'
+        default:
+          return 'bg-gray-50/80 border-t border-gray-200'
       }
     }
 
@@ -161,7 +186,8 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
 
     return (
       <div className={cn(
-        'flex flex-col rounded-2xl mr-[80px] shadow-xl overflow-hidden',
+        'flex flex-col rounded-2xl shadow-xl overflow-hidden',
+        chatPosition === 'BOTTOM_LEFT' ? 'ml-[80px]' : 'mr-[80px]',
         getSizeClasses(),
         getStyleClasses()
       )}>
@@ -212,7 +238,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
           <TabsContent value="chat" className="mt-0">
             <div className="flex flex-col h-full">
               <div
-                className="px-4 flex h-[420px] flex-col py-4 gap-3 chat-window overflow-y-auto bg-white"
+                className={cn('px-4 flex h-[420px] flex-col py-4 gap-3 chat-window overflow-y-auto', getContentAreaClass())}
                 ref={ref}
               >
                 {shouldShowOfflineMessage && presence?.message && (
@@ -241,7 +267,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
 
               <form
                 onSubmit={onChat}
-                className="flex px-4 py-3 flex-col gap-2 bg-gray-50/80 border-t border-gray-200"
+                className={cn('flex px-4 py-3 flex-col gap-2', getInputAreaClass())}
               >
                 {imagePreview && (
                   <div className="relative w-14 h-14 rounded-lg overflow-hidden border-2 border-gray-200 bg-white">
