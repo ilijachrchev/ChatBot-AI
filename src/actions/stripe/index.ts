@@ -2,16 +2,12 @@
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import Stripe from 'stripe'
-import { getPlanPrice, getPlanCredits, type PlanType } from '@/lib/pricing-config'
+import { getPlanCredits, type PlanType } from '@/lib/pricing-config'
+import { getPlanPriceId } from '@/constants/pricing'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
     typescript: true,
 })
-
-const PRICE_IDS = {
-  PRO: process.env.STRIPE_PRO_PRICE_ID!,
-  ULTIMATE: process.env.STRIPE_ULTIMATE_PRICE_ID!,
-}
 
 function getSubscriptionPeriodEndUnix(sub: Stripe.Subscription): number | null {
   const ends = 
@@ -57,7 +53,7 @@ export const onCreateSubscription = async (plan: PlanType) => {
       return { success: false, message: 'Cannot create subscription for free plan' }
     }
     
-    if (!PRICE_IDS[plan]) {
+    if (!getPlanPriceId(plan)) {
       return {
         success: false,
         message: `Price ID not configured for ${plan} plan.`,
@@ -95,7 +91,7 @@ export const onCreateSubscription = async (plan: PlanType) => {
 
     const subscription = await stripe.subscriptions.create({
       customer: stripeCustomerId,
-      items: [{ price: PRICE_IDS[plan] }],
+      items: [{ price: getPlanPriceId(plan)! }],
       payment_behavior: 'default_incomplete',
       payment_settings: {
         payment_method_types: ['card'],
@@ -188,7 +184,7 @@ export const onCreateSubscription = async (plan: PlanType) => {
         credits,
         stripeSubscriptionId: subscription.id,
         stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
-        stripePriceId: PRICE_IDS[plan],
+        stripePriceId: getPlanPriceId(plan),
         stripeCustomerId: stripeCustomerId,
         status: subscription.status,
       },
@@ -197,7 +193,7 @@ export const onCreateSubscription = async (plan: PlanType) => {
         credits,
         stripeSubscriptionId: subscription.id,
         stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
-        stripePriceId: PRICE_IDS[plan],
+        stripePriceId: getPlanPriceId(plan),
         status: subscription.status,
       },
     })

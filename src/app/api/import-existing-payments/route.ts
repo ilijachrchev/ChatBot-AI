@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
 import { client } from '@/lib/prisma'
 import Stripe from 'stripe'
+import { PLAN_PRICES } from '@/constants/pricing'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   typescript: true,
@@ -47,8 +48,8 @@ async function importPayments() {
     }
 
     let plan = null
-    if (payment.amount === 1500) plan = 'PRO'
-    else if (payment.amount === 3500) plan = 'ULTIMATE'
+    if (payment.amount === PLAN_PRICES.PRO.amountCents) plan = 'PRO'
+    else if (payment.amount === PLAN_PRICES.ULTIMATE.amountCents) plan = 'ULTIMATE'
 
     let paymentMethod = null
     let paymentBrand = null

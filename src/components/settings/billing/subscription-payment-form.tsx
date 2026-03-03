@@ -31,8 +31,6 @@ export function SubscriptionPaymentForm({
     setProcessing(true)
 
     try {
-      // Detect intent type from the client secret in the Elements
-      // Setup intents start with 'seti_', payment intents start with 'pi_'
       const { error } = await stripe.confirmSetup({
         elements,
         confirmParams: {

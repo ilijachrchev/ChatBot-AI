@@ -1,20 +1,18 @@
 import { onGetSubscriptionPlan } from '@/actions/settings'
 import React from 'react'
 import { CheckCircle2, CreditCard, Crown } from 'lucide-react'
-import { pricingCards } from '@/constants/landing-page'
-import { Button } from '@/components/ui/button' 
-import Modal from '@/components/modal' 
-import SubscriptionForm from '@/components/forms/settings/subscription-form' 
+import { Button } from '@/components/ui/button'
+import Modal from '@/components/modal'
+import SubscriptionForm from '@/components/forms/settings/subscription-form'
+import { PLAN_PRICES, PLAN_FEATURES, type PlanType } from '@/constants/pricing'
 
 type Props = Record<string, never>
 
 const BillingSettings = async (props: Props) => {
   const plan = await onGetSubscriptionPlan()
-  const planFeatures = pricingCards.find(
-    (card) => card.title.toUpperCase() === plan?.toUpperCase()
-  )?.features
-  
-  if (!planFeatures) return null
+  const planKey = (plan ?? 'STANDARD') as PlanType
+  const planFeatures = PLAN_FEATURES[planKey].included
+  const priceDisplay = PLAN_PRICES[planKey].amountDisplay
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
@@ -50,10 +48,10 @@ const BillingSettings = async (props: Props) => {
             </div>
             <div className="text-right">
               <p className="text-3xl font-bold text-slate-900 dark:text-white">
-                $99
+                {priceDisplay}
               </p>
               <p className="text-sm text-slate-600 dark:text-slate-400">
-                /month
+                {PLAN_PRICES[planKey].amountCents > 0 ? '/month' : ''}
               </p>
             </div>
           </div>

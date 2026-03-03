@@ -41,7 +41,6 @@ export const EnhancedPlanUsage = ({
   const planDisplay = plan.charAt(0) + plan.slice(1).toLowerCase()
   const planLimits = PLAN_LIMITS[plan as PlanType]
 
-  // Bug fix: creditsUsed stores REMAINING credits — invert to get actual used count
   const conversationsUsed = Math.max(0, creditLimit - creditsUsed)
   const conversationPercentage = isUltimate
     ? 0

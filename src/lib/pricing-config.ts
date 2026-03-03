@@ -49,7 +49,7 @@ export const PRICING_CONFIG: Record<PlanType, PlanDetails> = {
   PRO: {
     name: 'PRO',
     displayName: 'Pro',
-    price: 3500, // $35.00
+    price: 3500,
     priceDisplay: '$35',
     monthlyCredits: 50,
     description: 'For growing businesses that need more power and customization',
@@ -71,8 +71,8 @@ export const PRICING_CONFIG: Record<PlanType, PlanDetails> = {
   ULTIMATE: {
     name: 'ULTIMATE',
     displayName: 'Ultimate',
-    price: 7500, // $75.00
-    priceDisplay: '$75',
+    price: 5500, 
+    priceDisplay: '$55',
     monthlyCredits: 500,
     description: 'For enterprises requiring unlimited scale and premium features',
     features: {

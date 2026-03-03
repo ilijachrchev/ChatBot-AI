@@ -37,7 +37,6 @@ export const checkAndIncrementConversation = async (
   const limit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.STANDARD
 
   if (limit === null) {
-    // ULTIMATE — no enforcement needed
     return { allowed: true, count: 0, limit: null }
   }
 
@@ -45,7 +44,6 @@ export const checkAndIncrementConversation = async (
   const month = now.getMonth() + 1
   const year = now.getFullYear()
 
-  // Read current count first to avoid incrementing past the limit
   const existing = await db.conversationUsage.findUnique({
     where: { domainId_month_year: { domainId, month, year } },
     select: { count: true },
@@ -57,7 +55,6 @@ export const checkAndIncrementConversation = async (
     return { allowed: false, count: currentCount, limit }
   }
 
-  // Under limit — increment
   const updated = await db.conversationUsage.upsert({
     where: { domainId_month_year: { domainId, month, year } },
     create: { domainId, month, year, count: 1 },

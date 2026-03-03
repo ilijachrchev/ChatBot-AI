@@ -1,14 +1,17 @@
 import { onGetSubscriptionPlan } from '@/actions/settings'
 import React from 'react'
 import { CreditCard } from 'lucide-react'
-import { Button } from '@/components/ui/button' 
-import Modal from '@/components/modal' 
+import { Button } from '@/components/ui/button'
+import Modal from '@/components/modal'
 import SubscriptionForm from '@/components/forms/settings/subscription-form'
+import { PLAN_PRICES, type PlanType } from '@/constants/pricing'
 
 type Props = Record<string, never>
 
 const BillingPlan = async (props: Props) => {
   const plan = await onGetSubscriptionPlan()
+  const planKey = (plan ?? 'STANDARD') as PlanType
+  const priceDisplay = PLAN_PRICES[planKey].amountDisplay
 
   return (
     <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
@@ -35,10 +38,10 @@ const BillingPlan = async (props: Props) => {
           </div>
           <div className="text-right">
             <p className="text-3xl font-bold text-slate-900 dark:text-white">
-              $99
+              {priceDisplay}
             </p>
             <p className="text-sm text-slate-600 dark:text-slate-400">
-              /month
+              {PLAN_PRICES[planKey].amountCents > 0 ? '/month' : ''}
             </p>
           </div>
         </div>
