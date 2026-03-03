@@ -117,8 +117,8 @@ export const KpiCard = ({
         )}
 
         {value === 0 && (
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-3">
-            Start tracking activity to see trends.
+          <p className="text-xl font-medium text-slate-300 dark:text-slate-700 mt-3 select-none">
+            —
           </p>
         )}
       </div>

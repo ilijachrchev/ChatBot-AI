@@ -10,6 +10,7 @@ import { getPersonaSystemPrompt } from "@/constants/personas"
 import { onGetChatbotPresence } from "../chatbot/presence"
 import { off } from "process"
 import { getKnowledgeBaseContext } from "@/lib/knowledge-base/retrieve"
+import { checkAndIncrementConversation } from "@/lib/conversation-usage"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
@@ -24,17 +25,49 @@ class DomainNotFoundError extends Error {
   }
 }
 
+class ConversationLimitError extends Error {
+  count: number
+  limit: number
+  constructor(count: number, limit: number) {
+    super(`Monthly conversation limit reached: ${count}/${limit}`)
+    this.name = 'ConversationLimitError'
+    this.count = count
+    this.limit = limit
+  }
+}
+
 const ensureChatRoom = async (chatroomId: string, domainId: string, customerId?: string) => {
   console.log('🔧 ensureChatRoom called with:', { chatroomId, domainId })
 
   const domain = await db.domain.findUnique({
     where: { id: domainId },
-    select: { id: true },
+    select: {
+      id: true,
+      User: {
+        select: {
+          subscription: { select: { plan: true } },
+        },
+      },
+    },
   })
 
   if (!domain) {
     console.error('❌ Domain not found for domainId:', domainId)
     throw new DomainNotFoundError(domainId)
+  }
+
+  // Only count NEW rooms — ongoing conversations reuse the same chatroomId
+  const existingRoom = await db.chatRoom.findUnique({
+    where: { id: chatroomId },
+    select: { id: true },
+  })
+
+  if (!existingRoom) {
+    const plan = (domain.User?.subscription?.plan as string) ?? 'STANDARD'
+    const result = await checkAndIncrementConversation(domainId, plan)
+    if (!result.allowed) {
+      throw new ConversationLimitError(result.count, result.limit)
+    }
   }
 
   const room = await db.chatRoom.upsert({
@@ -313,6 +346,16 @@ export const onAiChatBotAssistant = async (
             chatRoom: chatroomId || crypto.randomUUID(),
             error: 'DOMAIN_NOT_FOUND',
             live: false,
+          }
+        }
+        if (e?.name === 'ConversationLimitError') {
+          return {
+            response: {
+              role: 'assistant' as const,
+              content: "I'm sorry, this chatbot has reached its monthly conversation limit. Please contact the website owner to upgrade their plan.",
+            },
+            chatRoom: chatroomId || crypto.randomUUID(),
+            error: 'CONVERSATION_LIMIT_REACHED',
           }
         }
         throw e

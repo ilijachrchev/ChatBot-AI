@@ -37,24 +37,33 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 }
 
 export const ActivityChart = ({ data }: ActivityChartProps) => {
+  const weekTotal = data.reduce((sum, d) => sum + d.ai + d.human, 0)
+
   return (
     <div className={cn(
       'rounded-xl border border-slate-200 dark:border-slate-800',
       'bg-white dark:bg-slate-900/50 shadow-md'
     )}>
       <div className="p-5 md:p-6 pb-2">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-            Conversation Activity
-          </h3>
-          <div className="flex items-center gap-4 text-sm">
+        <div className="flex items-start justify-between flex-wrap gap-3">
+          <div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              Conversation Activity
+            </h3>
+            {weekTotal > 0 && (
+              <span className="inline-flex items-center mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                {weekTotal.toLocaleString()} this week
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-4 text-sm pt-0.5">
             <div className="flex items-center gap-1.5">
               <div className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-              <span className="text-slate-600 dark:text-slate-400">AI Handled</span>
+              <span className="text-slate-500 dark:text-slate-400">AI Handled</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-2.5 w-2.5 rounded-full bg-purple-500" />
-              <span className="text-slate-600 dark:text-slate-400">Human</span>
+              <span className="text-slate-500 dark:text-slate-400">Human</span>
             </div>
           </div>
         </div>

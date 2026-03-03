@@ -55,15 +55,22 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
       'bg-white dark:bg-slate-900/50 shadow-md'
     )}>
       <div className="p-5 md:p-6 pb-2">
-        <div className="flex items-center justify-between flex-wrap gap-4">
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-            AI vs Human Resolution
-          </h3>
-          <div className="text-right">
-            <p className="text-2xl font-bold text-slate-900 dark:text-white">
-              {resolutionRate}%
+        <div className="flex items-start justify-between flex-wrap gap-3">
+          <div>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+              AI vs Human Resolution
+            </h3>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+              Last 4 weeks
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400">AI Resolution Rate</p>
+          </div>
+          <div className="flex flex-col items-end gap-0.5 pt-0.5">
+            <div className="flex items-baseline gap-1 px-3 py-1.5 rounded-xl bg-blue-500/10 dark:bg-blue-500/15">
+              <span className="text-2xl font-bold text-blue-600 dark:text-blue-400 tabular-nums">
+                {resolutionRate}%
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400">AI resolved</p>
           </div>
         </div>
       </div>

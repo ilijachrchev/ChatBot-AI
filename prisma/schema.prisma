@@ -60,6 +60,7 @@ model Domain {
   knowledgeBaseChunks KnowledgeBaseChunk[]
   products           Product[]
   workingHours       WorkingHours?
+  conversationUsage  ConversationUsage[]
 
   @@index([userId])
   @@index([verificationStatus])
@@ -412,6 +413,20 @@ model KnowledgeBaseChunk {
   @@index([userId])
   @@index([domainId])
   @@index([fileId])
+}
+
+model ConversationUsage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  domainId  String   @db.Uuid
+  month     Int
+  year      Int
+  count     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  domain    Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@unique([domainId, month, year])
+  @@index([domainId])
 }
 
 enum VerificationStatus {

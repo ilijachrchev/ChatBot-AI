@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx prisma db push)",
+      "Bash(npx prisma generate)",
+      "Bash(test -f \"d:/Projects/chatbot-ai/src/constants/pricing.ts\")"
+    ]
+  }
+}

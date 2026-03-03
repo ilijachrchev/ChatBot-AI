@@ -206,8 +206,8 @@ export const useChatBot = () => {
 
         if ((!values.image || !values.image.length) && !values.content) {
             return;
-        }
-
+        } 
+    
         const chatroomId = getOrCreateChatroomId();
 
         if (values.image && values.image.length) {

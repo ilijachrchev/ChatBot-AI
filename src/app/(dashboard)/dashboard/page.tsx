@@ -20,7 +20,7 @@ import { KpiCard } from '@/components/dashboard/kpi-card'
 import { ActivityChart } from '@/components/dashboard/activity-chart'
 import { AIResolutionChart } from '@/components/dashboard/ai-resolution-chart'
 import { EnhancedPlanUsage } from '@/components/dashboard/enhanced-plan-usage'
-import { RecentTransactionsCard } from '@/components/dashboard/recent-transactions-card'
+import { QuickActions } from '@/components/dashboard/quick-actions'
 import InfoBar from '@/components/infobar'
 import { MessageSquare, TrendingUp, Calendar, DollarSign } from 'lucide-react'
 import React from 'react'
@@ -120,15 +120,6 @@ const Page = async (props: Props) => {
       <InfoBar />
       
       <div className='overflow-y-auto w-full flex-1'>
-        <div className="mb-6 lg:mb-8">
-          <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Dashboard
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
-            Welcome back. Here's what your AI has been doing.
-          </p>
-        </div>
-
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8'>
           <KpiCard
             title="Conversations Today"
@@ -172,22 +163,17 @@ const Page = async (props: Props) => {
           />
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6'>
-          <div className='lg:col-span-2'>
-            <RecentTransactionsCard transactions={transactions?.data} />
-          </div>
-
-          <div className='lg:col-span-1'>
-            <EnhancedPlanUsage
-              plan={currentPlan}
-              creditsUsed={plan?.credits || 0}
-              creditLimit={limits.credits}
-              domainsUsed={plan?.domains || 0}
-              domainLimit={limits.domains}
-              clientsUsed={clients || 0}
-              clientLimit={limits.clients}
-            />
-          </div>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6'>
+          <QuickActions />
+          <EnhancedPlanUsage
+            plan={currentPlan}
+            creditsUsed={plan?.credits || 0}
+            creditLimit={limits.credits}
+            domainsUsed={plan?.domains || 0}
+            domainLimit={limits.domains}
+            clientsUsed={clients || 0}
+            clientLimit={limits.clients}
+          />
         </div>
       </div>
     </div>
