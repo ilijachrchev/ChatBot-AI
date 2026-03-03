@@ -1,57 +1,182 @@
 "use client";
 
-import {
-  BarChart3,
-  MessageSquare,
-  Plug,
-  Settings,
-  Calendar,
-  Mail,
-} from "lucide-react";
+import { BarChart3, MessageSquare, Users, BookOpen, Code, Calendar } from "lucide-react";
 
 export const ProductShowcase = () => {
   const features = [
     {
-      icon: BarChart3,
-      title: "Dashboard",
-      description:
-        "KPI widgets, email performance graphs, and quick actions in a clean, futuristic layout",
-      mockup: "dashboard",
-    },
-    {
       icon: MessageSquare,
-      title: "Conversations",
+      title: "AI Chatbot",
       description:
-        "Real chat-like view with AI vs customer messages, avatar bubbles, and AI suggestions",
-      mockup: "chat",
+        "Answers customer questions instantly, 24/7. Trained on your docs, FAQs, and website content.",
+      mockupContent: (
+        <div className="space-y-2">
+          <div className="flex">
+            <div className="bg-sky-500/20 text-sky-300 rounded-2xl p-2 text-[9px] max-w-[70%]">
+              Hi! How can I help you today?
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <div className="bg-violet-500/20 text-violet-300 rounded-2xl p-2 text-[9px] max-w-[60%]">
+              What&apos;s the price?
+            </div>
+          </div>
+          <div className="flex">
+            <div className="bg-sky-500/20 text-sky-300 rounded-2xl p-2 text-[9px] max-w-[70%]">
+              Starting from $0/mo!
+            </div>
+          </div>
+          <div className="flex justify-center pt-1">
+            <span className="text-[8px] text-emerald-400 font-medium">
+              AI Resolved ✓
+            </span>
+          </div>
+        </div>
+      ),
     },
     {
-      icon: Plug,
-      title: "Integrations",
+      icon: Users,
+      title: "Human Handoff",
       description:
-        "Connect with Stripe, Zapier, Google, Meta, Slack, and more with neon outlines",
-      mockup: "integrations",
+        "When AI can't help, escalate to your team instantly. Real-time chat with full conversation history.",
+      mockupContent: (
+        <div className="space-y-2">
+          <div className="flex">
+            <div className="bg-sky-500/20 text-sky-300 rounded-2xl p-2 text-[9px] max-w-[85%]">
+              Let me connect you with a team member...
+            </div>
+          </div>
+          <div className="flex items-center gap-2 py-1">
+            <div className="flex-1 h-px bg-slate-700" />
+            <span className="text-[8px] text-emerald-400 shrink-0">
+              👤 Agent joined
+            </span>
+            <div className="flex-1 h-px bg-slate-700" />
+          </div>
+          <div className="flex">
+            <div className="bg-emerald-500/20 text-emerald-300 rounded-2xl p-2 text-[9px] max-w-[70%]">
+              Hi! I&apos;m here to help you.
+            </div>
+          </div>
+        </div>
+      ),
     },
     {
-      icon: Settings,
-      title: "Settings",
+      icon: BookOpen,
+      title: "Knowledge Base",
       description:
-        "Clean forms with toggle switches, input fields, and neon focus states",
-      mockup: "settings",
+        "Upload PDFs, docs, and FAQs. Your chatbot learns your content and answers with precision.",
+      mockupContent: (
+        <div className="space-y-2">
+          {["pricing-faq.pdf", "product-guide.pdf", "returns.pdf"].map(
+            (file) => (
+              <div
+                key={file}
+                className="h-8 bg-slate-800 rounded flex items-center gap-2 px-2"
+              >
+                <div className="w-4 h-4 rounded bg-sky-500/30 shrink-0" />
+                <span className="text-[8px] text-slate-400 truncate">
+                  {file}
+                </span>
+              </div>
+            )
+          )}
+          <div className="bg-sky-500/20 text-sky-300 rounded-2xl p-2 text-[9px]">
+            I found the answer in your docs ✓
+          </div>
+        </div>
+      ),
+    },
+    {
+      icon: Code,
+      title: "Embed Code",
+      description:
+        "One line of code. Works on React, Vue, Next.js, PHP, Python, and 10 more frameworks.",
+      mockupContent: (
+        <div className="space-y-2">
+          <div className="bg-slate-900 rounded p-3 text-[8px] font-mono space-y-0.5">
+            <div>
+              <span className="text-violet-400">&lt;script</span>
+            </div>
+            <div>
+              <span className="text-sky-400">{"  src="}</span>
+              <span className="text-emerald-400">{'"sendwise.js"'}</span>
+            </div>
+            <div>
+              <span className="text-sky-400">{"  data-id="}</span>
+              <span className="text-emerald-400">{'"your-id"'}</span>
+            </div>
+            <div>
+              <span className="text-violet-400">&gt;&lt;/script&gt;</span>
+            </div>
+          </div>
+          <div className="flex gap-1 flex-wrap">
+            {["React", "Vue", "PHP", "JS"].map((lang) => (
+              <span
+                key={lang}
+                className="bg-slate-700 rounded px-1.5 py-0.5 text-[7px] text-slate-300"
+              >
+                {lang}
+              </span>
+            ))}
+          </div>
+        </div>
+      ),
     },
     {
       icon: Calendar,
       title: "Appointments",
       description:
-        "Calendar UI with booking cards, time slot selection, and smooth gradients",
-      mockup: "calendar",
+        "Let customers book meetings directly in the chat. Syncs with your availability and sends confirmations.",
+      mockupContent: (
+        <div className="space-y-2">
+          <p className="text-[8px] text-slate-400">Available slots — Today</p>
+          <div className="flex gap-1 flex-wrap">
+            <div className="bg-sky-500 text-white rounded px-2 py-1 text-[8px] font-medium">
+              9:00 AM
+            </div>
+            <div className="bg-sky-500/20 text-sky-300 rounded px-2 py-1 text-[8px]">
+              2:00 PM
+            </div>
+            <div className="bg-sky-500/20 text-sky-300 rounded px-2 py-1 text-[8px]">
+              4:30 PM
+            </div>
+          </div>
+          <p className="text-[8px] text-sky-400">Book this slot →</p>
+        </div>
+      ),
     },
     {
-      icon: Mail,
-      title: "Email Marketing",
+      icon: BarChart3,
+      title: "Analytics",
       description:
-        "Sequence builder with email preview, drag-and-drop steps, and metrics sidebar",
-      mockup: "email",
+        "Track conversations, resolution rates, and customer satisfaction. Know exactly how your bot performs.",
+      mockupContent: (
+        <div className="space-y-2">
+          <div className="flex gap-1.5 flex-wrap">
+            <span className="bg-emerald-500/20 text-emerald-400 rounded-full px-2 py-0.5 text-[8px]">
+              94% AI resolved
+            </span>
+            <span className="bg-sky-500/20 text-sky-400 rounded-full px-2 py-0.5 text-[8px]">
+              ↑ 12% this week
+            </span>
+          </div>
+          <div className="flex items-end gap-1 h-12">
+            <div className="flex-1 bg-sky-500/40 rounded-sm h-[40%]" />
+            <div className="flex-1 bg-sky-500/40 rounded-sm h-[60%]" />
+            <div className="flex-1 bg-sky-500/40 rounded-sm h-[80%]" />
+            <div className="flex-1 bg-sky-500/40 rounded-sm h-[55%]" />
+            <div className="flex-1 bg-sky-500/40 rounded-sm h-[90%]" />
+          </div>
+          <div className="flex justify-around">
+            {["Mon", "Tue", "Wed", "Thu", "Fri"].map((day) => (
+              <span key={day} className="text-[7px] text-slate-500">
+                {day}
+              </span>
+            ))}
+          </div>
+        </div>
+      ),
     },
   ];
 
@@ -61,12 +186,12 @@ export const ProductShowcase = () => {
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-slate-50">
-            Powerful Features, Beautiful Interface
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-50">
+            Everything your customer service needs
           </h2>
           <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-            Every part of SendWise-AI is designed for clarity, speed and
-            conversions.
+            Built for businesses that want to automate support without losing
+            the human touch.
           </p>
         </div>
 
@@ -97,85 +222,8 @@ export const ProductShowcase = () => {
 
                   <div className="relative aspect-video bg-gradient-to-br from-slate-900 to-slate-950 rounded-lg overflow-hidden border border-slate-700/80">
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-full h-full p-4 space-y-2 text-[10px]">
-                        {feature.mockup === "dashboard" && (
-                          <>
-                            <div className="grid grid-cols-2 gap-2 mb-2">
-                              <div className="h-8 bg-sky-500/25 rounded" />
-                              <div className="h-8 bg-violet-500/25 rounded" />
-                            </div>
-                            <div className="h-20 bg-slate-900 border border-sky-500/30 rounded" />
-                          </>
-                        )}
-
-                        {feature.mockup === "chat" && (
-                          <>
-                            <div className="flex gap-2 justify-end">
-                              <div className="h-8 w-3/4 bg-sky-500/25 rounded-lg" />
-                            </div>
-                            <div className="flex gap-2">
-                              <div className="h-8 w-2/3 bg-violet-500/25 rounded-lg" />
-                            </div>
-                            <div className="flex gap-2 justify-end">
-                              <div className="h-8 w-1/2 bg-sky-500/25 rounded-lg" />
-                            </div>
-                          </>
-                        )}
-
-                        {feature.mockup === "integrations" && (
-                          <div className="grid grid-cols-3 gap-2">
-                            {Array.from({ length: 6 }).map((_, i) => (
-                              <div
-                                key={i}
-                                className="aspect-square bg-slate-900 rounded-lg border border-sky-500/40"
-                              />
-                            ))}
-                          </div>
-                        )}
-
-                        {feature.mockup === "settings" && (
-                          <>
-                            <div className="h-6 bg-sky-500/25 rounded w-1/3 mb-3" />
-                            <div className="space-y-2">
-                              <div className="h-8 bg-slate-900 rounded border border-slate-700" />
-                              <div className="h-8 bg-slate-900 rounded border border-slate-700" />
-                              <div className="flex justify-between items-center h-8">
-                                <div className="h-4 bg-sky-500/25 rounded w-1/2" />
-                                <div className="h-6 w-12 bg-sky-500 rounded-full" />
-                              </div>
-                            </div>
-                          </>
-                        )}
-
-                        {feature.mockup === "calendar" && (
-                          <>
-                            <div className="grid grid-cols-7 gap-1 mb-2">
-                              {Array.from({ length: 7 }).map((_, i) => (
-                                <div
-                                  key={i}
-                                  className="aspect-square bg-slate-900 rounded text-[6px] flex items-center justify-center text-slate-500"
-                                >
-                                  {i + 1}
-                                </div>
-                              ))}
-                            </div>
-                            <div className="h-12 bg-sky-500/20 rounded border border-sky-500/40" />
-                          </>
-                        )}
-
-                        {feature.mockup === "email" && (
-                          <div className="grid grid-cols-3 gap-2 h-full">
-                            <div className="col-span-2 bg-slate-900 rounded border border-slate-700 p-2 space-y-1">
-                              <div className="h-3 bg-sky-500/25 rounded w-3/4" />
-                              <div className="h-2 bg-slate-800 rounded w-full" />
-                              <div className="h-2 bg-slate-800 rounded w-5/6" />
-                            </div>
-                            <div className="space-y-1">
-                              <div className="h-6 bg-sky-500/30 rounded" />
-                              <div className="h-6 bg-violet-500/30 rounded" />
-                            </div>
-                          </div>
-                        )}
+                      <div className="w-full h-full p-4">
+                        {feature.mockupContent}
                       </div>
                     </div>
                   </div>
