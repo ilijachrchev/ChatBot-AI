@@ -66,6 +66,7 @@ model Domain {
   products           Product[]
   workingHours       WorkingHours?
   conversationUsage  ConversationUsage[]
+  ratings            ConversationRating[]
 
   @@index([userId])
   @@index([verificationStatus])
@@ -155,18 +156,19 @@ model Customer {
 }
 
 model ChatRoom {
-  id         String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  live       Boolean       @default(false)
-  mailed     Boolean       @default(false)
-  starred    Boolean       @default(false)
-  status     String        @default("OPEN")
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  domainId   String?       @db.Uuid
-  customerId String?       @db.Uuid
+  id         String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  live       Boolean              @default(false)
+  mailed     Boolean              @default(false)
+  starred    Boolean              @default(false)
+  status     String               @default("OPEN")
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  domainId   String?              @db.Uuid
+  customerId String?              @db.Uuid
   message    ChatMessage[]
-  Customer   Customer?     @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  Domain     Domain?       @relation("DomainToChatRoooms", fields: [domainId], references: [id], onDelete: Cascade)
+  rating     ConversationRating?
+  Customer   Customer?            @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Domain     Domain?              @relation("DomainToChatRoooms", fields: [domainId], references: [id], onDelete: Cascade)
 }
 
 model ChatMessage {
@@ -465,6 +467,20 @@ model Notification {
   data      Json?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ConversationRating {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  chatRoomId String   @unique @db.Uuid
+  domainId   String   @db.Uuid
+  rating     String
+  feedback   String?
+  createdAt  DateTime @default(now())
+  chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+  domain     Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([domainId])
+  @@index([createdAt])
 }
 
 enum VerificationStatus {

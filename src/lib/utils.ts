@@ -13,25 +13,34 @@ export const extractUUIDFromString = (url: string) => {
 }
 
 let socketClient: Socket | null = null
+let connectionAttempted = false
 
 export const getSocketClient = () => {
-  if (!socketClient) {
-    socketClient = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000' , {
+  if (!socketClient && !connectionAttempted) {
+    connectionAttempted = true
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:4000'
+
+    socketClient = io(socketUrl, {
       autoConnect: true,
       reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
+      reconnectionAttempts: 3,
+      reconnectionDelay: 2000,
+      timeout: 5000,
+      transports: ['websocket', 'polling'],
     })
+
     socketClient.on('connect', () => {
-      console.log('✅ Connected to Socket.IO server:', socketClient?.id)
+      console.log('✅ Socket connected:', socketClient?.id)
     })
 
     socketClient.on('disconnect', () => {
-      console.log('❌ Disconnected from Socket.IO server')
+      console.log('Socket disconnected')
     })
 
-    socketClient.on('connect_error', (error) => {
-      console.error('🔴 Socket.IO connection error:', error)
+    socketClient.on('connect_error', () => {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Socket connection failed — realtime features unavailable')
+      }
     })
   }
   return socketClient

@@ -6,6 +6,7 @@ import { ChatProvider } from '@/context/user-chat-context'
 import { OAuthTypeUpdater } from '@/components/auth/oauth-tpy-updater'
 import { onGetUnreadConversationCount } from '@/actions/conversation'
 import { onGetLeadCount } from '@/actions/leads'
+import { onGetNewFeedbackCount } from '@/actions/ratings'
 import React from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -21,10 +22,11 @@ const OwnerLayout = async ({ children }: Props) => {
 
   const hasDomains = (authenticated.domains?.length ?? 0) > 0
 
-  const [progress, unreadResult, leadCount] = await Promise.all([
+  const [progress, unreadResult, leadCount, feedbackCount] = await Promise.all([
     hasDomains ? onGetOnboardingProgress() : Promise.resolve(null),
     onGetUnreadConversationCount(),
     onGetLeadCount(),
+    onGetNewFeedbackCount(),
   ])
 
   const stepsCompleted = progress
@@ -47,6 +49,7 @@ const OwnerLayout = async ({ children }: Props) => {
           stepsCompleted={stepsCompleted}
           unreadCount={unreadResult.count}
           leadCount={leadCount}
+          feedbackCount={feedbackCount}
         />
         <div className="w-full h-screen flex flex-col pl-20 md:pl-4 overflow-y-auto">
           {children}

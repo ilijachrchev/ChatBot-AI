@@ -1,5 +1,5 @@
 import { ChatBotMessageProps } from '@/schemas/conversation.schema'
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import RealTimeMode from './real-time'
@@ -19,6 +19,7 @@ import Accordion from '../accordian'
 import { cn } from '@/lib/utils'
 import { useChatbotPresence } from '@/hooks/chatbot/use-chatbot-presence'
 import { OfflineMessage } from './advanced-settings/offline-message'
+import RatingPrompt from './rating-prompt'
 
 type Props = {
   register: UseFormRegister<ChatBotMessageProps>
@@ -27,6 +28,8 @@ type Props = {
   onResponding: boolean
   domainName?: string
   domainId?: string
+  chatRoomId?: string
+  onRatingComplete?: () => void
   theme?: string | null
   textColor?: string | null
   help?: boolean
@@ -81,6 +84,8 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       onResponding,
       domainName,
       domainId,
+      chatRoomId,
+      onRatingComplete,
       helpdesk,
       realtimeMode,
       setChat,
@@ -110,6 +115,22 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
   ) => {
 
     const { presence, shouldShowOfflineMessage } = useChatbotPresence(domainId || '')
+
+    const [showRating, setShowRating] = useState(false)
+    const [rated, setRated] = useState(false)
+
+    useEffect(() => {
+      if (rated) return
+      if (!chatRoomId || !domainId) return
+      if (chats.length < 3) return
+      if (chats[chats.length - 1]?.role !== 'assistant') return
+
+      const timer = setTimeout(() => {
+        setShowRating(true)
+      }, 30000)
+
+      return () => clearTimeout(timer)
+    }, [chats, chatRoomId, domainId, rated])
 
     const showPoweredBy = !removeBranding
 
@@ -174,7 +195,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
 
     const handleEmailSubmit = async (email: string) => {
       console.log('Email collected:', email)
-      
+
       setChat((prev) => [
         ...prev,
         {
@@ -191,7 +212,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
         getSizeClasses(),
         getStyleClasses()
       )}>
-        <div 
+        <div
           className="flex justify-between items-center px-4 py-3 border-b border-white/10"
           style={{
             background: theme || '#6366F1',
@@ -215,7 +236,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 <Sparkles className="w-5 h-5 text-indigo-600" />
               </div>
             )}
-            
+
             <div className="flex flex-col min-w-0">
               <h3 className="text-sm font-semibold leading-tight truncate">
                 {displayTitle}
@@ -263,6 +284,19 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                   />
                 ))}
                 {onResponding && <Responding botIcon={botIcon} />}
+                {showRating && !rated && chatRoomId && domainId && (
+                  <RatingPrompt
+                    chatRoomId={chatRoomId}
+                    domainId={domainId}
+                    theme={theme}
+                    botIcon={botIcon}
+                    onRated={() => {
+                      setRated(true)
+                      setShowRating(false)
+                      onRatingComplete?.()
+                    }}
+                  />
+                )}
               </div>
 
               <form
@@ -271,9 +305,9 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               >
                 {imagePreview && (
                   <div className="relative w-14 h-14 rounded-lg overflow-hidden border-2 border-gray-200 bg-white">
-                    <img 
-                      src={imagePreview} 
-                      alt="preview" 
+                    <img
+                      src={imagePreview}
+                      alt="preview"
                       className="w-full h-full object-cover"
                     />
                     <button
@@ -285,10 +319,10 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                     </button>
                   </div>
                 )}
-                
+
                 <div className="flex items-center gap-2">
-                  <Label 
-                    htmlFor="bot-image" 
+                  <Label
+                    htmlFor="bot-image"
                     className="cursor-pointer hover:bg-gray-200 p-2 rounded-lg transition-colors"
                   >
                     <Paperclip className="w-4 h-4 text-gray-500" />
@@ -314,7 +348,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                       }}
                     />
                   </div>
-                  
+
                   <Button
                     type="submit"
                     size="icon"

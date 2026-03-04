@@ -6,7 +6,7 @@ import HelpDeskIcon from '@/icons/help-desk-icon'
 import IntegrationsIcon from '@/icons/integrations-icon'
 import StarIcon from '@/icons/star-icon'
 import TimerIcon from '@/icons/timer-icon'
-import { FlaskConical, Users } from 'lucide-react'
+import { FlaskConical, MessageCircleWarning, Users } from 'lucide-react'
 import { JSX } from 'react'
 
 type SIDE_BAR_MENU_PROPS = {
@@ -30,6 +30,11 @@ export const SIDE_BAR_MENU: SIDE_BAR_MENU_PROPS[] = [
     label: 'Leads',
     icon: <Users className="w-4 h-4 md:w-5 md:h-5" />,
     path: 'leads',
+  },
+  {
+    label: 'Feedback',
+    icon: <MessageCircleWarning className="w-4 h-4 md:w-5 md:h-5" />,
+    path: 'feedback',
   },
   {
     label: 'Playground',

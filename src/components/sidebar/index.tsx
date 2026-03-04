@@ -19,6 +19,7 @@ type Props = {
   stepsCompleted: number
   unreadCount: number
   leadCount: number
+  feedbackCount: number
 }
 
 const SideBar = ({
@@ -28,6 +29,7 @@ const SideBar = ({
   stepsCompleted,
   unreadCount,
   leadCount,
+  feedbackCount,
 }: Props) => {
   const { expand, onExpand, page, onSignOut } = useSideBar()
 
@@ -52,6 +54,7 @@ const SideBar = ({
           stepsCompleted={stepsCompleted}
           unreadCount={unreadCount}
           leadCount={leadCount}
+          feedbackCount={feedbackCount}
         />
       ) : (
         <MinMenu
@@ -64,6 +67,7 @@ const SideBar = ({
           stepsCompleted={stepsCompleted}
           unreadCount={unreadCount}
           leadCount={leadCount}
+          feedbackCount={feedbackCount}
         />
       )}
     </div>

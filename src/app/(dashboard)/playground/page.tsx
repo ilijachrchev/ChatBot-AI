@@ -262,6 +262,7 @@ const PlaygroundPage = () => {
                   onResponding={responding}
                   domainName={chatbotConfig.name}
                   domainId={selectedDomainId}
+                  chatRoomId={chatroomId}
                   theme={bot?.backgroundColor}
                   textColor={bot?.textColor}
                   help={bot?.helpdesk ?? false}

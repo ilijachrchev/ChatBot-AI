@@ -16,6 +16,7 @@ type Props = {
   stepsCompleted: number
   unreadCount: number
   leadCount: number
+  feedbackCount: number
   domains:
     | {
         id: string
@@ -36,6 +37,7 @@ const MaxMenu = ({
   stepsCompleted,
   unreadCount,
   leadCount,
+  feedbackCount,
 }: Props) => {
   const showOnboarding = !onboardingCompleted && !onboardingDismissed
   const isOnboardingActive = current === 'getting-started'
@@ -80,6 +82,8 @@ const MaxMenu = ({
                     ? unreadCount
                     : menu.path === 'leads'
                     ? leadCount
+                    : menu.path === 'feedback'
+                    ? feedbackCount
                     : undefined
                 }
               />

@@ -38,6 +38,7 @@ export const useConversation = () => {
     const [realtimeDisabled, setRealtimeDisabled] = useState<boolean>(false)
     useEffect(() => {
         const socket = getSocketClient()
+        if (!socket) return
     let currentDomain: string | null = null
     let liveHandler: ((data: { chatRoomId: string; domainId: string; customerEmail: string | null }) => void) | null = null
 
@@ -202,21 +203,23 @@ export const useChatWindow = () => {
   useEffect(() => {
     if (chatRoom) {
       const socket = getSocketClient()
+      if (!socket) return
 
-      console.log('🔌 Subscribing to chatroom:', chatRoom)
-      socket.emit('join-chatroom', chatRoom)
       socket.emit('join-chatroom', chatRoom)
 
       const handleRealtimeMessage = (data: any) => {
-        console.log('📨 Dashboard received message:', data)
-        setChats((prev) => [...prev, data.chat])
+        const incoming = data.chat
+        setChats((prev) => {
+          if (prev.some((m: any) => m.id === incoming.id)) return prev
+          return [...prev, incoming]
+        })
       }
 
       socket.on('realtime-mode', handleRealtimeMessage)
+
       return () => {
-      console.log('🔌 Unsubscribing from chatroom:', chatRoom)
-      socket.off('realtime-mode', handleRealtimeMessage)
-      socket.emit('leave-chatroom', chatRoom)
+        socket.off('realtime-mode', handleRealtimeMessage)
+        socket.emit('leave-chatroom', chatRoom)
       }
     }
   }, [chatRoom])
@@ -227,19 +230,23 @@ export const useChatWindow = () => {
       if (!values.content?.trim()) return
       reset()
       const message = await onOwnerSendMessage(
+      chatRoom!,
+      values.content,
+      'assistant'
+    )
+
+    if (message) {
+      setChats((prev: any) => [...prev, message])
+
+      await onRealTimeChat(
         chatRoom!,
-        values.content,
+        message.message,
+        message.id,
         'assistant'
       )
-      if (message) {
+    }
 
-        await onRealTimeChat(
-          chatRoom!,
-          message.message,
-          message.id,
-          'assistant'
-        )
-      }
+    reset()
     } catch (error) {
       console.log(error)
     }

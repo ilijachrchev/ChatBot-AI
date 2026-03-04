@@ -4,6 +4,7 @@ import { ChatBotMessageProps, ChatBotMessageSchema } from "@/schemas/conversatio
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
+import { onGetChatRoomLiveStatus } from "@/actions/conversation"
 
 
 const helperGenerateUUID = (): string => {
@@ -75,18 +76,42 @@ export const useChatBot = () => {
     const [onRealTime, setOnRealTime] = useState<
         { chatroom: string; mode: boolean } | undefined
     >(undefined)
+    const [activeChatRoomId, setActiveChatRoomId] = useState<string | undefined>(undefined)
+
+
     useEffect(() => {
-        const existingChatroomId = getOrCreateChatroomId()
-        if (existingChatroomId && !onRealTime) {
+        const checkSession = async () => {
+            const chatroomId = getOrCreateChatroomId()
+
+            if (!chatroomId) return
+
+            const result = await onGetChatRoomLiveStatus(chatroomId)
+
+            if (!result) return
+
+            if (result.live && result.status === 'RESOLVED') {
+                clearChatroomId()
+                setOnRealTime(undefined)
+                return
+            }
+
+            if (result.live && result.status !== 'RESOLVED') {
+                setOnRealTime({
+                    chatroom: chatroomId,
+                    mode: true,
+                })
+                return
+            }
+
             setOnRealTime({
-                chatroom: existingChatroomId,
+                chatroom: chatroomId,
                 mode: false,
             })
         }
+        checkSession()
     }, [])
 
     
-
     const [imagePreview, setImagePreview] = useState<string | null>(null)
 
     const onScrollToBottom = () => {
@@ -280,7 +305,7 @@ export const useChatBot = () => {
                 )
 
                 if (response) {
-                    if (response.chatRoom) setChatroomId(response.chatRoom);
+                    if (response.chatRoom) { setChatroomId(response.chatRoom); setActiveChatRoomId(response.chatRoom); }
                     setOnAiTyping(false)
                     if (response.response) {
                         setOnChats((prev: any) => [...prev, response.response])
@@ -334,7 +359,7 @@ export const useChatBot = () => {
             )
 
             if (response) {
-                if (response.chatRoom) setChatroomId(response.chatRoom);
+                if (response.chatRoom) { setChatroomId(response.chatRoom); setActiveChatRoomId(response.chatRoom); }
                 setOnAiTyping(false)
                 if (response.response) {
                     setOnChats((prev: any) => [...prev, response.response])
@@ -409,6 +434,8 @@ export const useChatBot = () => {
         imagePreview,
         onImageChange,
         removeImage,
+        currentBotId,
+        activeChatRoomId,
     }
 }
 
@@ -427,6 +454,7 @@ export const useRealTime = (
     useEffect(() => {
         if (!chatRoom || chatRoom.length === 0) return
         const socket = getSocketClient()
+        if (!socket) return
 
         socket.emit('join-chatroom', chatRoom)
         console.log(' Joined chatroom:', chatRoom)

@@ -87,6 +87,11 @@ const Messenger = (_props: Props) => {
     if (!chatRoom) return
     setRoomInfo((prev) => (prev ? { ...prev, status: newStatus } : prev))
     await onUpdateChatRoomStatus(chatRoom, newStatus)
+
+    if (newStatus === 'RESOLVED' && isRealtime) {
+      await onToggleRealtime(chatRoom, false)
+      setIsRealtime(false)
+    }
   }
 
   const handleToggleStar = async () => {

@@ -259,16 +259,34 @@ export const onToggleStarredChatRoom = async (chatRoomId: string, starred: boole
 export const onUpdateChatRoomStatus = async (
   chatRoomId: string,
   status: 'OPEN' | 'RESOLVED' | 'PENDING'
-) => {
-  try {
+  ) => {
+    try {
     await client.chatRoom.update({
       where: { id: chatRoomId },
-      data: { status },
-    })
-    return { status: 200, roomStatus: status }
+      data: {
+      status,
+      ...(status === 'RESOLVED' ? { live: false } : {}),
+    },
+  })
+
+  return { status: 200, roomStatus: status }
+
   } catch (error) {
-    console.log(error)
+  console.log(error)
   }
+}
+
+export const onGetChatRoomLiveStatus = async (chatroomId: string) => {
+try {
+const room = await client.chatRoom.findUnique({
+where: { id: chatroomId },
+select: { live: true, status: true },
+})
+return room
+} catch (error) {
+console.log(error)
+return null
+}
 }
 
 export const onGetUnreadConversationCount = async () => {

@@ -16,6 +16,7 @@ type MinMenuProps = {
   stepsCompleted: number
   unreadCount: number
   leadCount: number
+  feedbackCount: number
   domains:
     | {
         id: string
@@ -36,6 +37,7 @@ export const MinMenu = ({
   stepsCompleted,
   unreadCount,
   leadCount,
+  feedbackCount,
 }: MinMenuProps) => {
   const showOnboarding = !onboardingCompleted && !onboardingDismissed
   const isOnboardingActive = current === 'getting-started'
@@ -71,6 +73,8 @@ export const MinMenu = ({
                   ? unreadCount
                   : menu.path === 'leads'
                   ? leadCount
+                  : menu.path === 'feedback'
+                  ? feedbackCount
                   : undefined
               }
             />
