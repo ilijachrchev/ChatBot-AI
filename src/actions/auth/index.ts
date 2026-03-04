@@ -56,8 +56,10 @@ export const onLoginUser = async () => {
         },
       })
       if (!authenticated) {
-        const fullname =
-          `${user.firstName ?? ''} ${user.lastName ?? ''}`.trim() || user.emailAddresses?.[0]?.emailAddress || 'Unknown User';
+        const fullname = [user.firstName, user.lastName]
+          .filter(Boolean)
+          .join(' ')
+          .trim() || user.emailAddresses?.[0]?.emailAddress?.split('@')[0] || 'User';
 
           authenticated = await client.user.create({
             data: {
@@ -379,7 +381,10 @@ export const onOAuthLogin = async (clerkId: string, email: string) => {
         return { status: 401, error: 'Unauthorized' }
       }
 
-      const fullname = `${clerkUser.firstName || ''} ${clerkUser.lastName || ''}`.trim() || 'User'
+      const fullname = [clerkUser.firstName, clerkUser.lastName]
+        .filter(Boolean)
+        .join(' ')
+        .trim() || email.split('@')[0] || 'User'
 
       user = await client.user.create({
         data: {

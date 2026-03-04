@@ -8,8 +8,8 @@ const HighLightBar = () => {
     const { currentStep } = useAuthContextHook()
 
     return (
-        <div className='grid grid-cols-3 gap-3'>
-            {[1, 2, 3].map((step) => (
+        <div className='grid grid-cols-2 gap-3'>
+            {[1, 2].map((step) => (
                 <motion.div
                     key={step}
                     initial={{ scaleX: 0 }}
