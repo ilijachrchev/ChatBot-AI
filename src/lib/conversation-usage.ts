@@ -1,4 +1,5 @@
 import { client as db } from "@/lib/prisma"
+import { onCreateNotification } from "@/actions/notifications"
 
 const PLAN_LIMITS: Record<string, number | null> = {
   STANDARD: 10,
@@ -8,7 +9,7 @@ const PLAN_LIMITS: Record<string, number | null> = {
 
 export const getConversationUsage = async (domainId: string) => {
   const now = new Date()
-  const month = now.getMonth() + 1 // 1–12
+  const month = now.getMonth() + 1
   const year = now.getFullYear()
 
   const usage = await db.conversationUsage.upsert({
@@ -23,7 +24,8 @@ export const getConversationUsage = async (domainId: string) => {
 
 export const checkAndIncrementConversation = async (
   domainId: string,
-  plan: string
+  plan: string,
+  options?: { userId?: string; domainName?: string }
 ): Promise<{ allowed: true; count: number; limit: number | null } | { allowed: false; count: number; limit: number }> => {
   const limit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.STANDARD
 
@@ -53,5 +55,29 @@ export const checkAndIncrementConversation = async (
     select: { count: true },
   })
 
-  return { allowed: true, count: updated.count, limit }
+  const newCount = updated.count
+
+  if (options?.userId && options?.domainName) {
+    const eightyPercent = Math.floor(limit * 0.8)
+
+    if (newCount === limit) {
+      onCreateNotification(
+        options.userId,
+        'CONVERSATION_LIMIT',
+        '🚫 Conversation limit reached',
+        `Your chatbot on ${options.domainName} has stopped responding — upgrade to restore`,
+        { domainId, count: newCount, limit }
+      ).catch(console.error)
+    } else if (newCount === eightyPercent) {
+      onCreateNotification(
+        options.userId,
+        'CONVERSATION_LIMIT',
+        '⚠️ Usage at 80%',
+        `You've used 80% of your monthly conversations on ${options.domainName}`,
+        { domainId, count: newCount, limit }
+      ).catch(console.error)
+    }
+  }
+
+  return { allowed: true, count: newCount, limit }
 }

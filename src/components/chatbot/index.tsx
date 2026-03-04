@@ -25,7 +25,7 @@ const AiChatBot = (props: Props) => {
         removeImage,
     } = useChatBot()
 
-    useRealTime(onRealTime?.chatroom ?? '', setOnChats)
+    useRealTime(onRealTime?.mode ? onRealTime.chatroom : '', setOnChats)
     console.log('🔍 Chatbot - currentBot:', currentBot)
     const themeColor =
       currentBot?.chatBot?.backgroundColor ??

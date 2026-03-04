@@ -35,6 +35,7 @@ model User {
   trustedDevices     TrustedDevice[]
   preferences          UserPreferences?
   onboardingProgress   OnboardingProgress?
+  notifications        Notification[]
 }
 
 model Domain {
@@ -452,6 +453,18 @@ model OnboardingProgress {
   user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
+}
+
+model Notification {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  type      String
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  data      Json?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum VerificationStatus {

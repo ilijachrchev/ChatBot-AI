@@ -195,6 +195,30 @@ export const useChatBot = () => {
         };
 
     const onStartChatting = handleSubmit(async (values) => {
+        const chatroomId = getOrCreateChatroomId()
+
+        if (onRealTime?.mode && values.content) {
+            setOnChats((prev: any) => [
+                ...prev,
+                {
+                    role: 'user',
+                    content: values.content,
+                },
+            ])
+
+            reset()
+
+            await fetch('/api/realtime/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chatroomId,
+                    message: values.content,
+                }),
+            })
+
+            return
+        }
         console.log('========== FORM SUBMITTED ==========')
         console.log('✅ FORM VALID - Values:', values)
         console.log('📋 Image:', values.image)
@@ -211,7 +235,6 @@ export const useChatBot = () => {
             return;
         } 
     
-        const chatroomId = getOrCreateChatroomId();
 
         if (values.image && values.image.length) {
             try {
@@ -402,7 +425,7 @@ export const useRealTime = (
   >
 ) => {
     useEffect(() => {
-        if (!chatRoom) return
+        if (!chatRoom || chatRoom.length === 0) return
         const socket = getSocketClient()
 
         socket.emit('join-chatroom', chatRoom)
@@ -435,5 +458,5 @@ export const useRealTime = (
             socket.emit('leave-chatroom', chatRoom)
             console.log('left chatroom:', chatRoom)
         }
-    }, [chatRoom])
+    }, [chatRoom, setChats])
 }

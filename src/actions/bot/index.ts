@@ -12,6 +12,7 @@ import { off } from "process"
 import { getKnowledgeBaseContext } from "@/lib/knowledge-base/retrieve"
 import { checkAndIncrementConversation } from "@/lib/conversation-usage"
 import { sendLiveChatNotification } from "@/lib/email"
+import { onCreateNotification } from "@/actions/notifications"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
@@ -82,8 +83,10 @@ const ensureChatRoom = async (chatroomId: string, domainId: string, customerId?:
     where: { id: domainId },
     select: {
       id: true,
+      name: true,
       User: {
         select: {
+          id: true,
           subscription: { select: { plan: true } },
         },
       },
@@ -95,7 +98,6 @@ const ensureChatRoom = async (chatroomId: string, domainId: string, customerId?:
     throw new DomainNotFoundError(domainId)
   }
 
-  // Only count NEW rooms — ongoing conversations reuse the same chatroomId
   const existingRoom = await db.chatRoom.findUnique({
     where: { id: chatroomId },
     select: { id: true },
@@ -103,7 +105,10 @@ const ensureChatRoom = async (chatroomId: string, domainId: string, customerId?:
 
   if (!existingRoom) {
     const plan = (domain.User?.subscription?.plan as string) ?? 'STANDARD'
-    const result = await checkAndIncrementConversation(domainId, plan)
+    const result = await checkAndIncrementConversation(domainId, plan, {
+      userId: domain.User?.id ?? undefined,
+      domainName: domain.name,
+    })
     if (!result.allowed) {
       throw new ConversationLimitError(result.count, result.limit)
     }
@@ -515,6 +520,21 @@ export const onAiChatBotAssistant = async (
           data: { live: true, customerId: handoffCustomerId },
         })
 
+        db.domain.findUnique({
+          where: { id },
+          select: { name: true, User: { select: { id: true } } },
+        }).then((domainData) => {
+          if (domainData?.User?.id) {
+            onCreateNotification(
+              domainData.User.id,
+              'LIVE_CHAT_REQUEST',
+              '🔴 Live chat requested',
+              `A customer on ${domainData.name} needs a human agent`,
+              { chatRoomId: room.id, domainName: domainData.name }
+            ).catch(console.error)
+          }
+        }).catch(console.error)
+
         maybeSendHandoffEmail(room.id, message).catch(console.error)
         onNotifyDashboardNewLiveConversation(id, room.id, null).catch(console.error)
 
@@ -643,6 +663,16 @@ export const onAiChatBotAssistant = async (
                             id: true,
                         },
                     });
+
+                    if (chatBotDomain.userId) {
+                      onCreateNotification(
+                        chatBotDomain.userId,
+                        'NEW_LEAD',
+                        '👤 New lead captured',
+                        `${customerEmail} started a conversation on ${chatBotDomain.name}`,
+                        { customerEmail, domainName: chatBotDomain.name, customerId: createdCustomer.id }
+                      ).catch(console.error)
+                    }
 
                     await db.chatRoom.update({
                         where: {
@@ -836,6 +866,21 @@ IMPORTANT: Use the knowledge base context above if it's relevant to the user's q
               where: { id: room.id },
               data: { live: true, customerId: requireHandoffCustomerId },
             })
+
+            db.domain.findUnique({
+              where: { id },
+              select: { name: true, User: { select: { id: true } } },
+            }).then((domainData) => {
+              if (domainData?.User?.id) {
+                onCreateNotification(
+                  domainData.User.id,
+                  'LIVE_CHAT_REQUEST',
+                  '🔴 Live chat requested',
+                  `A customer on ${domainData.name} needs a human agent`,
+                  { chatRoomId: room.id, domainName: domainData.name }
+                ).catch(console.error)
+              }
+            }).catch(console.error)
 
             maybeSendHandoffEmail(room.id, message).catch(console.error)
             onNotifyDashboardNewLiveConversation(id, room.id, checkCustomer?.customer[0]?.email ?? null).catch(console.error)
