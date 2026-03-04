@@ -4,6 +4,8 @@ import SideBar from '@/components/sidebar'
 import { OnboardingOverlay } from '@/components/onboarding/onboarding-overlay'
 import { ChatProvider } from '@/context/user-chat-context'
 import { OAuthTypeUpdater } from '@/components/auth/oauth-tpy-updater'
+import { onGetUnreadConversationCount } from '@/actions/conversation'
+import { onGetLeadCount } from '@/actions/leads'
 import React from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -18,7 +20,12 @@ const OwnerLayout = async ({ children }: Props) => {
   if (authenticated?.status !== 200) return null
 
   const hasDomains = (authenticated.domains?.length ?? 0) > 0
-  const progress = hasDomains ? await onGetOnboardingProgress() : null
+
+  const [progress, unreadResult, leadCount] = await Promise.all([
+    hasDomains ? onGetOnboardingProgress() : Promise.resolve(null),
+    onGetUnreadConversationCount(),
+    onGetLeadCount(),
+  ])
 
   const stepsCompleted = progress
     ? [
@@ -38,6 +45,8 @@ const OwnerLayout = async ({ children }: Props) => {
           onboardingCompleted={progress?.onboardingCompleted ?? false}
           onboardingDismissed={progress?.onboardingDismissed ?? false}
           stepsCompleted={stepsCompleted}
+          unreadCount={unreadResult.count}
+          leadCount={leadCount}
         />
         <div className="w-full h-screen flex flex-col pl-20 md:pl-4 overflow-y-auto">
           {children}

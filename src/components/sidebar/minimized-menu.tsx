@@ -14,6 +14,8 @@ type MinMenuProps = {
   onboardingCompleted: boolean
   onboardingDismissed: boolean
   stepsCompleted: number
+  unreadCount: number
+  leadCount: number
   domains:
     | {
         id: string
@@ -32,6 +34,8 @@ export const MinMenu = ({
   onboardingCompleted,
   onboardingDismissed,
   stepsCompleted,
+  unreadCount,
+  leadCount,
 }: MinMenuProps) => {
   const showOnboarding = !onboardingCompleted && !onboardingDismissed
   const isOnboardingActive = current === 'getting-started'
@@ -57,7 +61,19 @@ export const MinMenu = ({
       <div className="animate-fade-in opacity-0 delay-300 fill-mode-forwards flex flex-col justify-between flex-1 w-full overflow-y-auto">
         <div className="flex flex-col">
           {SIDE_BAR_MENU.map((menu, key) => (
-            <MenuItem size="min" {...menu} key={key} current={current} />
+            <MenuItem
+              size="min"
+              {...menu}
+              key={key}
+              current={current}
+              badge={
+                menu.path === 'conversation'
+                  ? unreadCount
+                  : menu.path === 'leads'
+                  ? leadCount
+                  : undefined
+              }
+            />
           ))}
 
           {showOnboarding && (

@@ -17,9 +17,18 @@ type Props = {
   onboardingCompleted: boolean
   onboardingDismissed: boolean
   stepsCompleted: number
+  unreadCount: number
+  leadCount: number
 }
 
-const SideBar = ({ domains, onboardingCompleted, onboardingDismissed, stepsCompleted }: Props) => {
+const SideBar = ({
+  domains,
+  onboardingCompleted,
+  onboardingDismissed,
+  stepsCompleted,
+  unreadCount,
+  leadCount,
+}: Props) => {
   const { expand, onExpand, page, onSignOut } = useSideBar()
 
   return (
@@ -41,6 +50,8 @@ const SideBar = ({ domains, onboardingCompleted, onboardingDismissed, stepsCompl
           onboardingCompleted={onboardingCompleted}
           onboardingDismissed={onboardingDismissed}
           stepsCompleted={stepsCompleted}
+          unreadCount={unreadCount}
+          leadCount={leadCount}
         />
       ) : (
         <MinMenu
@@ -51,6 +62,8 @@ const SideBar = ({ domains, onboardingCompleted, onboardingDismissed, stepsCompl
           onboardingCompleted={onboardingCompleted}
           onboardingDismissed={onboardingDismissed}
           stepsCompleted={stepsCompleted}
+          unreadCount={unreadCount}
+          leadCount={leadCount}
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 "use client"
 import { useConversation } from '@/hooks/conversation/use-conversation'
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import TabsMenu from '../tabs/intex'
 import { TABS_MENU } from '@/constants/menu'
 import { TabsContent } from '@radix-ui/react-tabs'
@@ -11,40 +11,41 @@ import ChatCard from './chat-card'
 import { Separator } from '../ui/separator'
 import { WifiOff } from 'lucide-react'
 import Link from 'next/link'
+import { onToggleStarredChatRoom } from '@/actions/conversation'
+import { Input } from '../ui/input'
 
 type Props = {
-    domains?: 
-    | {
-        name: string
-        id: string
-        icon: string
-    } []
-    | undefined
+  domains?: { name: string; id: string; icon: string }[] | undefined
 }
-const EXPIRATION_DAYS = 4
-const STARRED_IDS = new Set<string>([
 
-])
+type ChatRoomEntry = {
+  id: string
+  createdAt: Date
+  starred: boolean
+  status: string
+  message: { message: string; createdAt: Date; seen: boolean }[]
+}
+
+type ChatRoomRow = {
+  chatRoom: ChatRoomEntry[]
+  email: string | null
+}
+
+const EXPIRATION_DAYS = 4
 
 const ConversationMenu = ({ domains }: Props) => {
-  const { register, chatRooms, loading, realtimeDisabled, onGetActiveChatMessages } = useConversation()
-  const getLatest = (row: any) => row?.chatRoom?.[0]?.message?.[0]
-  const getRoomId = (row: any) => row?.chatRoom?.[0]?.id as string | undefined
+  const { register, chatRooms, setChatRooms, loading, realtimeDisabled, onGetActiveChatMessages } =
+    useConversation()
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const hasMessages = (row: any) => {
-    const rooms = row.chatRoom ?? []
-    return rooms.some((room: any) => {
-      const messages = room.message ?? []
-      return messages.length > 0
-    })
-  }
+  const getLatest = (row: ChatRoomRow) => row?.chatRoom?.[0]?.message?.[0]
 
-  const isUnread = (row: any) => {
+  const isUnread = (row: ChatRoomRow) => {
     const last = getLatest(row)
     return !!last && !last.seen
   }
 
-  const isExpired = (row: any) => {
+  const isExpired = (row: ChatRoomRow) => {
     const last = getLatest(row)
     let lastActivityDate: Date
     if (last?.createdAt) {
@@ -52,73 +53,102 @@ const ConversationMenu = ({ domains }: Props) => {
     } else if (row.chatRoom?.[0]?.createdAt) {
       lastActivityDate = new Date(row.chatRoom[0].createdAt)
     } else {
-      return false 
+      return false
     }
     const diffMs = Date.now() - lastActivityDate.getTime()
-    const diffDays = diffMs / (1000 * 60 * 60 * 24)
-    return diffDays >= EXPIRATION_DAYS
+    return diffMs / (1000 * 60 * 60 * 24) >= EXPIRATION_DAYS
   }
 
-  const isStarred = (row: any) => {
-    const id = getRoomId(row)
-    return !!id && STARRED_IDS.has(id)
+  const sortByLatestDesc = (rows: ChatRoomRow[]) =>
+    [...rows].sort((a, b) => {
+      const aTime = new Date(getLatest(a)?.createdAt ?? 0).getTime()
+      const bTime = new Date(getLatest(b)?.createdAt ?? 0).getTime()
+      return bTime - aTime
+    })
+
+  const applySearch = (rows: ChatRoomRow[]) => {
+    if (!searchQuery.trim()) return rows
+    const q = searchQuery.toLowerCase()
+    return rows.filter(
+      (row) =>
+        row.email?.toLowerCase().includes(q) ||
+        getLatest(row)?.message?.toLowerCase().includes(q)
+    )
   }
 
-  const sortByLatestDesc = (rows: any[]) => [...rows].sort((a, b) => {
-    const aTime = new Date(getLatest(a)?.createdAt ?? 0).getTime();
-    const bTime = new Date(getLatest(b)?.createdAt ?? 0).getTime();
-    return bTime-aTime;
-  })
+  const handleStar = useCallback(
+    async (roomId: string, starred: boolean) => {
+      setChatRooms((prev) =>
+        prev.map((row) => ({
+          ...row,
+          chatRoom: row.chatRoom.map((room) =>
+            room.id === roomId ? { ...room, starred } : room
+          ),
+        }))
+      )
+      await onToggleStarredChatRoom(roomId, starred)
+    },
+    [setChatRooms]
+  )
 
-  const renderList = (rows: any[], emptyText: string) => (
-    <div className="flex flex-col">
-      <Loader loading={loading}>
-        {rows?.length ? (
-          rows.flatMap((row: any, rowIdx: any) => {
-            const rooms = row.chatRoom ?? [];
-            if (!rooms.length) return [];
+  const renderList = (
+    rows: ChatRoomRow[],
+    emptyText: string,
+    roomFilter?: (room: ChatRoomEntry) => boolean
+  ) => {
+    const filtered = applySearch(rows)
+    const allRooms = filtered.flatMap((row) => {
+      const rooms = (row.chatRoom ?? []).filter((room) => !roomFilter || roomFilter(room))
+      return rooms.map((room0) => ({ row, room0 }))
+    })
 
-            return rooms.map((room0: any, idx: number) => {
-              const msg0 = room0.message?.[0];
-
+    return (
+      <div className="flex flex-col">
+        <Loader loading={loading}>
+          {allRooms.length ? (
+            allRooms.map(({ row, room0 }) => {
+              const msg0 = room0.message?.[0]
               return (
                 <ChatCard
-                  key={room0.id ?? `chat-${rowIdx}-${idx}`}
+                  key={room0.id}
                   id={room0.id}
                   onChat={() => onGetActiveChatMessages(room0.id)}
                   seen={!!msg0?.seen}
                   createdAt={msg0?.createdAt ?? room0.createdAt}
                   title={row.email ?? ''}
                   description={msg0?.message ?? ''}
+                  starred={room0.starred}
+                  status={room0.status}
+                  onStar={handleStar}
                 />
-              );
-            });
-          })
-        ) : (
-          <CardDescription>{emptyText}</CardDescription>
-        )}
-      </Loader>
-    </div>
-  )
+              )
+            })
+          ) : (
+            <CardDescription className="px-4 py-3 text-sm">{emptyText}</CardDescription>
+          )}
+        </Loader>
+      </div>
+    )
+  }
 
   if (realtimeDisabled) {
     return (
-      <div className='flex flex-col py-4 px-0'>
-        <div className='px-4'>
+      <div className="flex flex-col py-4 px-0">
+        <div className="px-4">
           <ConversationSearch domains={domains} register={register} />
         </div>
-        <div className='flex flex-col items-center justify-center gap-3 py-16 px-6 text-center'>
-          <div className='rounded-full bg-slate-100 dark:bg-slate-800 p-4'>
-            <WifiOff className='h-8 w-8 text-slate-400' />
+        <div className="flex flex-col items-center justify-center gap-3 py-16 px-6 text-center">
+          <div className="rounded-full bg-slate-100 dark:bg-slate-800 p-4">
+            <WifiOff className="h-8 w-8 text-slate-400" />
           </div>
-          <p className='text-sm font-medium text-slate-700 dark:text-slate-300'>
+          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
             Realtime mode is disabled for this domain.
           </p>
-          <p className='text-xs text-slate-400 dark:text-slate-500 max-w-[220px]'>
+          <p className="text-xs text-slate-400 dark:text-slate-500 max-w-[220px]">
             Enable it in{' '}
             <Link
-              href='/settings'
-              className='underline underline-offset-2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+              href="/settings"
+              className="underline underline-offset-2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
             >
               Domain Settings → Realtime &amp; Handoff
             </Link>
@@ -128,49 +158,72 @@ const ConversationMenu = ({ domains }: Props) => {
     )
   }
 
+  const totalRooms = (chatRooms || []).reduce(
+    (acc, row) => acc + (row.chatRoom?.length ?? 0),
+    0
+  )
+
   return (
-    <div className='flex flex-col py-4 px-0'>
+    <div className="flex flex-col py-4 px-0">
+      <div className="px-4 mb-2">
+        <ConversationSearch domains={domains} register={register} />
+        {chatRooms.length > 0 && (
+          <Input
+            className="mt-2 h-8 text-xs"
+            placeholder="Search by email or message..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        )}
+        {totalRooms > 0 && (
+          <p className="text-xs text-muted-foreground mt-2">
+            {totalRooms} conversation{totalRooms !== 1 ? 's' : ''}
+          </p>
+        )}
+      </div>
+
       <TabsMenu triggers={TABS_MENU}>
-        <TabsContent value='unread'>
-          <ConversationSearch 
-            domains={domains}
-            register={register}
-          />
-            {renderList(sortByLatestDesc((chatRooms || []).filter(isUnread)), 'No unread chats')}
-        </TabsContent>
-
-
-        <TabsContent value='all'>
-          <Separator 
-            orientation='horizontal'
-            className='mt-5'
-          />
-          {renderList(sortByLatestDesc(chatRooms || []).filter(row => !isExpired(row)),
-           'No chats available')}
-        </TabsContent>
-
-
-        <TabsContent value='expired'>
-          <Separator 
-            orientation='horizontal'
-            className='mt-5'
-          />
+        <TabsContent value="unread">
+          <Separator orientation="horizontal" className="mb-1" />
           {renderList(
-            sortByLatestDesc((
-              chatRooms || [])
-              .filter(isExpired)),
-               'No expired threads')}
+            sortByLatestDesc((chatRooms || []).filter(isUnread)),
+            'No unread chats'
+          )}
         </TabsContent>
 
-
-        <TabsContent value='starred'>
-          <Separator 
-            orientation='horizontal'
-            className='mt-5'
-          />
-          {renderList(sortByLatestDesc((chatRooms || []).filter(isStarred)), 'No starred chats')}
+        <TabsContent value="all">
+          <Separator orientation="horizontal" className="mb-1" />
+          {renderList(
+            sortByLatestDesc(chatRooms || []).filter((row) => !isExpired(row)),
+            'No chats available'
+          )}
         </TabsContent>
-        
+
+        <TabsContent value="expired">
+          <Separator orientation="horizontal" className="mb-1" />
+          {renderList(
+            sortByLatestDesc((chatRooms || []).filter(isExpired)),
+            'No expired threads'
+          )}
+        </TabsContent>
+
+        <TabsContent value="starred">
+          <Separator orientation="horizontal" className="mb-1" />
+          {renderList(
+            sortByLatestDesc(chatRooms || []),
+            'No starred chats',
+            (room) => room.starred
+          )}
+        </TabsContent>
+
+        <TabsContent value="resolved">
+          <Separator orientation="horizontal" className="mb-1" />
+          {renderList(
+            sortByLatestDesc(chatRooms || []),
+            'No resolved conversations',
+            (room) => room.status === 'RESOLVED'
+          )}
+        </TabsContent>
       </TabsMenu>
     </div>
   )

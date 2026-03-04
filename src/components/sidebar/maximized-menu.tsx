@@ -14,6 +14,8 @@ type Props = {
   onboardingCompleted: boolean
   onboardingDismissed: boolean
   stepsCompleted: number
+  unreadCount: number
+  leadCount: number
   domains:
     | {
         id: string
@@ -32,6 +34,8 @@ const MaxMenu = ({
   onboardingCompleted,
   onboardingDismissed,
   stepsCompleted,
+  unreadCount,
+  leadCount,
 }: Props) => {
   const showOnboarding = !onboardingCompleted && !onboardingDismissed
   const isOnboardingActive = current === 'getting-started'
@@ -66,7 +70,19 @@ const MaxMenu = ({
           </p>
           <div className="flex flex-col mb-1 md:mb-2">
             {SIDE_BAR_MENU.map((menu, key) => (
-              <MenuItem size="max" {...menu} key={key} current={current} />
+              <MenuItem
+                size="max"
+                {...menu}
+                key={key}
+                current={current}
+                badge={
+                  menu.path === 'conversation'
+                    ? unreadCount
+                    : menu.path === 'leads'
+                    ? leadCount
+                    : undefined
+                }
+              />
             ))}
 
             {showOnboarding && (

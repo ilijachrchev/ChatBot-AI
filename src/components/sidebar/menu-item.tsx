@@ -9,9 +9,10 @@ type Props = {
   path?: string
   current?: string
   onSignOut?(): void
+  badge?: number
 }
 
-const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
+const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props) => {
 
   const isActive = current === path 
 
@@ -50,7 +51,13 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
           )}>
             {icon}
           </div>
-          <span className='text-sm'>{label}</span>
+          <span className='text-sm flex-1'>{label}</span>
+
+          {badge !== undefined && badge > 0 && (
+            <span className="ml-auto h-5 min-w-5 px-1 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
+              {badge > 99 ? '99+' : badge}
+            </span>
+          )}
 
           {!isActive && (
             <div className='absolute inset-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
@@ -82,9 +89,15 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut }: Props) => {
         >
           <div className={cn(
             'transition-transform duration-200',
-            'group-hover:scale-110'
+            'group-hover:scale-110',
+            'relative'
           )}>
             {icon}
+            {badge !== undefined && badge > 0 && (
+              <span className="absolute -top-1 -right-1 h-4 min-w-4 px-0.5 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center">
+                {badge > 99 ? '99+' : badge}
+              </span>
+            )}
           </div>
           {isActive && (
             <div className='absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full'></div>

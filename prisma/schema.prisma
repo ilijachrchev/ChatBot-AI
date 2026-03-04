@@ -156,6 +156,8 @@ model ChatRoom {
   id         String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   live       Boolean       @default(false)
   mailed     Boolean       @default(false)
+  starred    Boolean       @default(false)
+  status     String        @default("OPEN")
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
   domainId   String?       @db.Uuid

@@ -23,6 +23,8 @@ export const useConversation = () => {
             chatRoom: {
                 id: string
                 createdAt: Date
+                starred: boolean
+                status: string
                 message: {
                     message: string
                     createdAt: Date
@@ -95,6 +97,7 @@ export const useConversation = () => {
     return {
         register,
         chatRooms,
+        setChatRooms,
         loading,
         realtimeDisabled,
         onGetActiveChatMessages,

@@ -1,6 +1,7 @@
 'use server'
 
 import { client } from '@/lib/prisma'
+import { currentUser } from '@clerk/nextjs/server'
 
 
 export const onToggleRealtime = async (id: string, state: boolean) => {
@@ -92,6 +93,8 @@ export const onGetDomainChatRooms = async (id: string) => {
               select: {
                 createdAt: true,
                 id: true,
+                starred: true,
+                status: true,
                 message: {
                   select: {
                     message: true,
@@ -236,6 +239,93 @@ export const onOwnerSendMessage = async (
     });
 
       return chat?.message?.[0] ?? null;
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const onToggleStarredChatRoom = async (chatRoomId: string, starred: boolean) => {
+  try {
+    await client.chatRoom.update({
+      where: { id: chatRoomId },
+      data: { starred },
+    })
+    return { status: 200, starred }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const onUpdateChatRoomStatus = async (
+  chatRoomId: string,
+  status: 'OPEN' | 'RESOLVED' | 'PENDING'
+) => {
+  try {
+    await client.chatRoom.update({
+      where: { id: chatRoomId },
+      data: { status },
+    })
+    return { status: 200, roomStatus: status }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const onGetUnreadConversationCount = async () => {
+  try {
+    const clerkUser = await currentUser()
+    if (!clerkUser) return { count: 0 }
+
+    const user = await client.user.findUnique({
+      where: { clerkId: clerkUser.id },
+      select: { id: true },
+    })
+    if (!user) return { count: 0 }
+
+    const domains = await client.domain.findMany({
+      where: { userId: user.id },
+      select: { id: true },
+    })
+
+    const domainIds = domains.map((d) => d.id)
+
+    const chatRooms = await client.chatRoom.findMany({
+      where: { domainId: { in: domainIds } },
+      select: {
+        message: {
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+          select: { seen: true, role: true },
+        },
+      },
+    })
+
+    const count = chatRooms.filter((room) => {
+      const latest = room.message[0]
+      return latest && !latest.seen && latest.role === 'user'
+    }).length
+
+    return { count }
+  } catch (error) {
+    console.log(error)
+    return { count: 0 }
+  }
+}
+
+export const onGetChatRoomInfo = async (id: string) => {
+  try {
+    const room = await client.chatRoom.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        starred: true,
+        status: true,
+        createdAt: true,
+        Customer: { select: { email: true } },
+        Domain: { select: { name: true } },
+      },
+    })
+    return room
   } catch (error) {
     console.log(error)
   }
