@@ -16,10 +16,10 @@ const TabsMenu = ({ triggers, children, className, button }:Props) => {
   return (
     <Tabs
     defaultValue={triggers[0].label}
-    className='w-full'
+    className='w-full flex flex-col flex-1 min-h-0'
     >
         <TabsList 
-         className={cn('pr-5', className)}
+         className={cn('pr-5 flex-shrink-0', className)}
         >
             {triggers.map((trigger, key) => (
                 <TabsTrigger

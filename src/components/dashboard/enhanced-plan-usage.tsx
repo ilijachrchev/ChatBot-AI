@@ -62,7 +62,6 @@ export const EnhancedPlanUsage = ({
         'bg-white dark:bg-slate-900/50 p-5 md:p-6 shadow-md h-full flex flex-col'
       )}
     >
-      {/* Header */}
       <div className="flex items-start justify-between mb-5">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30">
@@ -88,7 +87,6 @@ export const EnhancedPlanUsage = ({
         </span>
       </div>
 
-      {/* Main: Conversations bar */}
       <div className="flex-1 space-y-5">
         <div className="space-y-2.5">
           <div className="flex items-center justify-between">
@@ -112,7 +110,6 @@ export const EnhancedPlanUsage = ({
           </p>
         </div>
 
-        {/* Stat pills */}
         <div className="flex gap-2">
           <div
             className={cn(
@@ -158,7 +155,6 @@ export const EnhancedPlanUsage = ({
         </div>
       </div>
 
-      {/* CTA */}
       <div className="mt-5 pt-5 border-t border-slate-200 dark:border-slate-800">
         <Link
           href="/account/billing"

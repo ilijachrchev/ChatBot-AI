@@ -118,7 +118,6 @@ const SettingsForm = ({
           isLocked && 'opacity-40 blur-[1px] pointer-events-none'
         )}
       >
-        {/* Domain Configration Section */}
         <section id="configuration" className="scroll-mt-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">

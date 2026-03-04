@@ -43,8 +43,8 @@ const PlaygroundPage = () => {
 
   const messageWindowRef = useRef<HTMLDivElement | null>(null)
 
-  const { register, handleSubmit, reset, setValue } = useForm<ChatBotMessageProps>({
-    resolver: zodResolver(ChatBotMessageSchema as Parameters<typeof zodResolver>[0]),
+  const { register, watch, reset, setValue } = useForm<ChatBotMessageProps>({
+    resolver: zodResolver(ChatBotMessageSchema as any),
   })
 
   useEffect(() => {
@@ -88,28 +88,29 @@ const PlaygroundPage = () => {
     reset()
   }
 
-  const onChat = handleSubmit(async (values) => {
-    if (!selectedDomainId || !values.content?.trim()) return
-    setChats((prev) => [...prev, { role: 'user', content: values.content! }])
-    reset()
-    setResponding(true)
-    setMessageCount((prev) => prev + 1)
+  const onChat = async () => {
+  const content = watch('content')
+  if (!selectedDomainId || !content?.trim()) return
+  setChats((prev) => [...prev, { role: 'assistant' as const, content: content! }])
+  reset()
+  setResponding(true)
+  setMessageCount((prev) => prev + 1)
 
-    const response = await onAiChatBotAssistant(
-      selectedDomainId,
-      chats,
-      'user',
-      values.content!,
-      chatroomId,
-      false,
-      false,
-    )
+  const response = await onAiChatBotAssistant(
+    selectedDomainId,
+    chats,
+    'user',
+    content!,
+    chatroomId,
+    false,
+    false,
+  )
 
-    setResponding(false)
-    if (response?.response) {
-      setChats((prev) => [...prev, response.response])
-    }
-  })
+  setResponding(false)
+  if (response?.response) {
+    setChats((prev) => [...prev, { role: 'user' as const, content: content as string }])
+  }
+}
 
   const onImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

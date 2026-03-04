@@ -1,19 +1,29 @@
 'use client'
 
 import React, { useState, useTransition } from 'react'
-import { onUpdateDomainRealtimeEnabled } from '@/actions/settings'
+import { onUpdateDomainRealtimeEnabled, onUpdateLiveNotificationsEnabled } from '@/actions/settings'
 import { Switch } from '@/components/ui/switch'
 import { toast } from 'sonner'
-import { Zap, MessageSquare, Database, User, WifiOff, TrendingDown } from 'lucide-react'
+import { Zap, MessageSquare, Database, User, WifiOff, TrendingDown, Bell } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 type Props = {
   domainId: string
   initialEnabled: boolean
+  initialLiveNotifications: boolean
+  ownerEmail: string
 }
 
-export const RealtimeSettings = ({ domainId, initialEnabled }: Props) => {
+export const RealtimeSettings = ({
+  domainId,
+  initialEnabled,
+  initialLiveNotifications,
+  ownerEmail,
+}: Props) => {
   const [enabled, setEnabled] = useState(initialEnabled)
   const [isPending, startTransition] = useTransition()
+  const [notificationsEnabled, setNotificationsEnabled] = useState(initialLiveNotifications)
+  const [notifPending, startNotifTransition] = useTransition()
 
   const handleToggle = (value: boolean) => {
     setEnabled(value)
@@ -28,9 +38,21 @@ export const RealtimeSettings = ({ domainId, initialEnabled }: Props) => {
     })
   }
 
+  const handleNotifToggle = (value: boolean) => {
+    setNotificationsEnabled(value)
+    startNotifTransition(async () => {
+      const result = await onUpdateLiveNotificationsEnabled(domainId, value)
+      if (result?.status === 200) {
+        toast.success('Notification preference saved')
+      } else {
+        setNotificationsEnabled(!value)
+        toast.error(result?.message ?? 'Failed to update notification setting')
+      }
+    })
+  }
+
   return (
     <div className="max-w-2xl space-y-8">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
           Realtime &amp; Human Handoff
@@ -40,7 +62,6 @@ export const RealtimeSettings = ({ domainId, initialEnabled }: Props) => {
         </p>
       </div>
 
-      {/* Toggle card */}
       <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
@@ -60,8 +81,8 @@ export const RealtimeSettings = ({ domainId, initialEnabled }: Props) => {
           />
         </div>
 
-        {/* Status badge */}
-        <div className="mt-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+        <div
+          className="mt-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
           style={{
             backgroundColor: enabled ? 'rgb(220 252 231)' : 'rgb(241 245 249)',
             color: enabled ? 'rgb(21 128 61)' : 'rgb(100 116 139)',
@@ -72,9 +93,56 @@ export const RealtimeSettings = ({ domainId, initialEnabled }: Props) => {
         </div>
       </div>
 
-      {/* What each mode does */}
+      <div
+        className={cn(
+          'rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 transition-opacity',
+          !enabled && 'opacity-50 pointer-events-none'
+        )}
+      >
+        <div className="flex items-start justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <Bell className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+              <p className="text-sm font-medium text-slate-900 dark:text-white">
+                Email notifications for live chat requests
+              </p>
+            </div>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Get an email at{' '}
+              <span className="font-medium text-slate-700 dark:text-slate-300">{ownerEmail}</span>{' '}
+              whenever a customer requests to speak with a human agent.
+            </p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">
+              Only sends when Realtime is enabled and a customer triggers handoff.
+            </p>
+          </div>
+          <Switch
+            checked={notificationsEnabled}
+            onCheckedChange={handleNotifToggle}
+            disabled={notifPending || !enabled}
+            aria-label="Toggle live chat email notifications"
+          />
+        </div>
+
+        <div
+          className="mt-4 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+          style={{
+            backgroundColor: notificationsEnabled ? 'rgb(239 246 255)' : 'rgb(241 245 249)',
+            color: notificationsEnabled ? 'rgb(29 78 216)' : 'rgb(100 116 139)',
+          }}
+        >
+          <span className={`h-1.5 w-1.5 rounded-full ${notificationsEnabled ? 'bg-blue-500' : 'bg-slate-400'}`} />
+          {notificationsEnabled ? 'Notifications ON' : 'Notifications OFF'}
+        </div>
+
+        {!enabled && (
+          <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
+            Enable Realtime first to use notifications.
+          </p>
+        )}
+      </div>
+
       <div className="grid gap-4 sm:grid-cols-2">
-        {/* Realtime ON */}
         <div className={`rounded-xl border p-5 space-y-3 transition-opacity ${enabled ? 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/20' : 'border-slate-200 dark:border-slate-800 opacity-50'}`}>
           <div className="flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-400">
             <Zap className="h-4 w-4" />
@@ -88,7 +156,6 @@ export const RealtimeSettings = ({ domainId, initialEnabled }: Props) => {
           </ul>
         </div>
 
-        {/* Realtime OFF */}
         <div className={`rounded-xl border p-5 space-y-3 transition-opacity ${!enabled ? 'border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40' : 'border-slate-200 dark:border-slate-800 opacity-50'}`}>
           <div className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400">
             <WifiOff className="h-4 w-4" />
@@ -103,7 +170,6 @@ export const RealtimeSettings = ({ domainId, initialEnabled }: Props) => {
         </div>
       </div>
 
-      {/* Info note */}
       <p className="text-xs text-slate-400 dark:text-slate-500">
         Changes take effect immediately for new conversations. Existing open conversations are not affected.
       </p>

@@ -54,7 +54,6 @@ export const DomainConfigurationForm = ({
   return (
     <div className="max-w-7xl mx-auto">
       <form className="flex flex-col gap-8" onSubmit={onUpdateSettings}>
-        {/* Page Header */}
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 dark:bg-white">
@@ -78,9 +77,7 @@ export const DomainConfigurationForm = ({
           verificationMethod={verificationMethod}
         />
 
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          {/* Domain Settings Card */}
           <div className="group relative overflow-hidden rounded-2xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 transition-all duration-300 hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-xl">
             <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-slate-100 to-transparent dark:from-slate-900 dark:to-transparent opacity-50 rounded-full blur-3xl -z-0" />
             
@@ -112,7 +109,6 @@ export const DomainConfigurationForm = ({
 
               <DomainUpdate name={name} register={register} errors={errors} />
 
-              {/* Domain Stats */}
               <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-800">
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
@@ -144,12 +140,9 @@ export const DomainConfigurationForm = ({
             </div>
           </div>
 
-          {/* Embed Code Card */}
           <div className="group relative overflow-hidden rounded-2xl border-2 border-slate-900 dark:border-white bg-slate-900 dark:bg-white transition-all duration-300 hover:shadow-2xl hover:shadow-slate-500/20">
-            {/* Animated background gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-black dark:from-slate-100 dark:via-white dark:to-slate-50 opacity-90" />
             
-            {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent dark:from-slate-900/5 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/5 to-transparent dark:from-slate-900/5 rounded-full blur-3xl" />
             
@@ -184,7 +177,6 @@ export const DomainConfigurationForm = ({
                   Get production-ready code snippets in <span className="font-bold text-white dark:text-slate-900">15 different languages</span> and frameworks. Copy, paste, and go live in seconds.
                 </p>
 
-                {/* Feature Grid */}
                 <div className="grid grid-cols-2 gap-3">
                   {[
                     { icon: '✨', label: 'Syntax Highlighting' },
@@ -204,7 +196,6 @@ export const DomainConfigurationForm = ({
                   ))}
                 </div>
 
-                {/* Language Tags */}
                 <div className="flex flex-wrap gap-2">
                   {['JavaScript', 'React', 'Next.js', 'Vue', 'Python', 'PHP'].map((lang) => (
                     <span
@@ -234,7 +225,6 @@ export const DomainConfigurationForm = ({
           </div>
         </div>
 
-        {/* Additional Information Card */}
         <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/30 p-6">
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-950/50 flex-shrink-0">
@@ -252,7 +242,6 @@ export const DomainConfigurationForm = ({
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 justify-between items-center pt-6 border-t border-slate-200 dark:border-slate-800">
           <Button
             onClick={onDeleteDomain}

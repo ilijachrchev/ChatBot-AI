@@ -11,10 +11,49 @@ import { onGetChatbotPresence } from "../chatbot/presence"
 import { off } from "process"
 import { getKnowledgeBaseContext } from "@/lib/knowledge-base/retrieve"
 import { checkAndIncrementConversation } from "@/lib/conversation-usage"
+import { sendLiveChatNotification } from "@/lib/email"
 
 const openai = new OpenAi({
     apiKey: process.env.OPEN_AI_KEY,
 })
+
+async function maybeSendHandoffEmail(chatRoomId: string, lastMessage: string) {
+  try {
+    const room = await db.chatRoom.findUnique({
+      where: { id: chatRoomId },
+      select: {
+        Customer: { select: { email: true } },
+        Domain: {
+          select: {
+            name: true,
+            liveNotificationsEnabled: true,
+            User: { select: { clerkId: true } },
+          },
+        },
+      },
+    })
+
+    if (!room?.Domain?.liveNotificationsEnabled) return
+    if (!room.Domain.User?.clerkId) return
+
+    const clerk = await clerkClient()
+    const clerkUser = await clerk.users.getUser(room.Domain.User.clerkId)
+    const ownerEmail = clerkUser.emailAddresses[0]?.emailAddress
+    if (!ownerEmail) return
+
+    const ownerName = clerkUser.firstName || 'there'
+
+    sendLiveChatNotification({
+      ownerEmail,
+      ownerName,
+      customerEmail: room.Customer?.email ?? null,
+      domainName: room.Domain.name,
+      lastMessage,
+    }).catch(console.error)
+  } catch (err) {
+    console.error('maybeSendHandoffEmail error:', err)
+  }
+}
 
 class DomainNotFoundError extends Error {
   domainId: string
@@ -468,6 +507,8 @@ export const onAiChatBotAssistant = async (
           data: { live: true },
         });
 
+        maybeSendHandoffEmail(room.id, message).catch(console.error)
+
         const response = {
           role: 'assistant' as const,
           content: `I understand you'd like to speak with a real person. Let me connect you with one of our team members. They'll be with you shortly!`,
@@ -778,6 +819,8 @@ IMPORTANT: Use the knowledge base context above if it's relevant to the user's q
               where: { id: room.id },
               data: { live: true },
             });
+
+            maybeSendHandoffEmail(room.id, message).catch(console.error)
 
             const response = {
               role: 'assistant' as const,

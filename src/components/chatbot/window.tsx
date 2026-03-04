@@ -235,10 +235,10 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
           triggers={BOT_TABS_MENU}
           className="bg-gray-50/50 border-b border-gray-200 mx-3 mt-2 rounded-lg"
         >
-          <TabsContent value="chat" className="mt-0">
-            <div className="flex flex-col h-full">
+          <TabsContent value="chat" className="mt-0 flex-1 flex flex-col min-h-0">
+            <div className="flex flex-col flex-1 min-h-0">
               <div
-                className={cn('px-4 flex h-[420px] flex-col py-4 gap-3 chat-window overflow-y-auto', getContentAreaClass())}
+                className={cn('px-4 flex flex-1 min-h-0 flex-col py-4 gap-3 chat-window overflow-y-auto', getContentAreaClass())}
                 ref={ref}
               >
                 {shouldShowOfflineMessage && presence?.message && (

@@ -162,6 +162,7 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
             verifiedAt: true,
             timezone: true,
             realtimeEnabled: true,
+            liveNotificationsEnabled: true,
             chatBot: {
               select: {
                 id: true,
@@ -935,6 +936,33 @@ export const onUpdateDomainRealtimeEnabled = async (
   } catch (error) {
     console.error(error)
     return { status: 500, message: 'Internal server error' }
+  }
+}
+
+export const onUpdateLiveNotificationsEnabled = async (
+  domainId: string,
+  enabled: boolean
+) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const domain = await client.domain.findFirst({
+      where: { id: domainId, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+
+    if (!domain) return { status: 403, message: 'Unauthorized' }
+
+    await client.domain.update({
+      where: { id: domainId },
+      data: { liveNotificationsEnabled: enabled },
+    })
+
+    return { status: 200, message: 'Notification preference saved' }
+  } catch (error) {
+    console.error(error)
+    return { status: 500, message: 'Failed to update' }
   }
 }
 

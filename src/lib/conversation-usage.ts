@@ -6,10 +6,6 @@ const PLAN_LIMITS: Record<string, number | null> = {
   ULTIMATE: null,
 }
 
-/**
- * Gets (or creates) the ConversationUsage record for the current month/year
- * for the given domain.
- */
 export const getConversationUsage = async (domainId: string) => {
   const now = new Date()
   const month = now.getMonth() + 1 // 1–12
@@ -25,11 +21,6 @@ export const getConversationUsage = async (domainId: string) => {
   return usage
 }
 
-/**
- * Checks whether the domain is under its monthly conversation limit.
- * If under the limit, increments the count atomically and returns allowed: true.
- * If at or over the limit, returns allowed: false without incrementing.
- */
 export const checkAndIncrementConversation = async (
   domainId: string,
   plan: string
