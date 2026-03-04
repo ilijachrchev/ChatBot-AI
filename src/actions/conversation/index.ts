@@ -174,7 +174,7 @@ export const onRealTimeChat = async (
   role: 'assistant' | 'user'
 ) => {
   try {
-    const socketUrl = process.env.SOCKET_sERVER_URL || 'http://localhost:4000'
+    const socketUrl = process.env.SOCKET_SERVER_URL || 'http://localhost:4000'
 
     const response = await fetch(`${socketUrl}/api/trigger`, {
       method: 'POST',
@@ -309,6 +309,27 @@ export const onGetUnreadConversationCount = async () => {
   } catch (error) {
     console.log(error)
     return { count: 0 }
+  }
+}
+
+export const onNotifyDashboardNewLiveConversation = async (
+  domainId: string,
+  chatRoomId: string,
+  customerEmail: string | null
+) => {
+  try {
+    const socketUrl = process.env.SOCKET_SERVER_URL || 'http://localhost:4000'
+    await fetch(`${socketUrl}/api/trigger`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chatroomId: `dashboard-${domainId}`,
+        event: 'new-live-conversation',
+        data: { chatRoomId, domainId, customerEmail },
+      }),
+    })
+  } catch (error) {
+    console.error('Error notifying dashboard of new live conversation:', error)
   }
 }
 

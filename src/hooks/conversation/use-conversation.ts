@@ -37,24 +37,60 @@ export const useConversation = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [realtimeDisabled, setRealtimeDisabled] = useState<boolean>(false)
     useEffect(() => {
-        const search = watch(async (value) => {
-          if (!value.domain) return
-            setLoading(true)
-             try {
-            const [rooms, isRealtimeEnabled] = await Promise.all([
-              onGetDomainChatRooms(value.domain!),
-              onGetDomainRealtimeStatus(value.domain!),
-            ])
-            setRealtimeDisabled(!isRealtimeEnabled)
-            if (rooms) {
-                setLoading(false)
-                setChatRooms(rooms.customer)
-            }
-        } catch (error) {
-            console.log(error)
-        }
+        const socket = getSocketClient()
+    let currentDomain: string | null = null
+    let liveHandler: ((data: { chatRoomId: string; domainId: string; customerEmail: string | null }) => void) | null = null
+
+    const search = watch(async (value) => {
+      if (!value.domain) return
+
+      if (currentDomain && liveHandler) {
+        socket.emit('leave-chatroom', `dashboard-${currentDomain}`)
+        socket.off('new-live-conversation', liveHandler)
+      }
+
+      currentDomain = value.domain
+
+      liveHandler = (data) => {
+        if (data.domainId !== currentDomain) return
+        setChatRooms((prev) => {
+          if (prev.some((row) => row.chatRoom.some((r) => r.id === data.chatRoomId))) return prev
+          return [
+            {
+              email: data.customerEmail,
+              chatRoom: [{ id: data.chatRoomId, createdAt: new Date(), starred: false, status: 'OPEN', message: [] }],
+            },
+            ...prev,
+          ]
         })
-        return () => search.unsubscribe()
+      }
+
+      socket.emit('join-chatroom', `dashboard-${value.domain}`)
+      socket.on('new-live-conversation', liveHandler)
+
+      setLoading(true)
+      try {
+        const [rooms, isRealtimeEnabled] = await Promise.all([
+          onGetDomainChatRooms(value.domain!),
+          onGetDomainRealtimeStatus(value.domain!),
+        ])
+        setRealtimeDisabled(!isRealtimeEnabled)
+        if (rooms) {
+          setLoading(false)
+          setChatRooms(rooms.customer)
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    })
+
+    return () => {
+      search.unsubscribe()
+      if (currentDomain && liveHandler) {
+        socket.emit('leave-chatroom', `dashboard-${currentDomain}`)
+        socket.off('new-live-conversation', liveHandler)
+      }
+    }
     }, [watch])
 
     const onGetActiveChatMessages = async (id: string) => {

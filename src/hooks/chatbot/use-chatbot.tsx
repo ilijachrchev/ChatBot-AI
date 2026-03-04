@@ -259,13 +259,14 @@ export const useChatBot = () => {
                 if (response) {
                     if (response.chatRoom) setChatroomId(response.chatRoom);
                     setOnAiTyping(false)
+                    if (response.response) {
+                        setOnChats((prev: any) => [...prev, response.response])
+                    }
                     if (response.live) {
                         setOnRealTime({
                             chatroom: response.chatRoom,
                             mode: response.live,
                         })
-                    } else if (response.response) {
-                        setOnChats((prev: any) => [...prev, response.response])
                     }
                 }
                 return;
@@ -312,13 +313,14 @@ export const useChatBot = () => {
             if (response) {
                 if (response.chatRoom) setChatroomId(response.chatRoom);
                 setOnAiTyping(false)
+                if (response.response) {
+                    setOnChats((prev: any) => [...prev, response.response])
+                }
                 if (response.live) {
                     setOnRealTime({
                         chatroom: response.chatRoom,
                         mode: response.live,
                     })
-                } else if (response.response) {
-                    setOnChats((prev: any) => [...prev, response.response])
                 }
             }
         }
@@ -400,6 +402,7 @@ export const useRealTime = (
   >
 ) => {
     useEffect(() => {
+        if (!chatRoom) return
         const socket = getSocketClient()
 
         socket.emit('join-chatroom', chatRoom)

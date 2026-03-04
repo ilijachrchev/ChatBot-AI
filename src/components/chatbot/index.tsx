@@ -1,5 +1,5 @@
 "use client"
-import { useChatBot } from '@/hooks/chatbot/use-chatbot'
+import { useChatBot, useRealTime } from '@/hooks/chatbot/use-chatbot'
 import React from 'react'
 import { BotWindow } from './window'
 import { cn } from '@/lib/utils'
@@ -25,6 +25,7 @@ const AiChatBot = (props: Props) => {
         removeImage,
     } = useChatBot()
 
+    useRealTime(onRealTime?.chatroom ?? '', setOnChats)
     console.log('🔍 Chatbot - currentBot:', currentBot)
     const themeColor =
       currentBot?.chatBot?.backgroundColor ??

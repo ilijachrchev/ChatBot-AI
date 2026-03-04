@@ -2,7 +2,7 @@
 
 import { client as db } from "@/lib/prisma"
 import { extractEmailsFromString, extractURLfromString } from "@/lib/utils"
-import { onRealTimeChat } from "../conversation"
+import { onRealTimeChat, onNotifyDashboardNewLiveConversation } from "../conversation"
 import { clerkClient } from "@clerk/nextjs/server"
 import { onMailer } from "../mailer"
 import OpenAi from "openai"
@@ -122,7 +122,7 @@ const ensureChatRoom = async (chatroomId: string, domainId: string, customerId?:
       domainId,
       customerId: customerId ?? null,
     },
-    select: { id: true, live: true, mailed: true, domainId: true },
+    select: { id: true, live: true, mailed: true, domainId: true, customerId: true },
   })
 
   console.log('✅ ChatRoom created/updated:', room)
@@ -502,12 +502,21 @@ export const onAiChatBotAssistant = async (
             chatRoom: room.id,
           };
         };
+        let handoffCustomerId = room.customerId
+        if (!handoffCustomerId) {
+          const anon = await db.customer.create({
+            data: { email: null, domainId: id },
+            select: { id: true },
+          })
+          handoffCustomerId = anon.id
+        }
         await db.chatRoom.update({
           where: { id: room.id },
-          data: { live: true },
-        });
+          data: { live: true, customerId: handoffCustomerId },
+        })
 
         maybeSendHandoffEmail(room.id, message).catch(console.error)
+        onNotifyDashboardNewLiveConversation(id, room.id, null).catch(console.error)
 
         const response = {
           role: 'assistant' as const,
@@ -815,12 +824,21 @@ IMPORTANT: Use the knowledge base context above if it's relevant to the user's q
             .trim();
 
           if (requireHandoff) {
+            let requireHandoffCustomerId = room.customerId ?? checkCustomer?.customer[0]?.id ?? null
+            if (!requireHandoffCustomerId) {
+              const anon = await db.customer.create({
+                data: { email: null, domainId: id },
+                select: { id: true },
+              })
+              requireHandoffCustomerId = anon.id
+            }
             await db.chatRoom.update({
               where: { id: room.id },
-              data: { live: true },
-            });
+              data: { live: true, customerId: requireHandoffCustomerId },
+            })
 
             maybeSendHandoffEmail(room.id, message).catch(console.error)
+            onNotifyDashboardNewLiveConversation(id, room.id, checkCustomer?.customer[0]?.email ?? null).catch(console.error)
 
             const response = {
               role: 'assistant' as const,
