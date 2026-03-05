@@ -163,6 +163,7 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
             timezone: true,
             realtimeEnabled: true,
             liveNotificationsEnabled: true,
+            personaLastChangedAt: true,
             chatBot: {
               select: {
                 id: true,
@@ -739,33 +740,53 @@ export const onUpdateChatbotPersona = async (
   persona: string,
   customPrompt?: string | null
 ) => {
-  try {
-    const chatbot = await client.chatBot.update({
-      where: { id: chatBotId },
-      data: {
-        persona,
-        customPrompt: persona === 'CUSTOM' ? customPrompt : null,
-      },
-    })
+  const user = await currentUser()
+  if (!user) return { status: 401, message: 'Unauthorized' }
 
-    if (chatbot) {
-      return {
-        status: 200,
-        message: 'AI persona updated successfully',
+  const chatbot = await client.chatBot.findUnique({
+    where: { id: chatBotId },
+    select: { persona: true, domainId: true },
+  })
+
+  if (!chatbot) return { status: 404, message: 'Chatbot not found' }
+
+  const isSamePersona = chatbot.persona === persona
+
+  if (!isSamePersona && chatbot.domainId) {
+    const domain = await client.domain.findUnique({
+      where: { id: chatbot.domainId },
+      select: { personaLastChangedAt: true },
+    })
+    if (domain?.personaLastChangedAt) {
+      const hoursSince =
+        (Date.now() - new Date(domain.personaLastChangedAt).getTime()) / (1000 * 60 * 60)
+      if (hoursSince < 24) {
+        const hoursRemaining = Math.ceil(24 - hoursSince)
+        return {
+          status: 429,
+          message: `You can change your persona again in ${hoursRemaining} hour${hoursRemaining !== 1 ? 's' : ''}`,
+          hoursRemaining,
+        }
       }
     }
-
-    return {
-      status: 400,
-      message: 'Failed to update persona',
-    }
-  } catch (error) {
-    console.error('Error updating persona:', error)
-    return {
-      status: 500,
-      message: 'Internal server error',
-    }
   }
+
+  await client.chatBot.update({
+    where: { id: chatBotId },
+    data: {
+      persona,
+      customPrompt: persona === 'CUSTOM' ? customPrompt : null,
+    },
+  })
+
+  if (!isSamePersona && chatbot.domainId) {
+    await client.domain.update({
+      where: { id: chatbot.domainId },
+      data: { personaLastChangedAt: new Date() },
+    })
+  }
+
+  return { status: 200, message: 'AI persona updated successfully' }
 }
 
 export const onUpdateChatbotCustomization = async (
@@ -963,6 +984,193 @@ export const onUpdateLiveNotificationsEnabled = async (
   } catch (error) {
     console.error(error)
     return { status: 500, message: 'Failed to update' }
+  }
+}
+
+export const onGetPersonaSidebarItems = async () => {
+  const user = await currentUser()
+  if (!user) return []
+
+  const dbUser = await client.user.findUnique({
+    where: { clerkId: user.id },
+    select: {
+      domains: {
+        select: {
+          id: true,
+          name: true,
+          chatBot: {
+            select: { persona: true },
+          },
+        },
+      },
+    },
+  })
+
+  if (!dbUser) return []
+
+  const items: {
+    persona: string
+    domainId: string
+    domainName: string
+    label: string
+    path: string
+    icon: string
+  }[] = []
+
+  for (const domain of dbUser.domains) {
+    const persona = domain.chatBot?.persona
+    if (!persona) continue
+
+    switch (persona) {
+      case 'SALES_AGENT':
+        items.push({
+          persona,
+          domainId: domain.id,
+          domainName: domain.name,
+          label: 'Sales Pipeline',
+          path: `sales-pipeline?domain=${domain.id}`,
+          icon: 'BRIEFCASE',
+        })
+        break
+      case 'CUSTOMER_SUPPORT':
+        items.push({
+          persona,
+          domainId: domain.id,
+          domainName: domain.name,
+          label: 'Support Tickets',
+          path: `support-tickets?domain=${domain.id}`,
+          icon: 'HEADPHONES',
+        })
+        break
+      case 'REAL_ESTATE_QUALIFIER':
+        items.push({
+          persona,
+          domainId: domain.id,
+          domainName: domain.name,
+          label: 'Properties',
+          path: `properties?domain=${domain.id}`,
+          icon: 'HOME',
+        })
+        break
+      case 'RESTAURANT_RESERVATION':
+        items.push({
+          persona,
+          domainId: domain.id,
+          domainName: domain.name,
+          label: 'Reservations',
+          path: `reservations?domain=${domain.id}`,
+          icon: 'UTENSILS',
+        })
+        break
+      case 'HEALTHCARE_INTAKE':
+        items.push({
+          persona,
+          domainId: domain.id,
+          domainName: domain.name,
+          label: 'Patient Intake',
+          path: `patient-intake?domain=${domain.id}`,
+          icon: 'STETHOSCOPE',
+        })
+        break
+      case 'APPOINTMENT_SETTER':
+        items.push({
+          persona,
+          domainId: domain.id,
+          domainName: domain.name,
+          label: 'Appointments',
+          path: `appointment?domain=${domain.id}`,
+          icon: 'CALENDAR',
+        })
+        break
+      case 'ECOMMERCE_RECOMMENDER':
+        items.push({
+          persona,
+          domainId: domain.id,
+          domainName: domain.name,
+          label: 'Products',
+          path: `products?domain=${domain.id}`,
+          icon: 'SHOPPING_BAG',
+        })
+        break
+    }
+  }
+
+  return items
+}
+
+export const onGetDomainName = async (domainId: string) => {
+  try {
+    const domain = await client.domain.findUnique({
+      where: { id: domainId },
+      select: { name: true },
+    })
+    return domain?.name ?? ''
+  } catch {
+    return ''
+  }
+}
+
+export const onGetDomainProducts = async (domainId: string) => {
+  return await client.product.findMany({
+    where: { domainId },
+    orderBy: { createdAt: 'desc' },
+  })
+}
+
+export const onUpdateDomainProduct = async (
+  id: string,
+  data: {
+    name?: string
+    description?: string
+    price?: number
+    image?: string
+    status?: string
+  }
+) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const product = await client.product.update({
+      where: { id },
+      data,
+    })
+
+    if (product) {
+      return { status: 200, message: 'Product updated' }
+    }
+    return { status: 400, message: 'Failed to update product' }
+  } catch (error) {
+    console.log(error)
+    return { status: 500, message: 'Internal server error' }
+  }
+}
+
+export const onDeleteDomainProduct = async (id: string, domainId: string) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
+    })
+
+    if (!dbUser) return { status: 401, message: 'Unauthorized' }
+
+    const domain = await client.domain.findFirst({
+      where: { id: domainId, userId: dbUser.id },
+      select: { id: true },
+    })
+
+    if (!domain) return { status: 403, message: 'Unauthorized' }
+
+    await client.product.delete({ where: { id } })
+
+    return { status: 200, message: 'Product deleted' }
+  } catch (error) {
+    console.log(error)
+    return { status: 500, message: 'Internal server error' }
   }
 }
 

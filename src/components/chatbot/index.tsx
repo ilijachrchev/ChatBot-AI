@@ -75,6 +75,7 @@ const AiChatBot = (props: Props) => {
                 removeBranding={currentBot?.chatBot?.removeBranding}
                 chatPosition={currentBot?.chatBot?.chatPosition}
                 showPresenceBadge={currentBot?.chatBot?.showPresenceBadge ?? true}
+                persona={currentBot?.chatBot?.persona ?? undefined}
             />
         )}
     <div

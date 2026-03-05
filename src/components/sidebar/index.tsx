@@ -5,6 +5,15 @@ import React from 'react'
 import MaxMenu from './maximized-menu'
 import { MinMenu } from './minimized-menu'
 
+type PersonaSidebarItem = {
+  persona: string
+  domainId: string
+  domainName: string
+  label: string
+  path: string
+  icon: string
+}
+
 type Props = {
   domains:
     | {
@@ -20,6 +29,7 @@ type Props = {
   unreadCount: number
   leadCount: number
   feedbackCount: number
+  personaItems: PersonaSidebarItem[]
 }
 
 const SideBar = ({
@@ -30,6 +40,7 @@ const SideBar = ({
   unreadCount,
   leadCount,
   feedbackCount,
+  personaItems,
 }: Props) => {
   const { expand, onExpand, page, onSignOut } = useSideBar()
 
@@ -55,6 +66,7 @@ const SideBar = ({
           unreadCount={unreadCount}
           leadCount={leadCount}
           feedbackCount={feedbackCount}
+          personaItems={personaItems}
         />
       ) : (
         <MinMenu
@@ -68,6 +80,7 @@ const SideBar = ({
           unreadCount={unreadCount}
           leadCount={leadCount}
           feedbackCount={feedbackCount}
+          personaItems={personaItems}
         />
       )}
     </div>

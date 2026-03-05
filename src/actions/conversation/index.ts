@@ -369,3 +369,59 @@ export const onGetChatRoomInfo = async (id: string) => {
     console.log(error)
   }
 }
+
+export const onGetSupportTickets = async (domainId: string) => {
+  try {
+    const tickets: Array<{
+      id: string
+      ticketStatus: string
+      createdAt: Date
+      updatedAt: Date
+      Customer: { email: string | null } | null
+      message: Array<{ message: string; createdAt: Date }>
+    }> = await (client as any).chatRoom.findMany({
+      where: { domainId },
+      select: {
+        id: true,
+        ticketStatus: true,
+        createdAt: true,
+        updatedAt: true,
+        Customer: { select: { email: true } },
+        message: {
+          orderBy: { createdAt: 'desc' },
+          take: 1,
+          select: { message: true, createdAt: true },
+        },
+      },
+      orderBy: { updatedAt: 'desc' },
+    })
+
+    const counts = {
+      open: tickets.filter(t => t.ticketStatus === 'OPEN').length,
+      inProgress: tickets.filter(t => t.ticketStatus === 'IN_PROGRESS').length,
+      resolved: tickets.filter(t => t.ticketStatus === 'RESOLVED').length,
+      escalated: tickets.filter(t => t.ticketStatus === 'ESCALATED').length,
+    }
+
+    return { status: 200, tickets, counts }
+  } catch (error) {
+    console.error(error)
+    return { status: 500, tickets: [], counts: { open: 0, inProgress: 0, resolved: 0, escalated: 0 } }
+  }
+}
+
+export const onUpdateTicketStatus = async (chatRoomId: string, ticketStatus: string) => {
+  const user = await currentUser()
+  if (!user) return { status: 401, message: 'Unauthorized' }
+
+  try {
+    await (client as any).chatRoom.update({
+      where: { id: chatRoomId },
+      data: { ticketStatus },
+    })
+    return { status: 200, message: 'Ticket status updated' }
+  } catch (error) {
+    console.error(error)
+    return { status: 500, message: 'Failed to update ticket' }
+  }
+}

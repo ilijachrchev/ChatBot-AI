@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'ucarecdn.com',
+        hostname: '**',
         port: '',
         pathname: '/**',
       },

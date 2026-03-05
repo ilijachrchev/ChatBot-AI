@@ -38,6 +38,7 @@ export const useChatBot = () => {
                 backgroundColor: string | null
                 textColor: string | null
                 helpdesk: boolean
+                persona?: string | null
                 chatbotTitle?: string | null
                 chatbotSubtitle?: string | null
                 userBubbleColor?: string | null

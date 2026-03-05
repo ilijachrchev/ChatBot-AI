@@ -1,11 +1,31 @@
 import { SIDE_BAR_MENU } from '@/constants/menu'
 import { cn } from '@/lib/utils'
-import { LogOut, MonitorSmartphone, Rocket } from 'lucide-react'
+import {
+  Briefcase,
+  Calendar,
+  Headphones,
+  Home,
+  LogOut,
+  MonitorSmartphone,
+  Rocket,
+  ShoppingBag,
+  Stethoscope,
+  Utensils,
+} from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import DomainMenu from './domain-menu'
 import MenuItem from './menu-item'
+
+type PersonaSidebarItem = {
+  persona: string
+  domainId: string
+  domainName: string
+  label: string
+  path: string
+  icon: string
+}
 
 type MinMenuProps = {
   onShrink(): void
@@ -17,6 +37,7 @@ type MinMenuProps = {
   unreadCount: number
   leadCount: number
   feedbackCount: number
+  personaItems: PersonaSidebarItem[]
   domains:
     | {
         id: string
@@ -25,6 +46,44 @@ type MinMenuProps = {
       }[]
     | null
     | undefined
+}
+
+const PERSONA_ICON_MAP: Record<string, { icon: React.ReactNode; bg: string; text: string }> = {
+  BRIEFCASE: {
+    icon: <Briefcase className="w-3.5 h-3.5" />,
+    bg: 'bg-blue-100 dark:bg-blue-950/50',
+    text: 'text-blue-600',
+  },
+  HEADPHONES: {
+    icon: <Headphones className="w-3.5 h-3.5" />,
+    bg: 'bg-green-100 dark:bg-green-950/50',
+    text: 'text-green-600',
+  },
+  HOME: {
+    icon: <Home className="w-3.5 h-3.5" />,
+    bg: 'bg-orange-100 dark:bg-orange-950/50',
+    text: 'text-orange-600',
+  },
+  UTENSILS: {
+    icon: <Utensils className="w-3.5 h-3.5" />,
+    bg: 'bg-yellow-100 dark:bg-yellow-950/50',
+    text: 'text-yellow-600',
+  },
+  STETHOSCOPE: {
+    icon: <Stethoscope className="w-3.5 h-3.5" />,
+    bg: 'bg-cyan-100 dark:bg-cyan-950/50',
+    text: 'text-cyan-600',
+  },
+  CALENDAR: {
+    icon: <Calendar className="w-3.5 h-3.5" />,
+    bg: 'bg-purple-100 dark:bg-purple-950/50',
+    text: 'text-purple-600',
+  },
+  SHOPPING_BAG: {
+    icon: <ShoppingBag className="w-3.5 h-3.5" />,
+    bg: 'bg-pink-100 dark:bg-pink-950/50',
+    text: 'text-pink-600',
+  },
 }
 
 export const MinMenu = ({
@@ -38,6 +97,7 @@ export const MinMenu = ({
   unreadCount,
   leadCount,
   feedbackCount,
+  personaItems,
 }: MinMenuProps) => {
   const showOnboarding = !onboardingCompleted && !onboardingDismissed
   const isOnboardingActive = current === 'getting-started'
@@ -132,6 +192,40 @@ export const MinMenu = ({
           )}
 
           <DomainMenu min domains={domains} />
+
+          {personaItems.map((item) => {
+            const basePath = item.path.split('?')[0]
+            const isActive = current === basePath
+            const iconConfig = PERSONA_ICON_MAP[item.icon]
+            return (
+              <Link
+                key={`${item.domainId}-${item.persona}`}
+                href={`/${item.path}`}
+                className={cn(
+                  'flex items-center justify-center rounded-lg md:py-2 py-1.5 my-0.5 md:my-1',
+                  'transition-all duration-200 ease-in-out group relative',
+                  isActive
+                    ? 'bg-white dark:bg-slate-800 shadow-sm'
+                    : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                )}
+              >
+                {iconConfig && (
+                  <div
+                    className={cn(
+                      'w-8 h-8 rounded-lg flex items-center justify-center transition-transform duration-200 group-hover:scale-110',
+                      iconConfig.bg,
+                      iconConfig.text
+                    )}
+                  >
+                    {iconConfig.icon}
+                  </div>
+                )}
+                <div className="absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-slate-700 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
+                  {item.label} — {item.domainName}
+                </div>
+              </Link>
+            )
+          })}
         </div>
 
         <div className="flex flex-col border-t border-slate-200 dark:border-slate-800 pt-2 mt-2 md:pt-3 md:mt-3">

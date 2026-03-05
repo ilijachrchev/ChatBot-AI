@@ -13,8 +13,15 @@ export const usePersona = (chatBotId: string) => {
     setLoading(true)
     try {
       const response = await onUpdateChatbotPersona(chatBotId, data.persona, data.customPrompt)
-      
-      if (response.status === 200) {
+
+      if (response?.status === 429) {
+        toast.error('Persona change on cooldown', {
+          description: response.message,
+        })
+        return false
+      }
+
+      if (response?.status === 200) {
         toast.success('Success', {
           description: 'AI persona updated successfully',
         })
@@ -22,7 +29,7 @@ export const usePersona = (chatBotId: string) => {
         return true
       } else {
         toast.error('Error', {
-          description: response.message || 'Failed to update persona',
+          description: response?.message || 'Failed to update persona',
         })
         return false
       }

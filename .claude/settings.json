@@ -7,6 +7,9 @@
       "Bash(pnpm add canvas-confetti @types/canvas-confetti)",
       "Bash(npx prisma migrate dev --name add_chatbot_branding_position_css)",
       "Bash(npx prisma generate --skip-generate)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\ilija\\.claude\\projects\\d--Projects-chatbot-ai"
     ]
   }
 }

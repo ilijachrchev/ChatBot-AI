@@ -1,4 +1,3 @@
-import CalIcon from '@/icons/cal-icon'
 import ChatIcon from '@/icons/chat-icon'
 import DashboardIcon from '@/icons/dashboard-icon'
 import EmailIcon from '@/icons/email-icon'
@@ -45,11 +44,6 @@ export const SIDE_BAR_MENU: SIDE_BAR_MENU_PROPS[] = [
     label: 'Integrations',
     icon: <IntegrationsIcon />,
     path: 'integrations',
-  },
-  {
-    label: 'Appointments',
-    icon: <CalIcon />,
-    path: 'appointment',
   },
   {
     label: 'Email Marketing',

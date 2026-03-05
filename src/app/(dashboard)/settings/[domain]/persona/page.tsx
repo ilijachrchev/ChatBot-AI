@@ -15,7 +15,7 @@ const AIPersonaPage = async ({ params }: Props) => {
   const { domain } = await params
   if (!domain) redirect('/dashboard')
 
-  const domainInfo = await onGetCurrentDomainInfo(domain)
+  const domainInfo = await onGetCurrentDomainInfo(domain) as any
 
   if (!domainInfo || !domainInfo.domains || domainInfo.domains.length === 0) {
     return redirect('/dashboard')
@@ -27,20 +27,20 @@ const AIPersonaPage = async ({ params }: Props) => {
   return (
     <>
       <InfoBar />
-      
+
       <DomainSettingsNav domain={domain} />
 
       <div className="relative overflow-y-auto w-full chat-window flex-1 h-0">
-        <div className={cn(
-          isLocked && 'opacity-40 blur-[1px] pointer-events-none'
-        )}>
+        <div className={cn(isLocked && 'opacity-40 blur-[1px] pointer-events-none')}>
           <AIPersonaForm
             chatBotId={currentDomain.chatBot?.id || ''}
-            currentPersona={(currentDomain.chatBot?.persona as any) || 'SALES_AGENT'}
+            currentPersona={(currentDomain.chatBot?.persona as string) || 'SALES_AGENT'}
             currentCustomPrompt={currentDomain.chatBot?.customPrompt}
+            personaLastChangedAt={currentDomain.personaLastChangedAt}
+            domain={domain}
           />
         </div>
-        
+
         {isLocked && <DomainLockedOverlay />}
       </div>
     </>

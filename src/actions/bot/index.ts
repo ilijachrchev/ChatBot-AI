@@ -321,6 +321,12 @@ export const onAiChatBotAssistant = async (
               where: { answered: null },
               select: { question: true },
             },
+            products: {
+              select: { name: true, price: true },
+            },
+            helpdesk: {
+              select: { question: true, answer: true },
+            },
           },
         })
 
@@ -331,6 +337,74 @@ export const onAiChatBotAssistant = async (
           chatBotConfig.chatBot?.customPrompt,
           chatBotConfig.name
         )
+
+        if (chatBotConfig.chatBot?.persona === 'APPOINTMENT_SETTER') {
+          const appointmentLink = `https://sendwiseai.com/portal/${id}/appointment/portal`
+          personaPrompt = personaPrompt.replace('[APPOINTMENT_LINK]', appointmentLink)
+        }
+
+        if (chatBotConfig.chatBot?.persona === 'SALES_AGENT' || chatBotConfig.chatBot?.persona === 'ECOMMERCE_RECOMMENDER') {
+          const products = chatBotConfig.products ?? []
+          let productCatalog = products.length > 0
+            ? `\nAVAILABLE PRODUCTS:\n${products.map((p: { name: string; price: number }) => `- ${p.name}: $${p.price}`).join('\n')}\nUse this catalog to make specific recommendations. Never invent products not listed here.\n`
+            : `\nNote: No products configured yet. Speak in general terms about the business offerings until products are added in settings.\n`
+          if (chatBotConfig.chatBot?.persona === 'ECOMMERCE_RECOMMENDER' && products.length > 0) {
+            productCatalog = productCatalog.replace(
+              'Use this catalog to make specific recommendations.',
+              'Match products to customer needs. Lead with best fit, not highest price. Never recommend unlisted products.'
+            )
+          }
+          personaPrompt = personaPrompt.replace('[PRODUCT_CATALOG]', productCatalog)
+        }
+
+        if (chatBotConfig.chatBot?.persona === 'CUSTOMER_SUPPORT') {
+          const helpdeskItems = chatBotConfig.helpdesk ?? []
+          const helpdeskContext = helpdeskItems.length > 0
+            ? helpdeskItems.map((item: { question: string; answer: string }) => `Q: ${item.question}\nA: ${item.answer}`).join('\n\n')
+            : null
+          personaPrompt = personaPrompt.replace(
+            '[KNOWLEDGE_BASE]',
+            helpdeskContext
+              ? `\nKNOWLEDGE BASE — use these to answer support questions:\n${helpdeskContext}\n\nIf the answer is not in the knowledge base, clearly say: "I don't have that information on hand — let me connect you with a support agent." Then use (handoff:suggest).\n`
+              : '\nNo knowledge base configured yet. Answer generally and escalate specific policy/product questions to human agents.\n'
+          )
+        }
+
+        if (chatBotConfig.chatBot?.persona === 'REAL_ESTATE_QUALIFIER') {
+          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `https://sendwiseai.com/portal/${id}/booking`)
+          const properties: Array<{ title: string; price: number | null; bedrooms: number | null; bathrooms: number | null; location: string | null; status: string }> = await (db as any).property.findMany({
+            where: { domainId: id },
+            select: { title: true, price: true, bedrooms: true, bathrooms: true, location: true, status: true },
+          })
+          const available = properties.filter(p => p.status === 'AVAILABLE')
+          const propertyList = available.length > 0
+            ? available
+                .map(p => `- ${p.title}${p.location ? ` in ${p.location}` : ''}${p.bedrooms ? `, ${p.bedrooms}bd` : ''}${p.bathrooms ? `/${p.bathrooms}ba` : ''}${p.price ? `, $${p.price.toLocaleString()}` : ''}`)
+                .join('\n')
+            : null
+          personaPrompt = personaPrompt.replace(
+            '[PROPERTY_LISTINGS]',
+            propertyList
+              ? `\nAVAILABLE LISTINGS:\n${propertyList}\nReference these listings when relevant. Never invent properties not listed here.\n`
+              : '\nNo property listings configured yet. Speak generally about the types of properties the agency handles.\n'
+          )
+        }
+
+        if (chatBotConfig.chatBot?.persona === 'HEALTHCARE_INTAKE') {
+          personaPrompt = personaPrompt.replace(
+            '[PRACTICE_INFO]',
+            `\nPRACTICE: ${chatBotConfig.name}\nAll intake information collected will be forwarded to the medical team.\n`
+          )
+        }
+
+        if (chatBotConfig.chatBot?.persona === 'RESTAURANT_RESERVATION') {
+          personaPrompt = personaPrompt.replace(
+            '[HOURS]',
+            workingHoursText
+              ? `\nOPERATING HOURS: ${workingHoursText}\nOnly accept reservations during these hours. If a requested time is outside operating hours, politely offer alternatives within open hours.\n`
+              : '\nOperating hours: Please contact us directly for our current availability.\n'
+          )
+        }
 
         if (presence?.status === 'OFFLINE') {
           personaPrompt += `\n\nIMPORTANT: The business is currently OFFLINE. Human support is NOT available. You can still help with questions but be clear that human agents are offline.`
@@ -584,6 +658,12 @@ export const onAiChatBotAssistant = async (
                         question: true,
                     },
                 },
+                products: {
+                  select: { name: true, price: true },
+                },
+                helpdesk: {
+                  select: { question: true, answer: true },
+                },
             },
         })
         console.log('📝 Offline message from DB:', chatBotDomain?.chatBot?.offlineCustomMessage)
@@ -595,6 +675,77 @@ export const onAiChatBotAssistant = async (
           chatBotDomain.chatBot?.customPrompt,
           chatBotDomain.name
         )
+
+        if (chatBotDomain.chatBot?.persona === 'APPOINTMENT_SETTER') {
+          const customerId = room.customerId ?? undefined
+          const appointmentLink = customerId
+            ? `https://sendwiseai.com/portal/${id}/appointment/${customerId}`
+            : `https://sendwiseai.com/portal/${id}/appointment/portal`
+          personaPrompt = personaPrompt.replace('[APPOINTMENT_LINK]', appointmentLink)
+        }
+
+        if (chatBotDomain.chatBot?.persona === 'SALES_AGENT' || chatBotDomain.chatBot?.persona === 'ECOMMERCE_RECOMMENDER') {
+          const products = chatBotDomain.products ?? []
+          let productCatalog = products.length > 0
+            ? `\nAVAILABLE PRODUCTS:\n${products.map((p: { name: string; price: number }) => `- ${p.name}: $${p.price}`).join('\n')}\nUse this catalog to make specific recommendations. Never invent products not listed here.\n`
+            : `\nNote: No products configured yet. Speak in general terms about the business offerings until products are added in settings.\n`
+          if (chatBotDomain.chatBot?.persona === 'ECOMMERCE_RECOMMENDER' && products.length > 0) {
+            productCatalog = productCatalog.replace(
+              'Use this catalog to make specific recommendations.',
+              'Match products to customer needs. Lead with best fit, not highest price. Never recommend unlisted products.'
+            )
+          }
+          personaPrompt = personaPrompt.replace('[PRODUCT_CATALOG]', productCatalog)
+        }
+
+        if (chatBotDomain.chatBot?.persona === 'CUSTOMER_SUPPORT') {
+          const helpdeskItems = chatBotDomain.helpdesk ?? []
+          const helpdeskContext = helpdeskItems.length > 0
+            ? helpdeskItems.map((item: { question: string; answer: string }) => `Q: ${item.question}\nA: ${item.answer}`).join('\n\n')
+            : null
+          personaPrompt = personaPrompt.replace(
+            '[KNOWLEDGE_BASE]',
+            helpdeskContext
+              ? `\nKNOWLEDGE BASE — use these to answer support questions:\n${helpdeskContext}\n\nIf the answer is not in the knowledge base, clearly say: "I don't have that information on hand — let me connect you with a support agent." Then use (handoff:suggest).\n`
+              : '\nNo knowledge base configured yet. Answer generally and escalate specific policy/product questions to human agents.\n'
+          )
+        }
+
+        if (chatBotDomain.chatBot?.persona === 'REAL_ESTATE_QUALIFIER') {
+          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `https://sendwiseai.com/portal/${id}/booking`)
+          const properties: Array<{ title: string; price: number | null; bedrooms: number | null; bathrooms: number | null; location: string | null; status: string }> = await (db as any).property.findMany({
+            where: { domainId: id },
+            select: { title: true, price: true, bedrooms: true, bathrooms: true, location: true, status: true },
+          })
+          const available = properties.filter(p => p.status === 'AVAILABLE')
+          const propertyList = available.length > 0
+            ? available
+                .map(p => `- ${p.title}${p.location ? ` in ${p.location}` : ''}${p.bedrooms ? `, ${p.bedrooms}bd` : ''}${p.bathrooms ? `/${p.bathrooms}ba` : ''}${p.price ? `, $${p.price.toLocaleString()}` : ''}`)
+                .join('\n')
+            : null
+          personaPrompt = personaPrompt.replace(
+            '[PROPERTY_LISTINGS]',
+            propertyList
+              ? `\nAVAILABLE LISTINGS:\n${propertyList}\nReference these listings when relevant. Never invent properties not listed here.\n`
+              : '\nNo property listings configured yet. Speak generally about the types of properties the agency handles.\n'
+          )
+        }
+
+        if (chatBotDomain.chatBot?.persona === 'HEALTHCARE_INTAKE') {
+          personaPrompt = personaPrompt.replace(
+            '[PRACTICE_INFO]',
+            `\nPRACTICE: ${chatBotDomain.name}\nAll intake information collected will be forwarded to the medical team.\n`
+          )
+        }
+
+        if (chatBotDomain.chatBot?.persona === 'RESTAURANT_RESERVATION') {
+          personaPrompt = personaPrompt.replace(
+            '[HOURS]',
+            workingHoursText
+              ? `\nOPERATING HOURS: ${workingHoursText}\nOnly accept reservations during these hours. If a requested time is outside operating hours, politely offer alternatives within open hours.\n`
+              : '\nOperating hours: Please contact us directly for our current availability.\n'
+          )
+        }
 
         if (presence) {
           if (presence?.status === 'OFFLINE') {
@@ -852,6 +1003,19 @@ IMPORTANT: Use the knowledge base context above if it's relevant to the user's q
             .replace(/\(handoff:suggest\)/gi, '')
             .replace(/\(handoff:require\)/gi, '')
             .trim();
+
+          if (chatBotDomain.chatBot?.persona === 'REAL_ESTATE_QUALIFIER' && checkCustomer?.customer[0]?.id) {
+            const isSummaryMessage =
+              cleanResponse.toLowerCase().includes("based on what you've told me") ||
+              cleanResponse.toLowerCase().includes("here's a summary")
+            if (isSummaryMessage) {
+              const recentMessages = [...chat.slice(-10), { role: 'assistant' as const, content: cleanResponse }]
+              db.customer.update({
+                where: { id: checkCustomer.customer[0].id },
+                data: { propertyRequirements: JSON.stringify(recentMessages) },
+              }).catch(console.error)
+            }
+          }
 
           if (requireHandoff) {
             let requireHandoffCustomerId = room.customerId ?? checkCustomer?.customer[0]?.id ?? null

@@ -73,6 +73,7 @@ type Props = {
   removeBranding?: boolean | null
   chatPosition?: string | null
   showPresenceBadge?: boolean
+  persona?: string
 }
 
 export const BotWindow = forwardRef<HTMLDivElement, Props>(
@@ -110,6 +111,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       removeBranding,
       chatPosition,
       showPresenceBadge,
+      persona,
     },
     ref
   ) => {
@@ -371,6 +373,12 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 </CardDescription>
               </div>
               <Separator orientation="horizontal" className="my-2" />
+
+              {persona === 'CUSTOMER_SUPPORT' && (
+                <div className="flex items-center gap-2 bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-300 text-xs rounded-lg px-3 py-2 mb-1">
+                  <span>🎧 Support mode active — {helpdesk?.length ?? 0} FAQ{(helpdesk?.length ?? 0) !== 1 ? 's' : ''} loaded</span>
+                </div>
+              )}
 
               {(helpdesk ?? []).map((desk) => (
                 <Accordion

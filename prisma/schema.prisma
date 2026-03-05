@@ -54,6 +54,7 @@ model Domain {
   timezone                  String              @default("UTC")
   realtimeEnabled           Boolean             @default(true)
   liveNotificationsEnabled  Boolean             @default(false)
+  personaLastChangedAt      DateTime?
   chatBot            ChatBot?
   chatRooms          ChatRoom[]          @relation("DomainToChatRoooms")
   customer           Customer[]
@@ -67,6 +68,8 @@ model Domain {
   workingHours       WorkingHours?
   conversationUsage  ConversationUsage[]
   ratings            ConversationRating[]
+  properties         Property[]
+  reservations       Reservation[]
 
   @@index([userId])
   @@index([verificationStatus])
@@ -146,9 +149,11 @@ model CustomerResponses {
 }
 
 model Customer {
-  id        String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email     String?
-  domainId  String?             @db.Uuid
+  id                   String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email                String?
+  propertyRequirements String?
+  salesStage           String              @default("NEW")
+  domainId             String?             @db.Uuid
   booking   Bookings[]
   chatRoom  ChatRoom[]
   Domain    Domain?             @relation(fields: [domainId], references: [id], onDelete: Cascade)
@@ -156,19 +161,20 @@ model Customer {
 }
 
 model ChatRoom {
-  id         String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  live       Boolean              @default(false)
-  mailed     Boolean              @default(false)
-  starred    Boolean              @default(false)
-  status     String               @default("OPEN")
-  createdAt  DateTime             @default(now())
-  updatedAt  DateTime             @updatedAt
-  domainId   String?              @db.Uuid
-  customerId String?              @db.Uuid
-  message    ChatMessage[]
-  rating     ConversationRating?
-  Customer   Customer?            @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  Domain     Domain?              @relation("DomainToChatRoooms", fields: [domainId], references: [id], onDelete: Cascade)
+  id           String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  live         Boolean              @default(false)
+  mailed       Boolean              @default(false)
+  starred      Boolean              @default(false)
+  status       String               @default("OPEN")
+  ticketStatus String               @default("OPEN")
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  domainId     String?              @db.Uuid
+  customerId   String?              @db.Uuid
+  message      ChatMessage[]
+  rating       ConversationRating?
+  Customer     Customer?            @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Domain       Domain?              @relation("DomainToChatRoooms", fields: [domainId], references: [id], onDelete: Cascade)
 }
 
 model ChatMessage {
@@ -210,13 +216,15 @@ model Campaign {
 }
 
 model Product {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name      String
-  price     Int
-  image     String
-  createdAt DateTime @default(now())
-  domainId  String?  @db.Uuid
-  Domain    Domain?  @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  price       Int
+  image       String   @default("")
+  description String?
+  status      String   @default("ACTIVE")
+  createdAt   DateTime @default(now())
+  domainId    String?  @db.Uuid
+  Domain      Domain?  @relation(fields: [domainId], references: [id], onDelete: Cascade)
 }
 
 model TrustedDevice {
@@ -481,6 +489,44 @@ model ConversationRating {
 
   @@index([domainId])
   @@index([createdAt])
+}
+
+model Property {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  domainId     String   @db.Uuid
+  title        String
+  description  String?
+  price        Int?
+  bedrooms     Int?
+  bathrooms    Int?
+  location     String?
+  propertyType String   @default("HOUSE")
+  status       String   @default("AVAILABLE")
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  domain       Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([domainId])
+}
+
+model Reservation {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  domainId        String   @db.Uuid
+  customerName    String
+  email           String
+  phone           String?
+  partySize       Int      @default(2)
+  date            DateTime
+  timeSlot        String
+  specialOccasion String?
+  dietaryNotes    String?
+  seatingPref     String?
+  status          String   @default("PENDING")
+  createdAt       DateTime @default(now())
+  domain          Domain   @relation(fields: [domainId], references: [id], onDelete: Cascade)
+
+  @@index([domainId])
+  @@index([date])
 }
 
 enum VerificationStatus {

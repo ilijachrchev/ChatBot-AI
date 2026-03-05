@@ -4,36 +4,96 @@ import InfoBar from '@/components/infobar'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Separator } from '@/components/ui/separator'
 import { currentUser } from '@clerk/nextjs/server'
-import { Calendar, Clock, Mail, Globe } from 'lucide-react'
-import React from 'react'
+import { Calendar, Clock, Mail, Globe, AlertTriangle, CheckCircle2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+import { client } from '@/lib/prisma'
+import Link from 'next/link'
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
+type Props = {
+  searchParams: Promise<{ domain?: string }>
+}
 
-type Props = Record<string, never>
+async function getUserDomainPersonas(clerkId: string) {
+  const result = await client.user.findUnique({
+    where: { clerkId },
+    select: {
+      domains: {
+        select: {
+          id: true,
+          name: true,
+          chatBot: { select: { persona: true } },
+        },
+      },
+    },
+  })
+  return result?.domains ?? []
+}
 
-const Page = async (props: Props) => {
+const Page = async ({ searchParams }: Props) => {
   const user = await currentUser()
-
   if (!user) return null
-  
-  const domainBookings = await onGetAllBookingsForCurrentUser(user.id)
+
+  const { domain: domainId } = await searchParams
+
+  const [domainBookings, userDomains] = await Promise.all([
+    onGetAllBookingsForCurrentUser(user.id),
+    getUserDomainPersonas(user.id),
+  ])
+
+  const filteredBookings = domainId && domainBookings?.bookings
+    ? { bookings: domainBookings.bookings.filter((b) => b.domainId === domainId) }
+    : domainBookings
+
+  const activeDomain = domainId ? userDomains.find((d) => d.id === domainId) : null
+
   const today = new Date()
 
-  if (!domainBookings) {
+  const hasAppointmentSetterDomain = userDomains.some(
+    (d) => d.chatBot?.persona === 'APPOINTMENT_SETTER'
+  )
+
+  if (!filteredBookings) {
     return (
       <>
         <InfoBar />
-        <div className='flex items-center justify-center h-[400px]'>
-          <div className='text-center'>
-            <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-4'>
-              <Calendar className='h-8 w-8 text-slate-400' />
+
+        {activeDomain && (
+          <div className="mx-4 md:mx-6 mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+            <Globe className="h-4 w-4 text-slate-500" />
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              {activeDomain.name}
+            </span>
+          </div>
+        )}
+
+        {userDomains.length > 0 && !hasAppointmentSetterDomain && (
+          <div className="mx-4 md:mx-6 mt-4 flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
+            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+            <div className="flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <p className="text-sm text-amber-800 dark:text-amber-300">
+                Your chatbot is not set to Appointment Setter persona. Appointments will not be automatically collected.
+              </p>
+              <Link
+                href={`/settings/${userDomains[0]?.name}/persona`}
+                className="text-sm font-semibold text-amber-700 dark:text-amber-400 hover:underline whitespace-nowrap"
+              >
+                Switch to Appointment Setter →
+              </Link>
             </div>
-            <p className='text-lg font-semibold text-slate-900 dark:text-white mb-1'>
+          </div>
+        )}
+
+        <div className="flex items-center justify-center h-[400px]">
+          <div className="text-center">
+            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
+              <Calendar className="h-8 w-8 text-slate-400" />
+            </div>
+            <p className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
               No Appointments
             </p>
-            <p className='text-sm text-slate-600 dark:text-slate-400'>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
               Your appointments will appear here
             </p>
           </div>
@@ -42,37 +102,74 @@ const Page = async (props: Props) => {
     )
   }
 
-  const bookingExistToday = domainBookings.bookings.filter((booking: any ) => {
-    return booking.date.getDate() === today.getDate() &&
-           booking.date.getMonth() === today.getMonth() &&
-           booking.date.getFullYear() === today.getFullYear()
+  const bookingExistToday = filteredBookings.bookings.filter((booking) => {
+    return (
+      booking.date.getDate() === today.getDate() &&
+      booking.date.getMonth() === today.getMonth() &&
+      booking.date.getFullYear() === today.getFullYear()
+    )
   })
 
   return (
     <>
       <InfoBar />
-      <div className='grid grid-cols-1 lg:grid-cols-3 flex-1 h-0 gap-4 md:gap-6 px-4 md:px-6 pb-8 overflow-hidden'>
-        <div className='lg:col-span-2 overflow-y-auto'>
-          <AllApointments bookings={domainBookings?.bookings} />
+
+      {activeDomain && (
+        <div className="mx-4 md:mx-6 mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+          <Globe className="h-4 w-4 text-slate-500" />
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            {activeDomain.name}
+          </span>
+        </div>
+      )}
+
+      {hasAppointmentSetterDomain ? (
+        <div className="mx-4 md:mx-6 mt-4 flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
+          <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+          <p className="text-sm text-emerald-800 dark:text-emerald-300">
+            Appointments are automatically collected by your{' '}
+            <span className="font-semibold">Appointment Setter</span> chatbot persona.
+          </p>
+        </div>
+      ) : (
+        <div className="mx-4 md:mx-6 mt-4 flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
+          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+          <div className="flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <p className="text-sm text-amber-800 dark:text-amber-300">
+              Your chatbot is not set to Appointment Setter persona. Appointments will not be automatically collected.
+            </p>
+            <Link
+              href={`/settings/${userDomains[0]?.name}/persona`}
+              className="text-sm font-semibold text-amber-700 dark:text-amber-400 hover:underline whitespace-nowrap"
+            >
+              Switch to Appointment Setter →
+            </Link>
+          </div>
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 flex-1 h-0 gap-4 md:gap-6 px-4 md:px-6 pb-8 overflow-hidden mt-4">
+        <div className="lg:col-span-2 overflow-y-auto">
+          <AllApointments bookings={filteredBookings?.bookings} />
         </div>
 
-        <div className='col-span-1 overflow-y-auto'>
-          <div className='sticky top-0 mb-4'>
-            <h3 className='text-lg font-bold text-slate-900 dark:text-white mb-1'>
+        <div className="col-span-1 overflow-y-auto">
+          <div className="sticky top-0 mb-4">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">
               Today's Appointments
             </h3>
-            <p className='text-sm text-slate-600 dark:text-slate-400'>
-              {today.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                month: 'long', 
-                day: 'numeric' 
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              {today.toLocaleDateString('en-US', {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
               })}
             </p>
           </div>
 
-          <div className='space-y-3 md:space-y-4'>
+          <div className="space-y-3 md:space-y-4">
             {bookingExistToday.length ? (
-              bookingExistToday.map((booking: any) => (
+              bookingExistToday.map((booking) => (
                 <div
                   key={booking.id}
                   className={cn(
@@ -83,20 +180,20 @@ const Page = async (props: Props) => {
                     'hover:shadow-card-hover hover:border-blue-200 dark:hover:border-blue-800'
                   )}
                 >
-                  <div className='absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500' />
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  <div className='relative z-10 flex'>
-                    <div className='w-24 md:w-28 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 flex flex-col items-center justify-center py-6 border-r border-blue-200 dark:border-blue-800'>
-                      <Clock className='w-5 h-5 text-blue-600 dark:text-blue-400 mb-2' />
-                      <p className='text-lg md:text-xl font-bold text-blue-900 dark:text-blue-100 text-center'>
+                  <div className="relative z-10 flex">
+                    <div className="w-24 md:w-28 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 flex flex-col items-center justify-center py-6 border-r border-blue-200 dark:border-blue-800">
+                      <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400 mb-2" />
+                      <p className="text-lg md:text-xl font-bold text-blue-900 dark:text-blue-100 text-center">
                         {booking.slot}
                       </p>
                     </div>
 
-                    <div className='flex-1 p-4'>
-                      <div className='flex justify-between items-start mb-3 gap-2'>
-                        <div className='flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400'>
-                          <Calendar className='w-3.5 h-3.5' />
+                    <div className="flex-1 p-4">
+                      <div className="flex justify-between items-start mb-3 gap-2">
+                        <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-400">
+                          <Calendar className="w-3.5 h-3.5" />
                           <span>
                             Created {booking.createdAt.getHours()}:
                             {booking.createdAt.getMinutes().toString().padStart(2, '0')}{' '}
@@ -105,27 +202,27 @@ const Page = async (props: Props) => {
                         </div>
 
                         {booking.Customer?.Domain?.name && (
-                          <div className='flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300'>
-                            <Globe className='w-3 h-3' />
-                            <span className='truncate max-w-[100px]'>
+                          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300">
+                            <Globe className="w-3 h-3" />
+                            <span className="truncate max-w-[100px]">
                               {booking.Customer.Domain.name}
                             </span>
                           </div>
                         )}
                       </div>
 
-                      <Separator className='mb-3' />
+                      <Separator className="mb-3" />
 
-                      <div className='flex items-center gap-3'>
-                        <Avatar className='h-9 w-9 border-2 border-slate-200 dark:border-slate-700'>
-                          <AvatarFallback className='bg-gradient-to-br from-blue-500 to-blue-600 text-white text-sm font-semibold'>
+                      <div className="flex items-center gap-3">
+                        <Avatar className="h-9 w-9 border-2 border-slate-200 dark:border-slate-700">
+                          <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white text-sm font-semibold">
                             {booking.email[0].toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
-                        <div className='flex-1 min-w-0'>
-                          <div className='flex items-center gap-1.5 text-sm font-medium text-slate-900 dark:text-white'>
-                            <Mail className='w-3.5 h-3.5 text-slate-400 flex-shrink-0' />
-                            <span className='truncate'>{booking.email}</span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-1.5 text-sm font-medium text-slate-900 dark:text-white">
+                            <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                            <span className="truncate">{booking.email}</span>
                           </div>
                         </div>
                       </div>
@@ -134,14 +231,14 @@ const Page = async (props: Props) => {
                 </div>
               ))
             ) : (
-              <div className='text-center py-12 px-4 rounded-xl border border-dashed border-slate-200 dark:border-slate-800'>
-                <div className='inline-flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-3'>
-                  <Calendar className='h-7 w-7 text-slate-400' />
+              <div className="text-center py-12 px-4 rounded-xl border border-dashed border-slate-200 dark:border-slate-800">
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-3">
+                  <Calendar className="h-7 w-7 text-slate-400" />
                 </div>
-                <p className='text-sm font-medium text-slate-900 dark:text-white mb-1'>
+                <p className="text-sm font-medium text-slate-900 dark:text-white mb-1">
                   No Appointments Today
                 </p>
-                <p className='text-xs text-slate-600 dark:text-slate-400'>
+                <p className="text-xs text-slate-600 dark:text-slate-400">
                   Your schedule is clear for today
                 </p>
               </div>
