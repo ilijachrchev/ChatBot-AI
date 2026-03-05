@@ -143,11 +143,11 @@ export function SecuritySection() {
 
   return (
     <div className='space-y-6'>
-      <Card className='border-slate-200 dark:border-slate-800 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20'>
+      <Card className='border-slate-200 dark:border-slate-800'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20'>
-              <Shield className='w-6 h-6 text-white' />
+            <div className='w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center'>
+              <Shield className='w-6 h-6 text-white dark:text-slate-900' />
             </div>
             <div>
               <CardTitle className='text-xl'>Account Security</CardTitle>
@@ -161,7 +161,7 @@ export function SecuritySection() {
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
             <div className='p-4 bg-white/60 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800'>
               <div className='flex items-center gap-3 mb-2'>
-                <Mail className='w-5 h-5 text-blue-600 dark:text-blue-400' />
+                <Mail className='w-5 h-5 text-slate-600 dark:text-slate-400' />
                 <h4 className='text-sm font-semibold text-slate-900 dark:text-white'>
                   Email
                 </h4>
@@ -250,7 +250,7 @@ export function SecuritySection() {
         <CardContent>
           {loading ? (
             <div className='text-center py-8'>
-              <div className='w-8 h-8 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto' />
+              <div className='w-8 h-8 border-2 border-slate-900 dark:border-white border-t-transparent rounded-full animate-spin mx-auto' />
               <p className='text-sm text-slate-600 dark:text-slate-400 mt-3'>
                 Loading sessions...
               </p>
@@ -278,7 +278,7 @@ export function SecuritySection() {
                     className={cn(
                       'flex items-center justify-between p-4 rounded-xl border transition-all',
                       isCurrentSession
-                        ? 'bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800'
+                        ? 'bg-slate-900 dark:bg-white border-slate-900 dark:border-white'
                         : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                     )}
                   >
@@ -287,7 +287,7 @@ export function SecuritySection() {
                         className={cn(
                           'w-10 h-10 rounded-lg flex items-center justify-center',
                           isCurrentSession
-                            ? 'bg-blue-100 dark:bg-blue-900/30'
+                            ? 'bg-white/10 dark:bg-slate-900/10'
                             : 'bg-slate-100 dark:bg-slate-800'
                         )}
                       >
@@ -295,26 +295,36 @@ export function SecuritySection() {
                           className={cn(
                             'w-5 h-5',
                             isCurrentSession
-                              ? 'text-blue-600 dark:text-blue-400'
+                              ? 'text-white dark:text-slate-900'
                               : 'text-slate-600 dark:text-slate-400'
                           )}
                         />
                       </div>
                       <div>
                         <div className='flex items-center gap-2'>
-                          <span className='text-sm font-medium text-slate-900 dark:text-white'>
+                          <span className={cn(
+                            'text-sm font-medium',
+                            isCurrentSession
+                              ? 'text-white dark:text-slate-900'
+                              : 'text-slate-900 dark:text-white'
+                          )}>
                             {session.latestActivity?.browserName || 'Browser'}{' '}
                             {session.latestActivity?.browserVersion && `v${session.latestActivity.browserVersion}`}
                             {' on '}
                             {session.latestActivity?.deviceType || 'Device'}
                           </span>
                           {isCurrentSession && (
-                            <span className='px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-full'>
+                            <span className='px-2 py-0.5 bg-white/20 dark:bg-slate-900/20 text-white dark:text-slate-900 text-xs font-medium rounded-full'>
                               Current
                             </span>
                           )}
                         </div>
-                        <p className='text-xs text-slate-600 dark:text-slate-400 mt-0.5'>
+                        <p className={cn(
+                          'text-xs mt-0.5',
+                          isCurrentSession
+                            ? 'text-slate-300 dark:text-slate-600'
+                            : 'text-slate-600 dark:text-slate-400'
+                        )}>
                           {session.latestActivity?.city && session.latestActivity?.country
                             ? `${session.latestActivity.city}, ${session.latestActivity.country}`
                             : session.latestActivity?.ipAddress || 'Unknown location'}{' '}

@@ -73,7 +73,9 @@ export const onUpdateOnboardingStep = async (step: OnboardingStep) => {
       (s) => Boolean(updated[s as keyof typeof updated])
     )
 
-    if (allDone && !updated.completedAt) {
+    const wasNewlyCompleted = allDone && !updated.completedAt
+
+    if (wasNewlyCompleted) {
       await Promise.all([
         client.onboardingProgress.update({
           where: { userId: dbUser.id },
@@ -86,7 +88,7 @@ export const onUpdateOnboardingStep = async (step: OnboardingStep) => {
       ])
     }
 
-    return { status: 200, allDone }
+    return { status: 200, allDone, wasNewlyCompleted }
   } catch (error) {
     console.error('Error updating onboarding step:', error)
     return { status: 500, allDone: false }

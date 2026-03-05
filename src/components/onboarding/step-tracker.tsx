@@ -14,7 +14,7 @@ export const StepTracker = ({ step }: Props) => {
     const track = async () => {
       const result = await onUpdateOnboardingStep(step)
 
-      if (result.allDone) {
+      if (result.wasNewlyCompleted) {
         confetti({
           particleCount: 50,
           spread: 40,

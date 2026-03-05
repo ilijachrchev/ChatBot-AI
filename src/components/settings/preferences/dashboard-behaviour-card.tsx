@@ -79,8 +79,8 @@ export function DashboardBehaviorCard({ preferences }: DashboardBehaviorCardProp
     <Card className='border-slate-200 dark:border-slate-800'>
       <CardHeader>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center'>
-            <Layout className='w-5 h-5 text-green-600 dark:text-green-400' />
+          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center'>
+            <Layout className='w-5 h-5 text-slate-900 dark:text-white' />
           </div>
           <div>
             <CardTitle className='text-base'>Dashboard Behavior</CardTitle>
@@ -172,7 +172,7 @@ export function DashboardBehaviorCard({ preferences }: DashboardBehaviorCardProp
                 onClick={handleSave}
                 size='sm'
                 disabled={saving}
-                className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+                className='bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900'
               >
                 {saving ? (
                   <>

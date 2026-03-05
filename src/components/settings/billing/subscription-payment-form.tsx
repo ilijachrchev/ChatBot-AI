@@ -5,6 +5,7 @@ import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { Button } from '@/components/ui/button'
 import { Loader2, ArrowLeft, Lock } from 'lucide-react'
 import { toast } from 'sonner'
+import { onUpdateOnboardingStep } from '@/actions/onboarding'
 
 interface SubscriptionPaymentFormProps {
   amount: number // Amount in DOLLARS (not cents)
@@ -46,6 +47,7 @@ export function SubscriptionPaymentForm({
       }
 
       toast.success('Subscription activated!')
+      await onUpdateOnboardingStep('exploredPricing')
       onSuccess()
     } catch (err) {
       console.error(err)
@@ -94,7 +96,7 @@ export function SubscriptionPaymentForm({
         <Button
           type="submit"
           disabled={!stripe || !elements || processing}
-          className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          className="flex-1 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900"
         >
           {processing ? (
             <>

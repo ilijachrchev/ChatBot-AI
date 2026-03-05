@@ -126,8 +126,8 @@ export function UpgradePlanModal({
           <>
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                  <TargetIcon className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center">
+                  <TargetIcon className="w-6 h-6 text-white dark:text-slate-900" />
                 </div>
                 <div>
                   <DialogTitle className="text-2xl">
@@ -160,7 +160,7 @@ export function UpgradePlanModal({
                     <p className="text-xl font-semibold text-slate-900 dark:text-white">
                       {targetPlanDetails.displayName}
                     </p>
-                    <p className="text-lg font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <p className="text-lg font-bold text-slate-900 dark:text-white">
                       {targetPlanDetails.priceDisplay}/month
                     </p>
                   </div>
@@ -237,7 +237,7 @@ export function UpgradePlanModal({
               <Button
                 onClick={handleContinue}
                 disabled={loading || !publishableKey || !stripePromise}
-                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                className="flex-1 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900"
               >
                 {loading ? (
                   <>

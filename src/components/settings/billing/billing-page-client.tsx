@@ -142,7 +142,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
               <CardTitle className="flex items-center justify-between">
                 <span>Plan Details</span>
                 {planDetails.recommended && (
-                  <Badge className="bg-gradient-to-r from-purple-600 to-pink-600">
+                  <Badge className="bg-slate-900 text-white dark:bg-white dark:text-slate-900">
                     Recommended
                   </Badge>
                 )}
@@ -203,15 +203,15 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
 
               <div className="flex flex-wrap gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
                 {!isHighestPlan ? (
-                  <Button 
+                  <Button
                     onClick={handleUpgradeClick}
-                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                    className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900"
                   >
                     <Sparkles className="w-4 h-4 mr-2" />
                     Upgrade to {nextPlan && PRICING_CONFIG[nextPlan].displayName}
                   </Button>
                 ) : (
-                  <Button disabled className="bg-gradient-to-r from-purple-600 to-pink-600">
+                  <Button disabled className="bg-slate-900 text-white dark:bg-white dark:text-slate-900">
                     <Crown className="w-4 h-4 mr-2" />
                     You&apos;re on the best plan!
                   </Button>
@@ -278,13 +278,13 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
               </ul>
 
               {missingFeatures.length > 0 && !isHighestPlan && (
-                <div className="mt-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg border border-purple-200 dark:border-purple-800">
-                  <p className="text-sm font-medium text-purple-900 dark:text-purple-100 mb-2">
+                <div className="mt-6 p-4 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800">
+                  <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">
                     Unlock more with {nextPlan && PRICING_CONFIG[nextPlan].displayName}:
                   </p>
                   <ul className="space-y-1">
                     {missingFeatures.slice(0, 3).map(([key]) => (
-                      <li key={key} className="text-xs text-purple-700 dark:text-purple-300 flex items-center gap-2">
+                      <li key={key} className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-2">
                         <Sparkles className="w-3 h-3" />
                         {key.replace(/([A-Z])/g, ' $1').trim()}
                       </li>
@@ -383,9 +383,10 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                 <CardTitle>Payment Methods</CardTitle>
                 <CardDescription>Manage your saved payment methods</CardDescription>
               </div>
-              <Button 
+              <Button
                 size="sm"
                 onClick={() => setAddPaymentModalOpen(true)}
+                className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Card

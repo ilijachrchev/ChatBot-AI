@@ -174,11 +174,11 @@ const ProfileSettings = ({ user }: Props) => {
 
   return (
     <div className='space-y-6'>
-      <Card className='border-slate-200 dark:border-slate-800 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20'>
+      <Card className='border-slate-200 dark:border-slate-800'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20'>
-              <UserIcon className='w-6 h-6 text-white' />
+            <div className='w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center'>
+              <UserIcon className='w-6 h-6 text-white dark:text-slate-900' />
             </div>
             <div>
               <CardTitle className='text-xl'>Your Profile</CardTitle>
@@ -206,7 +206,7 @@ const ProfileSettings = ({ user }: Props) => {
                   alt={user.fullname}
                   className='object-cover'
                 />
-                <AvatarFallback className='text-3xl bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold'>
+                <AvatarFallback className='text-3xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold'>
                   {user.fullname.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -215,8 +215,8 @@ const ProfileSettings = ({ user }: Props) => {
                 htmlFor='avatar-upload'
                 className={cn(
                   'absolute bottom-0 right-0',
-                  'bg-blue-600 hover:bg-blue-700',
-                  'text-white p-3 rounded-full',
+                  'bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100',
+                  'text-white dark:text-slate-900 p-3 rounded-full',
                   'cursor-pointer transition-all',
                   'shadow-lg hover:scale-110',
                   avatarLoading && 'opacity-50 cursor-not-allowed'
@@ -249,14 +249,14 @@ const ProfileSettings = ({ user }: Props) => {
                 Member since {memberSince}
               </p>
 
-              <div className='mt-4 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-xl border border-blue-200 dark:border-blue-800'>
+              <div className='mt-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800'>
                 <div className='flex items-start gap-3'>
-                  <Upload className='w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0' />
+                  <Upload className='w-5 h-5 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0' />
                   <div>
-                    <p className='text-sm text-blue-900 dark:text-blue-100 font-medium'>
+                    <p className='text-sm text-slate-900 dark:text-white font-medium'>
                       Upload a new picture
                     </p>
-                    <p className='text-xs text-blue-700 dark:text-blue-300 mt-1'>
+                    <p className='text-xs text-slate-500 dark:text-slate-400 mt-1'>
                       Click the camera icon to select an image from your
                       computer. Your picture will be uploaded and saved
                       automatically.
@@ -320,10 +320,8 @@ const ProfileSettings = ({ user }: Props) => {
                 type='submit'
                 disabled={loading || !isDirty || isNameLocked}
                 className={cn(
-                  'gap-2 bg-gradient-to-r from-blue-600 to-purple-600',
-                  'hover:from-blue-700 hover:to-purple-700',
+                  'gap-2 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900',
                   'disabled:opacity-50 disabled:cursor-not-allowed',
-                  'shadow-lg shadow-blue-500/30',
                   'transition-all duration-200'
                 )}
               >

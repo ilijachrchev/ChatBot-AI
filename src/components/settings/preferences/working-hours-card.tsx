@@ -97,8 +97,8 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
     <Card className='border-slate-200 dark:border-slate-800'>
       <CardHeader>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center'>
-            <Clock className='w-5 h-5 text-amber-600 dark:text-amber-400' />
+          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center'>
+            <Clock className='w-5 h-5 text-slate-900 dark:text-white' />
           </div>
           <div className='flex-1'>
             <CardTitle className='text-base'>Working Hours</CardTitle>
@@ -159,7 +159,7 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
                     disabled={saving}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       isSelected
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
                     }`}
                   >
@@ -188,7 +188,7 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
                   onClick={handleSave}
                   size='sm'
                   disabled={saving}
-                  className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+                  className='bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900'
                 >
                   {saving ? (
                     <>

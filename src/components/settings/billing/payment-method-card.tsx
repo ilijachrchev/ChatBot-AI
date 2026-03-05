@@ -89,9 +89,9 @@ export function PaymentMethodCard({
 
   return (
     <>
-      <div className={`relative p-4 rounded-xl border-2 ${isDefault ? 'border-blue-500 dark:border-blue-600' : 'border-slate-200 dark:border-slate-800'} bg-gradient-to-br ${cardColor} text-white shadow-lg`}>
+      <div className={`relative p-4 rounded-xl border-2 ${isDefault ? 'border-white/50' : 'border-slate-200 dark:border-slate-800'} bg-gradient-to-br ${cardColor} text-white shadow-lg`}>
         {isDefault && (
-          <Badge className="absolute top-3 right-3 bg-green-500 text-white text-xs">
+          <Badge className="absolute top-3 right-3 bg-white text-slate-900 border border-slate-200 text-xs">
             Default
           </Badge>
         )}
