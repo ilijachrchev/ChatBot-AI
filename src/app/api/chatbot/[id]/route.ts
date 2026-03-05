@@ -23,6 +23,10 @@ export async function GET(
         botTextColor: true,
         buttonStyle: true,
         showAvatars: true,
+        chatPosition: true,
+        teaserEnabled: true,
+        teaserMessage: true,
+        teaserDelay: true,
       },
     })
 

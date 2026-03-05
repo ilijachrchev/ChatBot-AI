@@ -82,6 +82,9 @@ export const useSettings = (id: string, chatBotId: string) => {
         register('removeBranding')
         register('chatPosition')
         register('customCss')
+        register('teaserEnabled')
+        register('teaserMessage')
+        register('teaserDelay')
     }, [register])
     
     const watchedIcon = watch('image')
@@ -101,6 +104,9 @@ export const useSettings = (id: string, chatBotId: string) => {
     const watchedRemoveBranding = watch('removeBranding')
     const watchedChatPosition = watch('chatPosition')
     const watchedCustomCss = watch('customCss')
+    const watchedTeaserEnabled = watch('teaserEnabled')
+    const watchedTeaserMessage = watch('teaserMessage')
+    const watchedTeaserDelay = watch('teaserDelay')
 
     const [previewIcon, setPreviewIcon] = useState<string | null>(null)
 
@@ -135,6 +141,9 @@ export const useSettings = (id: string, chatBotId: string) => {
         const removeBranding = values.removeBranding
         const chatPosition = values.chatPosition
         const customCss = values.customCss
+        const teaserEnabled = values.teaserEnabled
+        const teaserMessage = values.teaserMessage
+        const teaserDelay = values.teaserDelay
 
         reset()
 
@@ -194,7 +203,10 @@ export const useSettings = (id: string, chatBotId: string) => {
             widgetStyle ||
             removeBranding !== undefined ||
             chatPosition ||
-            customCss !== undefined
+            customCss !== undefined ||
+            teaserEnabled !== undefined ||
+            teaserMessage !== undefined ||
+            teaserDelay !== undefined
         ) {
             const customization = await onUpdateChatbotCustomization(chatBotId, {
                 chatbotTitle,
@@ -211,6 +223,9 @@ export const useSettings = (id: string, chatBotId: string) => {
                 removeBranding,
                 chatPosition,
                 customCss,
+                teaserEnabled,
+                teaserMessage,
+                teaserDelay,
             })
 
             if (customization) {
@@ -262,6 +277,9 @@ export const useSettings = (id: string, chatBotId: string) => {
         watchedRemoveBranding,
         watchedChatPosition,
         watchedCustomCss,
+        watchedTeaserEnabled,
+        watchedTeaserMessage,
+        watchedTeaserDelay,
     }
 }
 

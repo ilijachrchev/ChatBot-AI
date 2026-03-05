@@ -210,6 +210,9 @@ export const onGetCurrentChatBot = async (id: string) => {
                         offlineBehavior: true,
                         offlineCustomMessage: true,
                         showPresenceBadge: true,
+                        teaserEnabled: true,
+                        teaserMessage: true,
+                        teaserDelay: true,
                     },
                 },
                 User: {

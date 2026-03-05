@@ -104,6 +104,9 @@ model ChatBot {
   offlineBehavior      String  @default("SHOW_HOURS_AND_EMAIL")
   offlineCustomMessage String?
   showPresenceBadge    Boolean @default(true)
+  teaserEnabled        Boolean @default(false)
+  teaserMessage        String? @default("Have a question? 💬")
+  teaserDelay          Int     @default(3)
   Domain               Domain? @relation(fields: [domainId], references: [id], onDelete: Cascade)
 }
 
@@ -210,9 +213,15 @@ model Campaign {
   scheduledAt DateTime?
   status      CampaignStatus @default(DRAFT)
   sentAt      DateTime?
-  timezone    String?
-  User        User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  domain      Domain[]
+  timezone        String?
+  recurringType   String?
+  recurringDay    Int?
+  recurringTime   String?
+  recurringActive Boolean        @default(false)
+  lastSentAt      DateTime?
+  nextSendAt      DateTime?
+  User            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  domain          Domain[]
 }
 
 model Product {

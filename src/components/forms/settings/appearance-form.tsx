@@ -3,6 +3,9 @@
 import React from 'react'
 import dynamic from 'next/dynamic'
 import { Button } from '@/components/ui/button'
+import { Switch } from '@/components/ui/switch'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Loader } from '@/components/loader'
 import {
   MessageSquare,
@@ -64,6 +67,9 @@ type Props = {
     removeBranding?: boolean | null
     chatPosition?: string | null
     customCss?: string | null
+    teaserEnabled?: boolean | null
+    teaserMessage?: string | null
+    teaserDelay?: number | null
   } | null
 }
 
@@ -136,6 +142,139 @@ const PlanBadge = ({ label, color }: { label: string; color: 'blue' | 'amber' })
     {label}
   </span>
 )
+
+const QUICK_SUGGESTIONS = [
+  "Have a question? 💬",
+  "Chat with us! 👋",
+  "Need help? We're here!",
+  "Talk to our AI assistant ✨",
+]
+
+const DELAY_OPTIONS = [
+  { label: '2s', value: 2 },
+  { label: '3s', value: 3 },
+  { label: '5s', value: 5 },
+  { label: '8s', value: 8 },
+]
+
+type TeaserSectionProps = {
+  setValue: SetValueFn
+  currentTeaserEnabled?: boolean | null
+  currentTeaserMessage?: string | null
+  currentTeaserDelay?: number | null
+  themeColor?: string | null
+}
+
+const TeaserSection = ({
+  setValue,
+  currentTeaserEnabled,
+  currentTeaserMessage,
+  currentTeaserDelay,
+  themeColor,
+}: TeaserSectionProps) => {
+  const [enabled, setEnabled] = React.useState(currentTeaserEnabled ?? false)
+  const [message, setMessage] = React.useState(currentTeaserMessage ?? 'Have a question? 💬')
+  const [delay, setDelay] = React.useState(currentTeaserDelay ?? 3)
+
+  const handleEnabledChange = (val: boolean) => {
+    setEnabled(val)
+    setValue('teaserEnabled', val, { shouldDirty: true })
+  }
+
+  const handleMessageChange = (val: string) => {
+    if (val.length > 80) return
+    setMessage(val)
+    setValue('teaserMessage', val, { shouldDirty: true })
+  }
+
+  const handleDelayChange = (val: number) => {
+    setDelay(val)
+    setValue('teaserDelay', val, { shouldDirty: true })
+  }
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+        <div className="space-y-0.5">
+          <Label className="text-sm font-medium cursor-pointer">Enable teaser message</Label>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Show a speech bubble next to the chat button when the widget is closed
+          </p>
+        </div>
+        <Switch checked={enabled} onCheckedChange={handleEnabledChange} />
+      </div>
+
+      <div className={cn('space-y-5 transition-opacity duration-200', !enabled && 'opacity-50 pointer-events-none')}>
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Teaser message</Label>
+          <Input
+            value={message}
+            onChange={(e) => handleMessageChange(e.target.value)}
+            placeholder="Have a question? 💬"
+            maxLength={80}
+          />
+          <p className="text-xs text-muted-foreground text-right">{message.length}/80</p>
+          <div className="flex flex-wrap gap-2">
+            {QUICK_SUGGESTIONS.map((suggestion) => (
+              <button
+                key={suggestion}
+                type="button"
+                onClick={() => handleMessageChange(suggestion)}
+                className="px-3 py-1 rounded-full text-xs border border-slate-200 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-all"
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <div>
+            <Label className="text-sm font-medium">Show after</Label>
+            <p className="text-xs text-slate-500 dark:text-slate-400">How many seconds after page load</p>
+          </div>
+          <div className="flex gap-2">
+            {DELAY_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => handleDelayChange(opt.value)}
+                className={cn(
+                  'px-4 py-2 rounded-lg text-sm font-medium border transition-all',
+                  delay === opt.value
+                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white'
+                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-400'
+                )}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Preview</Label>
+          <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+            <div className="flex items-end justify-end gap-2">
+              <div className="relative bg-white border border-slate-200 rounded-2xl px-3 py-2 shadow-sm max-w-[180px]">
+                <p className="text-xs text-slate-800 leading-snug pr-3 break-words">
+                  {message || 'Have a question? 💬'}
+                </p>
+                <div className="absolute -right-[6px] bottom-3 w-2.5 h-2.5 bg-white border-r border-b border-slate-200 rotate-[-45deg]" />
+              </div>
+              <div
+                className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center shadow-md"
+                style={{ backgroundColor: themeColor || '#3B82F6' }}
+              >
+                <Sparkles className="w-4 h-4 text-white" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
   const {
@@ -308,6 +447,22 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
             lockFeatureText="Custom CSS injection is available on the Ultimate plan"
           >
             <CustomCssField register={reg} currentValue={chatBot?.customCss} />
+          </SectionCard>
+
+          <SectionCard
+            icon={<MessageSquare className="h-4 w-4" />}
+            iconBg="bg-gradient-to-br from-teal-500 to-teal-600"
+            title="Chat Bubble Teaser"
+            subtitle="Show an attention-grabbing message next to the chat button to invite visitors to start a conversation"
+            plan={plan}
+          >
+            <TeaserSection
+              setValue={sv}
+              currentTeaserEnabled={chatBot?.teaserEnabled}
+              currentTeaserMessage={chatBot?.teaserMessage}
+              currentTeaserDelay={chatBot?.teaserDelay}
+              themeColor={chatBot?.backgroundColor}
+            />
           </SectionCard>
         </div>
 

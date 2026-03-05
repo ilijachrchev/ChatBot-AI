@@ -27,14 +27,14 @@ export const CampaignPreview = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 p-4 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
-        <Users className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+      <div className="flex items-center gap-2 p-4 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+        <Users className="h-5 w-5 text-slate-600 dark:text-slate-400" />
         <div>
-          <p className="font-semibold text-blue-900 dark:text-blue-100">
+          <p className="font-semibold text-slate-900 dark:text-white">
             {validCustomers.length}{' '}
             {validCustomers.length === 1 ? 'Customer' : 'Customers'}
           </p>
-          <p className="text-sm text-blue-700 dark:text-blue-300">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             in this campaign
           </p>
         </div>
@@ -53,7 +53,7 @@ export const CampaignPreview = ({
                   className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-blue-600 text-white text-sm font-semibold flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-900 dark:from-slate-200 dark:to-slate-400 text-white dark:text-slate-900 text-sm font-semibold flex-shrink-0">
                       {customer.email?.[0]?.toUpperCase() || '?'}
                     </div>
 

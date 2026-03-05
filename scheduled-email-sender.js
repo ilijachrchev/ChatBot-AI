@@ -4,6 +4,31 @@ const nodemailer = require('nodemailer')
 
 const prisma = new PrismaClient()
 
+function calculateNextSend(type, time, day) {
+  const [hours, minutes] = time.split(':').map(Number)
+  const now = new Date()
+  const next = new Date()
+  next.setUTCHours(hours, minutes, 0, 0)
+
+  if (type === 'DAILY') {
+    if (next <= now) next.setUTCDate(next.getUTCDate() + 1)
+  } else if (type === 'WEEKLY') {
+    const targetDay = day ?? 1
+    const currentDay = now.getUTCDay()
+    let daysUntil = targetDay - currentDay
+    if (daysUntil < 0 || (daysUntil === 0 && next <= now)) daysUntil += 7
+    next.setUTCDate(next.getUTCDate() + daysUntil)
+  } else if (type === 'MONTHLY') {
+    const targetDay = day ?? 1
+    next.setUTCDate(targetDay)
+    if (next <= now) {
+      next.setUTCMonth(next.getUTCMonth() + 1)
+      next.setUTCDate(targetDay)
+    }
+  }
+  return next
+}
+
 async function sendScheduledEmails() {
   console.log('🔍 Checking for scheduled campaigns...', new Date().toLocaleString())
   
@@ -85,15 +110,32 @@ async function sendScheduledEmails() {
           const info = await transporter.sendMail(mailOptions)
           console.log(`✅ Emails sent! Message ID: ${info.messageId}`)
 
-          await prisma.campaign.update({
-            where: { id: campaign.id },
-            data: {
-              status: 'SENT',
-              sentAt: new Date(),
-            },
-          })
-
-          console.log(`   Status updated to SENT`)
+          if (campaign.recurringActive && campaign.recurringType && campaign.recurringTime) {
+            const nextSendAt = calculateNextSend(
+              campaign.recurringType,
+              campaign.recurringTime,
+              campaign.recurringDay
+            )
+            await prisma.campaign.update({
+              where: { id: campaign.id },
+              data: {
+                status: 'SCHEDULED',
+                scheduledAt: nextSendAt,
+                lastSentAt: new Date(),
+                nextSendAt,
+              },
+            })
+            console.log(`🔄 Recurring campaign rescheduled for: ${nextSendAt}`)
+          } else {
+            await prisma.campaign.update({
+              where: { id: campaign.id },
+              data: {
+                status: 'SENT',
+                sentAt: new Date(),
+              },
+            })
+            console.log(`   Status updated to SENT`)
+          }
 
           if (campaign.User?.subscription) {
             await prisma.billings.update({

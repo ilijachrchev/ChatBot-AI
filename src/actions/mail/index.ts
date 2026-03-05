@@ -57,9 +57,15 @@ export const onGetAllCampaigns = async (id: string) => {
             id: true,
             customers: true,
             createdAt: true,
-            status: true,        
-            scheduledAt: true,    
-            sentAt: true,         
+            status: true,
+            scheduledAt: true,
+            sentAt: true,
+            recurringType: true,
+            recurringDay: true,
+            recurringTime: true,
+            recurringActive: true,
+            lastSentAt: true,
+            nextSendAt: true,
           },
           orderBy: {
             createdAt: 'desc',
@@ -540,5 +546,203 @@ export const onUpdateCampaignStatus = async (
   } catch (error) {
     console.error('Error updating campaign status:', error)
     return { status: 500 }
+  }
+}
+
+function calculateNextSend(
+  type: string,
+  time: string,
+  day?: number | null
+): Date {
+  const [hours, minutes] = time.split(':').map(Number)
+  const now = new Date()
+  const next = new Date()
+  next.setUTCHours(hours, minutes, 0, 0)
+
+  if (type === 'DAILY') {
+    if (next <= now) next.setUTCDate(next.getUTCDate() + 1)
+  } else if (type === 'WEEKLY') {
+    const targetDay = day ?? 1
+    const currentDay = now.getUTCDay()
+    let daysUntil = targetDay - currentDay
+    if (daysUntil < 0 || (daysUntil === 0 && next <= now)) daysUntil += 7
+    next.setUTCDate(next.getUTCDate() + daysUntil)
+  } else if (type === 'MONTHLY') {
+    const targetDay = day ?? 1
+    next.setUTCDate(targetDay)
+    if (next <= now) {
+      next.setUTCMonth(next.getUTCMonth() + 1)
+      next.setUTCDate(targetDay)
+    }
+  }
+
+  return next
+}
+
+export const onDeleteCampaign = async (campaignId: string) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
+    })
+
+    if (!dbUser) return { status: 404, message: 'User not found' }
+
+    const campaign = await client.campaign.findFirst({
+      where: { id: campaignId, userId: dbUser.id },
+    })
+
+    if (!campaign) return { status: 404, message: 'Campaign not found' }
+
+    await client.campaign.delete({ where: { id: campaignId } })
+
+    return { status: 200, message: 'Campaign deleted' }
+  } catch (error) {
+    return { status: 500, message: 'Failed to delete campaign' }
+  }
+}
+
+export const onCreateRecurringCampaign = async (
+  name: string,
+  customers: string[],
+  template: string,
+  recurringType: 'DAILY' | 'WEEKLY' | 'MONTHLY',
+  recurringTime: string,
+  recurringDay?: number
+) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
+    })
+
+    if (!dbUser) return { status: 404, message: 'User not found' }
+
+    const nextSendAt = calculateNextSend(recurringType, recurringTime, recurringDay)
+
+    await client.campaign.create({
+      data: {
+        name,
+        customers,
+        template: JSON.stringify(template),
+        status: 'SCHEDULED',
+        recurringType,
+        recurringTime,
+        recurringDay,
+        recurringActive: true,
+        nextSendAt,
+        scheduledAt: nextSendAt,
+        userId: dbUser.id,
+      },
+    })
+
+    return { status: 200, message: 'Recurring campaign created' }
+  } catch (error) {
+    return { status: 500, message: 'Failed to create recurring campaign' }
+  }
+}
+
+export const onToggleRecurringActive = async (
+  campaignId: string,
+  active: boolean
+) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
+    })
+
+    if (!dbUser) return { status: 404, message: 'User not found' }
+
+    const campaign = await client.campaign.findFirst({
+      where: { id: campaignId, userId: dbUser.id },
+    })
+
+    if (!campaign) return { status: 404, message: 'Campaign not found' }
+
+    if (active && campaign.recurringType && campaign.recurringTime) {
+      const nextSendAt = calculateNextSend(
+        campaign.recurringType,
+        campaign.recurringTime,
+        campaign.recurringDay
+      )
+      await client.campaign.update({
+        where: { id: campaignId },
+        data: {
+          recurringActive: true,
+          nextSendAt,
+          scheduledAt: nextSendAt,
+          status: 'SCHEDULED',
+        },
+      })
+    } else {
+      await client.campaign.update({
+        where: { id: campaignId },
+        data: { recurringActive: active },
+      })
+    }
+
+    return { status: 200, message: active ? 'Campaign resumed' : 'Campaign paused' }
+  } catch (error) {
+    return { status: 500, message: 'Failed to toggle campaign' }
+  }
+}
+
+export const onCreateAndSendCampaign = async (
+  name: string,
+  customers: string[],
+  template: string
+) => {
+  try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true, subscription: { select: { credits: true } } },
+    })
+
+    if (!dbUser) return { status: 404, message: 'User not found' }
+
+    if ((dbUser.subscription?.credits ?? 0) < customers.length) {
+      return { status: 400, message: 'Insufficient credits' }
+    }
+
+    const campaign = await client.campaign.create({
+      data: {
+        name,
+        customers,
+        template: JSON.stringify(template),
+        status: 'SENDING',
+        userId: dbUser.id,
+      },
+    })
+
+    const result = await onBulkMailer(customers, campaign.id)
+
+    if (result?.status === 200) {
+      await client.campaign.update({
+        where: { id: campaign.id },
+        data: { status: 'SENT', sentAt: new Date() },
+      })
+      return { status: 200, message: 'Campaign sent successfully' }
+    }
+
+    await client.campaign.update({
+      where: { id: campaign.id },
+      data: { status: 'FAILED' },
+    })
+    return { status: 500, message: 'Failed to send campaign' }
+  } catch (error) {
+    return { status: 500, message: 'Failed to create campaign' }
   }
 }

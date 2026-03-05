@@ -2,7 +2,6 @@
 import React, { useState } from 'react'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
-import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { Calendar, Clock, Send, Globe } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -12,16 +11,16 @@ type ScheduleEmailProps = {
     campaignId: string,
     scheduledAt: { date: string; time: string } | null,
     timezone: string
-    ) => Promise<void>
+  ) => Promise<void>
   onClose: () => void
   userTimezone?: string
 }
 
-export const ScheduleEmail = ({ 
-  campaignId, 
-  onSchedule, 
+export const ScheduleEmail = ({
+  campaignId,
+  onSchedule,
   onClose,
-  userTimezone = 'UTC' 
+  userTimezone = 'UTC',
 }: ScheduleEmailProps) => {
   const [sendType, setSendType] = useState<'immediate' | 'scheduled'>('immediate')
   const [selectedDate, setSelectedDate] = useState<string>('')
@@ -49,17 +48,13 @@ export const ScheduleEmail = ({
     setLoading(true)
     try {
       if (sendType === 'scheduled' && selectedDate && selectedTime) {
-        await onSchedule(
-          campaignId, 
-          { date: selectedDate, time: selectedTime },
-          userTimezone
-        )
+        await onSchedule(campaignId, { date: selectedDate, time: selectedTime }, userTimezone)
       } else {
         await onSchedule(campaignId, null, userTimezone)
       }
       onClose()
     } catch (error) {
-      console.error('❌ Error in handleSubmit:', error)
+      console.error('Error in handleSubmit:', error)
     } finally {
       setLoading(false)
     }
@@ -67,93 +62,98 @@ export const ScheduleEmail = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800">
-        <Globe className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
+        <Globe className="h-4 w-4 text-slate-500 dark:text-slate-400" />
         <div className="flex-1">
-          <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
+          <p className="text-sm font-medium text-slate-900 dark:text-white">
             Your timezone: {userTimezone}
           </p>
-          <p className="text-xs text-blue-700 dark:text-blue-300">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             All times shown in your local timezone
           </p>
         </div>
       </div>
 
-      <RadioGroup value={sendType} onValueChange={(value: any) => setSendType(value)}>
-        <div className="space-y-3">
+      <div className="space-y-3">
+        <div
+          className={cn(
+            'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
+            sendType === 'immediate'
+              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-slate-900/50'
+              : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'
+          )}
+          onClick={() => setSendType('immediate')}
+        >
           <div
             className={cn(
-              'flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all',
+              'mt-0.5 h-4 w-4 rounded-full border-2 flex-shrink-0 transition-all',
               sendType === 'immediate'
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
-                : 'border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700'
+                ? 'border-slate-900 dark:border-white bg-slate-900 dark:bg-white'
+                : 'border-slate-300 dark:border-slate-600'
             )}
-            onClick={() => setSendType('immediate')}
-          >
-            <RadioGroupItem value="immediate" id="immediate" />
-            <div className="flex-1">
-              <Label htmlFor="immediate" className="cursor-pointer">
-                <div className="flex items-center gap-2 mb-1">
-                  <Send className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                  <span className="font-semibold text-slate-950 dark:text-white">
-                    Send Immediately
-                  </span>
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Campaign will be sent right away to all recipients
-                </p>
-              </Label>
+          />
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Send className="h-4 w-4 text-slate-700 dark:text-slate-300" />
+              <span className="font-semibold text-slate-900 dark:text-white">
+                Send Immediately
+              </span>
             </div>
-          </div>
-
-          <div
-            className={cn(
-              'flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all',
-              sendType === 'scheduled'
-                ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
-                : 'border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700'
-            )}
-            onClick={() => setSendType('scheduled')}
-          >
-            <RadioGroupItem value="scheduled" id="scheduled" />
-            <div className="flex-1">
-              <Label htmlFor="scheduled" className="cursor-pointer">
-                <div className="flex items-center gap-2 mb-1">
-                  <Calendar className="h-4 w-4 text-purple-600 dark:text-purple-400" />
-                  <span className="font-semibold text-slate-950 dark:text-white">
-                    Schedule for Later
-                  </span>
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Choose a specific date and time to send
-                </p>
-              </Label>
-            </div>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Campaign will be sent right away to all recipients
+            </p>
           </div>
         </div>
-      </RadioGroup>
+
+        <div
+          className={cn(
+            'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
+            sendType === 'scheduled'
+              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-slate-900/50'
+              : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'
+          )}
+          onClick={() => setSendType('scheduled')}
+        >
+          <div
+            className={cn(
+              'mt-0.5 h-4 w-4 rounded-full border-2 flex-shrink-0 transition-all',
+              sendType === 'scheduled'
+                ? 'border-slate-900 dark:border-white bg-slate-900 dark:bg-white'
+                : 'border-slate-300 dark:border-slate-600'
+            )}
+          />
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-1">
+              <Calendar className="h-4 w-4 text-slate-700 dark:text-slate-300" />
+              <span className="font-semibold text-slate-900 dark:text-white">
+                Schedule for Later
+              </span>
+            </div>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Choose a specific date and time to send
+            </p>
+          </div>
+        </div>
+      </div>
 
       {sendType === 'scheduled' && (
-        <div className="space-y-4 animate-fade-in">
-          <div className="p-4 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+        <div className="space-y-4">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
             <div className="mb-4">
-              <Label className="text-sm font-medium mb-2 block">
+              <Label className="text-sm font-medium mb-2 block text-slate-700 dark:text-slate-300">
                 <div className="flex items-center gap-2">
-                  <Calendar className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  <Calendar className="h-4 w-4" />
                   Select Date
                 </div>
               </Label>
               <select
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full h-11 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-950 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all"
+                className="w-full h-11 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white transition-all"
               >
                 <option value="">Choose a date...</option>
                 {dateOptions.map((date) => (
-                  <option
-                    key={date.toISOString()}
-                    value={date.toISOString().split('T')[0]}
-                  >
+                  <option key={date.toISOString()} value={date.toISOString().split('T')[0]}>
                     {date.toLocaleDateString('en-US', {
                       weekday: 'short',
                       month: 'short',
@@ -166,9 +166,9 @@ export const ScheduleEmail = ({
             </div>
 
             <div>
-              <Label className="text-sm font-medium mb-2 block">
+              <Label className="text-sm font-medium mb-2 block text-slate-700 dark:text-slate-300">
                 <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  <Clock className="h-4 w-4" />
                   Select Time ({userTimezone})
                 </div>
               </Label>
@@ -176,7 +176,7 @@ export const ScheduleEmail = ({
                 value={selectedTime}
                 onChange={(e) => setSelectedTime(e.target.value)}
                 disabled={!selectedDate}
-                className="w-full h-11 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-950 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-11 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option value="">Choose a time...</option>
                 {timeOptions.map((time) => (
@@ -188,15 +188,13 @@ export const ScheduleEmail = ({
             </div>
 
             {selectedDate && selectedTime && (
-              <div className="mt-4 space-y-2">
-                <div className="p-3 rounded-lg bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800">
-                  <p className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                    📅 Campaign will send at:
-                  </p>
-                  <p className="text-sm text-blue-700 dark:text-blue-300 mt-1 font-semibold">
-                    {selectedDate} at {selectedTime} {userTimezone}
-                  </p>
-                </div>
+              <div className="mt-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <p className="text-sm font-medium text-slate-900 dark:text-white">
+                  Campaign will send at:
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5 font-semibold">
+                  {selectedDate} at {selectedTime} {userTimezone}
+                </p>
               </div>
             )}
           </div>
@@ -208,7 +206,7 @@ export const ScheduleEmail = ({
           type="button"
           variant="outline"
           onClick={onClose}
-          className="flex-1"
+          className="flex-1 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900"
           disabled={loading}
         >
           Cancel
@@ -217,7 +215,7 @@ export const ScheduleEmail = ({
           type="button"
           onClick={handleSubmit}
           disabled={loading || (sendType === 'scheduled' && (!selectedDate || !selectedTime))}
-          className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold"
+          className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 font-semibold"
         >
           {loading ? (
             'Processing...'

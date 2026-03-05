@@ -190,6 +190,9 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 offlineBehavior: true,
                 offlineCustomMessage: true,
                 showPresenceBadge: true,
+                teaserEnabled: true,
+                teaserMessage: true,
+                teaserDelay: true,
               },
             },
           },
@@ -806,6 +809,9 @@ export const onUpdateChatbotCustomization = async (
     removeBranding?: boolean
     chatPosition?: string
     customCss?: string
+    teaserEnabled?: boolean
+    teaserMessage?: string
+    teaserDelay?: number
   }
 ) => {
   try {

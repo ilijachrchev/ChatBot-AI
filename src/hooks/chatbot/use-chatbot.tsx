@@ -54,6 +54,9 @@ export const useChatBot = () => {
                 removeBranding?: boolean | null
                 customCss?: string | null
                 showPresenceBadge?: boolean | null
+                teaserEnabled?: boolean | null
+                teaserMessage?: string | null
+                teaserDelay?: number | null
             } | null
             helpdesk: {
                 id: string
