@@ -9,6 +9,12 @@ import { cn } from '@/lib/utils'
 type StyleOption = { id: string; name: string; preview: string }
 type SizeOption = { id: string; name: string; dimensions: string; description: string }
 type WidgetStyleOption = { id: string; name: string; description: string; gradient: string }
+type ChatbotCustomizationProps = {
+  register: any
+  errors: any
+  setValue: any
+  currentValues?: ChatbotSectionValues
+}
 
 const BUTTON_STYLES: StyleOption[] = [
   { id: 'ROUNDED', name: 'Rounded', preview: 'rounded-lg' },
@@ -58,7 +64,7 @@ const CHAT_POSITIONS = [
 ]
 
 type SharedProps = {
-  setValue: (name: string, value: unknown, options?: { shouldDirty?: boolean }) => void
+  setValue: any
 }
 
 export type ChatbotSectionValues = {
@@ -382,3 +388,59 @@ export const CustomCssField = ({ register, currentValue }: CustomCssFieldProps) 
     />
   </div>
 )
+
+export const ChatbotCustomization = ({
+  register,
+  errors,
+  setValue,
+  currentValues,
+}: ChatbotCustomizationProps) => {
+  return (
+    <div className="space-y-6">
+      <HeaderFields
+        register={register}
+        errors={errors}
+        currentValues={{
+          chatbotTitle: currentValues?.chatbotTitle,
+          chatbotSubtitle: currentValues?.chatbotSubtitle,
+        }}
+      />
+
+      <BubbleColors
+        register={register}
+        setValue={setValue}
+        currentValues={{
+          userBubbleColor: currentValues?.userBubbleColor,
+          userTextColor: currentValues?.userTextColor,
+          botBubbleColor: currentValues?.botBubbleColor,
+          botTextColor: currentValues?.botTextColor,
+        }}
+      />
+
+      <ButtonStyleSelector
+        setValue={setValue}
+        currentValue={currentValues?.buttonStyle}
+      />
+
+      <BubbleStyleSelector
+        setValue={setValue}
+        currentValue={currentValues?.bubbleStyle}
+      />
+
+      <WidgetSizeSelector
+        setValue={setValue}
+        currentValue={currentValues?.widgetSize}
+      />
+
+      <WidgetStyleSelector
+        setValue={setValue}
+        currentValue={currentValues?.widgetStyle}
+      />
+
+      <ShowAvatarsToggle
+        setValue={setValue}
+        currentValue={currentValues?.showAvatars}
+      />
+    </div>
+  )
+}

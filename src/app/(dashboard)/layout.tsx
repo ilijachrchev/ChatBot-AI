@@ -1,6 +1,5 @@
 import { onLoginUser } from '@/actions/auth'
 import { onGetOnboardingProgress } from '@/actions/onboarding'
-import SideBar from '@/components/sidebar'
 import { OnboardingOverlay } from '@/components/onboarding/onboarding-overlay'
 import { ChatProvider } from '@/context/user-chat-context'
 import { OAuthTypeUpdater } from '@/components/auth/oauth-tpy-updater'
@@ -8,6 +7,7 @@ import { onGetUnreadConversationCount } from '@/actions/conversation'
 import { onGetLeadCount } from '@/actions/leads'
 import { onGetNewFeedbackCount } from '@/actions/ratings'
 import { onGetPersonaSidebarItems } from '@/actions/settings'
+import DashboardShell from '@/components/sidebar/dashboard-shell'
 import React from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -43,21 +43,18 @@ const OwnerLayout = async ({ children }: Props) => {
   return (
     <ChatProvider>
       <OAuthTypeUpdater />
-      <div className="flex h-screen w-full overflow-hidden">
-        <SideBar
-          domains={authenticated.domains}
-          onboardingCompleted={progress?.onboardingCompleted ?? false}
-          onboardingDismissed={progress?.onboardingDismissed ?? false}
-          stepsCompleted={stepsCompleted}
-          unreadCount={unreadResult.count}
-          leadCount={leadCount}
-          feedbackCount={feedbackCount}
-          personaItems={personaItems ?? []}
-        />
-        <div className="w-full h-screen flex flex-col pl-20 md:pl-4 overflow-y-auto">
-          {children}
-        </div>
-      </div>
+      <DashboardShell
+        domains={authenticated.domains}
+        onboardingCompleted={progress?.onboardingCompleted ?? false}
+        onboardingDismissed={progress?.onboardingDismissed ?? false}
+        stepsCompleted={stepsCompleted}
+        unreadCount={unreadResult.count}
+        leadCount={leadCount}
+        feedbackCount={feedbackCount}
+        personaItems={personaItems ?? []}
+      >
+        {children}
+      </DashboardShell>
       {!hasDomains && <OnboardingOverlay />}
     </ChatProvider>
   )

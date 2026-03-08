@@ -94,16 +94,16 @@ const FeedbackPage = () => {
         <InfoBar />
       </div>
 
-      <div className="flex-1 overflow-y-auto p-6">
+      <div className="flex-1 overflow-y-auto px-4 py-4 md:p-6">
         <div className="max-w-7xl mx-auto space-y-6">
           <div>
-            <h1 className="text-2xl font-bold">Customer Feedback</h1>
+            <h1 className="text-xl md:text-2xl font-bold">Customer Feedback</h1>
             <p className="text-sm text-muted-foreground mt-0.5">
               Negative ratings with customer comments
             </p>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {statCards.map((card) => (
               <div key={card.label} className="bg-background border rounded-xl p-4 space-y-1">
                 <p className="text-2xl font-bold">{card.value}</p>

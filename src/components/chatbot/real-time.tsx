@@ -25,6 +25,7 @@ const RealTimeMode = ({ chatRoomId, showBadge: initialShowBadge = false }: Props
 
     useEffect(() => {
         const socket = getSocketClient()
+        if (!socket) return
 
         const handleModeChange = (data: { mode: boolean }) => {
             setShowBadge(data.mode)

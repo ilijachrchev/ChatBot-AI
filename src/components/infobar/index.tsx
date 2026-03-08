@@ -166,10 +166,12 @@ const InfoBar = (props: Props) => {
   const avatarUrl = customAvatar || user?.imageUrl
 
   return (
-    <div className="flex w-full justify-between items-start md:items-center py-3 md:py-4 mb-4 md:mb-6 gap-4 flex-col md:flex-row">
-      <BreadCrumb />
+    <div className="flex w-full items-center py-3 md:py-4 mb-4 md:mb-6 gap-3 md:gap-4">
+      <div className="flex-1 min-w-0">
+        <BreadCrumb />
+      </div>
 
-      <div className="flex gap-2 md:gap-3 items-center">
+      <div className="flex gap-2 md:gap-3 items-center flex-shrink-0">
         <DropdownMenu open={open} onOpenChange={(v) => (v ? onOpen() : onClose())}>
           <DropdownMenuTrigger asChild>
             <div className="relative">

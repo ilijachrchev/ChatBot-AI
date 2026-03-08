@@ -13,6 +13,7 @@ import {
   Sparkles,
   Stethoscope,
   Utensils,
+  X,
 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -40,6 +41,7 @@ type Props = {
   leadCount: number
   feedbackCount: number
   personaItems: PersonaSidebarItem[]
+  onMobileClose?: () => void
   domains:
     | {
         id: string
@@ -100,6 +102,7 @@ const MaxMenu = ({
   leadCount,
   feedbackCount,
   personaItems,
+  onMobileClose,
 }: Props) => {
   const showOnboarding = !onboardingCompleted && !onboardingDismissed
   const isOnboardingActive = current === 'getting-started'
@@ -116,14 +119,24 @@ const MaxMenu = ({
         />
         <button
           onClick={onExpand}
-          className={`
-            p-1.5 md:p-2 rounded-lg text-slate-600 dark:text-slate-400
-            hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white
-            transition-all duration-200 cursor-pointer
-            animate-fade-in opacity-0 delay-300 fill-mode-forwards
-          `}
+          className={cn(
+            'hidden md:flex p-1.5 md:p-2 rounded-lg text-slate-600 dark:text-slate-400',
+            'hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white',
+            'transition-all duration-200 cursor-pointer',
+            'animate-fade-in opacity-0 delay-300 fill-mode-forwards'
+          )}
         >
           <Menu className="w-5 h-5" />
+        </button>
+        <button
+          onClick={onMobileClose}
+          className={cn(
+            'md:hidden p-1.5 rounded-lg text-slate-600 dark:text-slate-400',
+            'hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white',
+            'transition-all duration-200 cursor-pointer'
+          )}
+        >
+          <X className="w-5 h-5" />
         </button>
       </div>
 

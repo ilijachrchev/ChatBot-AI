@@ -102,10 +102,10 @@ export default async function SalesPipelinePage({ searchParams }: Props) {
   }, {})
 
   return (
-    <div className="p-6 md:p-8">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8">
+    <div className="px-4 py-4 md:p-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 md:mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Sales Pipeline</h1>
+          <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-white">Sales Pipeline</h1>
           <div className="flex items-center gap-3 mt-1">
             {domain && (
               <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">

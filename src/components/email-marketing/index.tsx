@@ -243,7 +243,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             <Mail className="h-6 w-6 text-white dark:text-slate-900" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <h1 className="text-xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
               Email Marketing
             </h1>
             <p className="text-sm text-slate-500 dark:text-slate-400">

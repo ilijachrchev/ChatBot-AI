@@ -46,6 +46,7 @@ export const useNotifications = () => {
 
       const socket = getSocketClient()
       const channel = `notifications-${result.id}`
+      if (!socket) return
 
       socket.emit('join-chatroom', channel)
       joined = true

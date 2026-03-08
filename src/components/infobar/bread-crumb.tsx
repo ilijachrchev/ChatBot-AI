@@ -119,7 +119,7 @@ const BreadCrumb = () => {
           )}
 
           <div>
-            <h2 className='text-2xl md:text-3xl font-bold text-slate-900 dark:text-white'>
+            <h2 className='text-lg md:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white truncate'>
               {title}
             </h2>
             {isDomainPage && (
@@ -158,7 +158,7 @@ const BreadCrumb = () => {
         )}
       </div>
 
-      <p className='text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed'>
+      <p className='hidden sm:block text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed'>
         {subtitle}
       </p>
     </div>

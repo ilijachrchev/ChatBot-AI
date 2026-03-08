@@ -255,9 +255,9 @@ const TeaserSection = ({
         <div className="space-y-2">
           <Label className="text-sm font-medium">Preview</Label>
           <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800">
-            <div className="flex items-end justify-end gap-2">
-              <div className="relative bg-white border border-slate-200 rounded-2xl px-3 py-2 shadow-sm max-w-[180px]">
-                <p className="text-xs text-slate-800 leading-snug pr-3 break-words">
+            <div className="flex items-end justify-end gap-2 overflow-visible w-full">
+              <div className="relative bg-white border border-slate-200 rounded-2xl px-3 py-2 shadow-sm w-fit max-w-[260px] overflow-hidden">
+                <p className="text-xs text-slate-800 whitespace-nowrap pr-4">
                   {message || 'Have a question? 💬'}
                 </p>
                 <div className="absolute -right-[6px] bottom-3 w-2.5 h-2.5 bg-white border-r border-b border-slate-200 rotate-[-45deg]" />

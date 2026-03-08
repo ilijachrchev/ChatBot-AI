@@ -94,9 +94,9 @@ export default function SupportTicketsPage() {
   }
 
   return (
-    <div className="p-6 md:p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Support Tickets</h1>
+    <div className="px-4 py-4 md:p-8">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-white">Support Tickets</h1>
         <div className="flex flex-wrap gap-3 mt-4">
           {[
             { label: 'Open', value: counts.open, color: 'text-red-600 dark:text-red-400' },
@@ -148,7 +148,8 @@ export default function SupportTicketsPage() {
         </div>
       ) : (
         <>
-          <div className="rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+          <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800">
+          <div className="min-w-[680px] rounded-2xl overflow-hidden">
             <div className="grid grid-cols-[1fr_2fr_auto_auto_auto] gap-0 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800 px-4 py-3 text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
               <span>Customer</span>
               <span>Last Message</span>
@@ -203,6 +204,8 @@ export default function SupportTicketsPage() {
                 </div>
               )
             })}
+          </div>
+          </div>
           </div>
           {hasMore && (
             <div className="flex justify-center mt-4">
