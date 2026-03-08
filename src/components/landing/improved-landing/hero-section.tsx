@@ -32,36 +32,31 @@ export function HeroSection() {
             : {}
         }
       >
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="flex size-7 items-center justify-center rounded-md bg-white/10">
             <Sparkles className="size-3.5 text-white" />
           </div>
           <span className="font-semibold text-white text-sm tracking-tight">
             SendWise AI
           </span>
-        </div>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          {["Features", "How it works", "Pricing", "Contact"].map((item) => (
-            <Link
-              key={item}
-              href={`#${item.toLowerCase().replace(" ", "-")}`}
-              className="text-sm text-white/50 hover:text-white transition-colors"
-            >
-              {item}
-            </Link>
-          ))}
+          <Link href="#features"     className="text-sm text-white/50 hover:text-white transition-colors">Features</Link>
+          <Link href="#how-it-works" className="text-sm text-white/50 hover:text-white transition-colors">How it works</Link>
+          <Link href="#pricing"      className="text-sm text-white/50 hover:text-white transition-colors">Pricing</Link>
+          <Link href="#faq"          className="text-sm text-white/50 hover:text-white transition-colors">FAQ</Link>
         </nav>
 
         <div className="flex items-center gap-3">
           <Link
-            href="/sign-in"
+            href="/auth/sign-in"
             className="hidden md:block text-sm text-white/50 hover:text-white transition-colors"
           >
             Login
           </Link>
           <Link
-            href="/sign-up"
+            href="/auth/sign-up"
             className="rounded-xl border border-white/15 bg-white/5 px-4 py-1.5 text-sm font-medium text-white hover:bg-white/10 transition-colors"
           >
             Sign Up
@@ -70,11 +65,7 @@ export function HeroSection() {
       </header>
 
       <section className="relative min-h-screen bg-[#080808] overflow-hidden flex flex-col items-center justify-start px-4 pt-32 pb-0">
-
-        <div
-          className="absolute inset-0 pointer-events-none"
-          aria-hidden
-        >
+        <div className="absolute inset-0 pointer-events-none" aria-hidden>
           <div
             className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px]"
             style={{
@@ -84,20 +75,18 @@ export function HeroSection() {
           />
         </div>
 
-        <div className="relative z-10 mb-8 flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm">
+        <Link
+          href="/auth/sign-up"
+          className="relative z-10 mb-8 flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 backdrop-blur-sm hover:border-white/20 transition-colors"
+        >
           <span className="rounded-full bg-white/20 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white">
             NOW
           </span>
           <span className="text-xs text-white/45">
             accepting new businesses — Start free, no credit card needed
           </span>
-          <Link
-            href="/sign-up"
-            className="flex items-center text-white/50 hover:text-white transition-colors"
-          >
-            <ArrowRight className="size-3" />
-          </Link>
-        </div>
+          <ArrowRight className="size-3 text-white/50" />
+        </Link>
 
         <div className="relative z-10 text-center max-w-4xl">
           <h1 className="text-5xl md:text-[72px] font-bold text-white leading-[1.05] tracking-tight">
@@ -121,7 +110,7 @@ export function HeroSection() {
             See how it works
           </Link>
           <Link
-            href="/sign-up"
+            href="/auth/sign-up"
             className="flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-semibold text-black hover:bg-white/90 transition-all"
           >
             Get started <ArrowRight className="size-3.5" />
@@ -133,30 +122,24 @@ export function HeroSection() {
             className="absolute -top-8 left-1/2 -translate-x-1/2 w-2/3 h-16 blur-3xl rounded-full pointer-events-none"
             style={{ background: "rgba(255,255,255,0.03)" }}
           />
-
           <div className="relative rounded-t-2xl border border-b-0 border-white/8 bg-white/[0.015]">
             <div className="flex items-center gap-1.5 px-4 py-3 border-b border-white/5">
               <div className="size-2.5 rounded-full bg-white/10" />
               <div className="size-2.5 rounded-full bg-white/10" />
               <div className="size-2.5 rounded-full bg-white/10" />
-              <div className="ml-3 flex-1 max-w-xs rounded-md bg-white/[0.04] px-3 py-1 text-[11px] text-white/18">
+              <div className="ml-3 flex-1 max-w-xs rounded-md bg-white/[0.04] px-3 py-1 text-[11px] text-white/20">
                 app.sendwiseai.com/dashboard
               </div>
             </div>
-
             <img
-              src="images/dashboard_image.png"
+              src="/images/dashboard_image.png"
               alt="SendWise AI Dashboard"
               className="w-full object-cover object-top block"
               style={{ aspectRatio: "16/9" }}
             />
-
             <div
               className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
-              style={{
-                background:
-                  "linear-gradient(to bottom, transparent 0%, #080808 100%)",
-              }}
+              style={{ background: "linear-gradient(to bottom, transparent 0%, #080808 100%)" }}
             />
           </div>
         </div>

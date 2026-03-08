@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import type React from "react";
-import { CobeGlobe } from "@/components/ui/code-globe"; 
+import { CobeGlobe } from "@/components/ui/code-globe";
 import {
   TrendingUpIcon,
   GlobeIcon,
@@ -21,7 +21,8 @@ const features = [
 
 export function BentoFeatures() {
   return (
-    <section className="relative bg-[#080808] py-16 px-4">
+    // id="features" — matched by navbar "Features" link → #features
+    <section id="features" className="relative bg-[#080808] py-16 px-4">
       <div className="relative mx-auto grid w-full max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-6">
         {features.map((f) => (
           <FeatureCard className={f.className} key={f.id}>
@@ -54,7 +55,6 @@ function FeatureTitle({ className, ...props }: React.ComponentProps<"h3">) {
 function FeatureDescription({ className, ...props }: React.ComponentProps<"p">) {
   return <p className={cn("text-white/35 text-sm leading-relaxed", className)} {...props} />;
 }
-
 
 function AIResponsesVisual() {
   return (

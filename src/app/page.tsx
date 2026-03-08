@@ -1,23 +1,23 @@
 import { HeroSection } from "@/components/landing/improved-landing/hero-section";
 import { BentoFeatures } from "@/components/landing/improved-landing/bento-features";
+import { TrustedBy } from "@/components/landing/improved-landing/trusted-by";
 import { HowItWorks } from "@/components/landing/improved-landing/how-it-works";
-import { Testimonials } from "@/components/landing/testimonials";
-import { PricingSection } from "@/components/landing/pricing-section";
-import { FinalCTA } from "@/components/landing/final-cta";
+import { PricingSection } from "@/components/landing/pricing-section"; 
+import { FaqsSection } from "@/components/landing/improved-landing/faqs-section";
+import { FinalCTA } from "@/components/landing/final-cta"; 
+import { Footer } from "@/components/landing/improved-landing/footer";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#080808] text-slate-50">
       <HeroSection />
       <BentoFeatures />
-      <section id="how-it-works">
-        <HowItWorks />
-      </section>
-      <Testimonials />
-      <section id="pricing">
-        <PricingSection />
-      </section>
+      <TrustedBy />
+      <HowItWorks />
+      <PricingSection />
+      <FaqsSection />
       <FinalCTA />
+      <Footer />
     </main>
   );
 }

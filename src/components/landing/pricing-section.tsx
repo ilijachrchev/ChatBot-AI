@@ -1,166 +1,163 @@
-"use client";
-
-import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Check, ChevronDown } from "lucide-react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { PLAN_FEATURES, PLAN_PRICES } from "@/constants/pricing";
-import { LandingButton } from "../ui/button-landing";
+import * as PricingCard from "@/components/ui/pricing-card";
+import { CheckmarkCircle04Icon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+import Link from "next/link";
 
-const pricingCards = [
-  {
-    title: "Standard",
-    description: PLAN_FEATURES.STANDARD.description,
-    price: PLAN_PRICES.STANDARD.amountDisplay,
-    features: PLAN_FEATURES.STANDARD.included,
-  },
-  {
-    title: "Pro",
-    description: PLAN_FEATURES.PRO.description,
-    price: PLAN_PRICES.PRO.amountDisplay,
-    features: PLAN_FEATURES.PRO.included,
-  },
-  {
-    title: "Ultimate",
-    description: PLAN_FEATURES.ULTIMATE.description,
-    price: PLAN_PRICES.ULTIMATE.amountDisplay,
-    features: PLAN_FEATURES.ULTIMATE.included,
-  },
-];
-
-const faqs = [
-  {
-    q: "Can I cancel anytime?",
-    a: "Yes. Cancel from your dashboard at any time. No contracts.",
-  },
-  {
-    q: "Do I need to enter a credit card to start?",
-    a: "No. The Standard plan is completely free with no card required.",
-  },
-  {
-    q: "What happens when I hit my conversation limit?",
-    a: "Your chatbot will politely inform visitors the limit has been reached. Upgrade anytime to restore service immediately.",
-  },
-];
-
-export const PricingSection = () => {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
-
+export function PricingSection() {
   return (
-    <section className="py-24 px-4 relative">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-slate-900/80 to-[#020617]" />
+    <section id="pricing" className="relative bg-[#080808] py-28 px-4">
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] pointer-events-none blur-[120px]"
+        style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%)" }}
+      />
 
-      <div className="relative z-10 max-w-5xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-50 mb-4">
-            Simple, transparent pricing
-          </h2>
-          <p className="text-lg text-slate-400">
-            Start free. Upgrade when you need more. Cancel anytime — no
-            questions asked.
-          </p>
+      <div className="mx-auto mb-12 max-w-xl space-y-4 text-center relative z-10">
+        <div className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-white/50">
+          Pricing
         </div>
+        <h2 className="font-bold text-3xl text-white tracking-tight md:text-5xl">
+          Plans that Scale with You
+        </h2>
+        <p className="text-white/35 text-sm leading-relaxed md:text-base">
+          Whether you&apos;re just starting out or growing fast, our flexible
+          pricing has you covered.
+        </p>
+      </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {pricingCards.map((card) => (
-            <Card
-              key={card.title}
+      <div className="mx-auto grid w-full max-w-4xl gap-4 px-4 md:grid-cols-3 relative z-10">
+        {plans.map((plan, index) => (
+          <PricingCard.Card
+            className={cn(
+              "w-full max-w-full border-white/[0.07] bg-white/[0.02]",
+              index === 1 && "md:scale-105 border-white/15 bg-white/[0.04]"
+            )}
+            key={plan.name}
+          >
+            <PricingCard.Header
+              isPopular={index === 1}
               className={cn(
-                "relative bg-slate-950/80 border border-slate-700 rounded-3xl flex flex-col justify-between p-6",
-                card.title === "Pro" &&
-                  "border-sky-500 shadow-[0_0_40px_rgba(56,189,248,0.45)]",
-                card.title === "Ultimate" &&
-                  "border-amber-500 shadow-[0_0_40px_rgba(245,158,11,0.3)]"
+                "border-white/[0.06]",
+                index === 1 ? "bg-white/[0.05]" : "bg-transparent"
               )}
             >
-              {card.title === "Pro" && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full bg-sky-500 text-xs font-semibold text-slate-950">
-                  Most Popular
-                </div>
-              )}
-
-              <CardHeader>
-                <CardTitle className="text-slate-50">{card.title}</CardTitle>
-                <CardDescription className="text-slate-400">
-                  {card.description}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent>
-                <div className="flex items-baseline gap-1 mb-4">
-                  <span className="text-4xl font-bold text-slate-50">
-                    {card.price}
-                  </span>
-                  <span className="text-slate-500">/ month</span>
-                </div>
-
-                <div className="space-y-2 text-sm text-slate-300">
-                  {card.features.map((feature) => (
-                    <div key={feature} className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-sky-400 shrink-0" />
-                      <p>{feature}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-
-              <CardFooter className="mt-6">
-                <LandingButton
-                  asChild
-                  className="w-full"
-                  variant={card.title === "Pro" ? "neon" : "neonOutline"}
-                  size="lg"
-                >
-                  <Link href="/auth/sign-up">Get Started</Link>
-                </LandingButton>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-
-        <div className="mt-16 max-w-2xl mx-auto">
-          <h3 className="text-xl font-semibold text-slate-50 text-center mb-8">
-            Frequently asked questions
-          </h3>
-          <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <div
-                key={i}
-                className="border border-slate-700 rounded-xl overflow-hidden bg-slate-950/50"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-slate-800/30 transition-colors"
-                >
-                  <span className="text-sm font-medium text-slate-100">
-                    {faq.q}
-                  </span>
-                  <ChevronDown
-                    className={cn(
-                      "h-4 w-4 text-slate-400 transition-transform duration-200 shrink-0 ml-4",
-                      openFaq === i && "rotate-180"
-                    )}
-                  />
-                </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-4 text-sm text-slate-400 leading-relaxed">
-                    {faq.a}
-                  </div>
+              <PricingCard.Plan>
+                <PricingCard.PlanName className="text-white/80 text-sm font-semibold">
+                  <span>{plan.name}</span>
+                </PricingCard.PlanName>
+                {plan.badge && (
+                  <PricingCard.Badge className="border-white/10 bg-white/10 text-white/70 text-[10px]">
+                    {plan.badge}
+                  </PricingCard.Badge>
                 )}
-              </div>
-            ))}
-          </div>
-        </div>
+              </PricingCard.Plan>
+
+              <PricingCard.Price>
+                <PricingCard.MainPrice className="text-white">
+                  {plan.price}
+                </PricingCard.MainPrice>
+                {plan.period && (
+                  <PricingCard.Period className="text-white/35 text-sm pb-1">
+                    {plan.period}
+                  </PricingCard.Period>
+                )}
+                {plan.original && (
+                  <PricingCard.OriginalPrice className="text-white/20 text-base ml-auto line-through">
+                    {plan.original}
+                  </PricingCard.OriginalPrice>
+                )}
+              </PricingCard.Price>
+
+              <Link
+                href="/auth/sign-up"
+                className={cn(
+                  "mt-1 flex w-full items-center justify-center rounded-lg border py-2 text-sm font-semibold transition-all",
+                  index === 1
+                    ? "border-white bg-white text-black hover:bg-white/90"
+                    : "border-white/10 bg-white/[0.04] text-white/70 hover:bg-white/8 hover:text-white"
+                )}
+              >
+                Get Started
+              </Link>
+            </PricingCard.Header>
+
+            <PricingCard.Body>
+              <PricingCard.Description className="text-white/30 text-xs">
+                {plan.description}
+              </PricingCard.Description>
+              <PricingCard.List>
+                {plan.features.map((item) => (
+                  <PricingCard.ListItem className="text-white/45 text-xs" key={item}>
+                    <HugeiconsIcon
+                      icon={CheckmarkCircle04Icon}
+                      strokeWidth={2}
+                      aria-hidden="true"
+                      className="size-3.5 text-white/50 shrink-0 mt-px"
+                    />
+                    <span>{item}</span>
+                  </PricingCard.ListItem>
+                ))}
+              </PricingCard.List>
+            </PricingCard.Body>
+          </PricingCard.Card>
+        ))}
       </div>
     </section>
   );
-};
+}
+
+const plans = [
+  {
+    name: "Standard",
+    description: "Get started for free — no card required",
+    price: "Free",
+    original: undefined,
+    period: "forever",
+    badge: undefined,
+    features: [
+      "1 domain & 1 chatbot",
+      "10 conversations / month",
+      "Basic AI responses",
+      "Embed code (15 languages)",
+      "1 email campaign / month",
+      "Community support",
+    ],
+  },
+  {
+    name: "Pro",
+    description: "For growing businesses that need real automation",
+    price: "$35",
+    original: "$49",
+    period: "/month",
+    badge: "Popular",
+    features: [
+      "2 domains & 2 chatbots",
+      "2,000 conversations / month",
+      "Knowledge base (file uploads)",
+      "Human handoff & live chat",
+      "Custom AI persona & branding",
+      "5 email campaigns / month",
+      "Appointment booking",
+      "Working hours & availability",
+      "All 15 embed languages",
+      "Priority email support",
+    ],
+  },
+  {
+    name: "Ultimate",
+    description: "For agencies and power users — no limits",
+    price: "$55",
+    original: "$79",
+    period: "/month",
+    badge: undefined,
+    features: [
+      "Unlimited domains & chatbots",
+      "Unlimited conversations",
+      "Everything in Pro",
+      "Website scraping for knowledge base",
+      "Unlimited email campaigns",
+      "Integrations (coming soon)",
+      "Priority support",
+    ],
+  },
+];
