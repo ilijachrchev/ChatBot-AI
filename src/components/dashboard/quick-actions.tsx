@@ -77,8 +77,8 @@ export const QuickActions = () => {
   return (
     <div
       className={cn(
-        'rounded-xl border border-slate-200 dark:border-slate-800',
-        'bg-white dark:bg-slate-900/50 p-5 md:p-6 shadow-md h-full flex flex-col'
+        'rounded-xl border border-slate-200 dark:border-[#2a3a52]',
+        'bg-white dark:bg-[#1a2640]/80 p-5 md:p-6 shadow-sm h-full flex flex-col'
       )}
     >
       <div className="mb-5">
@@ -99,9 +99,9 @@ export const QuickActions = () => {
               href={action.href}
               className={cn(
                 'group flex items-center gap-3 p-3.5 rounded-xl',
-                'border border-slate-200 dark:border-slate-800',
-                'bg-slate-50/50 dark:bg-slate-800/30',
-                'hover:bg-white dark:hover:bg-slate-800',
+                'border border-slate-200 dark:border-[#2a3a52]',
+                'bg-slate-50/50 dark:bg-[#243044]/60',
+                'hover:bg-white dark:hover:bg-[#243044]',
                 'hover:shadow-sm',
                 colors.hoverBorder,
                 'transition-all duration-200 hover:scale-[1.01]'

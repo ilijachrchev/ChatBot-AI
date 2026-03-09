@@ -1,7 +1,6 @@
 'use client'
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { TrendingUp, TrendingDown } from 'lucide-react'
 import { Area, AreaChart, ResponsiveContainer } from 'recharts'
 
 type KpiCardProps = {
@@ -49,79 +48,73 @@ export const KpiCard = ({
 
   return (
     <div className={cn(
-      'relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800',
-      'bg-white dark:bg-slate-900/50 p-5 md:p-6',
-      'shadow-md hover:shadow-lg transition-all duration-300',
-      'group'
+      'relative overflow-hidden rounded-xl border border-slate-200 dark:border-[#2a3a52]',
+      'bg-white dark:bg-[#1a2640]/80 p-5 md:p-6',
+      'shadow-sm'
     )}>
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
-      <div className="relative z-10">
-        <div className="flex items-start justify-between mb-4">
-          <div className={cn('p-2.5 rounded-lg', iconColorClasses[iconColor])}>
-            {React.cloneElement(icon as React.ReactElement, { 
-              className: 'h-5 w-5',
-              strokeWidth: 2
-            })}
-          </div>
-          
-          {sparklineData && sparklineData.length > 0 && (
-            <div className="h-10 w-20">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData}>
-                  <defs>
-                    <linearGradient id={`sparkline-${iconColor}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor={sparklineColors[iconColor]} stopOpacity={0.3} />
-                      <stop offset="100%" stopColor={sparklineColors[iconColor]} stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <Area
-                    type="monotone"
-                    dataKey="value"
-                    stroke={sparklineColors[iconColor]}
-                    strokeWidth={1.5}
-                    fill={`url(#sparkline-${iconColor})`}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-1">
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-            {title}
-          </p>
-          <p className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
-            {sales && '$'}
-            {typeof value === 'number' ? value.toLocaleString() : value}
-          </p>
-        </div>
-
-        {trend && typeof value === 'number' && value > 0 && (
-          <div className="mt-3 flex items-center gap-1.5">
-            {isPositive && (
-              <div className="flex items-center gap-1 text-emerald-600 dark:text-emerald-400">
-                <TrendingUp className="h-3.5 w-3.5" />
-                <span className="text-xs font-semibold">+{trend.value}%</span>
-              </div>
-            )}
-            {isNegative && (
-              <div className="flex items-center gap-1 text-rose-600 dark:text-rose-400">
-                <TrendingDown className="h-3.5 w-3.5" />
-                <span className="text-xs font-semibold">{trend.value}%</span>
-              </div>
-            )}
-            <span className="text-xs text-slate-500 dark:text-slate-400">{trend.label}</span>
-          </div>
-        )}
-
-        {value === 0 && (
-          <p className="text-xl font-medium text-slate-300 dark:text-slate-700 mt-3 select-none">
-            —
-          </p>
-        )}
+      {/* ICON — uncomment to show icon
+      <div className={cn('p-2.5 rounded-lg mb-4 w-fit', iconColorClasses[iconColor])}>
+        {React.cloneElement(icon as React.ReactElement, {
+          className: 'h-5 w-5',
+          strokeWidth: 2
+        })}
       </div>
+      */}
+
+      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+        {title}
+      </p>
+
+      <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+        {sales && '$'}
+        {typeof value === 'number' ? value.toLocaleString() : value}
+      </p>
+
+      {trend && typeof value === 'number' && value > 0 && (
+        <div className="mt-3 flex items-center gap-1.5">
+          {isPositive && (
+            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+              +{trend.value}%
+            </span>
+          )}
+          {isNegative && (
+            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400">
+              {trend.value}%
+            </span>
+          )}
+          <span className="text-xs text-slate-500 dark:text-slate-400">{trend.label}</span>
+        </div>
+      )}
+
+      {value === 0 && (
+        <p className="text-xl font-medium text-slate-300 dark:text-slate-700 mt-3 select-none">
+          —
+        </p>
+      )}
+
+      {sparklineData && sparklineData.length > 0 && (
+        <div className="absolute bottom-3 right-3 h-12 w-24 opacity-60 pointer-events-none">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={chartData}>
+              <defs>
+                <linearGradient id={`sparkline-${iconColor}`} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={sparklineColors[iconColor]} stopOpacity={0.3} />
+                  <stop offset="100%" stopColor={sparklineColors[iconColor]} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke={sparklineColors[iconColor]}
+                strokeWidth={1.5}
+                fill={`url(#sparkline-${iconColor})`}
+                dot={false}
+                isAnimationActive={false}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   )
 }

@@ -1,4 +1,3 @@
-import { getUserAppointments } from '@/actions/appointment'
 import {
   getUserBalance,
   getUserClients,
@@ -11,7 +10,6 @@ import {
   getResolutionData,
   getConversationTrend,
   getSalesTrend,
-  getBookingsTrend,
   getConversationsToday,
   getConversationsThisWeek,
   getTotalChatRooms,
@@ -26,7 +24,7 @@ import { AIResolutionChart } from '@/components/dashboard/ai-resolution-chart'
 import { EnhancedPlanUsage } from '@/components/dashboard/enhanced-plan-usage'
 import { QuickActions } from '@/components/dashboard/quick-actions'
 import InfoBar from '@/components/infobar'
-import { MessageSquare, TrendingUp, Calendar, DollarSign, Star } from 'lucide-react'
+import { MessageSquare, TrendingUp, DollarSign, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import React from 'react'
 
@@ -39,7 +37,6 @@ const Page = async (props: Props) => {
   const [
     clients,
     sales,
-    bookings,
     plan,
     transactions,
     products,
@@ -47,7 +44,6 @@ const Page = async (props: Props) => {
     resolutionData,
     conversationTrend,
     salesTrend,
-    bookingsTrend,
     conversationsToday,
     conversationsThisWeek,
     totalChatRooms,
@@ -57,7 +53,6 @@ const Page = async (props: Props) => {
   ] = await Promise.all([
     getUserClients(),
     getUserBalance(),
-    getUserAppointments(),
     getUserPlanInfo(),
     getUserTransaction(),
     getUserTotalProductPrices(),
@@ -65,7 +60,6 @@ const Page = async (props: Props) => {
     getResolutionData(),
     getConversationTrend(),
     getSalesTrend(),
-    getBookingsTrend(),
     getConversationsToday(),
     getConversationsThisWeek(),
     getTotalChatRooms(),
@@ -114,8 +108,6 @@ const Page = async (props: Props) => {
   const hasConversationData =
     conversationTrend && conversationTrend.length > 0 && conversationTrend.some((v) => v > 0)
   const hasSalesData = salesTrend && salesTrend.length > 0 && salesTrend.some((v) => v > 0)
-  const hasBookingsData =
-    bookingsTrend && bookingsTrend.length > 0 && bookingsTrend.some((v) => v > 0)
 
   const conversationTrendPercent = conversationsThisWeek > 0 ? 12 : 0
 
@@ -127,7 +119,7 @@ const Page = async (props: Props) => {
     !!firstDomainSlug
 
   return (
-    <div className="w-full h-full flex flex-col p-4 md:p-6 lg:p-8">
+    <div className="w-full h-full flex flex-col p-4 md:p-6 lg:p-8 dark:bg-[#0f1729]">
       <InfoBar />
 
       <div className="overflow-y-auto w-full flex-1">
@@ -138,7 +130,7 @@ const Page = async (props: Props) => {
           />
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6 mb-6 lg:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-6 lg:mb-8">
           <KpiCard
             title="Conversations Today"
             value={conversationsToday}
@@ -160,16 +152,6 @@ const Page = async (props: Props) => {
             sparklineData={hasSalesData ? salesTrend : undefined}
           />
           <KpiCard
-            title="Appointments"
-            value={bookings || 0}
-            icon={<Calendar />}
-            iconColor="purple"
-            trend={
-              bookings && bookings > 0 ? { value: 4.5, label: 'vs last week' } : undefined
-            }
-            sparklineData={hasBookingsData ? bookingsTrend : undefined}
-          />
-          <KpiCard
             title="Total Sales"
             value={sales || 0}
             sales
@@ -178,46 +160,41 @@ const Page = async (props: Props) => {
             trend={sales && sales > 0 ? { value: 8.1, label: 'vs last month' } : undefined}
           />
           <div className={cn(
-            'relative overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800',
-            'bg-white dark:bg-slate-900/50 p-5 md:p-6',
-            'shadow-md hover:shadow-lg transition-all duration-300 group'
+            'relative overflow-hidden rounded-xl border border-slate-200 dark:border-[#2a3a52]',
+            'bg-white dark:bg-[#1a2640]/80 p-5 md:p-6',
+            'shadow-sm'
           )}>
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            <div className="relative z-10">
-              <div className="flex items-start justify-between mb-4">
-                <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400">
-                  <Star className="h-5 w-5" strokeWidth={2} />
-                </div>
-              </div>
-              <div className="space-y-1">
-                <p className="text-sm font-medium text-slate-600 dark:text-slate-400 uppercase tracking-wide">
-                  Satisfaction Rate
-                </p>
-                <p className={cn(
-                  'text-2xl lg:text-3xl font-bold tracking-tight',
-                  ratingsData.total < 3
-                    ? 'text-slate-400 dark:text-slate-600'
-                    : ratingsData.satisfactionRate >= 80
-                    ? 'text-emerald-600 dark:text-emerald-400'
-                    : ratingsData.satisfactionRate >= 60
-                    ? 'text-amber-600 dark:text-amber-400'
-                    : 'text-rose-600 dark:text-rose-400'
-                )}>
-                  {ratingsData.total < 3 ? 'N/A' : `${ratingsData.satisfactionRate}%`}
-                </p>
-              </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                {ratingsData.positive} of {ratingsData.total} rated helpful
-              </p>
-              {ratingsData.total > 0 && (
-                <div className="mt-3 h-1.5 w-full bg-rose-200 dark:bg-rose-900/40 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-emerald-500 rounded-full transition-all duration-500"
-                    style={{ width: `${ratingsData.satisfactionRate}%` }}
-                  />
-                </div>
-              )}
+            {/* ICON — uncomment to show icon
+            <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 mb-4 w-fit">
+              <Star className="h-5 w-5" strokeWidth={2} />
             </div>
+            */}
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+              Satisfaction Rate
+            </p>
+            <p className={cn(
+              'text-3xl font-bold tracking-tight',
+              ratingsData.total < 3
+                ? 'text-slate-400 dark:text-slate-600'
+                : ratingsData.satisfactionRate >= 80
+                ? 'text-emerald-600 dark:text-emerald-400'
+                : ratingsData.satisfactionRate >= 60
+                ? 'text-amber-600 dark:text-amber-400'
+                : 'text-rose-600 dark:text-rose-400'
+            )}>
+              {ratingsData.total < 3 ? 'N/A' : `${ratingsData.satisfactionRate}%`}
+            </p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              {ratingsData.positive} of {ratingsData.total} rated helpful
+            </p>
+            {ratingsData.total > 0 && (
+              <div className="mt-3 h-1.5 w-full bg-rose-200 dark:bg-rose-900/40 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                  style={{ width: `${ratingsData.satisfactionRate}%` }}
+                />
+              </div>
+            )}
           </div>
         </div>
 

@@ -27,7 +27,7 @@ const PLAN_BUTTON: Record<string, string> = {
     'bg-zinc-900 hover:bg-zinc-700 text-white dark:bg-zinc-100 dark:hover:bg-zinc-200 dark:text-zinc-900',
   PRO: 'bg-blue-600 hover:bg-blue-700 text-white',
   ULTIMATE:
-    'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700',
+    'bg-slate-100 dark:bg-[#243044] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#334560]',
 }
 
 export const EnhancedPlanUsage = ({
@@ -58,8 +58,8 @@ export const EnhancedPlanUsage = ({
   return (
     <div
       className={cn(
-        'rounded-xl border border-slate-200 dark:border-slate-800',
-        'bg-white dark:bg-slate-900/50 p-5 md:p-6 shadow-md h-full flex flex-col'
+        'rounded-xl border border-slate-200 dark:border-[#2a3a52]',
+        'bg-white dark:bg-[#1a2640]/80 p-5 md:p-6 shadow-sm h-full flex flex-col'
       )}
     >
       <div className="flex items-start justify-between mb-5">
@@ -114,7 +114,7 @@ export const EnhancedPlanUsage = ({
           <div
             className={cn(
               'flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-xl',
-              'bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50'
+              'bg-slate-50 dark:bg-[#243044]/60 border border-slate-200 dark:border-[#2a3a52]'
             )}
           >
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -128,7 +128,7 @@ export const EnhancedPlanUsage = ({
           <div
             className={cn(
               'flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-xl',
-              'bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50'
+              'bg-slate-50 dark:bg-[#243044]/60 border border-slate-200 dark:border-[#2a3a52]'
             )}
           >
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -142,7 +142,7 @@ export const EnhancedPlanUsage = ({
           <div
             className={cn(
               'flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-xl',
-              'bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50'
+              'bg-slate-50 dark:bg-[#243044]/60 border border-slate-200 dark:border-[#2a3a52]'
             )}
           >
             <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
@@ -155,7 +155,7 @@ export const EnhancedPlanUsage = ({
         </div>
       </div>
 
-      <div className="mt-5 pt-5 border-t border-slate-200 dark:border-slate-800">
+      <div className="mt-5 pt-5 border-t border-slate-200 dark:border-[#2a3a52]">
         <Link
           href="/account/billing"
           className={cn(

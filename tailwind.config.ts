@@ -223,8 +223,8 @@ const config: Config = {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'caret-blink': 'caret-blink 1.25s ease-out infinite',
-  			'open-sidebar': 'open-sidebar 0.2s ease-out',
-  			'close-sidebar': 'close-sidebar 0.2s ease-out',
+  			'open-sidebar': 'open-sidebar 0.3s ease-out forwards',
+  			'close-sidebar': 'close-sidebar 0.3s ease-out forwards',
   			'fade-in': 'fade-in 0.2s ease-out',
   			shimmer: 'shimmer 2s infinite',
   			'shimmer-slow': 'shimmer 3s infinite',
@@ -234,7 +234,7 @@ const config: Config = {
   		}
   	}
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [tailwindcssAnimate],
 } satisfies Config
 
 export default config
