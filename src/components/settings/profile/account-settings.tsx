@@ -20,13 +20,13 @@ const AccountSettings = (props: Props) => {
   }
 
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
+    <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 text-white">
           <User className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+          <h3 className="text-lg font-bold text-[var(--text-primary)]">
             Account Settings
           </h3>
         </div>
@@ -35,7 +35,7 @@ const AccountSettings = (props: Props) => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">
+            <label className="text-sm font-medium text-[var(--text-secondary)] mb-1.5 block">
               First Name
             </label>
             <FormGenerator
@@ -48,7 +48,7 @@ const AccountSettings = (props: Props) => {
             />
           </div>
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">
+            <label className="text-sm font-medium text-[var(--text-secondary)] mb-1.5 block">
               Last Name
             </label>
             <FormGenerator
@@ -63,7 +63,7 @@ const AccountSettings = (props: Props) => {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">
+          <label className="text-sm font-medium text-[var(--text-secondary)] mb-1.5 block">
             Email Address
           </label>
           <FormGenerator
@@ -77,7 +77,7 @@ const AccountSettings = (props: Props) => {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5 block">
+          <label className="text-sm font-medium text-[var(--text-secondary)] mb-1.5 block">
             Company Name
           </label>
           <FormGenerator
@@ -92,7 +92,7 @@ const AccountSettings = (props: Props) => {
 
         <Button 
           type="submit"
-          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/40"
+          className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/40"
         >
           <Loader loading={loading}>Save Changes</Loader>
         </Button>

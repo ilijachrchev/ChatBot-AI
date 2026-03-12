@@ -17,7 +17,7 @@ type Props = {
 }
 
 const AVATAR_COLORS = [
-  'bg-blue-500',
+  'bg-indigo-500',
   'bg-violet-500',
   'bg-emerald-500',
   'bg-amber-500',
@@ -94,7 +94,7 @@ const ChatCard = ({
           <span className="text-xs text-muted-foreground truncate">{preview}</span>
           <div className="flex items-center gap-1 flex-shrink-0">
             {isUnread && (
-              <span className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-indigo-500 flex-shrink-0" />
             )}
             {status === 'RESOLVED' && (
               <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">

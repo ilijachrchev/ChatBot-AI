@@ -235,10 +235,10 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
       <div className="mb-6 lg:mb-8 pt-4">
         <div className="flex items-start justify-between gap-4 mb-2">
           <div>
-            <h1 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+            <h1 className="text-2xl lg:text-3xl font-bold text-[var(--text-primary)] tracking-tight">
               Knowledge Base
             </h1>
-            <p className="text-slate-600 dark:text-slate-400 mt-1">
+            <p className="text-[var(--text-secondary)] mt-1">
               Train your chatbot with your own content
             </p>
           </div>
@@ -253,14 +253,14 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
-            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 mb-3">
-              <Zap className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+          <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-5">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] mb-3">
+              <Zap className="h-4 w-4 text-[var(--text-secondary)]" />
             </div>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1.5">
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1.5">
               How it works
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
               Your chatbot reads and indexes the content you provide. When a
               customer asks a question, the AI searches your knowledge base and
               uses the most relevant content to generate accurate, grounded
@@ -268,33 +268,33 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
             </p>
           </div>
 
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
-            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 mb-3">
-              <FileText className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+          <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-5">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] mb-3">
+              <FileText className="h-4 w-4 text-[var(--text-secondary)]" />
             </div>
-            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-1.5">
+            <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1.5">
               File Uploads
             </h3>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
               Upload PDF, TXT, or DOCX files containing your product docs, FAQs,
               policies, or any reference material. Files are processed and
               chunked into searchable knowledge.
             </p>
           </div>
 
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
-            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 mb-3">
-              <Globe className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+          <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-5">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] mb-3">
+              <Globe className="h-4 w-4 text-[var(--text-secondary)]" />
             </div>
             <div className="flex items-center gap-2 mb-1.5">
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+              <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                 Website Scraping
               </h3>
               <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
                 Ultimate Plan
               </span>
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
               Enter your website URL and the scraper will crawl your pages,
               extract all text content, and automatically ingest it into your
               knowledge base — no manual copy-paste needed.
@@ -303,7 +303,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
         </div>
       </div>
 
-      <div className="border-t border-slate-200 dark:border-slate-800 mb-6" />
+      <div className="border-t border-[var(--border-default)] mb-6" />
 
       <input
         ref={fileInputRef}
@@ -316,13 +316,13 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
 
       {userPlan === 'ULTIMATE' ? (
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">
             Scrape Website
           </h2>
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-5">
+          <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-5">
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
-                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--text-muted)] pointer-events-none" />
                 <Input
                   type="url"
                   placeholder="https://yourwebsite.com"
@@ -359,7 +359,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                 )}
               </Button>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-2">
               Enter a URL and the number of pages to crawl (max&nbsp;20). The scraped content
               will be saved and ingested into your knowledge base.
             </p>
@@ -367,26 +367,26 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
         </div>
       ) : (
         <div className="mb-6">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+          <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-3">
             Scrape Website
           </h2>
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-8 flex flex-col items-center text-center gap-3">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800">
-              <Lock className="h-6 w-6 text-slate-400" />
+          <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-8 flex flex-col items-center text-center gap-3">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)]">
+              <Lock className="h-6 w-6 text-[var(--text-muted)]" />
             </div>
-            <p className="font-semibold text-slate-900 dark:text-white">
+            <p className="font-semibold text-[var(--text-primary)]">
               Ultimate plan required
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-400 max-w-sm">
+            <p className="text-sm text-[var(--text-secondary)] max-w-sm">
               Web scraping is available on the Ultimate plan. Upgrade to automatically
               pull content from any website into your knowledge base.
             </p>
             <Link
               href="/settings/billing"
               className={cn(
-                'mt-1 inline-flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-700',
-                'bg-transparent px-4 py-2 text-sm font-medium text-slate-900 dark:text-white',
-                'hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors'
+                'mt-1 inline-flex items-center justify-center rounded-md border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+                'bg-transparent px-4 py-2 text-sm font-medium text-[var(--text-primary)]',
+                'hover:bg-[var(--bg-hover)] transition-colors'
               )}
             >
               Upgrade to Ultimate
@@ -399,12 +399,12 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
         <div
           className={cn(
             'rounded-xl border-2 border-dashed',
-            'border-slate-200 dark:border-slate-800',
-            'bg-slate-50/50 dark:bg-slate-900/30',
+            'border-[var(--border-default)]',
+            'bg-slate-50/50 dark:bg-[var(--bg-page)]/30',
             'p-8 md:p-12',
             'transition-all duration-200',
             'hover:border-blue-300 dark:hover:border-blue-700',
-            'hover:bg-slate-100/50 dark:hover:bg-slate-900/50',
+            'hover:bg-slate-100/50 dark:hover:bg-[var(--bg-hover)]/50',
             uploading && 'opacity-50 pointer-events-none'
           )}
         >
@@ -416,12 +416,12 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                 'mb-4'
               )}
             >
-              <FileText className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <FileText className="h-8 w-8 text-[var(--text-accent)]" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
               {uploading ? 'Uploading files...' : 'Drop files here or click to upload'}
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 max-w-md">
+            <p className="text-sm text-[var(--text-secondary)] mb-4 max-w-md">
               Supported formats: PDF, DOCX, TXT. Maximum file size: 10MB per file.
             </p>
             <Button
@@ -437,20 +437,20 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+        <h2 className="text-lg font-semibold text-[var(--text-primary)] mb-4">
           Uploaded Files
         </h2>
 
         {files.length === 0 ? (
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-12">
+          <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-12">
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
-                <FileText className="h-8 w-8 text-slate-400" />
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-4">
+                <FileText className="h-8 w-8 text-[var(--text-muted)]" />
               </div>
-              <p className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
+              <p className="text-lg font-semibold text-[var(--text-primary)] mb-1">
                 No files uploaded
               </p>
-              <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+              <p className="text-sm text-[var(--text-secondary)] mb-4">
                 Upload your first document to get started
               </p>
               <Button
@@ -471,28 +471,28 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                 key={file.id}
                 className={cn(
                   'transition-all duration-200',
-                  'hover:bg-slate-50 dark:hover:bg-slate-800/50',
+                  'hover:bg-[var(--bg-hover)]',
                   file.status === 'DISABLED' && 'opacity-60'
                 )}
               >
-                <TableCell className="font-medium text-slate-950 dark:text-white">
+                <TableCell className="font-medium text-slate-950 dark:text-[var(--text-primary)]">
                   <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4 text-slate-400 flex-shrink-0" />
+                    <FileText className="h-4 w-4 text-[var(--text-muted)] flex-shrink-0" />
                     <span className="truncate max-w-[300px]">{file.filename}</span>
                   </div>
                 </TableCell>
 
                 <TableCell>
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-sm font-medium">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] text-sm font-medium">
                     {getFileTypeLabel(file.fileType)}
                   </span>
                 </TableCell>
 
-                <TableCell className="text-slate-600 dark:text-slate-400">
+                <TableCell className="text-[var(--text-secondary)]">
                   {formatFileSize(file.fileSize)}
                 </TableCell>
 
-                <TableCell className="text-slate-600 dark:text-slate-400">
+                <TableCell className="text-[var(--text-secondary)]">
                   {formatDate(file.createdAt)}
                 </TableCell>
 
@@ -505,7 +505,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                       file.status === 'PROCESSING' &&
                         'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
                       file.status === 'DISABLED' &&
-                        'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300',
+                        'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]',
                       file.status === 'FAILED' &&
                         'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                     )}
@@ -528,7 +528,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                         {reprocessingId === file.id ? (
                           <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
                         ) : (
-                          <RefreshCw className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                          <RefreshCw className="h-4 w-4 text-[var(--text-accent)]" />
                         )}
                       </Button>
                     )}
@@ -541,9 +541,9 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                         title={file.status === 'READY' ? 'Disable' : 'Enable'}
                       >
                         {file.status === 'READY' ? (
-                          <PowerOff className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                          <PowerOff className="h-4 w-4 text-[var(--text-secondary)]" />
                         ) : (
-                          <Power className="h-4 w-4 text-slate-600 dark:text-slate-400" />
+                          <Power className="h-4 w-4 text-[var(--text-secondary)]" />
                         )}
                       </Button>
                     )}

@@ -20,16 +20,16 @@ type Period = 'weekly' | 'monthly' | 'yearly'
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white dark:bg-[#243044] border border-slate-200 dark:border-[#2a3a52] rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">{label}</p>
+      <div className="bg-white dark:bg-[var(--bg-surface)] border border-[var(--border-default)] dark:border-[var(--border-strong)] rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium text-[var(--text-primary)] mb-2">{label}</p>
         {payload.map((entry: any, index: number) => (
           <div key={index} className="flex items-center gap-2 text-sm">
             <div
               className="h-2.5 w-2.5 rounded-full"
               style={{ backgroundColor: entry.color }}
             />
-            <span className="text-slate-600 dark:text-slate-400 capitalize">{entry.dataKey}:</span>
-            <span className="font-medium text-slate-900 dark:text-white">{entry.value}</span>
+            <span className="text-[var(--text-secondary)] capitalize">{entry.dataKey}:</span>
+            <span className="font-medium text-[var(--text-primary)]">{entry.value}</span>
           </div>
         ))}
       </div>
@@ -46,23 +46,23 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
 
   return (
     <div className={cn(
-      'rounded-xl border border-slate-200 dark:border-[#2a3a52]',
-      'bg-white dark:bg-[#1a2640]/80 shadow-sm'
+      'rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+      'bg-white dark:bg-[var(--bg-surface)] shadow-sm'
     )}>
       <div className="p-5 md:p-6 pb-2">
         <div className="flex items-start justify-between flex-wrap gap-3">
           <div>
-            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+            <h3 className="text-lg font-bold text-[var(--text-primary)]">
               Conversation Activity
             </h3>
             {weekTotal > 0 && (
-              <span className="inline-flex items-center mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400">
+              <span className="inline-flex items-center mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-[var(--text-accent)]">
                 {weekTotal.toLocaleString()} this {periodLabel}
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-[#243044]">
+          <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)]">
             {(['Weekly', 'Monthly', 'Yearly'] as const).map((period) => (
               <button
                 key={period}
@@ -70,8 +70,8 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
                 className={cn(
                   'px-3 py-1 rounded-md text-xs font-medium transition-all',
                   activePeriod === period.toLowerCase()
-                    ? 'bg-white dark:bg-[#334560] text-slate-900 dark:text-white shadow-sm'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
+                    ? 'bg-white dark:bg-[var(--bg-active)] text-[var(--text-primary)] shadow-sm'
+                    : 'text-slate-500 dark:text-[var(--text-secondary)] hover:text-slate-700 dark:hover:text-slate-300'
                 )}
               >
                 {period}
@@ -83,11 +83,11 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
         <div className="flex items-center gap-4 text-sm mt-3">
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'rgb(99, 179, 246)' }} />
-            <span className="text-slate-500 dark:text-slate-400">AI Handled</span>
+            <span className="text-slate-500 dark:text-[var(--text-secondary)]">AI Handled</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'rgb(192, 132, 252)' }} />
-            <span className="text-slate-500 dark:text-slate-400">Human</span>
+            <span className="text-slate-500 dark:text-[var(--text-secondary)]">Human</span>
           </div>
         </div>
       </div>

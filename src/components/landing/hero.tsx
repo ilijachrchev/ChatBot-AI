@@ -25,7 +25,7 @@ export const Hero = () => {
             </span>
           </h1>
 
-          <p className="text-lg text-slate-400 max-w-lg mx-auto lg:mx-0">
+          <p className="text-lg text-[var(--text-muted)] max-w-lg mx-auto lg:mx-0">
             Deploy an AI chatbot on any website in minutes. It answers
             questions, books appointments, and hands off to your team —
             automatically.
@@ -40,7 +40,7 @@ export const Hero = () => {
             </LandingButton>
           </div>
 
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-[var(--text-muted)]">
             No credit card required • Works on any website • 5-minute setup
           </p>
         </div>
@@ -68,16 +68,16 @@ export const Hero = () => {
                 </div>
               </div>
 
-              <div className="bg-slate-950 p-4 space-y-3">
+              <div className="bg-[var(--bg-page)] p-4 space-y-3">
                 <div className="flex gap-2 items-end">
                   <div className="w-6 h-6 rounded-full bg-sky-500/30 flex items-center justify-center shrink-0">
                     <Bot className="h-3 w-3 text-sky-400" />
                   </div>
                   <div>
-                    <div className="bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
+                    <div className="bg-[var(--bg-surface)] text-slate-100 rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
                       Hi! 👋 How can I help you today?
                     </div>
-                    <p className="text-[10px] text-slate-500 mt-1">just now</p>
+                    <p className="text-[10px] text-[var(--text-muted)] mt-1">just now</p>
                   </div>
                 </div>
 
@@ -85,7 +85,7 @@ export const Hero = () => {
                   <div className="bg-sky-500 text-white rounded-2xl rounded-tr-sm p-3 text-sm max-w-[75%]">
                     What are your pricing plans?
                   </div>
-                  <p className="text-[10px] text-slate-500 mt-1">just now</p>
+                  <p className="text-[10px] text-[var(--text-muted)] mt-1">just now</p>
                 </div>
 
                 <div className="flex gap-2 items-end">
@@ -93,11 +93,11 @@ export const Hero = () => {
                     <Bot className="h-3 w-3 text-sky-400" />
                   </div>
                   <div>
-                    <div className="bg-slate-800 text-slate-100 rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
+                    <div className="bg-[var(--bg-surface)] text-slate-100 rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
                       We have 3 plans starting from free! Would you like me to
                       walk you through them?
                     </div>
-                    <p className="text-[10px] text-slate-500 mt-1">just now</p>
+                    <p className="text-[10px] text-[var(--text-muted)] mt-1">just now</p>
                   </div>
                 </div>
 
@@ -105,7 +105,7 @@ export const Hero = () => {
                   <div className="w-6 h-6 rounded-full bg-sky-500/30 flex items-center justify-center shrink-0">
                     <Bot className="h-3 w-3 text-sky-400" />
                   </div>
-                  <div className="bg-slate-800 rounded-2xl p-3">
+                  <div className="bg-[var(--bg-surface)] rounded-2xl p-3">
                     <div className="flex gap-1 items-center h-4">
                       <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" />
                       <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-150" />
@@ -115,8 +115,8 @@ export const Hero = () => {
                 </div>
               </div>
 
-              <div className="bg-slate-900 border-t border-slate-800 px-4 py-3 flex items-center gap-2">
-                <div className="flex-1 bg-slate-800 rounded-full px-4 py-2 text-sm text-slate-500">
+              <div className="bg-[var(--bg-page)] border-t border-slate-800 px-4 py-3 flex items-center gap-2">
+                <div className="flex-1 bg-[var(--bg-surface)] rounded-full px-4 py-2 text-sm text-[var(--text-muted)]">
                   Type a message...
                 </div>
                 <div className="w-9 h-9 rounded-full bg-sky-500 flex items-center justify-center shrink-0">
@@ -125,7 +125,7 @@ export const Hero = () => {
               </div>
             </div>
 
-            <div className="absolute -bottom-4 -right-4 bg-slate-900 border border-slate-700 rounded-xl shadow-lg px-3 py-2 flex items-center gap-1.5">
+            <div className="absolute -bottom-4 -right-4 bg-[var(--bg-page)] border border-slate-700 rounded-xl shadow-lg px-3 py-2 flex items-center gap-1.5">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
               <span className="text-xs font-semibold text-slate-100">
                 AI handled

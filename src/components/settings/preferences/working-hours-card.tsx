@@ -94,11 +94,11 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
   }
 
   return (
-    <Card className='border-slate-200 dark:border-slate-800'>
+    <Card className='border-[var(--border-default)]'>
       <CardHeader>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center'>
-            <Clock className='w-5 h-5 text-slate-900 dark:text-white' />
+          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] flex items-center justify-center'>
+            <Clock className='w-5 h-5 text-[var(--text-primary)]' />
           </div>
           <div className='flex-1'>
             <CardTitle className='text-base'>Working Hours</CardTitle>
@@ -159,8 +159,8 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
                     disabled={saving}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       isSelected
-                        ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'
+                        ? 'bg-indigo-500 text-white'
+                        : 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-slate-200 dark:hover:bg-[var(--bg-active)]'
                     }`}
                   >
                     {day.label}
@@ -171,8 +171,8 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
           </div>
 
           {isDirty && (
-            <div className='flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800'>
-              <p className='text-sm text-slate-600 dark:text-slate-400'>
+            <div className='flex items-center justify-between pt-4 border-t border-[var(--border-default)]'>
+              <p className='text-sm text-[var(--text-secondary)]'>
                 You have unsaved changes
               </p>
               <div className='flex gap-2'>
@@ -188,7 +188,7 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
                   onClick={handleSave}
                   size='sm'
                   disabled={saving}
-                  className='bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900'
+                  className='bg-indigo-500 hover:bg-indigo-600 text-white'
                 >
                   {saving ? (
                     <>

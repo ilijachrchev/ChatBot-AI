@@ -143,11 +143,11 @@ export function SecuritySection() {
 
   return (
     <div className='space-y-6'>
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
             <div className='w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center'>
-              <Shield className='w-6 h-6 text-white dark:text-slate-900' />
+              <Shield className='w-6 h-6 text-[var(--text-primary)]' />
             </div>
             <div>
               <CardTitle className='text-xl'>Account Security</CardTitle>
@@ -159,26 +159,26 @@ export function SecuritySection() {
         </CardHeader>
         <CardContent>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <div className='p-4 bg-white/60 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800'>
+            <div className='p-4 bg-white/60 dark:bg-[var(--bg-page)]/60 rounded-xl border border-[var(--border-default)]'>
               <div className='flex items-center gap-3 mb-2'>
-                <Mail className='w-5 h-5 text-slate-600 dark:text-slate-400' />
-                <h4 className='text-sm font-semibold text-slate-900 dark:text-white'>
+                <Mail className='w-5 h-5 text-[var(--text-secondary)]' />
+                <h4 className='text-sm font-semibold text-[var(--text-primary)]'>
                   Email
                 </h4>
               </div>
-              <p className='text-xs text-slate-600 dark:text-slate-400'>
+              <p className='text-xs text-[var(--text-secondary)]'>
                 Verified and secure
               </p>
             </div>
 
-            <div className='p-4 bg-white/60 dark:bg-slate-900/60 rounded-xl border border-slate-200 dark:border-slate-800'>
+            <div className='p-4 bg-white/60 dark:bg-[var(--bg-page)]/60 rounded-xl border border-[var(--border-default)]'>
               <div className='flex items-center gap-3 mb-2'>
                 <Key className='w-5 h-5 text-green-600 dark:text-green-400' />
-                <h4 className='text-sm font-semibold text-slate-900 dark:text-white'>
+                <h4 className='text-sm font-semibold text-[var(--text-primary)]'>
                   Password
                 </h4>
               </div>
-              <p className='text-xs text-slate-600 dark:text-slate-400'>
+              <p className='text-xs text-[var(--text-secondary)]'>
                 Strong protection enabled
               </p>
             </div>
@@ -186,7 +186,7 @@ export function SecuritySection() {
         </CardContent>
       </Card>
 
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <CardTitle className='text-lg'>Account Information</CardTitle>
           <CardDescription>
@@ -203,9 +203,9 @@ export function SecuritySection() {
               type='email'
               value={userEmail}
               disabled
-              className='h-11 bg-slate-50 dark:bg-slate-900/50 cursor-not-allowed'
+              className='h-11 bg-slate-50 dark:bg-[var(--bg-page)]/50 cursor-not-allowed'
             />
-            <p className='text-xs text-slate-500 dark:text-slate-400'>
+            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
               Your email is managed by Clerk and cannot be changed here
             </p>
           </div>
@@ -214,7 +214,7 @@ export function SecuritySection() {
 
       <ChangePasswordCard />
 
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center justify-between'>
             <div>
@@ -251,17 +251,17 @@ export function SecuritySection() {
           {loading ? (
             <div className='text-center py-8'>
               <div className='w-8 h-8 border-2 border-slate-900 dark:border-white border-t-transparent rounded-full animate-spin mx-auto' />
-              <p className='text-sm text-slate-600 dark:text-slate-400 mt-3'>
+              <p className='text-sm text-[var(--text-secondary)] mt-3'>
                 Loading sessions...
               </p>
             </div>
           ) : sessions.length === 0 ? (
             <div className='text-center py-8'>
-              <Monitor className='w-12 h-12 text-slate-400 mx-auto mb-3' />
-              <p className='text-sm font-medium text-slate-900 dark:text-white mb-1'>
+              <Monitor className='w-12 h-12 text-[var(--text-muted)] mx-auto mb-3' />
+              <p className='text-sm font-medium text-[var(--text-primary)] mb-1'>
                 Only one active session
               </p>
-              <p className='text-xs text-slate-600 dark:text-slate-400'>
+              <p className='text-xs text-[var(--text-secondary)]'>
                 You're currently logged in on this device only
               </p>
             </div>
@@ -279,7 +279,7 @@ export function SecuritySection() {
                       'flex items-center justify-between p-4 rounded-xl border transition-all',
                       isCurrentSession
                         ? 'bg-slate-900 dark:bg-white border-slate-900 dark:border-white'
-                        : 'bg-slate-50 dark:bg-slate-900/50 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                        : 'bg-slate-50 dark:bg-[var(--bg-page)]/50 border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
                     )}
                   >
                     <div className='flex items-center gap-4'>
@@ -287,16 +287,16 @@ export function SecuritySection() {
                         className={cn(
                           'w-10 h-10 rounded-lg flex items-center justify-center',
                           isCurrentSession
-                            ? 'bg-white/10 dark:bg-slate-900/10'
-                            : 'bg-slate-100 dark:bg-slate-800'
+                            ? 'bg-white/10 dark:bg-[var(--bg-page)]/10'
+                            : 'bg-slate-100 dark:bg-[var(--bg-surface)]'
                         )}
                       >
                         <DeviceIcon
                           className={cn(
                             'w-5 h-5',
                             isCurrentSession
-                              ? 'text-white dark:text-slate-900'
-                              : 'text-slate-600 dark:text-slate-400'
+                              ? 'text-[var(--text-primary)]'
+                              : 'text-[var(--text-secondary)]'
                           )}
                         />
                       </div>
@@ -305,8 +305,8 @@ export function SecuritySection() {
                           <span className={cn(
                             'text-sm font-medium',
                             isCurrentSession
-                              ? 'text-white dark:text-slate-900'
-                              : 'text-slate-900 dark:text-white'
+                              ? 'text-[var(--text-primary)]'
+                              : 'text-[var(--text-primary)]'
                           )}>
                             {session.latestActivity?.browserName || 'Browser'}{' '}
                             {session.latestActivity?.browserVersion && `v${session.latestActivity.browserVersion}`}
@@ -314,7 +314,7 @@ export function SecuritySection() {
                             {session.latestActivity?.deviceType || 'Device'}
                           </span>
                           {isCurrentSession && (
-                            <span className='px-2 py-0.5 bg-white/20 dark:bg-slate-900/20 text-white dark:text-slate-900 text-xs font-medium rounded-full'>
+                            <span className='px-2 py-0.5 bg-white/20 dark:bg-[var(--bg-page)]/20 text-[var(--text-primary)] text-xs font-medium rounded-full'>
                               Current
                             </span>
                           )}
@@ -322,8 +322,8 @@ export function SecuritySection() {
                         <p className={cn(
                           'text-xs mt-0.5',
                           isCurrentSession
-                            ? 'text-slate-300 dark:text-slate-600'
-                            : 'text-slate-600 dark:text-slate-400'
+                            ? 'text-slate-300 dark:text-[var(--text-secondary)]'
+                            : 'text-[var(--text-secondary)]'
                         )}>
                           {session.latestActivity?.city && session.latestActivity?.country
                             ? `${session.latestActivity.city}, ${session.latestActivity.country}`
@@ -338,7 +338,7 @@ export function SecuritySection() {
                         variant='ghost'
                         size='sm'
                         disabled={isRevoking}
-                        className='text-slate-600 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20'
+                        className='text-[var(--text-secondary)] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20'
                       >
                         {isRevoking ? (
                           <div className='w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin' />
@@ -355,7 +355,7 @@ export function SecuritySection() {
         </CardContent>
       </Card>
 
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
             <div className='w-10 h-10 rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 flex items-center justify-center'>
@@ -370,9 +370,9 @@ export function SecuritySection() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className='p-6 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 text-center'>
-            <Shield className='w-12 h-12 text-slate-400 mx-auto mb-3' />
-            <p className='text-sm text-slate-600 dark:text-slate-400'>
+          <div className='p-6 bg-slate-50 dark:bg-[var(--bg-page)]/50 rounded-xl border border-dashed border-[var(--border-strong)] text-center'>
+            <Shield className='w-12 h-12 text-[var(--text-muted)] mx-auto mb-3' />
+            <p className='text-sm text-[var(--text-secondary)]'>
               Two-factor authentication will be available soon to further
               protect your account
             </p>

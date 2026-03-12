@@ -189,7 +189,7 @@ const PlaygroundPage = () => {
                           {bot.buttonStyle ?? 'Rounded'}
                         </Badge>
                         <div
-                          className="h-5 w-5 rounded-full border border-slate-200 flex-shrink-0"
+                          className="h-5 w-5 rounded-full border border-[var(--border-default)] flex-shrink-0"
                           style={{ background: bot.backgroundColor ?? '#3B82F6' }}
                           title="Chatbot color"
                         />
@@ -205,7 +205,7 @@ const PlaygroundPage = () => {
                       <button
                         type="button"
                         onClick={() => setShowSystemPrompt((p) => !p)}
-                        className="text-xs text-blue-600 hover:text-blue-700 underline"
+                        className="text-xs text-indigo-500 hover:text-blue-700 underline"
                       >
                         {showSystemPrompt ? 'Hide' : 'Show'} system prompt
                       </button>
@@ -234,7 +234,7 @@ const PlaygroundPage = () => {
                   </div>
 
                   <div className="flex items-start gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
-                    <Info className="h-3.5 w-3.5 text-blue-500 flex-shrink-0 mt-0.5" />
+                    <Info className="h-3.5 w-3.5 text-indigo-500 flex-shrink-0 mt-0.5" />
                     <p className="text-xs text-blue-700 dark:text-blue-300">
                       Test conversations don&apos;t count toward your monthly limit
                     </p>

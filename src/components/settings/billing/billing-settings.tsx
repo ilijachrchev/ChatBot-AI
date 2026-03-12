@@ -22,10 +22,10 @@ const BillingSettings = async (props: Props) => {
             <CreditCard className="h-6 w-6" />
           </div>
           <div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">
+            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-1">
               Billing & Plan
             </h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-[var(--text-secondary)]">
               Manage your subscription and payment details
             </p>
           </div>
@@ -33,24 +33,24 @@ const BillingSettings = async (props: Props) => {
       </div>
 
       <div className="lg:col-span-3 space-y-6">
-        <div className="rounded-xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 p-6 border border-blue-200 dark:border-blue-800">
+        <div className="rounded-xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 p-6 border border-blue-200 dark:border-[var(--border-accent)]">
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <Crown className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                <Crown className="h-5 w-5 text-[var(--text-accent)]" />
+                <h3 className="text-2xl font-bold text-[var(--text-primary)]">
                   {plan} Plan
                 </h3>
               </div>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-[var(--text-secondary)]">
                 Your current plan
               </p>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-bold text-slate-900 dark:text-white">
+              <p className="text-3xl font-bold text-[var(--text-primary)]">
                 {priceDisplay}
               </p>
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-[var(--text-secondary)]">
                 {PLAN_PRICES[planKey].amountCents > 0 ? '/month' : ''}
               </p>
             </div>
@@ -61,19 +61,19 @@ const BillingSettings = async (props: Props) => {
               title="Choose A Plan"
               description="Upgrade your plan to unlock more features and capabilities."
               trigger={
-                <Button variant="outline" className="flex-1 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800">
+                <Button variant="outline" className="flex-1 bg-[var(--bg-page)] hover:bg-[var(--bg-hover)]">
                   Change Plan
                 </Button>
               }
             >
               <SubscriptionForm plan={plan!} />
             </Modal>
-            <Button variant="outline" className="flex-1 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800">
+            <Button variant="outline" className="flex-1 bg-[var(--bg-page)] hover:bg-[var(--bg-hover)]">
               Cancel Subscription
             </Button>
           </div>
 
-          <div className="pt-4 border-t border-blue-200 dark:border-blue-800">
+          <div className="pt-4 border-t border-blue-200 dark:border-[var(--border-accent)]">
             <div className="flex flex-col gap-2">
               {planFeatures.slice(0, 3).map((feature) => (
                 <div
@@ -81,7 +81,7 @@ const BillingSettings = async (props: Props) => {
                   className="flex gap-2 items-start"
                 >
                   <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
-                  <p className="text-sm text-slate-700 dark:text-slate-300">{feature}</p>
+                  <p className="text-sm text-[var(--text-secondary)]">{feature}</p>
                 </div>
               ))}
             </div>
@@ -89,24 +89,24 @@ const BillingSettings = async (props: Props) => {
         </div>
 
         <div>
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3 block">
+          <label className="text-sm font-medium text-[var(--text-secondary)] mb-3 block">
             Payment Method
           </label>
-          <div className="flex items-center justify-between p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+          <div className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-hover)]">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-16 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              <div className="h-12 w-16 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                 <CreditCard className="h-6 w-6 text-white" />
               </div>
               <div>
-                <p className="font-semibold text-slate-900 dark:text-white">
+                <p className="font-semibold text-[var(--text-primary)]">
                   Visa ending in 4242
                 </p>
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <p className="text-sm text-[var(--text-secondary)]">
                   Expires 12/2025
                 </p>
               </div>
             </div>
-            <Button variant="ghost" size="sm" className="hover:bg-slate-100 dark:hover:bg-slate-800">
+            <Button variant="ghost" size="sm" className="hover:bg-[var(--bg-hover)]">
               Edit
             </Button>
           </div>

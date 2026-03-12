@@ -97,7 +97,7 @@ export const DomainSettingsNav = ({ domain }: DomainSettingsNavProps) => {
   }
 
   return (
-    <div className="w-full border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 sticky top-0 z-40">
+    <div className="w-full border-b border-[var(--border-default)] bg-[var(--bg-page)] sticky top-0 z-40">
       <div className="overflow-x-auto scrollbar-hide">
         <nav className="flex items-center gap-1 px-4 md:px-6 min-w-max">
           {navItems.map((item) => {
@@ -111,23 +111,23 @@ export const DomainSettingsNav = ({ domain }: DomainSettingsNavProps) => {
                   'hover:text-slate-900 dark:hover:text-white',
                   'border-b-2 -mb-[1px]',
                   isActive(item.path)
-                    ? 'text-slate-900 dark:text-white border-slate-900 dark:border-white'
-                    : 'text-slate-500 dark:text-slate-400 border-transparent'
+                    ? 'text-[var(--text-primary)] border-slate-900 dark:border-white'
+                    : 'text-slate-500 dark:text-[var(--text-secondary)] border-transparent'
                 )}
               >
                 <span
                   className={cn(
                     'transition-colors',
                     isActive(item.path)
-                      ? 'text-slate-900 dark:text-white'
-                      : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-600 dark:group-hover:text-slate-300'
+                      ? 'text-[var(--text-primary)]'
+                      : 'text-slate-400 dark:text-[var(--text-muted)] group-hover:text-slate-600 dark:group-hover:text-slate-300'
                   )}
                 >
                   {item.icon}
                 </span>
                 <div className="flex flex-col">
                   <span className="leading-none">{item.label}</span>
-                  <span className="text-[10px] text-slate-400 dark:text-slate-500 font-normal mt-0.5">
+                  <span className="text-[10px] text-slate-400 dark:text-[var(--text-muted)] font-normal mt-0.5">
                     {item.description}
                   </span>
                 </div>

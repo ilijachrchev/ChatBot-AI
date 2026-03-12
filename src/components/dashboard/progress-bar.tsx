@@ -27,7 +27,7 @@ export const ProgressBar = ({
   return (
     <div className={cn('flex flex-col gap-1', className)}>
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+        <span className="text-sm font-medium text-[var(--text-secondary)]">
           {label}
         </span>
         <span className={cn(
@@ -36,13 +36,13 @@ export const ProgressBar = ({
             ? 'text-rose-600 dark:text-rose-400'
             : isNearLimit
             ? 'text-amber-600 dark:text-amber-400'
-            : 'text-slate-900 dark:text-white' 
+            : 'text-[var(--text-primary)]' 
         )}>
           {displayValue}
         </span>
       </div>
       
-      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-[var(--bg-active)]">
         <div
           className={cn(
             'h-full rounded-full transition-all duration-500 ease-out relative',
@@ -50,7 +50,7 @@ export const ProgressBar = ({
               ? 'bg-rose-500' 
               : isNearLimit
               ? 'bg-amber-500' 
-              : 'bg-blue-500' 
+              : 'bg-indigo-500' 
           )}
           style={{ width: `${percentage}%` }}
         />
@@ -62,7 +62,7 @@ export const ProgressBar = ({
         </p>
       )}
       {!isOverLimit && remainingCredits > 0 && (
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-normal pt-1">
+          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] font-normal pt-1">
              {remainingCredits.toLocaleString()} {label.toLowerCase().includes('credit') ? 'credits' : label.toLowerCase().includes('domain') ? 'domains' : 'contacts'} remaining.
           </p>
       )}

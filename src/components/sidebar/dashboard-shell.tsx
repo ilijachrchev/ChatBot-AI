@@ -54,10 +54,10 @@ export default function DashboardShell({
         onMobileClose={() => setMobileSidebarOpen(false)}
       />
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <div className="md:hidden flex items-center justify-between h-14 px-4 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 flex-shrink-0 z-20">
+        <div className="md:hidden flex items-center justify-between h-14 px-4 bg-[var(--bg-page)] border-b border-[var(--border-default)] flex-shrink-0 z-20">
           <button
             onClick={() => setMobileSidebarOpen(true)}
-            className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 transition-colors min-w-10 min-h-10 flex items-center justify-center"
+            className="p-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] transition-colors min-w-10 min-h-10 flex items-center justify-center"
           >
             <Menu className="w-5 h-5" />
           </button>

@@ -17,14 +17,14 @@ export const DataTable = ({ headers, children }: DataTableProps) => {
     <Table
       className={cn(
         "rounded-xl overflow-hidden border",
-        "border-slate-200 dark:border-slate-800/70",
-        "bg-white dark:bg-slate-950/40"
+        "border-[var(--border-default)]/70",
+        "bg-[var(--bg-page)]/40"
       )}
     >
       <TableHeader>
         <TableRow className="
           bg-gradient-to-r from-blue-600 to-blue-700
-          dark:from-blue-500 dark:to-blue-600
+          dark:from-indigo-500 dark:to-indigo-600
         ">
           {headers.map((header, key) => (
             <TableHead

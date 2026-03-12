@@ -15,7 +15,7 @@ const SignUp = async () => {
       <SignUpFormProvider>
         <div className='space-y-6'>
           <div id="clerk-captcha" />
-          <div className='rounded-2xl bg-[#1A1F2E]/50 backdrop-blur-xl border border-white/10 p-8 shadow-2xl'>
+          <div className='rounded-2xl bg-[var(--bg-surface)]/50 backdrop-blur-xl border border-white/10 p-8 shadow-2xl'>
             <RegistrationFormStep />
             <ButtonHandler />
           </div>

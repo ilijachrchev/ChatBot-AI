@@ -20,8 +20,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const total = payload.reduce((sum: number, entry: any) => sum + entry.value, 0)
 
     return (
-      <div className="bg-white dark:bg-[#243044] border border-slate-200 dark:border-[#2a3a52] rounded-lg shadow-lg p-3">
-        <p className="text-sm font-medium text-slate-900 dark:text-white mb-2">{label}</p>
+      <div className="bg-white dark:bg-[var(--bg-surface)] border border-[var(--border-default)] dark:border-[var(--border-strong)] rounded-lg shadow-lg p-3">
+        <p className="text-sm font-medium text-[var(--text-primary)] mb-2">{label}</p>
         {total > 0 ? (
           payload.map((entry: any, index: number) => (
             <div key={index} className="flex items-center gap-2 text-sm">
@@ -29,17 +29,17 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                 className="h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: entry.color }}
               />
-              <span className="text-slate-600 dark:text-slate-400 capitalize">
+              <span className="text-[var(--text-secondary)] capitalize">
                 {entry.dataKey === 'ai' ? 'AI' : 'Human'}:
               </span>
-              <span className="font-medium text-slate-900 dark:text-white">{entry.value}</span>
-              <span className="text-slate-500 dark:text-slate-400 text-xs">
+              <span className="font-medium text-[var(--text-primary)]">{entry.value}</span>
+              <span className="text-slate-500 dark:text-[var(--text-secondary)] text-xs">
                 ({Math.round((entry.value / total) * 100)}%)
               </span>
             </div>
           ))
         ) : (
-          <p className="text-xs text-slate-500 dark:text-slate-400">No data for this period</p>
+          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">No data for this period</p>
         )}
       </div>
     )
@@ -50,26 +50,26 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartProps) => {
   return (
     <div className={cn(
-      'rounded-xl border border-slate-200 dark:border-[#2a3a52]',
-      'bg-white dark:bg-[#1a2640]/80 shadow-sm'
+      'rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+      'bg-white dark:bg-[var(--bg-surface)] shadow-sm'
     )}>
       <div className="p-5 md:p-6 pb-2">
         <div className="flex items-start justify-between flex-wrap gap-3">
           <div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+            <h3 className="text-xl font-bold text-[var(--text-primary)]">
               AI vs Human Resolution
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mt-0.5">
               Last 4 weeks
             </p>
           </div>
           <div className="flex flex-col items-end gap-0.5 pt-0.5">
-            <div className="flex items-baseline gap-1 px-3 py-1.5 rounded-xl dark:bg-[#243044]">
-              <span className="text-2xl font-bold text-blue-600 dark:text-blue-400 tabular-nums">
+            <div className="flex items-baseline gap-1 px-3 py-1.5 rounded-xl dark:bg-[var(--bg-surface)]">
+              <span className="text-2xl font-bold text-[var(--text-accent)] tabular-nums">
                 {resolutionRate}%
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400">AI resolved</p>
+            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">AI resolved</p>
           </div>
         </div>
       </div>
@@ -124,14 +124,14 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
           </ResponsiveContainer>
         </div>
 
-        <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-slate-200 dark:border-[#2a3a52]">
+        <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-[var(--border-default)] dark:border-[var(--border-strong)]">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-sm bg-blue-500" />
-            <span className="text-sm text-slate-600 dark:text-slate-400">AI Resolved</span>
+            <div className="h-3 w-3 rounded-sm bg-indigo-500" />
+            <span className="text-sm text-[var(--text-secondary)]">AI Resolved</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="h-3 w-3 rounded-sm bg-purple-500" />
-            <span className="text-sm text-slate-600 dark:text-slate-400">Human Handled</span>
+            <span className="text-sm text-[var(--text-secondary)]">Human Handled</span>
           </div>
         </div>
       </div>

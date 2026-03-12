@@ -107,7 +107,7 @@ export const OnboardingOverlay = () => {
                 />
                 <div className="w-full bg-border rounded-full h-1.5 mb-2 overflow-hidden">
                   <div
-                    className="h-1.5 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 transition-all duration-1000 ease-out"
+                    className="h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-1000 ease-out"
                     style={{ width: '0%' }}
                   />
                 </div>
@@ -116,7 +116,7 @@ export const OnboardingOverlay = () => {
 
               <div className="flex flex-col items-center mb-8 text-center">
                 <Globe
-                  className="w-8 h-8 text-blue-500 mb-4"
+                  className="w-8 h-8 text-indigo-500 mb-4"
                   style={{ animation: 'bounce 2s infinite' }}
                 />
                 <h1 className="text-3xl font-bold text-foreground mb-3">
@@ -127,7 +127,7 @@ export const OnboardingOverlay = () => {
                 </p>
               </div>
 
-              <div className="bg-white dark:bg-[#1a1a1a] shadow-xl rounded-2xl p-8 border border-border mb-8">
+              <div className="bg-white dark:bg-[var(--bg-surface)] shadow-xl rounded-2xl p-8 border border-border mb-8">
                 <form className="flex flex-col gap-4" onSubmit={onAddDomain}>
                   <FormGenerator
                     inputType="input"

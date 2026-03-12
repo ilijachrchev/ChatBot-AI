@@ -204,7 +204,7 @@ function ProductsContent() {
         </Badge>
       )
     return (
-      <Badge className="bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:bg-slate-100">
+      <Badge className="bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)] hover:bg-slate-100">
         Draft
       </Badge>
     )
@@ -218,14 +218,14 @@ function ProductsContent() {
         <div className="flex items-start justify-between mb-6 gap-4">
           <div className="flex items-center gap-3">
             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 flex-shrink-0">
-              <ShoppingBag className="h-6 w-6 text-white dark:text-slate-900" />
+              <ShoppingBag className="h-6 w-6 text-[var(--text-primary)]" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-2xl font-bold text-[var(--text-primary)] tracking-tight">
                 Products
               </h1>
               {domainName && (
-                <span className="inline-flex items-center px-2 py-0.5 mt-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-400">
+                <span className="inline-flex items-center px-2 py-0.5 mt-0.5 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)]">
                   {domainName}
                 </span>
               )}
@@ -233,7 +233,7 @@ function ProductsContent() {
           </div>
           <Button
             onClick={openAdd}
-            className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white"
+            className="bg-indigo-500 hover:bg-indigo-600 text-white"
           >
             <Plus className="w-4 h-4 mr-1.5" />
             Add Product
@@ -252,12 +252,12 @@ function ProductsContent() {
           ].map((stat) => (
             <div
               key={stat.label}
-              className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4"
+              className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-4"
             >
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">
+              <p className="text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)] mb-1">
                 {stat.label}
               </p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
+              <p className="text-2xl font-bold text-[var(--text-primary)]">{stat.value}</p>
             </div>
           ))}
         </div>
@@ -267,24 +267,24 @@ function ProductsContent() {
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 h-64 animate-pulse"
+                className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 h-64 animate-pulse"
               />
             ))}
           </div>
         ) : products.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-100 dark:bg-slate-800 mb-5">
-              <ShoppingBag className="h-10 w-10 text-slate-400" />
+            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[var(--bg-surface)] mb-5">
+              <ShoppingBag className="h-10 w-10 text-[var(--text-muted)]" />
             </div>
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
               No products yet
             </h3>
-            <p className="text-sm text-slate-500 dark:text-slate-400 max-w-xs mb-6">
+            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] max-w-xs mb-6">
               Add your first product to enable AI-powered recommendations
             </p>
             <Button
               onClick={openAdd}
-              className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white"
+              className="bg-indigo-500 hover:bg-indigo-600 text-white"
             >
               <Plus className="w-4 h-4 mr-1.5" />
               Add Product
@@ -295,7 +295,7 @@ function ProductsContent() {
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 overflow-hidden hover:shadow-md transition-shadow duration-200"
+                className="group rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 overflow-hidden hover:shadow-md transition-shadow duration-200"
               >
                 <div className="relative h-44 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center overflow-hidden">
                   {product.image ? (
@@ -306,25 +306,25 @@ function ProductsContent() {
                       className="object-cover"
                     />
                   ) : (
-                    <ShoppingBag className="h-12 w-12 text-slate-400" />
+                    <ShoppingBag className="h-12 w-12 text-[var(--text-muted)]" />
                   )}
                 </div>
 
                 <div className="p-4">
                   <div className="flex items-start justify-between gap-2 mb-1">
-                    <h3 className="font-bold text-slate-900 dark:text-white leading-tight line-clamp-1">
+                    <h3 className="font-bold text-[var(--text-primary)] leading-tight line-clamp-1">
                       {product.name}
                     </h3>
                     {statusBadge(product.status)}
                   </div>
 
                   {product.description && (
-                    <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 mb-2">
+                    <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] line-clamp-2 mb-2">
                       {product.description}
                     </p>
                   )}
 
-                  <p className="text-lg font-bold text-slate-900 dark:text-white mb-3">
+                  <p className="text-lg font-bold text-[var(--text-primary)] mb-3">
                     ${(product.price / 100).toFixed(2)}
                   </p>
 
@@ -431,8 +431,8 @@ function ProductsContent() {
             <div className="flex gap-3 pt-2">
               <Button
                 className={cn(
-                  'flex-1 bg-slate-900 hover:bg-slate-800',
-                  'dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 text-white'
+                  'flex-1 bg-[var(--bg-page)] hover:bg-[var(--bg-surface)]',
+                  'dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white text-white'
                 )}
                 onClick={handleSave}
                 disabled={saving}

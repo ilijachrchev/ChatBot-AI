@@ -99,7 +99,7 @@ export const ChatbotPreview = ({
     switch (widgetStyle) {
       case 'SOFT': return 'bg-white/60 border-t border-gray-200/60'
       case 'GLASS': return 'bg-white/20 backdrop-blur-sm border-t border-white/20'
-      default: return 'bg-white border-t border-slate-200'
+      default: return 'bg-white border-t border-[var(--border-default)]'
     }
   }
 
@@ -107,7 +107,7 @@ export const ChatbotPreview = ({
     switch (widgetStyle) {
       case 'GLASS': return 'bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 dark:from-blue-950 dark:via-purple-950 dark:to-pink-950'
       case 'SOFT': return 'bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900'
-      default: return 'bg-slate-100 dark:bg-slate-800'
+      default: return 'bg-slate-100 dark:bg-[var(--bg-surface)]'
     }
   }
 
@@ -125,12 +125,12 @@ export const ChatbotPreview = ({
         </div>
       </div>
 
-      <div className="rounded-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700">
-        <div className="bg-slate-200 dark:bg-slate-700 px-3 py-2 flex items-center gap-1.5">
+      <div className="rounded-2xl overflow-hidden shadow-2xl border border-[var(--border-default)] dark:border-[var(--border-strong)]">
+        <div className="bg-slate-200 dark:bg-[var(--bg-active)] px-3 py-2 flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-          <div className="flex-1 mx-3 h-4 rounded bg-slate-300 dark:bg-slate-600 text-[9px] text-slate-500 dark:text-slate-400 flex items-center px-2">
+          <div className="flex-1 mx-3 h-4 rounded bg-slate-300 dark:bg-[var(--bg-active)] text-[9px] text-slate-500 dark:text-[var(--text-secondary)] flex items-center px-2">
             yourwebsite.com
           </div>
         </div>
@@ -167,7 +167,7 @@ export const ChatbotPreview = ({
 
                 {finalShowAvatars && (
                   <div className="flex -space-x-2">
-                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white text-[10px] font-bold">A</div>
+                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold">A</div>
                     <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white text-[10px] font-bold">B</div>
                     <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-white text-[10px] font-bold">C</div>
                   </div>
@@ -206,7 +206,7 @@ export const ChatbotPreview = ({
                   >
                     <p className="text-xs">{displayMessage}</p>
                   </div>
-                  <span className="text-[10px] text-slate-500 ml-2 mt-1 block">Just now</span>
+                  <span className="text-[10px] text-[var(--text-muted)] ml-2 mt-1 block">Just now</span>
                 </div>
               </div>
 
@@ -218,7 +218,7 @@ export const ChatbotPreview = ({
                   >
                     <p className="text-xs">I want this</p>
                   </div>
-                  <span className="text-[10px] text-slate-500 mr-2 mt-1 block text-right">Just now</span>
+                  <span className="text-[10px] text-[var(--text-muted)] mr-2 mt-1 block text-right">Just now</span>
                 </div>
               </div>
             </div>
@@ -229,7 +229,7 @@ export const ChatbotPreview = ({
                   type="text"
                   placeholder="Type your message..."
                   className={cn(
-                    'flex-1 px-3 py-1.5 border border-slate-300 bg-slate-50 text-xs focus:outline-none text-slate-900 placeholder:text-slate-400',
+                    'flex-1 px-3 py-1.5 border border-[var(--border-strong)] bg-slate-50 text-xs focus:outline-none text-slate-900 placeholder:text-[var(--text-muted)]',
                     getButtonClass()
                   )}
                   disabled
@@ -246,7 +246,7 @@ export const ChatbotPreview = ({
 
             {showPoweredBy && (
               <div className="flex justify-center py-1.5 border-t border-slate-100">
-                <p className="text-[10px] text-slate-400">
+                <p className="text-[10px] text-[var(--text-muted)]">
                   Powered by <span className="font-semibold">SendWise AI</span>
                 </p>
               </div>

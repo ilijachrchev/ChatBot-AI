@@ -60,13 +60,13 @@ const SideBar = ({
     <>
       {mobileOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/60 z-40 md:hidden"
           onClick={onMobileClose}
         />
       )}
       <div
         className={cn(
-          'bg-cream dark:bg-neutral-950 h-full fill-mode-forwards',
+          'bg-[var(--bg-surface)] border-r border-[var(--border-default)] h-full fill-mode-forwards',
           'fixed md:relative',
           'z-50 md:z-auto',
           'w-72 md:w-[60px]',

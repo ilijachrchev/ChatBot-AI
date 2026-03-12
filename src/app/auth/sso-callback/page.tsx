@@ -6,7 +6,7 @@ export default function SSOCallback() {
     <div className='w-full h-screen flex items-center justify-center'>
       <div className='text-center space-y-4'>
         <Spinner />
-        <p className='text-slate-400'>Completing sign in...</p>
+        <p className='text-[var(--text-muted)]'>Completing sign in...</p>
       </div>
       <AuthenticateWithRedirectCallback />
     </div>

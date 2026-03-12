@@ -16,12 +16,12 @@ const SignInPage = async () => {
             <h1 className='text-4xl font-bold text-white'>
               Welcome back
             </h1>
-            <p className='text-slate-400'>
+            <p className='text-[var(--text-muted)]'>
               Sign in to your account to continue
             </p>
           </div>
 
-          <div className='rounded-2xl bg-[#1A1F2E]/50 backdrop-blur-xl border border-white/10 p-8 shadow-2xl'>
+          <div className='rounded-2xl bg-[var(--bg-surface)]/50 backdrop-blur-xl border border-white/10 p-8 shadow-2xl'>
             <LoginForm />
           </div>
         </div>

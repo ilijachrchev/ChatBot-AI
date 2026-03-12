@@ -18,7 +18,7 @@ const HighLightBar = () => {
                     className={cn(
                         'rounded-full h-2 transition-all duration-300',
                         currentStep >= step 
-                            ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
+                            ? 'bg-gradient-to-r from-indigo-500 to-purple-500' 
                             : 'bg-white/10'
                     )}
                     style={{ transformOrigin: 'left' }}

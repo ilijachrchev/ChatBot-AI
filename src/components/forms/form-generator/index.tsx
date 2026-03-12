@@ -39,7 +39,7 @@ const FormGenerator = ({
           {label && (
             <Label
               htmlFor={`input-${label}`}
-              className='text-sm font-medium text-slate-700 dark:text-slate-300'
+              className='text-sm font-medium text-[var(--text-secondary)]'
             >
               {label}
             </Label>
@@ -51,9 +51,9 @@ const FormGenerator = ({
             form={form}
             defaultValue={defaultValue}
             {...register(name)}
-            className='h-12 rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400
+            className='h-12 rounded-xl border border-[var(--border-default)] bg-white text-slate-900 placeholder:text-[var(--text-muted)]
                        focus:border-blue-500 focus:bg-slate-50 transition-all
-                       dark:bg-white/5 dark:text-white dark:border-white/10 dark:placeholder:text-slate-500 dark:focus:bg-white/10'
+                       dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:placeholder:text-slate-500 dark:focus:bg-white/10'
           />
           <ErrorMessage
             errors={errors}
@@ -70,7 +70,7 @@ const FormGenerator = ({
           {label && (
             <Label
               htmlFor={`select-${label}`}
-              className='text-sm font-medium text-slate-700 dark:text-slate-300'
+              className='text-sm font-medium text-[var(--text-secondary)]'
             >
               {label}
             </Label>
@@ -80,15 +80,15 @@ const FormGenerator = ({
             form={form}
             defaultValue={defaultValue}
             {...register(name)}
-            className='h-12 rounded-xl px-4 border border-slate-200 bg-white text-slate-900
+            className='h-12 rounded-xl px-4 border border-[var(--border-default)] bg-white text-slate-900
                        focus:border-blue-500 focus:bg-slate-50 transition-all
-                       dark:bg-white/5 dark:text-white dark:border-white/10 dark:focus:bg-white/10'
+                       dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:focus:bg-white/10'
           >
             {options?.map((option) => (
               <option
                 key={option.id}
                 value={option.value}
-                className='bg-white text-slate-900 dark:bg-[#1A1F2E] dark:text-white'
+                className='bg-white text-slate-900 dark:bg-[var(--bg-surface)] dark:text-[var(--text-primary)]'
               >
                 {option.label}
               </option>
@@ -109,7 +109,7 @@ const FormGenerator = ({
           {label && (
             <Label
               htmlFor={`textarea-${label}`}
-              className='text-sm font-medium text-slate-700 dark:text-slate-300'
+              className='text-sm font-medium text-[var(--text-secondary)]'
             >
               {label}
             </Label>
@@ -121,9 +121,9 @@ const FormGenerator = ({
             form={form}
             defaultValue={defaultValue}
             {...register(name)}
-            className='rounded-xl px-4 py-3 resize-none border border-slate-200 bg-white text-slate-900
-                       placeholder:text-slate-400 focus:border-blue-500 focus:bg-slate-50 transition-all
-                       dark:bg-white/5 dark:text-white dark:border-white/10 dark:placeholder:text-slate-500 dark:focus:bg-white/10'
+            className='rounded-xl px-4 py-3 resize-none border border-[var(--border-default)] bg-white text-slate-900
+                       placeholder:text-[var(--text-muted)] focus:border-blue-500 focus:bg-slate-50 transition-all
+                       dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:placeholder:text-slate-500 dark:focus:bg-white/10'
           />
           <ErrorMessage
             errors={errors}

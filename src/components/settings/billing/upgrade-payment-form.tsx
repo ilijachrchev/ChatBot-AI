@@ -109,21 +109,21 @@ export function UpgradePaymentForm({
   if (loadingCards) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-[var(--text-muted)]" />
       </div>
     )
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+      <div className="bg-slate-50 dark:bg-[var(--bg-page)] rounded-lg p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-slate-600 dark:text-slate-400">Amount due</span>
-          <span className="text-2xl font-bold text-slate-900 dark:text-white">
+          <span className="text-sm text-[var(--text-secondary)]">Amount due</span>
+          <span className="text-2xl font-bold text-[var(--text-primary)]">
             ${(amount / 100).toFixed(2)}
           </span>
         </div>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
           Billed monthly to your payment method
         </p>
       </div>
@@ -131,7 +131,7 @@ export function UpgradePaymentForm({
       {savedCards.length > 0 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h4 className="text-sm font-medium text-slate-900 dark:text-white">
+            <h4 className="text-sm font-medium text-[var(--text-primary)]">
               Payment Method
             </h4>
           </div>
@@ -144,7 +144,7 @@ export function UpgradePaymentForm({
                   className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
                     paymentMethod === 'saved' && selectedCard === card.id
                       ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                      : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                      : 'border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
                   }`}
                   onClick={() => {
                     setPaymentMethod('saved')
@@ -153,12 +153,12 @@ export function UpgradePaymentForm({
                 >
                   <RadioGroupItem value="saved" id={card.id} checked={paymentMethod === 'saved' && selectedCard === card.id} />
                   <Label htmlFor={card.id} className="flex-1 flex items-center gap-3 cursor-pointer">
-                    <CreditCard className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                    <CreditCard className="w-5 h-5 text-[var(--text-secondary)]" />
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-900 dark:text-white capitalize">
+                      <p className="text-sm font-medium text-[var(--text-primary)] capitalize">
                         {card.brand} •••• {card.last4}
                       </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                      <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
                         Expires {String(card.expMonth).padStart(2, '0')}/{String(card.expYear).slice(-2)}
                       </p>
                     </div>
@@ -175,14 +175,14 @@ export function UpgradePaymentForm({
                 className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
                   paymentMethod === 'new'
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                    : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                    : 'border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
                 }`}
                 onClick={() => setPaymentMethod('new')}
               >
                 <RadioGroupItem value="new" id="new-card" checked={paymentMethod === 'new'} />
                 <Label htmlFor="new-card" className="flex-1 flex items-center gap-3 cursor-pointer">
-                  <Plus className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-                  <p className="text-sm font-medium text-slate-900 dark:text-white">
+                  <Plus className="w-5 h-5 text-[var(--text-secondary)]" />
+                  <p className="text-sm font-medium text-[var(--text-primary)]">
                     Use a new card
                   </p>
                 </Label>
@@ -194,12 +194,12 @@ export function UpgradePaymentForm({
 
       {paymentMethod === 'new' && <PaymentElement />}
 
-      <div className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+      <div className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
         <Lock className="w-3 h-3" />
         <span>Secure payment powered by Stripe</span>
       </div>
 
-      <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+      <div className="flex gap-3 pt-4 border-t border-[var(--border-default)]">
         <Button
           type="button"
           variant="outline"

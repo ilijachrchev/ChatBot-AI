@@ -33,8 +33,8 @@ export const ColorPicker = ({ defaultColor = '#3B82F6', setValue }: ColorPickerP
   return (
     <div className='flex flex-col gap-4'>
       <div className='flex items-center gap-2'>
-        <Paintbrush className='h-4 w-4 text-slate-600 dark:text-slate-400' />
-        <label className='text-sm font-medium text-slate-700 dark:text-slate-200'>
+        <Paintbrush className='h-4 w-4 text-[var(--text-secondary)]' />
+        <label className='text-sm font-medium text-slate-700 dark:text-[var(--text-primary)]'>
           Chatbot Color
         </label>
       </div>
@@ -51,11 +51,11 @@ export const ColorPicker = ({ defaultColor = '#3B82F6', setValue }: ColorPickerP
               className={`h-12 w-full rounded-lg border-2 transition-all duration-200 hover:scale-105 ${
                 selectedColor === color.value
                   ? 'border-slate-900 dark:border-white ring-2 ring-offset-2 ring-slate-900 dark:ring-white'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
+                  : 'border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-[var(--border-strong)] dark:hover:border-slate-600'
               }`}
               style={{ backgroundColor: color.value }}
             />
-            <span className='absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-slate-600 dark:text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap'>
+            <span className='absolute -bottom-6 left-1/2 -translate-x-1/2 text-xs text-[var(--text-secondary)] opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap'>
               {color.name}
             </span>
           </button>
@@ -68,7 +68,7 @@ export const ColorPicker = ({ defaultColor = '#3B82F6', setValue }: ColorPickerP
             type='color'
             value={customColor}
             onChange={(e) => handleColorChange(e.target.value)}
-            className='w-full h-12 rounded-lg cursor-pointer border-2 border-slate-200 dark:border-slate-700'
+            className='w-full h-12 rounded-lg cursor-pointer border-2 border-[var(--border-default)] dark:border-[var(--border-strong)]'
           />
         </div>
         <div className='flex-1'>
@@ -77,17 +77,17 @@ export const ColorPicker = ({ defaultColor = '#3B82F6', setValue }: ColorPickerP
             value={customColor}
             onChange={(e) => handleColorChange(e.target.value)}
             placeholder='#3B82F6'
-            className='w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-sm font-mono text-slate-900 dark:text-white'
+            className='w-full px-3 py-2 rounded-lg border border-[var(--border-strong)] bg-[var(--bg-surface)] text-sm font-mono text-[var(--text-primary)]'
           />
         </div>
       </div>
 
-      <div className='flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900'>
+      <div className='flex items-center gap-3 p-3 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]'>
         <div
           className='h-8 w-8 rounded-full border-2 border-white shadow-md'
           style={{ backgroundColor: selectedColor }}
         />
-        <span className='text-sm text-slate-600 dark:text-slate-300'>
+        <span className='text-sm text-[var(--text-secondary)]'>
           Selected Color: <span className='font-mono font-semibold'>{selectedColor}</span>
         </span>
       </div>

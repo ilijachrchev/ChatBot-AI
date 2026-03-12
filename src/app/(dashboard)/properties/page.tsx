@@ -55,7 +55,7 @@ const EMPTY_FORM: FormData = {
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   AVAILABLE: { label: 'Available', className: 'bg-green-100 dark:bg-green-950/50 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800' },
   UNDER_OFFER: { label: 'Under Offer', className: 'bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800' },
-  SOLD: { label: 'Sold', className: 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700' },
+  SOLD: { label: 'Sold', className: 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)]' },
 }
 
 const TYPE_CONFIG: Record<string, string> = {
@@ -140,8 +140,8 @@ export default function PropertiesPage() {
   if (!domainId) {
     return (
       <div className="p-6 md:p-8 flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <Home className="h-12 w-12 text-slate-300 dark:text-slate-700" />
-        <p className="text-slate-500 dark:text-slate-400 text-center">
+        <Home className="h-12 w-12 text-slate-300 dark:text-[var(--text-secondary)]" />
+        <p className="text-slate-500 dark:text-[var(--text-secondary)] text-center">
           No domain selected. Use the sidebar to navigate to a domain&apos;s properties.
         </p>
       </div>
@@ -152,34 +152,34 @@ export default function PropertiesPage() {
     <div className="p-6 md:p-8">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Properties</h1>
+          <h1 className="text-3xl font-bold text-[var(--text-primary)]">Properties</h1>
           <div className="flex flex-wrap gap-3 mt-3">
             {[
-              { label: 'Total', value: properties.length, color: 'text-slate-700 dark:text-slate-300' },
+              { label: 'Total', value: properties.length, color: 'text-[var(--text-secondary)]' },
               { label: 'Available', value: available, color: 'text-green-600 dark:text-green-400' },
               { label: 'Under Offer', value: underOffer, color: 'text-amber-600 dark:text-amber-400' },
-              { label: 'Sold', value: sold, color: 'text-slate-500 dark:text-slate-500' },
+              { label: 'Sold', value: sold, color: 'text-[var(--text-muted)]' },
             ].map(stat => (
-              <div key={stat.label} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <div key={stat.label} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--bg-page)] border border-[var(--border-default)]">
                 <span className={cn('text-lg font-bold', stat.color)}>{stat.value}</span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">{stat.label}</span>
+                <span className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{stat.label}</span>
               </div>
             ))}
           </div>
         </div>
-        <Button onClick={openCreate} className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100">
+        <Button onClick={openCreate} className="bg-indigo-500 hover:bg-indigo-600 text-white">
           <Plus className="h-4 w-4 mr-2" /> Add Property
         </Button>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-slate-200 dark:border-slate-700 border-t-slate-900 dark:border-t-white" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--border-default)] dark:border-[var(--border-strong)] border-t-slate-900 dark:border-t-white" />
         </div>
       ) : properties.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 gap-4">
-          <Home className="h-12 w-12 text-slate-300 dark:text-slate-700" />
-          <p className="text-slate-400 dark:text-slate-600 text-sm">No properties listed yet</p>
+          <Home className="h-12 w-12 text-slate-300 dark:text-[var(--text-secondary)]" />
+          <p className="text-slate-400 dark:text-[var(--text-secondary)] text-sm">No properties listed yet</p>
           <Button onClick={openCreate} variant="outline">Add your first property</Button>
         </div>
       ) : (
@@ -187,41 +187,41 @@ export default function PropertiesPage() {
           {properties.map(p => {
             const statusCfg = STATUS_CONFIG[p.status] ?? STATUS_CONFIG.AVAILABLE
             return (
-              <div key={p.id} className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 overflow-hidden hover:shadow-lg transition-shadow">
+              <div key={p.id} className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-page)] overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="h-36 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
                   {p.imageUrl ? (
                     <img src={p.imageUrl} alt={p.title} className="w-full h-full object-cover" />
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <Home className="h-10 w-10 text-slate-300 dark:text-slate-700" />
+                      <Home className="h-10 w-10 text-slate-300 dark:text-[var(--text-secondary)]" />
                     </div>
                   )}
                   <div className="absolute top-2 right-2 flex gap-1.5">
                     <span className={cn('inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold border', statusCfg.className)}>
                       {statusCfg.label}
                     </span>
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 dark:bg-slate-900/90 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/90 dark:bg-[var(--bg-page)]/90 text-[var(--text-secondary)] border border-[var(--border-default)] dark:border-[var(--border-strong)]">
                       {TYPE_CONFIG[p.propertyType] ?? p.propertyType}
                     </span>
                   </div>
                 </div>
 
                 <div className="p-4">
-                  <h3 className="font-bold text-slate-900 dark:text-white text-sm mb-0.5 truncate">{p.title}</h3>
-                  {p.location && <p className="text-xs text-slate-400 dark:text-slate-500 mb-2 truncate">{p.location}</p>}
+                  <h3 className="font-bold text-[var(--text-primary)] text-sm mb-0.5 truncate">{p.title}</h3>
+                  {p.location && <p className="text-xs text-slate-400 dark:text-[var(--text-muted)] mb-2 truncate">{p.location}</p>}
                   {p.price && (
-                    <p className="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                    <p className="text-lg font-bold text-[var(--text-primary)] mb-2">
                       ${p.price.toLocaleString()}
                     </p>
                   )}
                   <div className="flex gap-2 mb-3">
                     {p.bedrooms && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]">
                         {p.bedrooms} bd
                       </span>
                     )}
                     {p.bathrooms && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]">
                         {p.bathrooms} ba
                       </span>
                     )}
@@ -256,33 +256,33 @@ export default function PropertiesPage() {
               { label: 'Image URL', key: 'imageUrl', type: 'text', placeholder: 'https://...' },
             ].map(field => (
               <div key={field.key} className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">{field.label}</label>
+                <label className="text-xs font-semibold text-[var(--text-secondary)]">{field.label}</label>
                 <input
                   type={field.type}
                   value={form[field.key as keyof FormData]}
                   onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
                   placeholder={field.placeholder}
-                  className="px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-slate-400 dark:focus:border-slate-600"
+                  className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-slate-400 dark:focus:border-slate-600"
                 />
               </div>
             ))}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Description</label>
+              <label className="text-xs font-semibold text-[var(--text-secondary)]">Description</label>
               <textarea
                 value={form.description}
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 placeholder="Property description..."
                 rows={3}
-                className="px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-400 outline-none focus:border-slate-400 dark:focus:border-slate-600 resize-none"
+                className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-slate-400 dark:focus:border-slate-600 resize-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Type</label>
+                <label className="text-xs font-semibold text-[var(--text-secondary)]">Type</label>
                 <select
                   value={form.propertyType}
                   onChange={e => setForm(f => ({ ...f, propertyType: e.target.value }))}
-                  className="px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none"
+                  className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none"
                 >
                   <option value="HOUSE">House</option>
                   <option value="APARTMENT">Apartment</option>
@@ -291,11 +291,11 @@ export default function PropertiesPage() {
                 </select>
               </div>
               <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Status</label>
+                <label className="text-xs font-semibold text-[var(--text-secondary)]">Status</label>
                 <select
                   value={form.status}
                   onChange={e => setForm(f => ({ ...f, status: e.target.value }))}
-                  className="px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none"
+                  className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none"
                 >
                   <option value="AVAILABLE">Available</option>
                   <option value="UNDER_OFFER">Under Offer</option>
@@ -307,7 +307,7 @@ export default function PropertiesPage() {
               <Button
                 onClick={handleSave}
                 disabled={!form.title.trim() || isPending}
-                className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900"
+                className="flex-1 bg-indigo-500 text-white"
               >
                 {isPending ? 'Saving...' : editingId ? 'Update Property' : 'Add Property'}
               </Button>
@@ -324,7 +324,7 @@ export default function PropertiesPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete this property?</AlertDialogTitle>
           </AlertDialogHeader>
-          <p className="text-sm text-slate-600 dark:text-slate-400">This action cannot be undone.</p>
+          <p className="text-sm text-[var(--text-secondary)]">This action cannot be undone.</p>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <Button

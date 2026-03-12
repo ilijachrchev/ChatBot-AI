@@ -38,7 +38,7 @@ export const ProductIntro = () => {
           <h2 className="mb-4 text-3xl md:text-5xl font-bold text-slate-50">
             Set up your AI chatbot in minutes
           </h2>
-          <p className="mx-auto max-w-2xl text-base md:text-xl text-slate-400">
+          <p className="mx-auto max-w-2xl text-base md:text-xl text-[var(--text-muted)]">
             No technical knowledge required. If you can copy and paste, you can
             deploy SendWise AI.
           </p>
@@ -53,7 +53,7 @@ export const ProductIntro = () => {
           <h3 className="text-2xl md:text-3xl font-bold text-slate-50">
             From sign-up to live chatbot in 3 steps
           </h3>
-          <p className="mt-2 text-base text-slate-400">
+          <p className="mt-2 text-base text-[var(--text-muted)]">
             No developers needed. No complex configuration.
           </p>
         </div>
@@ -71,7 +71,7 @@ export const ProductIntro = () => {
                   <div className="pointer-events-none absolute top-12 left-[60%] hidden h-0.5 w-full bg-gradient-to-r from-sky-500 to-violet-500 opacity-30 md:block" />
                 )}
 
-                <div className="relative rounded-2xl border-2 border-slate-700 bg-slate-950/60 p-6 md:p-8 transition-all duration-300 hover:border-sky-500/70 hover:shadow-[0_0_30px_rgba(59,130,246,0.35)]">
+                <div className="relative rounded-2xl border-2 border-slate-700 bg-[var(--bg-page)]/60 p-6 md:p-8 transition-all duration-300 hover:border-sky-500/70 hover:shadow-[0_0_30px_rgba(59,130,246,0.35)]">
                   <div className="mb-4 flex items-center gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-500/15 transition-transform group-hover:scale-110">
                       <Icon className="h-6 w-6 text-sky-400" />
@@ -83,7 +83,7 @@ export const ProductIntro = () => {
                   <h4 className="mb-2 md:mb-3 text-lg md:text-xl font-semibold text-slate-50">
                     {step.title}
                   </h4>
-                  <p className="text-sm md:text-base text-slate-400">
+                  <p className="text-sm md:text-base text-[var(--text-muted)]">
                     {step.description}
                   </p>
                 </div>

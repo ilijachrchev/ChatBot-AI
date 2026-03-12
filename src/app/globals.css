@@ -4,44 +4,60 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;              
-    --foreground: 222 47% 11%;            
-    
-    --card: 210 40% 98%;                 
-    --card-foreground: 222 47% 11%;      
-    
+    /* shadcn tokens - light mode */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 210 40% 98%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    
-    --primary: 221 83% 53%;               
+    --primary: 239 84% 67%;
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 214 95% 93%;            
+    --secondary: 214 95% 93%;
     --secondary-foreground: 222 47% 11%;
-    
-    --muted: 210 40% 96%;                
-    --muted-foreground: 215 16% 47%;    
-    
-    --accent: 221 83% 53%;               
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 239 84% 67%;
     --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 84% 60%;            
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    
-    --success: 142 71% 45%;               
+    --success: 160 61% 52%;
     --success-foreground: 0 0% 100%;
-    
-    --border: 214 32% 91%;                
+    --border: 214 32% 91%;
     --input: 214 32% 91%;
-    --ring: 221 83% 53%;
-    
+    --ring: 239 84% 67%;
     --radius: 0.5rem;
-    
-    --chart-1: 221 83% 53%;
-    --chart-2: 142 71% 45%;
-    --chart-3: 262 83% 58%;
+    --chart-1: 239 84% 67%;
+    --chart-2: 160 61% 52%;
+    --chart-3: 232 95% 82%;
     --chart-4: 39 84% 52%;
     --chart-5: 346 77% 50%;
+
+    /* Slate & Indigo design tokens — always available */
+    --bg-page:          #0F1117;
+    --bg-surface:       #161A23;
+    --bg-active:        #1E2340;
+    --bg-input:         #12151E;
+    --bg-hover:         #1A1F2E;
+    --color-accent:     #6366F1;
+    --accent-light:     #A5B4FC;
+    --accent-muted:     #1E2340;
+    --text-primary:     #F1F5F9;
+    --text-secondary:   #94A3B8;
+    --text-muted:       #64748B;
+    --text-accent:      #A5B4FC;
+    --border-default:   rgba(255, 255, 255, 0.06);
+    --border-strong:    rgba(255, 255, 255, 0.10);
+    --border-accent:    rgba(99, 102, 241, 0.20);
+    --status-online:    #22C55E;
+    --status-warn:      #F59E0B;
+    --status-error:     #EF4444;
+    --status-success:   #34D399;
+    --badge-bg:         #1E2340;
+    --badge-text:       #818CF8;
+    --scrollbar-track:  #0F1117;
+    --scrollbar-thumb:  #1E2340;
+    --scrollbar-hover:  #6366F1;
 
     --payment-bg: #FDFFFC;
     --payment-accent: #4D7298;
@@ -49,50 +65,41 @@
     --payment-text-secondary: #000022;
     --payment-divider: #0D0709;
   }
-  
+
   .dark {
-    --background: 222 47% 6%;             
-    --foreground: 210 40% 98%;           
-    
-    --card: 217 33% 10%;                  
-    --card-foreground: 214 32% 91%;      
-    
-    --popover: 217 33% 10%;
-    --popover-foreground: 214 32% 91%;
-    
-    --primary: 221 83% 53%;             
+    /* shadcn tokens — Slate & Indigo dark */
+    --background: 228 21% 7%;           /* #0F1117  bg-page   */
+    --foreground: 214 32% 96%;          /* #F1F5F9  text-primary */
+    --card: 226 23% 11%;                /* #161A23  bg-surface */
+    --card-foreground: 214 32% 96%;
+    --popover: 226 23% 11%;             /* #161A23  bg-surface */
+    --popover-foreground: 214 32% 96%;
+    --primary: 239 84% 67%;             /* #6366F1  accent    */
     --primary-foreground: 0 0% 100%;
-    
-    --secondary: 217 33% 17%;            
-    --secondary-foreground: 214 32% 91%;
-    
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;   
-    
-    --accent: 262 83% 58%;     
+    --secondary: 237 36% 18%;           /* #1E2340  bg-active */
+    --secondary-foreground: 232 95% 82%; /* #A5B4FC accent-light */
+    --muted: 237 36% 18%;               /* #1E2340  bg-active */
+    --muted-foreground: 215 16% 47%;    /* #64748B  text-muted */
+    --accent: 239 84% 67%;              /* #6366F1  accent    */
     --accent-foreground: 0 0% 100%;
-    
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 214 32% 91%;
-    
-    --success: 142 71% 45%;
+    --destructive: 0 84% 60%;           /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+    --success: 160 61% 52%;             /* #34D399 */
     --success-foreground: 0 0% 100%;
-    
-    --border: 217 33% 17%;
-    --input: 217 33% 17%;
-    --ring: 221 83% 53%;
-    
-    --chart-1: 221 83% 53%;
-    --chart-2: 142 71% 45%;
-    --chart-3: 262 83% 58%;
+    --border: 228 12% 13%;              /* ≈ rgba(255,255,255,0.06) */
+    --input: 228 16% 15%;               /* ≈ rgba(255,255,255,0.10) */
+    --ring: 239 84% 67%;                /* #6366F1 */
+    --chart-1: 239 84% 67%;
+    --chart-2: 160 61% 52%;
+    --chart-3: 232 95% 82%;
     --chart-4: 39 84% 52%;
     --chart-5: 346 77% 50%;
   }
-  
+
   * {
     @apply border-border;
   }
-  
+
   body {
     @apply bg-background text-foreground;
   }
@@ -100,6 +107,30 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* ─── Global scrollbar — Slate & Indigo ─────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-hover);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -115,6 +146,7 @@ section[id] {
   scroll-margin-top: 5rem;
 }
 
+/* ─── Animations ─────────────────────────────────────────────────────────── */
 @keyframes float {
   0% {
     transform: translateY(0) translateX(0) scale(1);
@@ -166,50 +198,52 @@ section[id] {
   pointer-events: none;
 }
 
+/* ─── Glass card ─────────────────────────────────────────────────────────── */
 .glass-card {
-  background: rgba(26, 31, 46, 0.8);
+  background: rgba(22, 26, 35, 0.8);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--border-default);
 }
 
+/* ─── Sonner toasts ──────────────────────────────────────────────────────── */
 [data-sonner-toast] {
-  background: rgba(26, 31, 46, 0.95) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: var(--bg-surface) !important;
+  border: 1px solid var(--border-strong) !important;
   backdrop-filter: blur(20px) !important;
 }
 
 [data-sonner-toast][data-type="success"] {
-  border-color: rgba(34, 197, 94, 0.3) !important;
+  border-color: rgba(52, 211, 153, 0.30) !important;
 }
 
 [data-sonner-toast][data-type="error"] {
-  border-color: rgba(239, 68, 68, 0.3) !important;
+  border-color: rgba(239, 68, 68, 0.30) !important;
 }
 
 [data-sonner-toast] [data-title] {
-  color: white !important;
+  color: var(--text-primary) !important;
   font-weight: 600 !important;
 }
 
 [data-sonner-toast] [data-description] {
-  color: rgba(203, 213, 225, 0.8) !important;
+  color: var(--text-secondary) !important;
 }
 
 [data-sonner-toast] [data-button] {
-  background: rgba(255, 255, 255, 0.1) !important;
-  color: white !important;
+  background: var(--bg-active) !important;
+  color: var(--text-primary) !important;
 }
 
 [data-sonner-toast] [data-button]:hover {
-  background: rgba(255, 255, 255, 0.2) !important;
+  background: var(--color-accent) !important;
 }
 
 @keyframes pulse-border {
   0%, 100% {
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--border-default);
   }
   50% {
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--border-strong);
   }
 }
 

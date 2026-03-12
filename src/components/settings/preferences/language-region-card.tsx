@@ -107,11 +107,11 @@ export function LanguageRegionCard({ preferences }: LanguageRegionCardProps) {
   }
 
   return (
-    <Card className='border-slate-200 dark:border-slate-800'>
+    <Card className='border-[var(--border-default)]'>
       <CardHeader>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center'>
-            <Globe className='w-5 h-5 text-slate-900 dark:text-white' />
+          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] flex items-center justify-center'>
+            <Globe className='w-5 h-5 text-[var(--text-primary)]' />
           </div>
           <div>
             <CardTitle className='text-base'>Language & Region</CardTitle>
@@ -208,8 +208,8 @@ export function LanguageRegionCard({ preferences }: LanguageRegionCardProps) {
         </div>
 
         {isDirty && (
-          <div className='flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800'>
-            <p className='text-sm text-slate-600 dark:text-slate-400'>
+          <div className='flex items-center justify-between pt-4 border-t border-[var(--border-default)]'>
+            <p className='text-sm text-[var(--text-secondary)]'>
               You have unsaved changes
             </p>
             <div className='flex gap-2'>
@@ -225,7 +225,7 @@ export function LanguageRegionCard({ preferences }: LanguageRegionCardProps) {
                 onClick={handleSave}
                 size='sm'
                 disabled={saving}
-                className='bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900'
+                className='bg-indigo-500 hover:bg-indigo-600 text-white'
               >
                 {saving ? (
                   <>

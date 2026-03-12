@@ -12,7 +12,7 @@ import InfoBar from '@/components/infobar'
 export const dynamic = 'force-dynamic'
 
 const AVATAR_COLORS = [
-  'bg-blue-500',
+  'bg-indigo-500',
   'bg-violet-500',
   'bg-emerald-500',
   'bg-amber-500',
@@ -292,7 +292,7 @@ const LeadsPage = () => {
                 <p className="text-sm text-muted-foreground max-w-xs">
                   Leads appear here when visitors interact with your chatbots
                 </p>
-                <Link href="/conversation" className="text-sm text-blue-600 hover:underline mt-1">
+                <Link href="/conversation" className="text-sm text-indigo-500 hover:underline mt-1">
                   Go to Conversations →
                 </Link>
               </div>
@@ -374,7 +374,7 @@ const LeadsPage = () => {
 
                       <Link
                         href="/conversation"
-                        className="text-xs text-blue-600 hover:text-blue-700 hover:underline whitespace-nowrap"
+                        className="text-xs text-indigo-500 hover:text-blue-700 hover:underline whitespace-nowrap"
                       >
                         View chat →
                       </Link>

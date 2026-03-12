@@ -17,7 +17,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const TYPE_DOT: Record<string, string> = {
-  INFO: 'bg-blue-500',
+  INFO: 'bg-indigo-500',
   SUCCESS: 'bg-green-500',
   WARNING: 'bg-amber-500',
   ERROR: 'bg-red-500',
@@ -64,7 +64,7 @@ export default async function NotificationsPage() {
     <div className='space-y-6'>
       <NotificationsCard preferences={preferences} />
 
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <CardTitle>Recent Activity</CardTitle>
           <CardDescription>
@@ -74,13 +74,13 @@ export default async function NotificationsPage() {
         <CardContent>
           {notifications.length === 0 ? (
             <div className='flex flex-col items-center justify-center py-16 text-center'>
-              <div className='w-14 h-14 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4'>
-                <Bell className='w-7 h-7 text-slate-400' />
+              <div className='w-14 h-14 rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] flex items-center justify-center mb-4'>
+                <Bell className='w-7 h-7 text-[var(--text-muted)]' />
               </div>
-              <p className='text-sm font-semibold text-slate-900 dark:text-white mb-1'>
+              <p className='text-sm font-semibold text-[var(--text-primary)] mb-1'>
                 No notifications yet
               </p>
-              <p className='text-xs text-slate-500 dark:text-slate-400 max-w-xs'>
+              <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] max-w-xs'>
                 Activity like new conversations, billing events, and system
                 alerts will appear here
               </p>
@@ -90,7 +90,7 @@ export default async function NotificationsPage() {
               {notifications.map((n) => (
                 <li
                   key={n.id}
-                  className='flex items-start gap-4 px-3 py-3 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors'
+                  className='flex items-start gap-4 px-3 py-3 rounded-lg hover:bg-[var(--bg-hover)] transition-colors'
                 >
                   <div className='mt-2 flex-shrink-0'>
                     <span
@@ -101,14 +101,14 @@ export default async function NotificationsPage() {
                     />
                   </div>
                   <div className='flex-1 min-w-0'>
-                    <p className='text-sm font-medium text-slate-900 dark:text-white'>
+                    <p className='text-sm font-medium text-[var(--text-primary)]'>
                       {n.title}
                     </p>
-                    <p className='text-xs text-slate-500 dark:text-slate-400 mt-0.5'>
+                    <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-0.5'>
                       {n.message}
                     </p>
                   </div>
-                  <span className='text-xs text-slate-400 flex-shrink-0 mt-0.5'>
+                  <span className='text-xs text-[var(--text-muted)] flex-shrink-0 mt-0.5'>
                     {timeAgo(n.createdAt)}
                   </span>
                 </li>

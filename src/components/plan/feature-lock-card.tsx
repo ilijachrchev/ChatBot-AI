@@ -12,7 +12,7 @@ export const FeatureLockCard = ({ planRequired, feature }: Props) => {
   const isPro = planRequired === 'PRO'
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-6 max-w-[280px] w-full">
+    <div className="bg-[var(--bg-page)] rounded-xl shadow-xl border border-[var(--border-default)] dark:border-[var(--border-strong)] p-6 max-w-[280px] w-full">
       <div className="flex flex-col items-center text-center gap-4">
         <div className={cn(
           'h-12 w-12 rounded-full flex items-center justify-center',
@@ -23,16 +23,16 @@ export const FeatureLockCard = ({ planRequired, feature }: Props) => {
           <Lock className={cn(
             'h-6 w-6',
             isPro
-              ? 'text-blue-600 dark:text-blue-400'
+              ? 'text-[var(--text-accent)]'
               : 'text-amber-600 dark:text-amber-400'
           )} />
         </div>
 
         <div className="space-y-1">
-          <p className="font-bold text-slate-900 dark:text-white text-sm">
+          <p className="font-bold text-[var(--text-primary)] text-sm">
             {isPro ? 'Pro Feature' : 'Ultimate Feature'}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] leading-relaxed">
             {feature}
           </p>
         </div>
@@ -42,7 +42,7 @@ export const FeatureLockCard = ({ planRequired, feature }: Props) => {
           className={cn(
             'w-full inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90',
             isPro
-              ? 'bg-gradient-to-r from-blue-500 to-blue-600'
+              ? 'bg-gradient-to-r from-indigo-500 to-indigo-600'
               : 'bg-gradient-to-r from-amber-500 to-amber-600'
           )}
         >

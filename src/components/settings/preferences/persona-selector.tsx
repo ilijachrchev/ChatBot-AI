@@ -76,12 +76,12 @@ export const PersonaSelector = ({
     <div className="space-y-6">
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-          <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+          <Sparkles className="h-5 w-5 text-[var(--text-accent)]" />
+          <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
             AI Assistant Persona
           </h3>
         </div>
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-[var(--text-secondary)]">
           Transform your chatbot into a specialized AI agent tailored to your business.
         </p>
       </div>
@@ -100,11 +100,11 @@ export const PersonaSelector = ({
                 'hover:shadow-lg hover:-translate-y-0.5',
                 isSelected
                   ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 shadow-md'
-                  : 'border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700'
+                  : 'border-[var(--border-default)] hover:border-blue-300 dark:hover:border-blue-700'
               )}
             >
               {isSelected && (
-                <div className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-blue-500 text-white">
+                <div className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-white">
                   <Check className="h-3 w-3" />
                 </div>
               )}
@@ -116,10 +116,10 @@ export const PersonaSelector = ({
                 )}>
                   {persona.icon}
                 </div>
-                <h4 className="font-semibold text-slate-950 dark:text-white text-sm">
+                <h4 className="font-semibold text-slate-950 dark:text-[var(--text-primary)] text-sm">
                   {persona.name}
                 </h4>
-                <p className="text-xs text-slate-600 dark:text-slate-400 line-clamp-3">
+                <p className="text-xs text-[var(--text-secondary)] line-clamp-3">
                   {persona.description}
                 </p>
               </div>
@@ -129,9 +129,9 @@ export const PersonaSelector = ({
       </div>
 
       {selectedPersonaData && selectedPersona !== 'CUSTOM' && (
-        <div className="p-4 rounded-lg border border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-950/30">
+        <div className="p-4 rounded-lg border border-blue-200 dark:border-[var(--border-accent)] bg-blue-50 dark:bg-blue-950/30">
           <div className="flex items-start gap-2">
-            <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+            <Info className="h-4 w-4 text-[var(--text-accent)] mt-0.5 flex-shrink-0" />
             <div>
               <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">
                 {selectedPersonaData.name} Selected
@@ -160,13 +160,13 @@ You are a friendly tech support assistant for a SaaS company. Always be patient,
             rows={12}
             className="font-mono text-sm"
           />
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
             💡 Tip: Be specific about the assistant's role, goals, communication style, and any constraints.
           </p>
         </div>
       )}
 
-      <div className="flex items-center gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+      <div className="flex items-center gap-3 pt-4 border-t border-[var(--border-default)]">
         <Button
           type="button"
           onClick={handleSave}

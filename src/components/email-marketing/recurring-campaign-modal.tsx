@@ -109,32 +109,32 @@ export const RecurringCampaignModal = ({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-lg bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-lg bg-[var(--bg-page)] border border-[var(--border-default)] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-slate-900 dark:text-white">
+          <DialogTitle className="text-xl font-bold text-[var(--text-primary)]">
             Create Recurring Campaign
           </DialogTitle>
-          <DialogDescription className="text-slate-500 dark:text-slate-400">
+          <DialogDescription className="text-slate-500 dark:text-[var(--text-secondary)]">
             Automatically send this campaign on a schedule
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-5 mt-2">
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <Label className="text-sm font-medium text-[var(--text-secondary)]">
               Campaign name
             </Label>
             <Input
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Weekly Newsletter"
-              className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+              className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
             />
           </div>
 
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              <Label className="text-sm font-medium text-[var(--text-secondary)]">
                 Email message
               </Label>
               <Button
@@ -143,7 +143,7 @@ export const RecurringCampaignModal = ({
                 size="sm"
                 onClick={handleAiEnhance}
                 disabled={aiLoading || !template.trim()}
-                className="h-7 text-xs border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-900"
+                className="h-7 text-xs border-[var(--border-default)] dark:border-[var(--border-strong)] hover:bg-[var(--bg-hover)]"
               >
                 <Sparkles className="h-3 w-3 mr-1.5" />
                 {aiLoading ? 'Writing...' : 'Write with AI'}
@@ -153,16 +153,16 @@ export const RecurringCampaignModal = ({
               value={template}
               onChange={(e) => setTemplate(e.target.value)}
               placeholder="Write your email message..."
-              className="min-h-[140px] resize-none border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+              className="min-h-[140px] resize-none border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
             />
-            <div className="text-right text-xs text-slate-400">{template.length} characters</div>
+            <div className="text-right text-xs text-[var(--text-muted)]">{template.length} characters</div>
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <Label className="text-sm font-medium text-[var(--text-secondary)]">
               Frequency
             </Label>
-            <div className="flex rounded-lg border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="flex rounded-lg border border-[var(--border-default)] overflow-hidden">
               {FREQUENCIES.map((f) => (
                 <button
                   key={f}
@@ -171,8 +171,8 @@ export const RecurringCampaignModal = ({
                   className={cn(
                     'flex-1 py-2 text-sm font-medium transition-all',
                     frequency === f
-                      ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                      : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900'
+                      ? 'bg-indigo-500 text-white'
+                      : 'bg-[var(--bg-page)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                   )}
                 >
                   {f.charAt(0) + f.slice(1).toLowerCase()}
@@ -182,20 +182,20 @@ export const RecurringCampaignModal = ({
           </div>
 
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <Label className="text-sm font-medium text-[var(--text-secondary)]">
               Send time (UTC)
             </Label>
             <Input
               type="time"
               value={sendTime}
               onChange={(e) => setSendTime(e.target.value)}
-              className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+              className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
             />
           </div>
 
           {frequency === 'WEEKLY' && (
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              <Label className="text-sm font-medium text-[var(--text-secondary)]">
                 Day of week
               </Label>
               <div className="flex gap-2 flex-wrap">
@@ -207,8 +207,8 @@ export const RecurringCampaignModal = ({
                     className={cn(
                       'px-3 py-1.5 rounded-full text-sm font-medium transition-all border',
                       selectedDay === i
-                        ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white'
-                        : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'
+                        ? 'bg-indigo-500 text-white border-slate-900 dark:border-white'
+                        : 'bg-[var(--bg-page)] text-[var(--text-secondary)] border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
                     )}
                   >
                     {day}
@@ -220,7 +220,7 @@ export const RecurringCampaignModal = ({
 
           {frequency === 'MONTHLY' && (
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              <Label className="text-sm font-medium text-[var(--text-secondary)]">
                 Day of month (1–31)
               </Label>
               <Input
@@ -231,13 +231,13 @@ export const RecurringCampaignModal = ({
                 onChange={(e) =>
                   setMonthlyDay(Math.min(31, Math.max(1, parseInt(e.target.value) || 1)))
                 }
-                className="border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+                className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
               />
             </div>
           )}
 
-          <div className="rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4">
-            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          <div className="rounded-xl bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)] p-4">
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
               {selectedCount === 0
                 ? 'Select customers first to preview the schedule'
                 : getPreviewText()}
@@ -247,7 +247,7 @@ export const RecurringCampaignModal = ({
           <Button
             onClick={handleSubmit}
             disabled={!isValid || loading || selectedCount === 0}
-            className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 font-semibold h-11"
+            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold h-11"
           >
             <Loader loading={loading}>
               <Calendar className="h-4 w-4 mr-2" />
@@ -256,7 +256,7 @@ export const RecurringCampaignModal = ({
           </Button>
 
           {selectedCount === 0 && (
-            <p className="text-xs text-center text-slate-500">
+            <p className="text-xs text-center text-[var(--text-muted)]">
               Select customers on the left to create a campaign
             </p>
           )}

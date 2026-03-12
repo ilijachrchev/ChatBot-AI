@@ -119,7 +119,7 @@ const Page = async (props: Props) => {
     !!firstDomainSlug
 
   return (
-    <div className="w-full h-full flex flex-col p-4 md:p-6 lg:p-8 dark:bg-[#0f1729]">
+    <div className="w-full h-full flex flex-col p-4 md:p-6 lg:p-8 dark:bg-[var(--bg-page)]">
       <InfoBar />
 
       <div className="overflow-y-auto w-full flex-1">
@@ -160,8 +160,8 @@ const Page = async (props: Props) => {
             trend={sales && sales > 0 ? { value: 8.1, label: 'vs last month' } : undefined}
           />
           <div className={cn(
-            'relative overflow-hidden rounded-xl border border-slate-200 dark:border-[#2a3a52]',
-            'bg-white dark:bg-[#1a2640]/80 p-5 md:p-6',
+            'relative overflow-hidden rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+            'bg-white dark:bg-[var(--bg-surface)] p-5 md:p-6',
             'shadow-sm'
           )}>
             {/* ICON — uncomment to show icon
@@ -169,13 +169,13 @@ const Page = async (props: Props) => {
               <Star className="h-5 w-5" strokeWidth={2} />
             </div>
             */}
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[var(--text-secondary)] mb-2">
               Satisfaction Rate
             </p>
             <p className={cn(
               'text-3xl font-bold tracking-tight',
               ratingsData.total < 3
-                ? 'text-slate-400 dark:text-slate-600'
+                ? 'text-slate-400 dark:text-[var(--text-secondary)]'
                 : ratingsData.satisfactionRate >= 80
                 ? 'text-emerald-600 dark:text-emerald-400'
                 : ratingsData.satisfactionRate >= 60
@@ -184,7 +184,7 @@ const Page = async (props: Props) => {
             )}>
               {ratingsData.total < 3 ? 'N/A' : `${ratingsData.satisfactionRate}%`}
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-2">
               {ratingsData.positive} of {ratingsData.total} rated helpful
             </p>
             {ratingsData.total > 0 && (

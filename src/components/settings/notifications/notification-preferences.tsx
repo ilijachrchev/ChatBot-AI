@@ -14,25 +14,25 @@ const NotificationPreferences = (props: Props) => {
   })
 
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
+    <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
       <div className="flex items-center gap-3 mb-6">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-white">
           <Bell className="h-5 w-5" />
         </div>
         <div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+          <h3 className="text-lg font-bold text-[var(--text-primary)]">
             Notification Preferences
           </h3>
         </div>
       </div>
 
       <div className="space-y-4">
-        <div className="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between py-3 border-b border-[var(--border-default)]">
           <div>
-            <p className="font-medium text-slate-900 dark:text-white">
+            <p className="font-medium text-[var(--text-primary)]">
               Email Notifications
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-[var(--text-secondary)]">
               Receive updates via email
             </p>
           </div>
@@ -44,12 +44,12 @@ const NotificationPreferences = (props: Props) => {
           />
         </div>
 
-        <div className="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between py-3 border-b border-[var(--border-default)]">
           <div>
-            <p className="font-medium text-slate-900 dark:text-white">
+            <p className="font-medium text-[var(--text-primary)]">
               New Conversation Alerts
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-[var(--text-secondary)]">
               Get notified of new conversations
             </p>
           </div>
@@ -61,12 +61,12 @@ const NotificationPreferences = (props: Props) => {
           />
         </div>
 
-        <div className="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between py-3 border-b border-[var(--border-default)]">
           <div>
-            <p className="font-medium text-slate-900 dark:text-white">
+            <p className="font-medium text-[var(--text-primary)]">
               Appointment Reminders
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-[var(--text-secondary)]">
               Reminder before scheduled meetings
             </p>
           </div>
@@ -80,10 +80,10 @@ const NotificationPreferences = (props: Props) => {
 
         <div className="flex items-center justify-between py-3">
           <div>
-            <p className="font-medium text-slate-900 dark:text-white">
+            <p className="font-medium text-[var(--text-primary)]">
               Weekly Reports
             </p>
-            <p className="text-sm text-slate-600 dark:text-slate-400">
+            <p className="text-sm text-[var(--text-secondary)]">
               Receive weekly summary reports
             </p>
           </div>

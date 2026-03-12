@@ -12,7 +12,7 @@ const AuthLayout = async ({ children }: Props) => {
     const user = await currentUser()
 
     return (
-        <div className='min-h-screen flex w-full relative overflow-hidden bg-[#0A0F1E]'>
+        <div className='min-h-screen flex w-full relative overflow-hidden bg-[var(--bg-page)]'>
             <ParticleBackground />
 
             <div className='w-full lg:w-[50%] flex flex-col items-center justify-center p-6 md:p-12 relative z-10'>
@@ -36,11 +36,11 @@ const AuthLayout = async ({ children }: Props) => {
                     <div className='mb-12 text-center'>
                         <h2 className='text-4xl xl:text-5xl font-bold text-white mb-4 leading-tight'>
                             Hi I am your AI powered sales assistant,{' '}
-                            <span className='bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent'>
+                            <span className='bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent'>
                                 SendWise-AI!
                             </span>
                         </h2>
-                        <p className='text-slate-400 text-lg'>
+                        <p className='text-[var(--text-muted)] text-lg'>
                             SendWise-AI is capable of capturing lead information without a form...
                             something never done before 🚀
                         </p>

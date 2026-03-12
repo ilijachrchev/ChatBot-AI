@@ -70,7 +70,7 @@ const LoginForm = () => {
                             <button
                                 type='button'
                                 onClick={() => setShowPassword(!showPassword)}
-                                className='absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors'
+                                className='absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white transition-colors'
                             >
                                 {showPassword ? (
                                     <EyeOff className='w-5 h-5' />
@@ -89,7 +89,7 @@ const LoginForm = () => {
                         id='keepMeLoggedIn'
                         checked={keepMeLoggedIn}
                         onCheckedChange={(checked) => setValue('keepMeLoggedIn', checked)}
-                        className='border-white/20 data-[state=checked]:bg-blue-500 data-[state=checked]:border-blue-500'
+                        className='border-white/20 data-[state=checked]:bg-indigo-500 data-[state=checked]:border-blue-500'
                     />
                     <label
                         htmlFor='keepMeLoggedIn'
@@ -101,7 +101,7 @@ const LoginForm = () => {
 
                 <button
                     type='button'
-                    className='text-sm text-blue-500 hover:text-blue-400 transition-colors'
+                    className='text-sm text-indigo-500 hover:text-indigo-400 transition-colors'
                 >
                     Forgot password?
                 </button>
@@ -109,16 +109,16 @@ const LoginForm = () => {
 
             <Button
                 type='submit'
-                className='w-full h-12 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all'
+                className='w-full h-12 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all'
             >
                 Sign In
             </Button>
 
-            <p className='text-center text-slate-400 text-sm'>
+            <p className='text-center text-[var(--text-muted)] text-sm'>
                 Don't have an account?{' '}
                 <Link
                     href="/auth/sign-up"
-                    className="text-blue-500 hover:text-blue-400 font-semibold transition-colors"
+                    className="text-indigo-500 hover:text-indigo-400 font-semibold transition-colors"
                 >
                     Create one
                 </Link>
@@ -129,7 +129,7 @@ const LoginForm = () => {
                     <div className='w-full border-t border-white/10'></div>
                 </div>
                 <div className='relative flex justify-center text-sm'>
-                    <span className='px-4 bg-[#1A1F2E] text-slate-400'>Or continue with</span>
+                    <span className='px-4 bg-[var(--bg-surface)] text-[var(--text-muted)]'>Or continue with</span>
                 </div>
             </div>
 

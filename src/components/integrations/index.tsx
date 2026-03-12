@@ -58,20 +58,20 @@ const IntegrationsList = ({ connections }: Props) => {
               key={item.id}
               className={cn(
                 'group relative overflow-hidden',
-                'rounded-xl border border-slate-200 dark:border-slate-800',
-                'bg-white dark:bg-slate-900/50',
+                'rounded-xl border border-[var(--border-default)]',
+                'bg-[var(--bg-page)]/50',
                 'p-5 md:p-6',
                 'transition-all duration-300',
                 'hover:shadow-card-hover hover:border-blue-200 dark:hover:border-blue-800',
                 'hover:-translate-y-1'
               )}
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="relative z-10 flex flex-col h-full">
                 <div className='flex w-full justify-between items-start mb-4'>
                   <div className='flex items-center gap-3'>
-                    <div className='w-12 h-12 md:w-14 md:h-14 relative rounded-xl overflow-hidden border-2 border-slate-200 dark:border-slate-700 transition-transform duration-200 group-hover:scale-110 flex-shrink-0'>
+                    <div className='w-12 h-12 md:w-14 md:h-14 relative rounded-xl overflow-hidden border-2 border-[var(--border-default)] dark:border-[var(--border-strong)] transition-transform duration-200 group-hover:scale-110 flex-shrink-0'>
                       <Image
                         sizes='100vw'
                         src={'/images/stripe.png'}
@@ -81,7 +81,7 @@ const IntegrationsList = ({ connections }: Props) => {
                       />
                     </div>
                     <div>
-                      <h3 className='text-lg md:text-xl font-bold text-slate-900 dark:text-white capitalize'>
+                      <h3 className='text-lg md:text-xl font-bold text-[var(--text-primary)] capitalize'>
                         {item.name}
                       </h3>
                     </div>
@@ -91,7 +91,7 @@ const IntegrationsList = ({ connections }: Props) => {
                     'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold flex-shrink-0',
                     isConnected
                       ? 'bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                      : 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]'
                   )}>
                     {isConnected ? (
                       <>
@@ -108,7 +108,7 @@ const IntegrationsList = ({ connections }: Props) => {
                 </div>
 
                 <div className='flex-1 mb-4'>
-                  <CardDescription className='text-sm text-slate-600 dark:text-slate-400 leading-relaxed'>
+                  <CardDescription className='text-sm text-[var(--text-secondary)] leading-relaxed'>
                     {item.description}
                   </CardDescription>
                 </div>
@@ -130,8 +130,8 @@ const IntegrationsList = ({ connections }: Props) => {
             key={integration.id}
             className={cn(
               'relative overflow-hidden',
-              'rounded-xl border border-slate-200 dark:border-slate-800',
-              'bg-slate-50 dark:bg-slate-900/30',
+              'rounded-xl border border-[var(--border-default)]',
+              'bg-slate-50 dark:bg-[var(--bg-page)]/30',
               'p-5 md:p-6',
               'opacity-60'
             )}
@@ -139,24 +139,24 @@ const IntegrationsList = ({ connections }: Props) => {
             <div className="flex flex-col h-full">
               <div className='flex w-full justify-between items-start mb-4'>
                 <div className='flex items-center gap-3'>
-                  <div className='w-12 h-12 md:w-14 md:h-14 rounded-xl bg-slate-100 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 flex items-center justify-center flex-shrink-0'>
+                  <div className='w-12 h-12 md:w-14 md:h-14 rounded-xl bg-slate-100 dark:bg-[var(--bg-surface)] border-2 border-[var(--border-default)] dark:border-[var(--border-strong)] flex items-center justify-center flex-shrink-0'>
                     <span className="text-2xl md:text-3xl">{integration.icon}</span>
                   </div>
                   <div>
-                    <h3 className='text-lg md:text-xl font-bold text-slate-900 dark:text-white'>
+                    <h3 className='text-lg md:text-xl font-bold text-[var(--text-primary)]'>
                       {integration.name}
                     </h3>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs font-semibold flex-shrink-0">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-200 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] text-xs font-semibold flex-shrink-0">
                   <Lock className="w-3.5 h-3.5" />
                   Coming Soon
                 </div>
               </div>
 
               <div className='flex-1 mb-4'>
-                <p className='text-sm text-slate-600 dark:text-slate-400 leading-relaxed'>
+                <p className='text-sm text-[var(--text-secondary)] leading-relaxed'>
                   {integration.description}
                 </p>
               </div>
@@ -165,8 +165,8 @@ const IntegrationsList = ({ connections }: Props) => {
                 disabled
                 className={cn(
                   'w-full py-2.5 rounded-lg',
-                  'bg-slate-200 dark:bg-slate-800',
-                  'text-slate-500 dark:text-slate-500',
+                  'bg-slate-200 dark:bg-[var(--bg-surface)]',
+                  'text-[var(--text-muted)]',
                   'text-sm font-semibold',
                   'cursor-not-allowed'
                 )}

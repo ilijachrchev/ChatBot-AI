@@ -20,7 +20,7 @@ const ChangePasswordCard = () => {
   const { register, errors, onChangePassword, loading } = useChangePassword()
 
   return (
-    <Card className="border-slate-200 dark:border-slate-800">
+    <Card className="border-[var(--border-default)]">
       <CardHeader className="flex flex-row items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-rose-600 text-white">
           <Lock className="h-5 w-5" />

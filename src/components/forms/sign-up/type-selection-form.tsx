@@ -44,7 +44,7 @@ const TypeSelectionForm = ({ register, setUserType, userType }: Props) => {
     >
       <div className='space-y-2'>
         <h2 className='text-3xl font-bold text-white'>Create an Account</h2>
-        <p className='text-slate-400'>
+        <p className='text-[var(--text-muted)]'>
           Tell us about yourself! What do you do? Let's tailor your
           experience so it best suits you.
         </p>
@@ -75,7 +75,7 @@ const TypeSelectionForm = ({ register, setUserType, userType }: Props) => {
             <div className='w-full border-t border-white/10'></div>
           </div>
           <div className='relative flex justify-center text-sm'>
-            <span className='px-4 bg-[#1A1F2E] text-slate-400'>Continue with</span>
+            <span className='px-4 bg-[var(--bg-surface)] text-[var(--text-muted)]'>Continue with</span>
           </div>
         </div>
 

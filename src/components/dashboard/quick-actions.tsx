@@ -17,10 +17,10 @@ const accentClasses: Record<
   { iconBg: string; iconText: string; hoverBorder: string; chevron: string }
 > = {
   blue: {
-    iconBg: 'bg-blue-500/10 dark:bg-blue-500/15',
-    iconText: 'text-blue-600 dark:text-blue-400',
+    iconBg: 'bg-indigo-500/10 dark:bg-indigo-500/15',
+    iconText: 'text-[var(--text-accent)]',
     hoverBorder: 'hover:border-blue-200 dark:hover:border-blue-800',
-    chevron: 'group-hover:text-blue-500 dark:group-hover:text-blue-400',
+    chevron: 'group-hover:text-indigo-500 dark:group-hover:text-indigo-400',
   },
   green: {
     iconBg: 'bg-emerald-500/10 dark:bg-emerald-500/15',
@@ -77,15 +77,15 @@ export const QuickActions = () => {
   return (
     <div
       className={cn(
-        'rounded-xl border border-slate-200 dark:border-[#2a3a52]',
-        'bg-white dark:bg-[#1a2640]/80 p-5 md:p-6 shadow-sm h-full flex flex-col'
+        'rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+        'bg-white dark:bg-[var(--bg-surface)] p-5 md:p-6 shadow-sm h-full flex flex-col'
       )}
     >
       <div className="mb-5">
-        <h2 className="font-bold text-lg md:text-xl text-slate-900 dark:text-white">
+        <h2 className="font-bold text-lg md:text-xl text-[var(--text-primary)]">
           Quick Actions
         </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+        <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mt-0.5">
           Common tasks to manage your chatbot
         </p>
       </div>
@@ -99,8 +99,8 @@ export const QuickActions = () => {
               href={action.href}
               className={cn(
                 'group flex items-center gap-3 p-3.5 rounded-xl',
-                'border border-slate-200 dark:border-[#2a3a52]',
-                'bg-slate-50/50 dark:bg-[#243044]/60',
+                'border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+                'bg-slate-50/50 dark:bg-[var(--bg-surface)]/60',
                 'hover:bg-white dark:hover:bg-[#243044]',
                 'hover:shadow-sm',
                 colors.hoverBorder,
@@ -118,17 +118,17 @@ export const QuickActions = () => {
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-900 dark:text-white leading-tight">
+                <p className="text-sm font-semibold text-[var(--text-primary)] leading-tight">
                   {action.label}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-tight">
+                <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-0.5 leading-tight">
                   {action.description}
                 </p>
               </div>
 
               <ChevronRight
                 className={cn(
-                  'h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500',
+                  'h-4 w-4 shrink-0 text-slate-400 dark:text-[var(--text-muted)]',
                   'group-hover:translate-x-0.5 transition-all duration-200',
                   colors.chevron
                 )}

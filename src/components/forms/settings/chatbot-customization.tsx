@@ -46,7 +46,7 @@ const CHAT_POSITIONS = [
     name: 'Bottom Right',
     diagram: (
       <svg viewBox="0 0 40 28" className="w-10 h-7" fill="none">
-        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-slate-300 dark:text-slate-600" />
+        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-slate-300 dark:text-[var(--text-secondary)]" />
         <circle cx="33" cy="22" r="3.5" fill="currentColor" className="text-indigo-500" />
       </svg>
     ),
@@ -56,7 +56,7 @@ const CHAT_POSITIONS = [
     name: 'Bottom Left',
     diagram: (
       <svg viewBox="0 0 40 28" className="w-10 h-7" fill="none">
-        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-slate-300 dark:text-slate-600" />
+        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-slate-300 dark:text-[var(--text-secondary)]" />
         <circle cx="7" cy="22" r="3.5" fill="currentColor" className="text-indigo-500" />
       </svg>
     ),
@@ -107,11 +107,11 @@ export const ChatPositionSelector = ({ setValue, currentValue }: ChatPositionSel
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md flex flex-col items-center gap-2',
             selected === pos.id
               ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 ring-2 ring-indigo-500/20'
-              : 'border-slate-200 dark:border-slate-800 hover:border-indigo-300'
+              : 'border-[var(--border-default)] hover:border-indigo-300'
           )}
         >
           {pos.diagram}
-          <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{pos.name}</span>
+          <span className="text-xs font-semibold text-[var(--text-secondary)]">{pos.name}</span>
         </button>
       ))}
     </div>
@@ -139,13 +139,13 @@ export const WidgetSizeSelector = ({ setValue, currentValue }: WidgetSizeSelecto
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === size.id
               ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 ring-2 ring-indigo-500/20'
-              : 'border-slate-200 dark:border-slate-800 hover:border-indigo-300'
+              : 'border-[var(--border-default)] hover:border-indigo-300'
           )}
         >
           <div className="flex flex-col items-center gap-2">
-            <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">{size.name}</div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">{size.dimensions}</div>
-            <div className="text-[10px] text-slate-400 dark:text-slate-500">{size.description}</div>
+            <div className="text-sm font-semibold text-[var(--text-secondary)]">{size.name}</div>
+            <div className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{size.dimensions}</div>
+            <div className="text-[10px] text-slate-400 dark:text-[var(--text-muted)]">{size.description}</div>
           </div>
         </button>
       ))}
@@ -174,14 +174,14 @@ export const WidgetStyleSelector = ({ setValue, currentValue }: WidgetStyleSelec
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === style.id
               ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30 ring-2 ring-purple-500/20'
-              : 'border-slate-200 dark:border-slate-800 hover:border-purple-300'
+              : 'border-[var(--border-default)] hover:border-purple-300'
           )}
         >
           <div className="flex flex-col items-center gap-3">
             <div className={cn('w-full h-16 rounded-lg', style.gradient)} />
             <div className="text-center">
-              <div className="text-sm font-semibold text-slate-700 dark:text-slate-300">{style.name}</div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{style.description}</div>
+              <div className="text-sm font-semibold text-[var(--text-secondary)]">{style.name}</div>
+              <div className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1">{style.description}</div>
             </div>
           </div>
         </button>
@@ -211,15 +211,15 @@ export const BubbleStyleSelector = ({ setValue, currentValue }: BubbleStyleSelec
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === style.id
               ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30'
-              : 'border-slate-200 dark:border-slate-800 hover:border-purple-300'
+              : 'border-[var(--border-default)] hover:border-purple-300'
           )}
         >
           <div className="flex flex-col items-center gap-2">
             <div className="flex gap-1">
-              <div className={cn('w-12 h-8 bg-blue-500', style.preview)} />
+              <div className={cn('w-12 h-8 bg-indigo-500', style.preview)} />
               <div className={cn('w-12 h-8 bg-gray-300', style.preview)} />
             </div>
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{style.name}</span>
+            <span className="text-xs font-medium text-[var(--text-secondary)]">{style.name}</span>
           </div>
         </button>
       ))}
@@ -248,14 +248,14 @@ export const ButtonStyleSelector = ({ setValue, currentValue }: ButtonStyleSelec
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === style.id
               ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
-              : 'border-slate-200 dark:border-slate-800 hover:border-blue-300'
+              : 'border-[var(--border-default)] hover:border-blue-300'
           )}
         >
           <div className="flex flex-col items-center gap-2">
-            <div className={cn('w-16 h-10 bg-blue-500 flex items-center justify-center text-white text-xs font-medium', style.preview)}>
+            <div className={cn('w-16 h-10 bg-indigo-500 flex items-center justify-center text-white text-xs font-medium', style.preview)}>
               Button
             </div>
-            <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{style.name}</span>
+            <span className="text-xs font-medium text-[var(--text-secondary)]">{style.name}</span>
           </div>
         </button>
       ))}
@@ -305,10 +305,10 @@ export const ShowAvatarsToggle = ({ currentValue, setValue }: ShowAvatarsToggleP
   }
 
   return (
-    <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+    <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]/50">
       <div className="space-y-0.5">
         <Label htmlFor="showAvatars" className="text-sm font-medium cursor-pointer">Show Team Avatars</Label>
-        <p className="text-xs text-slate-500 dark:text-slate-400">Display team member avatars in the header (top right)</p>
+        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">Display team member avatars in the header (top right)</p>
       </div>
       <Switch id="showAvatars" checked={checked} onCheckedChange={handle} />
     </div>
@@ -329,10 +329,10 @@ export const RemoveBrandingToggle = ({ currentValue, setValue }: RemoveBrandingT
   }
 
   return (
-    <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+    <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]/50">
       <div className="space-y-0.5">
         <Label htmlFor="removeBranding" className="text-sm font-medium cursor-pointer">Remove SendWise branding</Label>
-        <p className="text-xs text-slate-500 dark:text-slate-400">Hide the &ldquo;Powered by SendWise AI&rdquo; footer</p>
+        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">Hide the &ldquo;Powered by SendWise AI&rdquo; footer</p>
       </div>
       <Switch id="removeBranding" checked={checked} onCheckedChange={handle} />
     </div>
@@ -378,7 +378,7 @@ type CustomCssFieldProps = {
 export const CustomCssField = ({ register, currentValue }: CustomCssFieldProps) => (
   <div className="space-y-2">
     <Label htmlFor="customCss" className="text-sm font-medium">Custom CSS</Label>
-    <p className="text-xs text-slate-500 dark:text-slate-400">Inject custom CSS directly into the chat widget</p>
+    <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">Inject custom CSS directly into the chat widget</p>
     <Textarea
       id="customCss"
       {...register('customCss')}

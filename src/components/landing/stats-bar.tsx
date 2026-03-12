@@ -7,7 +7,7 @@ const stats = [
 
 export const StatsBar = () => {
   return (
-    <section className="bg-slate-900/50 border-y border-slate-800 py-12">
+    <section className="bg-[var(--bg-page)]/50 border-y border-slate-800 py-12">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center">
           {stats.map((stat, i) => (
@@ -16,12 +16,12 @@ export const StatsBar = () => {
               className="relative flex flex-col items-center flex-1 py-6 md:py-0"
             >
               {i > 0 && (
-                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-12 w-px bg-slate-700" />
+                <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 h-12 w-px bg-[var(--bg-active)]" />
               )}
               <span className="text-3xl md:text-4xl font-bold text-sky-400">
                 {stat.value}
               </span>
-              <span className="text-sm text-slate-400 mt-1 text-center">
+              <span className="text-sm text-[var(--text-muted)] mt-1 text-center">
                 {stat.label}
               </span>
             </div>

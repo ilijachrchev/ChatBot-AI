@@ -127,7 +127,7 @@ export function UpgradePlanModal({
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
                 <div className="w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center">
-                  <TargetIcon className="w-6 h-6 text-white dark:text-slate-900" />
+                  <TargetIcon className="w-6 h-6 text-[var(--text-primary)]" />
                 </div>
                 <div>
                   <DialogTitle className="text-2xl">
@@ -141,40 +141,40 @@ export function UpgradePlanModal({
             </DialogHeader>
 
             <div className="space-y-6 py-4">
-              <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-6">
+              <div className="bg-slate-50 dark:bg-[var(--bg-page)] rounded-lg p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Current Plan</p>
-                    <p className="text-xl font-semibold text-slate-900 dark:text-white">
+                    <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">Current Plan</p>
+                    <p className="text-xl font-semibold text-[var(--text-primary)]">
                       {currentPlanDetails.displayName}
                     </p>
-                    <p className="text-lg text-slate-600 dark:text-slate-400">
+                    <p className="text-lg text-[var(--text-secondary)]">
                       {currentPlanDetails.priceDisplay}/month
                     </p>
                   </div>
                   
-                  <ArrowRight className="w-6 h-6 text-slate-400" />
+                  <ArrowRight className="w-6 h-6 text-[var(--text-muted)]" />
                   
                   <div>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">New Plan</p>
-                    <p className="text-xl font-semibold text-slate-900 dark:text-white">
+                    <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">New Plan</p>
+                    <p className="text-xl font-semibold text-[var(--text-primary)]">
                       {targetPlanDetails.displayName}
                     </p>
-                    <p className="text-lg font-bold text-slate-900 dark:text-white">
+                    <p className="text-lg font-bold text-[var(--text-primary)]">
                       {targetPlanDetails.priceDisplay}/month
                     </p>
                   </div>
                 </div>
 
                 {targetPlanDetails.price > 0 && (
-                  <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
+                  <div className="pt-4 border-t border-[var(--border-default)]">
                     <div className="flex items-center justify-between text-sm">
-                      <span className="text-slate-600 dark:text-slate-400">Due today</span>
-                      <span className="text-lg font-bold text-slate-900 dark:text-white">
+                      <span className="text-[var(--text-secondary)]">Due today</span>
+                      <span className="text-lg font-bold text-[var(--text-primary)]">
                         {targetPlanDetails.priceDisplay}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1">
                       Billed monthly • Cancel anytime
                     </p>
                   </div>
@@ -183,7 +183,7 @@ export function UpgradePlanModal({
 
               {newFeatures.length > 0 && (
                 <div>
-                  <h4 className="font-semibold text-slate-900 dark:text-white mb-3">
+                  <h4 className="font-semibold text-[var(--text-primary)] mb-3">
                     What you&apos;ll get:
                   </h4>
                   <ul className="space-y-2">
@@ -200,7 +200,7 @@ export function UpgradePlanModal({
                           <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                             <Check className="w-3 h-3 text-green-600 dark:text-green-400" />
                           </div>
-                          <span className="text-sm text-slate-700 dark:text-slate-300 capitalize">
+                          <span className="text-sm text-[var(--text-secondary)] capitalize">
                             {displayText}
                           </span>
                         </li>
@@ -212,7 +212,7 @@ export function UpgradePlanModal({
 
               <Separator />
 
-              <div className="text-xs text-slate-500 dark:text-slate-400 space-y-1">
+              <div className="text-xs text-slate-500 dark:text-[var(--text-secondary)] space-y-1">
                 <p>
                   • Your card will be charged {targetPlanDetails.priceDisplay} today
                 </p>
@@ -225,7 +225,7 @@ export function UpgradePlanModal({
               </div>
             </div>
 
-            <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+            <div className="flex gap-3 pt-4 border-t border-[var(--border-default)]">
               <Button
                 variant="outline"
                 onClick={() => onOpenChange(false)}
@@ -237,7 +237,7 @@ export function UpgradePlanModal({
               <Button
                 onClick={handleContinue}
                 disabled={loading || !publishableKey || !stripePromise}
-                className="flex-1 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900"
+                className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white"
               >
                 {loading ? (
                   <>
@@ -265,7 +265,7 @@ export function UpgradePlanModal({
             <div className="py-4">
               {!clientSecret || !stripePromise ? (
                 <div className="flex items-center justify-center py-8">
-                  <Loader2 className="w-8 h-8 animate-spin text-slate-400" />
+                  <Loader2 className="w-8 h-8 animate-spin text-[var(--text-muted)]" />
                 </div>
               ) : (
                 <Elements stripe={stripePromise} options={{ clientSecret }}>

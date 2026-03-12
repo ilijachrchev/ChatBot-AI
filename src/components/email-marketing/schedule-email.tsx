@@ -62,13 +62,13 @@ export const ScheduleEmail = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800">
-        <Globe className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)]/50 border border-[var(--border-default)]">
+        <Globe className="h-4 w-4 text-slate-500 dark:text-[var(--text-secondary)]" />
         <div className="flex-1">
-          <p className="text-sm font-medium text-slate-900 dark:text-white">
+          <p className="text-sm font-medium text-[var(--text-primary)]">
             Your timezone: {userTimezone}
           </p>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
             All times shown in your local timezone
           </p>
         </div>
@@ -79,8 +79,8 @@ export const ScheduleEmail = ({
           className={cn(
             'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
             sendType === 'immediate'
-              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-slate-900/50'
-              : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'
+              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-[var(--bg-page)]/50'
+              : 'border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
           )}
           onClick={() => setSendType('immediate')}
         >
@@ -89,17 +89,17 @@ export const ScheduleEmail = ({
               'mt-0.5 h-4 w-4 rounded-full border-2 flex-shrink-0 transition-all',
               sendType === 'immediate'
                 ? 'border-slate-900 dark:border-white bg-slate-900 dark:bg-white'
-                : 'border-slate-300 dark:border-slate-600'
+                : 'border-[var(--border-strong)]'
             )}
           />
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <Send className="h-4 w-4 text-slate-700 dark:text-slate-300" />
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <Send className="h-4 w-4 text-[var(--text-secondary)]" />
+              <span className="font-semibold text-[var(--text-primary)]">
                 Send Immediately
               </span>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
               Campaign will be sent right away to all recipients
             </p>
           </div>
@@ -109,8 +109,8 @@ export const ScheduleEmail = ({
           className={cn(
             'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
             sendType === 'scheduled'
-              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-slate-900/50'
-              : 'border-slate-200 dark:border-slate-800 hover:border-slate-400 dark:hover:border-slate-600'
+              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-[var(--bg-page)]/50'
+              : 'border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
           )}
           onClick={() => setSendType('scheduled')}
         >
@@ -119,17 +119,17 @@ export const ScheduleEmail = ({
               'mt-0.5 h-4 w-4 rounded-full border-2 flex-shrink-0 transition-all',
               sendType === 'scheduled'
                 ? 'border-slate-900 dark:border-white bg-slate-900 dark:bg-white'
-                : 'border-slate-300 dark:border-slate-600'
+                : 'border-[var(--border-strong)]'
             )}
           />
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-1">
-              <Calendar className="h-4 w-4 text-slate-700 dark:text-slate-300" />
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <Calendar className="h-4 w-4 text-[var(--text-secondary)]" />
+              <span className="font-semibold text-[var(--text-primary)]">
                 Schedule for Later
               </span>
             </div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
               Choose a specific date and time to send
             </p>
           </div>
@@ -138,9 +138,9 @@ export const ScheduleEmail = ({
 
       {sendType === 'scheduled' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+          <div className="p-4 rounded-xl bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
             <div className="mb-4">
-              <Label className="text-sm font-medium mb-2 block text-slate-700 dark:text-slate-300">
+              <Label className="text-sm font-medium mb-2 block text-[var(--text-secondary)]">
                 <div className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
                   Select Date
@@ -149,7 +149,7 @@ export const ScheduleEmail = ({
               <select
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full h-11 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white transition-all"
+                className="w-full h-11 px-3 rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none focus:border-slate-900 dark:focus:border-white transition-all"
               >
                 <option value="">Choose a date...</option>
                 {dateOptions.map((date) => (
@@ -166,7 +166,7 @@ export const ScheduleEmail = ({
             </div>
 
             <div>
-              <Label className="text-sm font-medium mb-2 block text-slate-700 dark:text-slate-300">
+              <Label className="text-sm font-medium mb-2 block text-[var(--text-secondary)]">
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4" />
                   Select Time ({userTimezone})
@@ -176,7 +176,7 @@ export const ScheduleEmail = ({
                 value={selectedTime}
                 onChange={(e) => setSelectedTime(e.target.value)}
                 disabled={!selectedDate}
-                className="w-full h-11 px-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white outline-none focus:border-slate-900 dark:focus:border-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-11 px-3 rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none focus:border-slate-900 dark:focus:border-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option value="">Choose a time...</option>
                 {timeOptions.map((time) => (
@@ -188,11 +188,11 @@ export const ScheduleEmail = ({
             </div>
 
             {selectedDate && selectedTime && (
-              <div className="mt-4 p-3 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
-                <p className="text-sm font-medium text-slate-900 dark:text-white">
+              <div className="mt-4 p-3 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] border border-[var(--border-default)] dark:border-[var(--border-strong)]">
+                <p className="text-sm font-medium text-[var(--text-primary)]">
                   Campaign will send at:
                 </p>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-0.5 font-semibold">
+                <p className="text-sm text-[var(--text-secondary)] mt-0.5 font-semibold">
                   {selectedDate} at {selectedTime} {userTimezone}
                 </p>
               </div>
@@ -201,12 +201,12 @@ export const ScheduleEmail = ({
         </div>
       )}
 
-      <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+      <div className="flex gap-3 pt-4 border-t border-[var(--border-default)]">
         <Button
           type="button"
           variant="outline"
           onClick={onClose}
-          className="flex-1 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900"
+          className="flex-1 border-[var(--border-default)] hover:bg-[var(--bg-hover)]"
           disabled={loading}
         >
           Cancel
@@ -215,7 +215,7 @@ export const ScheduleEmail = ({
           type="button"
           onClick={handleSubmit}
           disabled={loading || (sendType === 'scheduled' && (!selectedDate || !selectedTime))}
-          className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 font-semibold"
+          className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold"
         >
           {loading ? (
             'Processing...'

@@ -17,7 +17,7 @@ type KpiCardProps = {
 }
 
 const iconColorClasses = {
-  blue: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+  blue: 'bg-indigo-500/10 text-[var(--text-accent)]',
   green: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
   purple: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
   amber: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
@@ -48,8 +48,8 @@ export const KpiCard = ({
 
   return (
     <div className={cn(
-      'relative overflow-hidden rounded-xl border border-slate-200 dark:border-[#2a3a52]',
-      'bg-white dark:bg-[#1a2640]/80 p-5 md:p-6',
+      'relative overflow-hidden rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+      'bg-white dark:bg-[var(--bg-surface)] p-5 md:p-6',
       'shadow-sm'
     )}>
       {/* ICON — uncomment to show icon
@@ -61,11 +61,11 @@ export const KpiCard = ({
       </div>
       */}
 
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[var(--text-secondary)] mb-2">
         {title}
       </p>
 
-      <p className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+      <p className="text-3xl font-bold text-[var(--text-primary)] tracking-tight">
         {sales && '$'}
         {typeof value === 'number' ? value.toLocaleString() : value}
       </p>
@@ -82,12 +82,12 @@ export const KpiCard = ({
               {trend.value}%
             </span>
           )}
-          <span className="text-xs text-slate-500 dark:text-slate-400">{trend.label}</span>
+          <span className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{trend.label}</span>
         </div>
       )}
 
       {value === 0 && (
-        <p className="text-xl font-medium text-slate-300 dark:text-slate-700 mt-3 select-none">
+        <p className="text-xl font-medium text-slate-300 dark:text-[var(--text-secondary)] mt-3 select-none">
           —
         </p>
       )}

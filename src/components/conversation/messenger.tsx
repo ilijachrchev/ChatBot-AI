@@ -30,7 +30,7 @@ const STATUS_OPTIONS: RoomStatus[] = ['OPEN', 'PENDING', 'RESOLVED']
 const STATUS_COLORS: Record<RoomStatus, string> = {
   OPEN: 'text-emerald-600',
   PENDING: 'text-amber-600',
-  RESOLVED: 'text-slate-500',
+  RESOLVED: 'text-[var(--text-muted)]',
 }
 
 type Props = Record<string, never>

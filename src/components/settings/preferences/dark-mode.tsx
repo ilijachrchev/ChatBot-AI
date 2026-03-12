@@ -32,7 +32,7 @@ const DarkModetoggle = () => {
             {[0, 1, 2].map((i) => (
               <div
                 key={i}
-                className='h-36 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-100 dark:bg-slate-800 animate-pulse'
+                className='h-36 rounded-xl border border-[var(--border-default)] bg-slate-100 dark:bg-[var(--bg-surface)] animate-pulse'
               />
             ))}
           </div>
@@ -65,17 +65,17 @@ const DarkModetoggle = () => {
                   'relative flex flex-col gap-3 p-3 rounded-xl border-2 text-left transition-all duration-200',
                   isActive
                     ? 'border-slate-900 dark:border-white ring-2 ring-slate-900 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-slate-950'
-                    : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                    : 'border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
                 )}
               >
                 {isActive && (
                   <span className='absolute top-2 right-2 w-5 h-5 rounded-full bg-slate-900 dark:bg-white flex items-center justify-center z-10'>
-                    <Check className='w-3 h-3 text-white dark:text-slate-900' />
+                    <Check className='w-3 h-3 text-[var(--text-primary)]' />
                   </span>
                 )}
 
                 {value === 'light' && (
-                  <div className='w-full h-24 rounded-lg bg-white border border-slate-200 flex flex-col justify-center gap-2 px-3 overflow-hidden'>
+                  <div className='w-full h-24 rounded-lg bg-white border border-[var(--border-default)] flex flex-col justify-center gap-2 px-3 overflow-hidden'>
                     <div className='h-2 w-3/4 bg-slate-200 rounded-full' />
                     <div className='h-2 w-1/2 bg-slate-100 rounded-full' />
                     <div className='h-2 w-2/3 bg-slate-200 rounded-full' />
@@ -88,39 +88,39 @@ const DarkModetoggle = () => {
                 )}
 
                 {value === 'system' && (
-                  <div className='relative w-full h-24 rounded-lg overflow-hidden border border-slate-200'>
+                  <div className='relative w-full h-24 rounded-lg overflow-hidden border border-[var(--border-default)]'>
                     <div className='absolute inset-y-0 left-0 right-[50%] bg-white flex flex-col justify-center gap-2 px-3'>
                       <div className='h-2 w-full bg-slate-200 rounded-full' />
                       <div className='h-2 w-3/4 bg-slate-100 rounded-full' />
                       <div className='h-2 w-full bg-slate-200 rounded-full' />
                     </div>
-                    <div className='absolute inset-y-0 right-0 left-[50%] bg-slate-900 flex flex-col justify-center gap-2 px-3'>
-                      <div className='h-2 w-full bg-slate-700 rounded-full' />
-                      <div className='h-2 w-3/4 bg-slate-800 rounded-full' />
-                      <div className='h-2 w-full bg-slate-700 rounded-full' />
+                    <div className='absolute inset-y-0 right-0 left-[50%] bg-[var(--bg-page)] flex flex-col justify-center gap-2 px-3'>
+                      <div className='h-2 w-full bg-[var(--bg-active)] rounded-full' />
+                      <div className='h-2 w-3/4 bg-[var(--bg-surface)] rounded-full' />
+                      <div className='h-2 w-full bg-[var(--bg-active)] rounded-full' />
                     </div>
                     <div className='absolute inset-y-0 left-[47%] w-6 bg-gradient-to-r from-white to-slate-900 -skew-x-6' />
                   </div>
                 )}
 
                 {value === 'dark' && (
-                  <div className='w-full h-24 rounded-lg bg-slate-900 flex flex-col justify-center gap-2 px-3 overflow-hidden'>
-                    <div className='h-2 w-3/4 bg-slate-700 rounded-full' />
-                    <div className='h-2 w-1/2 bg-slate-800 rounded-full' />
-                    <div className='h-2 w-2/3 bg-slate-700 rounded-full' />
+                  <div className='w-full h-24 rounded-lg bg-[var(--bg-page)] flex flex-col justify-center gap-2 px-3 overflow-hidden'>
+                    <div className='h-2 w-3/4 bg-[var(--bg-active)] rounded-full' />
+                    <div className='h-2 w-1/2 bg-[var(--bg-surface)] rounded-full' />
+                    <div className='h-2 w-2/3 bg-[var(--bg-active)] rounded-full' />
                     <div className='flex gap-1.5 mt-1'>
                       <div className='h-2 w-2 rounded-full bg-slate-600' />
-                      <div className='h-2 w-2 rounded-full bg-slate-700' />
+                      <div className='h-2 w-2 rounded-full bg-[var(--bg-active)]' />
                       <div className='h-2 w-2 rounded-full bg-slate-600' />
                     </div>
                   </div>
                 )}
 
                 <div>
-                  <p className='text-sm font-medium text-slate-900 dark:text-white'>
+                  <p className='text-sm font-medium text-[var(--text-primary)]'>
                     {label}
                   </p>
-                  <p className='text-xs text-slate-500'>{subtext}</p>
+                  <p className='text-xs text-[var(--text-muted)]'>{subtext}</p>
                 </div>
               </button>
             )

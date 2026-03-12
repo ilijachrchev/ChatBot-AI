@@ -25,7 +25,7 @@ export const PERSONAS: Persona[] = [
     name: 'Sales Agent',
     description: 'Handles objections, qualifies leads, and recommends products/services.',
     icon: '💼',
-    color: 'from-blue-500 to-blue-600',
+    color: 'from-indigo-500 to-indigo-600',
     systemPrompt: `You are an elite sales representative for {{DOMAIN_NAME}}.
 
 ROLE: Close deals, qualify leads, overcome objections, and guide prospects to a buying decision or next step.

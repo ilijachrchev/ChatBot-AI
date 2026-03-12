@@ -42,7 +42,7 @@ const DomainMenu = ({ domains, min }: Props) => {
     <div className={cn('flex flex-col gap-1.5 md:gap-2', min ? 'mt-2 md:mt-4' : 'mt-1.5 md:mt-2')}>
       <div className="flex justify-between w-full items-center">
         {!min && (
-          <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+          <p className="text-xs font-semibold text-slate-500 dark:text-[var(--text-secondary)] uppercase tracking-wider">
             Domains
           </p>
         )}
@@ -56,9 +56,9 @@ const DomainMenu = ({ domains, min }: Props) => {
                 'group relative',
                 'flex items-center justify-center',
                 'w-8 h-8 rounded-lg',
-                'border-2 border-dashed border-slate-300 dark:border-slate-700',
-                'text-slate-400 dark:text-slate-600',
-                'hover:border-blue-400 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20',
+                'border-2 border-dashed border-[var(--border-strong)]',
+                'text-[var(--text-muted)] dark:text-[var(--text-secondary)]',
+                'hover:border-indigo-400 hover:text-indigo-400 hover:bg-indigo-950/30',
                 'transition-all duration-200',
                 'cursor-pointer'
               )}>
@@ -123,17 +123,17 @@ const DomainMenu = ({ domains, min }: Props) => {
                     'overflow-hidden',
                     
                     isActive && [
-                      'bg-white dark:bg-slate-800',
-                      'font-semibold text-slate-900 dark:text-white',
+                      'bg-[var(--bg-active)]',
+                      'font-semibold text-[var(--text-primary)]',
                       'shadow-sm',
                       'before:absolute before:left-0 before:top-0 before:bottom-0',
-                      'before:w-1 before:bg-gradient-to-b before:from-blue-500 before:to-blue-600',
+                      'before:w-1 before:bg-gradient-to-b before:from-indigo-500 before:to-indigo-600',
                       'before:rounded-l-lg'
                     ],
                     
                     !isActive && [
-                      'text-slate-600 dark:text-slate-400',
-                      'hover:bg-slate-50 dark:hover:bg-slate-800/50',
+                      'text-[var(--text-secondary)]',
+                      'hover:bg-[var(--bg-hover)]',
                       'hover:text-slate-900 dark:hover:text-white'
                     ]
                   )}
@@ -145,8 +145,8 @@ const DomainMenu = ({ domains, min }: Props) => {
                     'group-hover:scale-105',
                     
                     isActive 
-                      ? 'border-blue-200 dark:border-blue-800 shadow-sm' 
-                      : 'border-slate-200 dark:border-slate-700 group-hover:border-blue-300'
+                      ? 'border-[var(--border-accent)] shadow-sm' 
+                      : 'border-[var(--border-default)] group-hover:border-indigo-400'
                   )}>
                     <img
                       src={iconSrc}
@@ -165,7 +165,7 @@ const DomainMenu = ({ domains, min }: Props) => {
                   {getVerificationIcon(domain.verificationStatus)}
 
                   {!isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   )}
                 </Link>
               )
@@ -181,12 +181,12 @@ const DomainMenu = ({ domains, min }: Props) => {
                   'transition-all duration-200 ease-in-out',
                   
                   isActive && [
-                    'bg-white dark:bg-slate-800',
+                    'bg-[var(--bg-active)]',
                     'shadow-sm',
                   ],
                   
                   !isActive && [
-                    'hover:bg-slate-50 dark:hover:bg-slate-800/50',
+                    'hover:bg-[var(--bg-hover)]',
                   ]
                 )}
               >
@@ -197,8 +197,8 @@ const DomainMenu = ({ domains, min }: Props) => {
                   'group-hover:scale-110',
                   
                   isActive 
-                    ? 'border-blue-200 dark:border-blue-800' 
-                    : 'border-slate-200 dark:border-slate-700 group-hover:border-blue-300'
+                    ? 'border-[var(--border-accent)]' 
+                    : 'border-[var(--border-default)] group-hover:border-indigo-400'
                 )}>
                   <img
                     src={iconSrc}
@@ -214,12 +214,12 @@ const DomainMenu = ({ domains, min }: Props) => {
                 </div>
 
                 {isActive && (
-                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" />
+                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full" />
                 )}
 
                 <div className={cn(
                   'absolute left-full ml-2 px-2 py-1 rounded-md',
-                  'bg-slate-900 dark:bg-slate-700 text-white text-xs whitespace-nowrap',
+                  'bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs whitespace-nowrap',
                   'opacity-0 group-hover:opacity-100 pointer-events-none',
                   'transition-opacity duration-200 z-50'
                 )}>

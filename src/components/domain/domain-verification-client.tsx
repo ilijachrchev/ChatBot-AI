@@ -96,14 +96,14 @@ export function DomainVerificationClient({
         </Button>
       </Link>
 
-      <div className='rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 shadow-xl'>
+      <div className='rounded-2xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6 shadow-xl'>
         <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
           <div className='flex items-center gap-4'>
-            <div className='p-3 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-500/30'>
+            <div className='p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-lg shadow-blue-500/30'>
               <Globe className='w-6 h-6 text-white' />
             </div>
             <div>
-              <h1 className='text-2xl font-bold text-slate-900 dark:text-white'>{domainName}</h1>
+              <h1 className='text-2xl font-bold text-[var(--text-primary)]'>{domainName}</h1>
               <div className='flex items-center gap-2 mt-1'>
                 {verificationStatus === 'VERIFIED' ? (
                   <span className='px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'>
@@ -123,7 +123,7 @@ export function DomainVerificationClient({
                 )}
               </div>
               {verifiedAt && (
-                <p className='text-xs text-slate-500 dark:text-slate-400 mt-1'>
+                <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1'>
                   Verified {new Date(verifiedAt).toLocaleDateString()} via {verificationMethod}
                 </p>
               )}
@@ -131,13 +131,13 @@ export function DomainVerificationClient({
           </div>
         </div>
 
-        <div className='mt-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800'>
+        <div className='mt-6 p-4 rounded-xl bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]'>
           <div className='flex items-center justify-between gap-4'>
             <div className='min-w-0 flex-1'>
-              <p className='text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mb-1'>
+              <p className='text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)] uppercase tracking-wide mb-1'>
                 Verification Token
               </p>
-              <code className='text-sm font-mono text-slate-900 dark:text-white'>
+              <code className='text-sm font-mono text-[var(--text-primary)]'>
                 {showToken ? verificationToken : maskedToken}
               </code>
             </div>
@@ -183,7 +183,7 @@ export function DomainVerificationClient({
 
       {status !== 'success' && (
         <div className='space-y-4'>
-          <h2 className='text-lg font-semibold text-slate-900 dark:text-white px-1'>
+          <h2 className='text-lg font-semibold text-[var(--text-primary)] px-1'>
             Choose a verification method
           </h2>
 
@@ -229,7 +229,7 @@ export function DomainVerificationClient({
         </div>
       )}
 
-      <div className='rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 shadow-xl space-y-4'>
+      <div className='rounded-2xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6 shadow-xl space-y-4'>
         {status === 'success' && (
           <div className='flex items-start gap-3 p-4 rounded-xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 animate-fade-in'>
             <CheckCircle2 className='w-5 h-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5' />
@@ -262,8 +262,8 @@ export function DomainVerificationClient({
         )}
 
         {(status === 'idle' || status === 'error') && (
-          <div className='flex items-start gap-3 p-4 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800'>
-            <AlertTriangle className='w-5 h-5 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5' />
+          <div className='flex items-start gap-3 p-4 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-[var(--border-accent)]'>
+            <AlertTriangle className='w-5 h-5 text-[var(--text-accent)] shrink-0 mt-0.5' />
             <div>
               <p className='font-medium text-blue-900 dark:text-blue-100'>Troubleshooting tips</p>
               <ul className='text-sm text-blue-700 dark:text-blue-300 mt-1 space-y-1 list-disc list-inside'>
@@ -290,7 +290,7 @@ export function DomainVerificationClient({
               size='lg'
               onClick={handleVerify}
               disabled={status === 'verifying'}
-              className='flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
+              className='flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700'
             >
               {status === 'verifying' ? (
                 <>
@@ -332,21 +332,21 @@ function VerificationMethodCard({
   codeField,
 }: VerificationMethodCardProps) {
   return (
-    <div className='rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6'>
+    <div className='rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6'>
       <div className='flex items-start gap-4 mb-4'>
-        <div className='p-2 rounded-lg bg-slate-100 dark:bg-slate-800'>
-          <Icon className='w-5 h-5 text-slate-600 dark:text-slate-400' />
+        <div className='p-2 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)]'>
+          <Icon className='w-5 h-5 text-[var(--text-secondary)]' />
         </div>
         <div className='flex-1'>
           <div className='flex items-center gap-2'>
-            <h3 className='font-semibold text-slate-900 dark:text-white'>{title}</h3>
+            <h3 className='font-semibold text-[var(--text-primary)]'>{title}</h3>
             {recommended && (
               <span className='px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'>
                 Recommended
               </span>
             )}
           </div>
-          <p className='text-sm text-slate-600 dark:text-slate-400 mt-1'>{subtitle}</p>
+          <p className='text-sm text-[var(--text-secondary)] mt-1'>{subtitle}</p>
         </div>
       </div>
 
@@ -355,13 +355,13 @@ function VerificationMethodCard({
           {fields.map((field) => (
             <div
               key={field.field}
-              className='flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800'
+              className='flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]'
             >
               <div className='flex-1 min-w-0'>
-                <p className='text-xs font-medium text-slate-500 dark:text-slate-400 uppercase'>
+                <p className='text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)] uppercase'>
                   {field.label}
                 </p>
-                <code className='text-sm font-mono text-slate-900 dark:text-white break-all'>
+                <code className='text-sm font-mono text-[var(--text-primary)] break-all'>
                   {field.value}
                 </code>
               </div>
@@ -384,19 +384,19 @@ function VerificationMethodCard({
 
       {codeBlock && codeField && (
         <div className='relative'>
-          <pre className='p-4 rounded-lg bg-slate-900 dark:bg-slate-950 border border-slate-800 overflow-x-auto'>
+          <pre className='p-4 rounded-lg bg-slate-900 dark:bg-[var(--bg-page)] border border-slate-800 overflow-x-auto'>
             <code className='text-sm text-slate-100 font-mono'>{codeBlock}</code>
           </pre>
           <Button
             variant='ghost'
             size='sm'
             onClick={() => onCopy(codeBlock, codeField)}
-            className='absolute top-2 right-2 bg-slate-800 hover:bg-slate-700'
+            className='absolute top-2 right-2 bg-[var(--bg-surface)] hover:bg-[var(--bg-active)]'
           >
             {copiedField === codeField ? (
               <Check className='w-4 h-4 text-green-400' />
             ) : (
-              <Copy className='w-4 h-4 text-slate-400' />
+              <Copy className='w-4 h-4 text-[var(--text-muted)]' />
             )}
           </Button>
         </div>

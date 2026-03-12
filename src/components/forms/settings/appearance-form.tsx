@@ -104,15 +104,15 @@ const SectionCard = ({
       : false
 
   return (
-    <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
+    <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <div className={cn('flex h-9 w-9 items-center justify-center rounded-lg text-white', iconBg)}>
             {icon}
           </div>
           <div>
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white">{title}</h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
+            <h3 className="text-sm font-bold text-[var(--text-primary)]">{title}</h3>
+            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{subtitle}</p>
           </div>
         </div>
         {badge}
@@ -194,10 +194,10 @@ const TeaserSection = ({
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+      <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]/50">
         <div className="space-y-0.5">
           <Label className="text-sm font-medium cursor-pointer">Enable teaser message</Label>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
             Show a speech bubble next to the chat button when the widget is closed
           </p>
         </div>
@@ -220,7 +220,7 @@ const TeaserSection = ({
                 key={suggestion}
                 type="button"
                 onClick={() => handleMessageChange(suggestion)}
-                className="px-3 py-1 rounded-full text-xs border border-slate-200 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer transition-all"
+                className="px-3 py-1 rounded-full text-xs border border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-slate-400 dark:hover:border-slate-500 hover:bg-[var(--bg-hover)] cursor-pointer transition-all"
               >
                 {suggestion}
               </button>
@@ -231,7 +231,7 @@ const TeaserSection = ({
         <div className="space-y-2">
           <div>
             <Label className="text-sm font-medium">Show after</Label>
-            <p className="text-xs text-slate-500 dark:text-slate-400">How many seconds after page load</p>
+            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">How many seconds after page load</p>
           </div>
           <div className="flex gap-2">
             {DELAY_OPTIONS.map((opt) => (
@@ -242,8 +242,8 @@ const TeaserSection = ({
                 className={cn(
                   'px-4 py-2 rounded-lg text-sm font-medium border transition-all',
                   delay === opt.value
-                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 border-slate-900 dark:border-white'
-                    : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-400'
+                    ? 'bg-indigo-500 text-white border-slate-900 dark:border-white'
+                    : 'bg-[var(--bg-page)] border-[var(--border-default)] text-[var(--text-secondary)] hover:border-slate-400'
                 )}
               >
                 {opt.label}
@@ -254,13 +254,13 @@ const TeaserSection = ({
 
         <div className="space-y-2">
           <Label className="text-sm font-medium">Preview</Label>
-          <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-800">
+          <div className="bg-slate-50 dark:bg-[var(--bg-page)] rounded-xl p-4 border border-[var(--border-default)]">
             <div className="flex items-end justify-end gap-2 overflow-visible w-full">
-              <div className="relative bg-white border border-slate-200 rounded-2xl px-3 py-2 shadow-sm w-fit max-w-[260px] overflow-hidden">
+              <div className="relative bg-white border border-[var(--border-default)] rounded-2xl px-3 py-2 shadow-sm w-fit max-w-[260px] overflow-hidden">
                 <p className="text-xs text-slate-800 whitespace-nowrap pr-4">
                   {message || 'Have a question? 💬'}
                 </p>
-                <div className="absolute -right-[6px] bottom-3 w-2.5 h-2.5 bg-white border-r border-b border-slate-200 rotate-[-45deg]" />
+                <div className="absolute -right-[6px] bottom-3 w-2.5 h-2.5 bg-white border-r border-b border-[var(--border-default)] rotate-[-45deg]" />
               </div>
               <div
                 className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center shadow-md"
@@ -310,7 +310,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
         <div className="space-y-4">
           <SectionCard
             icon={<MessageSquare className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-blue-500 to-blue-600"
+            iconBg="bg-gradient-to-br from-indigo-500 to-indigo-600"
             title="Basic Settings"
             subtitle="Core appearance settings"
             plan={plan}
@@ -338,19 +338,19 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
           >
             <div className="space-y-5">
               <div>
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-3">
+                <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">
                   Chat Position
                 </p>
                 <ChatPositionSelector setValue={sv} currentValue={chatBot?.chatPosition} />
                 <div className="mt-3 flex items-start gap-2 px-3 py-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900">
-                  <Info className="h-3.5 w-3.5 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <Info className="h-3.5 w-3.5 text-indigo-500 mt-0.5 flex-shrink-0" />
                   <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
                     Position changes take effect when you re-embed the widget. Re-copy your embed code after changing position.
                   </p>
                 </div>
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-3">
+                <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">
                   Widget Size
                 </p>
                 <WidgetSizeSelector setValue={sv} currentValue={chatBot?.widgetSize} />
@@ -406,7 +406,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
           >
             <div className="space-y-5">
               <div>
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-3">
+                <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">
                   Bubble Colors
                 </p>
                 <BubbleColors
@@ -421,13 +421,13 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
                 />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-3">
+                <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">
                   Bubble Style
                 </p>
                 <BubbleStyleSelector setValue={sv} currentValue={chatBot?.bubbleStyle} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wide mb-3">
+                <p className="text-xs font-semibold text-[var(--text-secondary)] uppercase tracking-wide mb-3">
                   Button Style
                 </p>
                 <ButtonStyleSelector setValue={sv} currentValue={chatBot?.buttonStyle} />
@@ -489,10 +489,10 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
         </div>
       </div>
 
-      <div className="flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-slate-200 dark:border-slate-800">
+      <div className="flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-[var(--border-default)]">
         <Button
           type="submit"
-          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 px-8"
+          className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 px-8"
         >
           <Save className="h-4 w-4 mr-2" />
           <Loader loading={loading}>Save Changes</Loader>

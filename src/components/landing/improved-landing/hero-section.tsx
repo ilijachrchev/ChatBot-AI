@@ -64,7 +64,7 @@ export function HeroSection() {
         </div>
       </header>
 
-      <section className="relative min-h-screen bg-[#080808] overflow-hidden flex flex-col items-center justify-start px-4 pt-32 pb-0">
+      <section className="relative min-h-screen bg-[var(--bg-page)] overflow-hidden flex flex-col items-center justify-start px-4 pt-32 pb-0">
         <div className="absolute inset-0 pointer-events-none" aria-hidden>
           <div
             className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px]"

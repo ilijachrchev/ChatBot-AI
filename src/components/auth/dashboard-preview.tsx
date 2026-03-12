@@ -10,10 +10,10 @@ const DashboardPreview = () => {
       className="relative"
     >
       <div className="relative">
-        <div className="relative w-full max-w-[500px] h-[400px] rounded-2xl bg-[#1A1F2E]/80 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl">
+        <div className="relative w-full max-w-[500px] h-[400px] rounded-2xl bg-[var(--bg-surface)]/80 backdrop-blur-xl border border-white/10 overflow-hidden shadow-2xl">
           <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
                 <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
@@ -22,7 +22,7 @@ const DashboardPreview = () => {
             </div>
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs text-slate-400">Live</span>
+              <span className="text-xs text-[var(--text-muted)]">Live</span>
             </div>
           </div>
 
@@ -40,7 +40,7 @@ const DashboardPreview = () => {
                   transition={{ delay: 0.5 + i * 0.1 }}
                   className="p-3 rounded-xl bg-white/5 border border-white/10"
                 >
-                  <p className="text-xs text-slate-400">{stat.label}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
                   <p className="text-lg font-semibold text-white mt-1">{stat.value}</p>
                   <p className="text-xs text-green-500 mt-0.5">{stat.change}</p>
                 </motion.div>
@@ -60,7 +60,7 @@ const DashboardPreview = () => {
                   initial={{ height: 0 }}
                   animate={{ height: `${height}%` }}
                   transition={{ delay: 1 + i * 0.05, duration: 0.4 }}
-                  className="w-6 rounded-t-md bg-gradient-to-t from-blue-500/50 to-blue-500"
+                  className="w-6 rounded-t-md bg-gradient-to-t from-indigo-500/50 to-blue-500"
                 />
               ))}
             </motion.div>
@@ -74,12 +74,12 @@ const DashboardPreview = () => {
                   transition={{ delay: 1.2 + i * 0.1 }}
                   className="flex items-center gap-3 p-2 rounded-lg bg-white/5"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/30 to-purple-500/30" />
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500/30 to-purple-500/30" />
                   <div className="flex-1">
                     <div className="h-2 w-24 bg-white/20 rounded" />
                     <div className="h-1.5 w-16 bg-white/10 rounded mt-1.5" />
                   </div>
-                  <div className="h-6 w-16 bg-blue-500/20 rounded-md" />
+                  <div className="h-6 w-16 bg-indigo-500/20 rounded-md" />
                 </motion.div>
               ))}
             </div>
@@ -96,9 +96,9 @@ const DashboardPreview = () => {
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="absolute -top-6 -right-6 w-24 h-24 rounded-2xl bg-blue-500/10 backdrop-blur-sm border border-blue-500/20 flex items-center justify-center"
+          className="absolute -top-6 -right-6 w-24 h-24 rounded-2xl bg-indigo-500/10 backdrop-blur-sm border border-blue-500/20 flex items-center justify-center"
         >
-          <svg className="w-10 h-10 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg className="w-10 h-10 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
         </motion.div>
@@ -123,7 +123,7 @@ const DashboardPreview = () => {
       </div>
 
       <div className="absolute inset-0 -z-10 blur-3xl opacity-30">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-br from-blue-500 to-purple-500" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500" />
       </div>
     </motion.div>
   )

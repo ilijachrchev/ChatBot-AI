@@ -42,7 +42,7 @@ const steps: StepType[] = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="relative bg-[#080808] py-28 px-4">
+    <section id="how-it-works" className="relative bg-[var(--bg-page)] py-28 px-4">
       <div
         className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] pointer-events-none blur-[100px]"
         style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.03) 0%, transparent 70%)" }}
@@ -83,7 +83,7 @@ function StepCard({
   return (
     <div
       className={cn(
-        "relative flex flex-col justify-between gap-6 bg-[#080808] px-6 pt-8 pb-6",
+        "relative flex flex-col justify-between gap-6 bg-[var(--bg-page)] px-6 pt-8 pb-6",
         "hover:bg-white/[0.015] transition-colors duration-300",
         className
       )}

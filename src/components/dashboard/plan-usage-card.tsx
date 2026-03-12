@@ -29,19 +29,19 @@ export const PlanUsageCard = ({
 
   return (
     <div className={cn(
-      "rounded-xl border border-slate-200 dark:border-slate-800",
-      "bg-white dark:bg-slate-900/50 p-5 md:p-6 shadow-md h-full"
+      "rounded-xl border border-[var(--border-default)]",
+      "bg-[var(--bg-page)]/50 p-5 md:p-6 shadow-md h-full"
     )}>
       <div className="flex items-start justify-between mb-5 md:mb-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
             <Activity className="h-5 w-5" />
           </div>
           <div>
-            <h2 className='font-bold text-lg md:text-xl text-slate-900 dark:text-white'>
+            <h2 className='font-bold text-lg md:text-xl text-[var(--text-primary)]'>
               Plan Usage ({plan.charAt(0) + plan.slice(1).toLowerCase()} Plan)
             </h2>
-            <p className='text-xs md:text-sm text-slate-600 dark:text-slate-400'>
+            <p className='text-xs md:text-sm text-[var(--text-secondary)]'>
               Track your current usage and limits
             </p>
           </div>
@@ -49,7 +49,7 @@ export const PlanUsageCard = ({
         
         <Link 
             href="/account/billing" 
-            className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors group p-1"
+            className="flex items-center gap-1 text-sm font-medium text-indigo-500 hover:text-blue-700 dark:text-[var(--text-accent)] dark:hover:text-blue-300 transition-colors group p-1"
         >
             {isUltimate ? 'Manage Plan' : 'Upgrade'}
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />

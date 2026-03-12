@@ -102,18 +102,18 @@ export function VerifyLoginClient({ token }: Props) {
       className='space-y-6'
     >
       <div className='flex justify-center'>
-        <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center shadow-lg shadow-blue-500/25'>
+        <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-blue-500/25'>
           <Mail className='w-8 h-8 text-white' />
         </div>
       </div>
 
       <div className='space-y-2 text-center'>
         <h2 className='text-2xl font-bold text-white'>Enter Verification Code</h2>
-        <p className='text-slate-400'>
+        <p className='text-[var(--text-muted)]'>
           We've sent a 6-digit code to
         </p>
         {email && (
-          <p className='text-blue-400 font-medium'>{email}</p>
+          <p className='text-indigo-400 font-medium'>{email}</p>
         )}
       </div>
 
@@ -128,7 +128,7 @@ export function VerifyLoginClient({ token }: Props) {
         type='button'
         onClick={onVerify}
         disabled={loading || otp.length !== 6}
-        className='w-full h-12 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+        className='w-full h-12 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
       >
         {loading ? (
           <div className='w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin' />
@@ -139,13 +139,13 @@ export function VerifyLoginClient({ token }: Props) {
 
       <div className='space-y-3'>
         <div className='text-center'>
-          <p className='text-sm text-slate-400'>
+          <p className='text-sm text-[var(--text-muted)]'>
             Didn't receive the code?{' '}
             <button
               type='button'
               onClick={handleResend}
               disabled={loading || resending}
-              className='text-blue-500 hover:text-blue-400 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+              className='text-indigo-500 hover:text-indigo-400 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
             >
               {resending ? 'Sending...' : 'Resend'}
             </button>
@@ -156,7 +156,7 @@ export function VerifyLoginClient({ token }: Props) {
           <button
             type='button'
             onClick={() => router.push('/auth/sign-in')}
-            className='text-sm text-slate-400 hover:text-white transition-colors inline-flex items-center gap-2'
+            className='text-sm text-[var(--text-muted)] hover:text-white transition-colors inline-flex items-center gap-2'
           >
             <ArrowLeft className='w-4 h-4' />
             Back to sign in

@@ -38,7 +38,7 @@ export const EditEmail = ({
     <form onSubmit={onCreate} className="flex flex-col gap-4">
       <Loader loading={loading}>
         <div>
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-2 block">
+          <label className="text-sm font-medium text-slate-700 dark:text-[var(--text-primary)] mb-2 block">
             Email Message
           </label>
           <FormGenerator
@@ -54,7 +54,7 @@ export const EditEmail = ({
 
         <Button 
           type="submit"
-          className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold"
+          className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold"
         >
           <Save className="h-4 w-4 mr-2" />
           Save Template

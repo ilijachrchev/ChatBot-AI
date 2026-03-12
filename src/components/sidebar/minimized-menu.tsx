@@ -52,7 +52,7 @@ const PERSONA_ICON_MAP: Record<string, { icon: React.ReactNode; bg: string; text
   BRIEFCASE: {
     icon: <Briefcase className="w-3.5 h-3.5" />,
     bg: 'bg-blue-100 dark:bg-blue-950/50',
-    text: 'text-blue-600',
+    text: 'text-indigo-500',
   },
   HEADPHONES: {
     icon: <Headphones className="w-3.5 h-3.5" />,
@@ -108,7 +108,7 @@ export const MinMenu = ({
         onClick={onShrink}
         className={`
           animate-fade-in opacity-0 delay-300 fill-mode-forwards cursor-pointer p-2 rounded-lg
-          hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 mb-3 md:mb-6
+          hover:bg-[var(--bg-hover)] transition-all duration-200 mb-3 md:mb-6
         `}
       >
         <Image
@@ -149,13 +149,13 @@ export const MinMenu = ({
                 'group relative',
                 isOnboardingActive
                   ? [
-                      'bg-white dark:bg-slate-800',
-                      'text-blue-600 dark:text-blue-400',
+                      'bg-[var(--bg-active)]',
+                      'text-[var(--text-accent)]',
                       'shadow-sm',
                     ]
                   : [
-                      'text-slate-600 dark:text-slate-400',
-                      'hover:bg-slate-50 dark:hover:bg-slate-800/50',
+                      'text-[var(--text-secondary)]',
+                      'hover:bg-[var(--bg-hover)]',
                       'hover:text-slate-900 dark:hover:text-white',
                     ]
               )}
@@ -165,7 +165,7 @@ export const MinMenu = ({
                 {stepsCompleted < 4 && (
                   <span
                     className={cn(
-                      'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-blue-500 border-2 border-background',
+                      'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-indigo-500 border-2 border-[var(--bg-surface)]',
                       stepsCompleted === 0 && 'animate-pulse'
                     )}
                   />
@@ -173,19 +173,19 @@ export const MinMenu = ({
               </div>
 
               {isOnboardingActive && (
-                <div className="absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full" />
+                <div className="absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full" />
               )}
 
               <div
                 className={`
-                  absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-slate-700 text-white text-xs
+                  absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs
                   whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50
                   flex items-center gap-1.5
                 `}
               >
                 Getting Started
                 {stepsCompleted > 0 && stepsCompleted < 4 && (
-                  <span className="text-blue-300 font-medium">{stepsCompleted}/4</span>
+                  <span className="text-[var(--text-accent)] font-medium">{stepsCompleted}/4</span>
                 )}
               </div>
             </Link>
@@ -205,8 +205,8 @@ export const MinMenu = ({
                   'flex items-center justify-center rounded-lg md:py-2 py-1.5 my-0.5 md:my-1',
                   'transition-all duration-200 ease-in-out group relative',
                   isActive
-                    ? 'bg-white dark:bg-slate-800 shadow-sm'
-                    : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                    ? 'bg-[var(--bg-surface)] shadow-sm'
+                    : 'hover:bg-[var(--bg-hover)]'
                 )}
               >
                 {iconConfig && (
@@ -220,7 +220,7 @@ export const MinMenu = ({
                     {iconConfig.icon}
                   </div>
                 )}
-                <div className="absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-slate-700 text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
+                <div className="absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
                   {item.label} — {item.domainName}
                 </div>
               </Link>
@@ -228,19 +228,19 @@ export const MinMenu = ({
           })}
         </div>
 
-        <div className="flex flex-col border-t border-slate-200 dark:border-slate-800 pt-2 mt-2 md:pt-3 md:mt-3">
+        <div className="flex flex-col border-t border-[var(--border-default)] pt-2 mt-2 md:pt-3 md:mt-3">
           <button
             onClick={onSignOut}
             className={`
-              flex flex-col items-center justify-center rounded-lg py-2 md:py-2 text-slate-600 dark:text-slate-400
-              hover:bg-rose-50 dark:hover:bg-rose-950/20 hover:text-rose-600 dark:hover:text-rose-400
+              flex flex-col items-center justify-center rounded-lg py-2 md:py-2 text-[var(--text-secondary)]
+              hover:bg-rose-950/20 hover:text-rose-400
               transition-all duration-200 group relative
             `}
           >
             <LogOut className="md:w-5 md:h-5 h-4 w-4 group-hover:scale-110 transition-transform" />
             <div
               className={`
-                absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-slate-700 text-white text-xs
+                absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs
                 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50
               `}
             >

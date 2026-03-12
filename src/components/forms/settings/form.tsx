@@ -120,16 +120,16 @@ const SettingsForm = ({
       >
         <section id="configuration" className="scroll-mt-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
+            <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 text-white">
                   <Globe className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                  <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
                     Domain Configuration
                   </h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-300">
+                  <p className="text-sm text-[var(--text-secondary)]">
                     Set up your custom domain
                   </p>
                 </div>
@@ -137,7 +137,7 @@ const SettingsForm = ({
               <DomainUpdate name={name} register={register} errors={errors} />
             </div>
 
-            <div className="group relative rounded-xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900/50 dark:via-slate-900/30 dark:to-slate-800/50 p-6 overflow-hidden transition-all hover:shadow-lg hover:shadow-purple-500/10">
+            <div className="group relative rounded-xl border border-[var(--border-default)] bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900/50 dark:via-slate-900/30 dark:to-slate-800/50 p-6 overflow-hidden transition-all hover:shadow-lg hover:shadow-purple-500/10">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
               
               <div className="relative z-10">
@@ -147,7 +147,7 @@ const SettingsForm = ({
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                      <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
                         Embed Code
                       </h3>
                       <Badge variant="secondary" className="text-xs font-semibold">
@@ -155,31 +155,31 @@ const SettingsForm = ({
                         15 Languages
                       </Badge>
                     </div>
-                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                    <p className="text-sm text-[var(--text-secondary)]">
                       Multi-language embed snippets
                     </p>
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                     Get ready-to-use code snippets in <span className="font-semibold text-purple-600 dark:text-purple-400">15 different languages</span> and frameworks including JavaScript, React, Next.js, Vue, Python, and more.
                   </p>
 
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
                       <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
                       <span>Syntax highlighting</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
                       <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
                       <span>One-click copy</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
                       <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
                       <span>Installation steps</span>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
+                    <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
                       <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
                       <span>Live preview</span>
                     </div>
@@ -202,7 +202,7 @@ const SettingsForm = ({
         </section>
 
         <section id="persona" className="scroll-mt-20">
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6">
+          <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
             <PersonaSelector
               chatBotId={chatBot?.id || ''}
               currentPersona={(chatBot?.persona as any) || 'SALES_AGENT'}
@@ -214,7 +214,7 @@ const SettingsForm = ({
         <section id="appearance" className="scroll-mt-20">
           <div className="relative min-h-[500px]"> 
             <div className={cn(
-              "rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6",
+              "rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6",
               isAppearanceLocked && 'opacity-40 blur-[1px] pointer-events-none' 
             )}>
               <div className="flex items-center justify-between mb-6">
@@ -223,10 +223,10 @@ const SettingsForm = ({
                     <Palette className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-950 dark:text-white">
+                    <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
                       Chatbot Appearance & Customization
                     </h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-300">
+                    <p className="text-sm text-[var(--text-secondary)]">
                       Customize your chatbot&apos;s look, feel, and behavior
                     </p>
                   </div>
@@ -244,7 +244,7 @@ const SettingsForm = ({
               <div className="grid grid-cols-1 xl:grid-cols-[1fr,400px] gap-8">
                 <div className="space-y-8">
                   <div className="space-y-4">
-                    <h4 className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                    <h4 className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
                       <MessageSquare className="h-4 w-4" />
                       Basic Settings
                     </h4>
@@ -347,7 +347,7 @@ const SettingsForm = ({
           </div>
         </section>
 
-        <div className="flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-slate-200 dark:border-slate-800">
+        <div className="flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-[var(--border-default)]">
           <Button
             onClick={onDeleteDomain}
             type="button"
@@ -360,7 +360,7 @@ const SettingsForm = ({
 
           <Button
             type="submit"
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 px-8"
+            className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 px-8"
           >
             <Save className="h-4 w-4 mr-2" />
             <Loader loading={loading}>Save All Changes</Loader>

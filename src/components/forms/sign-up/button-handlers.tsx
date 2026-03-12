@@ -38,7 +38,7 @@ const ButtonHandler = () => {
         <Button
           type='submit'
           disabled={loading}
-          className='w-full h-14 bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-purple-700 text-white font-bold text-lg rounded-xl shadow-2xl shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40'
+          className='w-full h-14 bg-gradient-to-r from-indigo-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-purple-700 text-white font-bold text-lg rounded-xl shadow-2xl shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40'
         >
           <Loader loading={loading}>
             <span className='flex items-center gap-2'>
@@ -87,7 +87,7 @@ const ButtonHandler = () => {
           type='button'
           onClick={handleContinue}
           disabled={loading || !allFieldsFilled}
-          className='w-full h-14 bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-purple-700 text-white font-bold text-lg rounded-xl shadow-2xl shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100'
+          className='w-full h-14 bg-gradient-to-r from-indigo-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-purple-700 text-white font-bold text-lg rounded-xl shadow-2xl shadow-blue-500/30 transition-all transform hover:scale-[1.02] active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100'
         >
           <Loader loading={loading}>
             <span className='flex items-center gap-2'>
@@ -97,11 +97,11 @@ const ButtonHandler = () => {
           </Loader>
         </Button>
 
-        <p className='text-center text-slate-400 text-sm'>
+        <p className='text-center text-[var(--text-muted)] text-sm'>
           Already have an account?{' '}
           <Link
             href='/auth/sign-in'
-            className='text-blue-400 hover:text-blue-300 font-semibold transition-colors underline decoration-blue-400/30 hover:decoration-blue-300 underline-offset-4'
+            className='text-indigo-400 hover:text-blue-300 font-semibold transition-colors underline decoration-blue-400/30 hover:decoration-blue-300 underline-offset-4'
           >
             Sign In
           </Link>

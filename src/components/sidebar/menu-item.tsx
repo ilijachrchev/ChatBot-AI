@@ -14,7 +14,7 @@ type Props = {
 
 const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props) => {
 
-  const isActive = current === path 
+  const isActive = current === path
 
   switch (size) {
     case 'max':
@@ -27,19 +27,18 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props)
             'group relative overflow-hidden',
 
             isActive && [
-              'bg-white dark:bg-slate-800',
-              'font-semibold text-slate-900 dark:text-white',
+              'bg-[var(--bg-active)]',
+              'font-semibold text-[var(--text-primary)]',
               'shadow-sm',
-
               'before:absolute before:left-0 before:top-0 before:bottom-0',
-              'before:w-1 before:bg-gradient-to-b before:from-blue-500 before:to-blue-600',
-              'before:rounded-l-lg'
+              'before:w-1 before:bg-gradient-to-b before:from-indigo-500 before:to-indigo-600',
+              'before:rounded-l-lg',
             ],
 
             !isActive && [
-              'text-slate-600 dark:text-slate-400',
-              'hover:bg-slate-50 dark:hover:bg-slate-800/50',
-              'hover:text-slate-900 dark:hover:text-white'
+              'text-[var(--text-secondary)]',
+              'hover:bg-[var(--bg-hover)]',
+              'hover:text-[var(--text-primary)]',
             ]
           )}
           href={path ? `/${path}` : '#'}
@@ -47,20 +46,20 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props)
           <div className={cn(
             'flex items-center justify-center md:w-5 w-4 md:h-5 h-4 transition-transform duration-200',
             'group-hover:scale-110',
-            isActive && 'text-blue-600 dark:text-blue-400'
+            isActive && 'text-[var(--text-accent)]'
           )}>
             {icon}
           </div>
           <span className='text-sm flex-1'>{label}</span>
 
           {badge !== undefined && badge > 0 && (
-            <span className="ml-auto h-5 min-w-5 px-1 rounded-full bg-blue-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
+            <span className="ml-auto h-5 min-w-5 px-1 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
               {badge > 99 ? '99+' : badge}
             </span>
           )}
 
           {!isActive && (
-            <div className='absolute inset-0 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+            <div className='absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
           )}
         </Link>
       )
@@ -72,17 +71,17 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props)
             'flex items-center justify-center rounded-lg md:py-3 py-2 my-0.5 md:my-1',
             'transition-all duration-200 ease-in-out',
             'group relative',
-            
+
             isActive && [
-              'bg-white dark:bg-slate-800',
-              'text-blue-600 dark:text-blue-400',
+              'bg-[var(--bg-active)]',
+              'text-[var(--text-accent)]',
               'shadow-sm',
             ],
-            
+
             !isActive && [
-              'text-slate-600 dark:text-slate-400',
-              'hover:bg-slate-50 dark:hover:bg-slate-800/50',
-              'hover:text-slate-900 dark:hover:text-white'
+              'text-[var(--text-secondary)]',
+              'hover:bg-[var(--bg-hover)]',
+              'hover:text-[var(--text-primary)]',
             ]
           )}
           href={path ? `/${path}` : '#'}
@@ -94,13 +93,13 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props)
           )}>
             {icon}
             {badge !== undefined && badge > 0 && (
-              <span className="absolute -top-1 -right-1 h-4 min-w-4 px-0.5 rounded-full bg-blue-500 text-white text-[10px] font-bold flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 h-4 min-w-4 px-0.5 rounded-full bg-indigo-500 text-white text-[10px] font-bold flex items-center justify-center">
                 {badge > 99 ? '99+' : badge}
               </span>
             )}
           </div>
           {isActive && (
-            <div className='absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full'></div>
+            <div className='absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full'></div>
           )}
         </Link>
       )

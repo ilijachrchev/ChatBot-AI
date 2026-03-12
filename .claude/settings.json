@@ -6,10 +6,14 @@
       "Bash(test -f \"d:/Projects/chatbot-ai/src/constants/pricing.ts\")",
       "Bash(pnpm add canvas-confetti @types/canvas-confetti)",
       "Bash(npx prisma migrate dev --name add_chatbot_branding_position_css)",
-      "Bash(npx prisma generate --skip-generate)"
+      "Bash(npx prisma generate --skip-generate)",
+      "Read(//d/Projects/chatbot-ai/**)",
+      "Bash(__NEW_LINE_64a68fe5253705c2__ echo \"\")",
+      "Bash(__NEW_LINE_eab613b248c3c79e__ echo \"\")"
     ],
     "additionalDirectories": [
-      "C:\\Users\\ilija\\.claude\\projects\\d--Projects-chatbot-ai"
+      "C:\\Users\\ilija\\.claude\\projects\\d--Projects-chatbot-ai",
+      "\\tmp"
     ]
   }
 }

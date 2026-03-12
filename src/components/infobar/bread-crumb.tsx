@@ -105,7 +105,7 @@ const BreadCrumb = () => {
           {icon && (
             <div className='hidden sm:flex items-center justify-center w-10 h-10 md:h-12 rounded-xl
               bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900
-              border border-blue-200 dark:border-blue-800
+              border border-blue-200 dark:border-[var(--border-accent)]
             '>
               <div className='relative w-full h-full'>
                 <Image
@@ -119,7 +119,7 @@ const BreadCrumb = () => {
           )}
 
           <div>
-            <h2 className='text-lg md:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white truncate'>
+            <h2 className='text-lg md:text-2xl lg:text-3xl font-bold text-[var(--text-primary)] truncate'>
               {title}
             </h2>
             {isDomainPage && (
@@ -133,15 +133,15 @@ const BreadCrumb = () => {
         </div>
         {page === 'conversation' && chatRoom && (
           <div className='flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50
-            dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700
+            dark:bg-[var(--bg-hover)] border border-[var(--border-default)] dark:border-[var(--border-strong)]
           '>
             <Activity 
               className={cn(
                 "w-4 h-4 transition-colors",
-                realtime ? "text-emerald-500 animate-pulse" : "text-slate-400"
+                realtime ? "text-emerald-500 animate-pulse" : "text-[var(--text-muted)]"
               )}
             />
-            <span className='text-sm font-medium text-slate-700 dark:text-slate-300'>
+            <span className='text-sm font-medium text-[var(--text-secondary)]'>
               {realtime ? 'Live' : 'Offline'}
             </span>
             <Loader loading={loading} className='p-0 inline'>
@@ -158,7 +158,7 @@ const BreadCrumb = () => {
         )}
       </div>
 
-      <p className='hidden sm:block text-sm md:text-base text-slate-600 dark:text-slate-400 leading-relaxed'>
+      <p className='hidden sm:block text-sm md:text-base text-[var(--text-secondary)] leading-relaxed'>
         {subtitle}
       </p>
     </div>

@@ -9,7 +9,7 @@ import { Footer } from "@/components/landing/improved-landing/footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#080808] text-slate-50">
+    <main className="min-h-screen bg-[var(--bg-page)] text-slate-50">
       <HeroSection />
       <BentoFeatures />
       <TrustedBy />

@@ -55,7 +55,7 @@ const notificationIcon = (type: NotificationType) => {
     case 'NEW_LEAD':
       return (
         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950">
-          <User className={cn(base, 'text-blue-600 dark:text-blue-400')} />
+          <User className={cn(base, 'text-[var(--text-accent)]')} />
         </div>
       )
     case 'CONVERSATION_LIMIT':
@@ -178,15 +178,15 @@ const InfoBar = (props: Props) => {
               <button
                 className={cn(
                   'h-9 w-9 md:h-10 md:w-10 rounded-lg',
-                  'border border-slate-200 dark:border-slate-700',
-                  'bg-white dark:bg-slate-900',
-                  'hover:bg-slate-50 dark:hover:bg-slate-800',
+                  'border border-[var(--border-default)] dark:border-[var(--border-strong)]',
+                  'bg-[var(--bg-page)]',
+                  'hover:bg-[var(--bg-hover)]',
                   'hover:border-blue-300 dark:hover:border-blue-700',
                   'transition-all duration-200',
                   'flex items-center justify-center group'
                 )}
               >
-                <Bell className="h-4 w-4 text-slate-600 dark:text-slate-400 group-hover:text-blue-500 transition-colors" />
+                <Bell className="h-4 w-4 text-[var(--text-secondary)] group-hover:text-indigo-500 transition-colors" />
               </button>
               {unreadCount > 0 && (
                 <span
@@ -212,7 +212,7 @@ const InfoBar = (props: Props) => {
               {unreadCount > 0 && (
                 <button
                   onClick={onOpen}
-                  className="text-xs text-blue-500 hover:text-blue-600 transition-colors"
+                  className="text-xs text-indigo-500 hover:text-indigo-500 transition-colors"
                 >
                   Mark all read
                 </button>
@@ -272,7 +272,7 @@ const InfoBar = (props: Props) => {
             'ring-offset-white dark:ring-offset-slate-950'
           )}
         >
-          <AvatarFallback className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
+          <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white">
             <Headphones className="h-4 w-4" />
           </AvatarFallback>
         </Avatar>
@@ -282,7 +282,7 @@ const InfoBar = (props: Props) => {
             <Avatar
               className={cn(
                 'h-9 w-9 md:h-10 md:w-10',
-                'ring-2 ring-offset-2 ring-slate-200 dark:ring-slate-700',
+                'ring-2 ring-offset-2 ring-slate-200 dark:ring-[var(--border-strong)]',
                 'hover:ring-blue-500/40',
                 'transition-all cursor-pointer',
                 'ring-offset-white dark:ring-offset-slate-950'
@@ -302,7 +302,7 @@ const InfoBar = (props: Props) => {
               <div className="flex items-center gap-3">
                 <Avatar className="w-12 h-12">
                   <AvatarImage src={avatarUrl || undefined} alt={displayName || 'User'} className="object-cover" />
-                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-500 text-white font-semibold text-lg">
+                  <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-500 text-white font-semibold text-lg">
                     {displayName.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
@@ -319,8 +319,8 @@ const InfoBar = (props: Props) => {
 
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/account/profile" className="flex items-center gap-3 px-2 py-2.5 rounded-md">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                  <User className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
+                  <User className="w-4 h-4 text-[var(--text-accent)]" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Profile</span>

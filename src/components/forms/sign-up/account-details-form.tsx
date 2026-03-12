@@ -40,7 +40,7 @@ const AccountDetailsForm = ({ errors, register }: Props) => {
     >
       <div className='space-y-2'>
         <h2 className='text-3xl font-bold text-white'>Create an Account</h2>
-        <p className='text-slate-400'>Join SendWise AI — free to start</p>
+        <p className='text-[var(--text-muted)]'>Join SendWise AI — free to start</p>
       </div>
 
       <div className='space-y-4'>
@@ -49,7 +49,7 @@ const AccountDetailsForm = ({ errors, register }: Props) => {
             <div className='w-full border-t border-white/10' />
           </div>
           <div className='relative flex justify-center text-sm'>
-            <span className='px-4 bg-[#1A1F2E] text-slate-400'>Continue with</span>
+            <span className='px-4 bg-[var(--bg-surface)] text-[var(--text-muted)]'>Continue with</span>
           </div>
         </div>
 
@@ -110,7 +110,7 @@ const AccountDetailsForm = ({ errors, register }: Props) => {
           <div className='w-full border-t border-white/10' />
         </div>
         <div className='relative flex justify-center text-sm'>
-          <span className='px-4 bg-[#1A1F2E] text-slate-400'>Or sign up with email</span>
+          <span className='px-4 bg-[var(--bg-surface)] text-[var(--text-muted)]'>Or sign up with email</span>
         </div>
       </div>
 
@@ -145,7 +145,7 @@ const AccountDetailsForm = ({ errors, register }: Props) => {
                       ? setShowConfirmPassword(!showConfirmPassword)
                       : setShowPassword(!showPassword)
                   }
-                  className='absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors z-10'
+                  className='absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-white transition-colors z-10'
                 >
                   {(isConfirmPassword ? showConfirmPassword : showPassword) ? (
                     <EyeOff className='w-5 h-5' />

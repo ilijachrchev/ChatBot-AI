@@ -58,31 +58,31 @@ export function SubscriptionPaymentForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+      <div className="bg-slate-50 dark:bg-[var(--bg-page)] rounded-lg p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm text-slate-600 dark:text-slate-400">Amount due today</span>
-          <span className="text-2xl font-bold text-slate-900 dark:text-white">
+          <span className="text-sm text-[var(--text-secondary)]">Amount due today</span>
+          <span className="text-2xl font-bold text-[var(--text-primary)]">
             ${amount.toFixed(2)}
           </span>
         </div>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
           Then ${amount.toFixed(2)}/month until you cancel
         </p>
       </div>
 
       <div className="space-y-4">
-        <h4 className="text-sm font-medium text-slate-900 dark:text-white">
+        <h4 className="text-sm font-medium text-[var(--text-primary)]">
           Payment Information
         </h4>
         <PaymentElement />
       </div>
 
-      <div className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+      <div className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
         <Lock className="w-3 h-3" />
         <span>Secure payment powered by Stripe</span>
       </div>
 
-      <div className="flex gap-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+      <div className="flex gap-3 pt-4 border-t border-[var(--border-default)]">
         <Button
           type="button"
           variant="outline"
@@ -96,7 +96,7 @@ export function SubscriptionPaymentForm({
         <Button
           type="submit"
           disabled={!stripe || !elements || processing}
-          className="flex-1 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900"
+          className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white"
         >
           {processing ? (
             <>

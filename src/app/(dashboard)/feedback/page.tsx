@@ -182,7 +182,7 @@ const FeedbackPage = () => {
 
                       <Link
                         href="/conversation"
-                        className="text-xs text-blue-600 hover:text-blue-700 hover:underline whitespace-nowrap pt-0.5"
+                        className="text-xs text-indigo-500 hover:text-blue-700 hover:underline whitespace-nowrap pt-0.5"
                       >
                         View chat →
                       </Link>

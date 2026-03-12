@@ -47,11 +47,11 @@ export const ProductShowcase = () => {
             </div>
           </div>
           <div className="flex items-center gap-2 py-1">
-            <div className="flex-1 h-px bg-slate-700" />
+            <div className="flex-1 h-px bg-[var(--bg-active)]" />
             <span className="text-[8px] text-emerald-400 shrink-0">
               👤 Agent joined
             </span>
-            <div className="flex-1 h-px bg-slate-700" />
+            <div className="flex-1 h-px bg-[var(--bg-active)]" />
           </div>
           <div className="flex">
             <div className="bg-emerald-500/20 text-emerald-300 rounded-2xl p-2 text-[9px] max-w-[70%]">
@@ -72,10 +72,10 @@ export const ProductShowcase = () => {
             (file) => (
               <div
                 key={file}
-                className="h-8 bg-slate-800 rounded flex items-center gap-2 px-2"
+                className="h-8 bg-[var(--bg-surface)] rounded flex items-center gap-2 px-2"
               >
                 <div className="w-4 h-4 rounded bg-sky-500/30 shrink-0" />
-                <span className="text-[8px] text-slate-400 truncate">
+                <span className="text-[8px] text-[var(--text-muted)] truncate">
                   {file}
                 </span>
               </div>
@@ -94,7 +94,7 @@ export const ProductShowcase = () => {
         "One line of code. Works on React, Vue, Next.js, PHP, Python, and 10 more frameworks.",
       mockupContent: (
         <div className="space-y-2">
-          <div className="bg-slate-900 rounded p-3 text-[8px] font-mono space-y-0.5">
+          <div className="bg-[var(--bg-page)] rounded p-3 text-[8px] font-mono space-y-0.5">
             <div>
               <span className="text-violet-400">&lt;script</span>
             </div>
@@ -114,7 +114,7 @@ export const ProductShowcase = () => {
             {["React", "Vue", "PHP", "JS"].map((lang) => (
               <span
                 key={lang}
-                className="bg-slate-700 rounded px-1.5 py-0.5 text-[7px] text-slate-300"
+                className="bg-[var(--bg-active)] rounded px-1.5 py-0.5 text-[7px] text-slate-300"
               >
                 {lang}
               </span>
@@ -130,7 +130,7 @@ export const ProductShowcase = () => {
         "Let customers book meetings directly in the chat. Syncs with your availability and sends confirmations.",
       mockupContent: (
         <div className="space-y-2">
-          <p className="text-[8px] text-slate-400">Available slots — Today</p>
+          <p className="text-[8px] text-[var(--text-muted)]">Available slots — Today</p>
           <div className="flex gap-1 flex-wrap">
             <div className="bg-sky-500 text-white rounded px-2 py-1 text-[8px] font-medium">
               9:00 AM
@@ -170,7 +170,7 @@ export const ProductShowcase = () => {
           </div>
           <div className="flex justify-around">
             {["Mon", "Tue", "Wed", "Thu", "Fri"].map((day) => (
-              <span key={day} className="text-[7px] text-slate-500">
+              <span key={day} className="text-[7px] text-[var(--text-muted)]">
                 {day}
               </span>
             ))}
@@ -189,7 +189,7 @@ export const ProductShowcase = () => {
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-50">
             Everything your customer service needs
           </h2>
-          <p className="text-xl text-slate-400 max-w-2xl mx-auto">
+          <p className="text-xl text-[var(--text-muted)] max-w-2xl mx-auto">
             Built for businesses that want to automate support without losing
             the human touch.
           </p>
@@ -206,7 +206,7 @@ export const ProductShowcase = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-sky-500/25 to-violet-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="relative bg-slate-950/70 border border-slate-700 rounded-2xl p-6 hover:border-sky-500 transition-all duration-300 hover:shadow-[0_0_40px_rgba(56,189,248,0.45)] h-full flex flex-col">
+                <div className="relative bg-[var(--bg-page)]/70 border border-slate-700 rounded-2xl p-6 hover:border-sky-500 transition-all duration-300 hover:shadow-[0_0_40px_rgba(56,189,248,0.45)] h-full flex flex-col">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-lg bg-sky-500/15 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Icon className="w-6 h-6 text-sky-400" />
@@ -216,7 +216,7 @@ export const ProductShowcase = () => {
                     </h3>
                   </div>
 
-                  <p className="text-slate-400 mb-6 flex-grow">
+                  <p className="text-[var(--text-muted)] mb-6 flex-grow">
                     {feature.description}
                   </p>
 

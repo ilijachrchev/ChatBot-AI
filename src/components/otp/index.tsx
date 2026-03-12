@@ -97,7 +97,7 @@ const OTPInput = ({ otp, setOtp }: Props) => {
               focus:scale-110
               ${
                 activeInput === index
-                  ? 'border-blue-500 bg-blue-500/10 shadow-lg shadow-blue-500/25'
+                  ? 'border-blue-500 bg-indigo-500/10 shadow-lg shadow-blue-500/25'
                   : otp[index]
                   ? 'border-white/20 bg-white/10'
                   : 'border-white/10'

@@ -70,11 +70,11 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
   }
 
   return (
-    <Card className='border-slate-200 dark:border-slate-800'>
+    <Card className='border-[var(--border-default)]'>
       <CardHeader>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center'>
-            <Bell className='w-5 h-5 text-slate-900 dark:text-white' />
+          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] flex items-center justify-center'>
+            <Bell className='w-5 h-5 text-[var(--text-primary)]' />
           </div>
           <div>
             <CardTitle className='text-base'>Notifications</CardTitle>
@@ -90,7 +90,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
             <Label htmlFor='emailNotifications' className='text-sm font-medium'>
               Email Notifications
             </Label>
-            <p className='text-xs text-slate-500 dark:text-slate-400'>
+            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
               Receive notifications via email
             </p>
           </div>
@@ -109,7 +109,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
             <Label htmlFor='desktopNotifications' className='text-sm font-medium'>
               Desktop Notifications
             </Label>
-            <p className='text-xs text-slate-500 dark:text-slate-400'>
+            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
               Show browser notifications
             </p>
           </div>
@@ -128,7 +128,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
             <Label htmlFor='soundEnabled' className='text-sm font-medium'>
               Sound Alerts
             </Label>
-            <p className='text-xs text-slate-500 dark:text-slate-400'>
+            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
               Play sound for new messages
             </p>
           </div>
@@ -141,8 +141,8 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
         </div>
 
         {isDirty && (
-          <div className='flex items-center justify-between pt-4 border-t border-slate-200 dark:border-slate-800'>
-            <p className='text-sm text-slate-600 dark:text-slate-400'>
+          <div className='flex items-center justify-between pt-4 border-t border-[var(--border-default)]'>
+            <p className='text-sm text-[var(--text-secondary)]'>
               You have unsaved changes
             </p>
             <div className='flex gap-2'>
@@ -158,7 +158,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
                 onClick={handleSave}
                 size='sm'
                 disabled={saving}
-                className='bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900'
+                className='bg-indigo-500 hover:bg-indigo-600 text-white'
               >
                 {saving ? (
                   <>

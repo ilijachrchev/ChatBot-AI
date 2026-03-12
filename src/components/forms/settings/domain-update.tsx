@@ -14,25 +14,25 @@ export const DomainUpdate = ({ name, register, errors }: DomainUpdateProps) => {
       <div className="relative group">
         <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
         
-        <div className="relative flex items-center gap-3 p-5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 transition-all duration-300">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-900 flex-shrink-0">
-            <Lock className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+        <div className="relative flex items-center gap-3 p-5 rounded-xl border-2 border-[var(--border-default)] bg-[var(--bg-page)] transition-all duration-300">
+          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-page)] flex-shrink-0">
+            <Lock className="h-5 w-5 text-[var(--text-secondary)]" />
           </div>
           
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-1">
-              <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              <p className="text-xs font-bold text-slate-500 dark:text-[var(--text-secondary)] uppercase tracking-wider">
                 Domain Name
               </p>
-              <span className="px-2 py-0.5 text-[10px] font-bold rounded-md bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
+              <span className="px-2 py-0.5 text-[10px] font-bold rounded-md bg-slate-100 dark:bg-[var(--bg-page)] text-[var(--text-secondary)] border border-[var(--border-default)]">
                 LOCKED
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <p className="text-lg font-bold text-slate-900 dark:text-white truncate">
+              <p className="text-lg font-bold text-[var(--text-primary)] truncate">
                 {name}
               </p>
-              <ExternalLink className="h-4 w-4 text-slate-400 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <ExternalLink className="h-4 w-4 text-[var(--text-muted)] flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
           </div>
         </div>

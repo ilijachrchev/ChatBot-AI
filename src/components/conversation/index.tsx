@@ -138,17 +138,17 @@ const ConversationMenu = ({ domains }: Props) => {
           <ConversationSearch domains={domains} register={register} />
         </div>
         <div className="flex flex-col items-center justify-center gap-3 py-16 px-6 text-center">
-          <div className="rounded-full bg-slate-100 dark:bg-slate-800 p-4">
-            <WifiOff className="h-8 w-8 text-slate-400" />
+          <div className="rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] p-4">
+            <WifiOff className="h-8 w-8 text-[var(--text-muted)]" />
           </div>
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+          <p className="text-sm font-medium text-[var(--text-secondary)]">
             Realtime mode is disabled for this domain.
           </p>
-          <p className="text-xs text-slate-400 dark:text-slate-500 max-w-[220px]">
+          <p className="text-xs text-slate-400 dark:text-[var(--text-muted)] max-w-[220px]">
             Enable it in{' '}
             <Link
               href="/settings"
-              className="underline underline-offset-2 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300"
+              className="underline underline-offset-2 text-[var(--text-muted)] hover:text-slate-700 dark:hover:text-slate-300"
             >
               Domain Settings → Realtime &amp; Handoff
             </Link>

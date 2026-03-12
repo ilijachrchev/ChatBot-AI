@@ -46,7 +46,7 @@ export function AccountLayoutClient({ user, children }: AccountLayoutClientProps
   }
 
   return (
-    <div className='h-full flex bg-slate-50 dark:bg-slate-950'>
+    <div className='h-full flex bg-slate-50 dark:bg-[var(--bg-page)]'>
       <SettingsSidebar
         userName={user.fullname}
         userEmail={user.email}
@@ -58,15 +58,15 @@ export function AccountLayoutClient({ user, children }: AccountLayoutClientProps
           <div className='mb-8'>
             <Link
               href='/dashboard'
-              className='inline-flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors mb-6 group'
+              className='inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-slate-900 dark:hover:text-white transition-colors mb-6 group'
             >
               <ArrowLeft className='w-4 h-4 group-hover:-translate-x-1 transition-transform' />
               Back to Dashboard
             </Link>
-            <h1 className='text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2'>
+            <h1 className='text-3xl md:text-4xl font-bold text-[var(--text-primary)] mb-2'>
               {config.title}
             </h1>
-            <p className='text-slate-600 dark:text-slate-400'>
+            <p className='text-[var(--text-secondary)]'>
               {config.description}
             </p>
           </div>

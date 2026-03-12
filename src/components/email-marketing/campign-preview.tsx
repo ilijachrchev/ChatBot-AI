@@ -27,48 +27,48 @@ export const CampaignPreview = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 p-4 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-        <Users className="h-5 w-5 text-slate-600 dark:text-slate-400" />
+      <div className="flex items-center gap-2 p-4 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+        <Users className="h-5 w-5 text-[var(--text-secondary)]" />
         <div>
-          <p className="font-semibold text-slate-900 dark:text-white">
+          <p className="font-semibold text-[var(--text-primary)]">
             {validCustomers.length}{' '}
             {validCustomers.length === 1 ? 'Customer' : 'Customers'}
           </p>
-          <p className="text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
             in this campaign
           </p>
         </div>
       </div>
 
       <div>
-        <p className="text-sm font-medium text-slate-700 dark:text-slate-200 mb-3">
+        <p className="text-sm font-medium text-slate-700 dark:text-[var(--text-primary)] mb-3">
           Campaign Recipients
         </p>
-        <ScrollArea className="h-[400px] rounded-lg border border-slate-200 dark:border-slate-800">
+        <ScrollArea className="h-[400px] rounded-lg border border-[var(--border-default)]">
           <div className="p-4 space-y-2">
             {validCustomers.length > 0 ? (
               validCustomers.map((customer, index) => (
                 <div
                   key={customer.id || index}
-                  className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] hover:bg-[var(--bg-hover)] transition-colors"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-900 dark:from-slate-200 dark:to-slate-400 text-white dark:text-slate-900 text-sm font-semibold flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-900 dark:from-indigo-900 dark:to-indigo-700 text-white text-sm font-semibold flex-shrink-0">
                       {customer.email?.[0]?.toUpperCase() || '?'}
                     </div>
 
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <Mail className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                        <p className="text-sm font-medium text-slate-950 dark:text-white truncate">
+                        <Mail className="h-3.5 w-3.5 text-[var(--text-muted)] flex-shrink-0" />
+                        <p className="text-sm font-medium text-slate-950 dark:text-[var(--text-primary)] truncate">
                           {customer.email || 'No email'}
                         </p>
                       </div>
 
                       {customer.Domain?.name && (
                         <div className="flex items-center gap-2 mt-1">
-                          <Globe className="h-3.5 w-3.5 text-slate-400 flex-shrink-0" />
-                          <p className="text-xs text-slate-600 dark:text-slate-400 truncate">
+                          <Globe className="h-3.5 w-3.5 text-[var(--text-muted)] flex-shrink-0" />
+                          <p className="text-xs text-[var(--text-secondary)] truncate">
                             {customer.Domain.name}
                           </p>
                         </div>
@@ -87,7 +87,7 @@ export const CampaignPreview = ({
                       </button>
                     )}
 
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-slate-200 dark:bg-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-slate-200 dark:bg-[var(--bg-active)] text-xs font-semibold text-[var(--text-secondary)]">
                       {index + 1}
                     </span>
                   </div>
@@ -95,8 +95,8 @@ export const CampaignPreview = ({
               ))
             ) : (
               <div className="text-center py-12">
-                <Users className="h-12 w-12 text-slate-400 mx-auto mb-3" />
-                <p className="text-sm text-slate-600 dark:text-slate-400">
+                <Users className="h-12 w-12 text-[var(--text-muted)] mx-auto mb-3" />
+                <p className="text-sm text-[var(--text-secondary)]">
                   No customers in this campaign yet
                 </p>
               </div>

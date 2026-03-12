@@ -181,7 +181,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
                     </svg>
                   </div>
                 ) : (
-                  <div className="w-6 h-6 rounded-full border-2 border-muted-foreground/30 group-hover:border-blue-400 transition-colors duration-200" />
+                  <div className="w-6 h-6 rounded-full border-2 border-muted-foreground/30 group-hover:border-indigo-500 transition-colors duration-200" />
                 )}
               </div>
 
@@ -192,7 +192,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
                       'text-sm font-medium transition-colors duration-200',
                       done
                         ? 'line-through text-muted-foreground'
-                        : 'text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-400'
+                        : 'text-foreground group-hover:text-indigo-500 dark:group-hover:text-indigo-400'
                     )}
                   >
                     {step.title}
@@ -214,7 +214,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
                     Done
                   </span>
                 ) : (
-                  <span className="text-xs font-medium text-blue-600 dark:text-blue-400 group-hover:underline transition-all duration-200">
+                  <span className="text-xs font-medium text-[var(--text-accent)] group-hover:underline transition-all duration-200">
                     Go →
                   </span>
                 )}

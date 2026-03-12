@@ -38,7 +38,7 @@ export function ConversationShell({ list, chat }: Props) {
         {!showListMobile && chatRoom && (
           <button
             onClick={() => setShowListMobile(true)}
-            className="md:hidden flex items-center gap-2 px-4 py-3 border-b text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors flex-shrink-0"
+            className="md:hidden flex items-center gap-2 px-4 py-3 border-b text-sm font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] transition-colors flex-shrink-0"
           >
             <ArrowLeft className="h-4 w-4" />
             All conversations

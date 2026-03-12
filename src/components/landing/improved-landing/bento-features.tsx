@@ -22,7 +22,7 @@ const features = [
 export function BentoFeatures() {
   return (
     // id="features" — matched by navbar "Features" link → #features
-    <section id="features" className="relative bg-[#080808] py-16 px-4">
+    <section id="features" className="relative bg-[var(--bg-page)] py-16 px-4">
       <div className="relative mx-auto grid w-full max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-6">
         {features.map((f) => (
           <FeatureCard className={f.className} key={f.id}>
@@ -128,8 +128,8 @@ function MultiLanguageVisual() {
         </div>
       </div>
       <div className="mask-b-from-90% mask-r-from-90% relative aspect-video sm:aspect-auto">
-        <div className="absolute -right-1 -bottom-1 aspect-video max-h-50 rounded-tl-md border border-white/8 bg-[#111111] p-1 sm:max-h-42 md:aspect-square md:max-h-50 lg:aspect-16/12">
-          <div className="aspect-video h-full overflow-hidden rounded-tl-sm border border-white/5 bg-[#0c0c0c] p-3 font-mono text-[10px]">
+        <div className="absolute -right-1 -bottom-1 aspect-video max-h-50 rounded-tl-md border border-white/8 bg-[var(--bg-page)] p-1 sm:max-h-42 md:aspect-square md:max-h-50 lg:aspect-16/12">
+          <div className="aspect-video h-full overflow-hidden rounded-tl-sm border border-white/5 bg-[var(--bg-page)] p-3 font-mono text-[10px]">
             <div className="text-white/30">{`// React`}</div>
             <div className="text-white/25 mt-1">{`import SendWise`}</div>
             <div className="text-white/25">{`  from 'sendwise-ai'`}</div>

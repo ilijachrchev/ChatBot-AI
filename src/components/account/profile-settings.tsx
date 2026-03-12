@@ -174,11 +174,11 @@ const ProfileSettings = ({ user }: Props) => {
 
   return (
     <div className='space-y-6'>
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
             <div className='w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center'>
-              <UserIcon className='w-6 h-6 text-white dark:text-slate-900' />
+              <UserIcon className='w-6 h-6 text-[var(--text-primary)]' />
             </div>
             <div>
               <CardTitle className='text-xl'>Your Profile</CardTitle>
@@ -190,7 +190,7 @@ const ProfileSettings = ({ user }: Props) => {
         </CardHeader>
       </Card>
 
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <CardTitle className='text-lg'>Profile Picture</CardTitle>
           <CardDescription>
@@ -200,13 +200,13 @@ const ProfileSettings = ({ user }: Props) => {
         <CardContent>
           <div className='flex flex-col md:flex-row items-start md:items-center gap-6'>
             <div className='relative group'>
-              <Avatar className='w-28 h-28 ring-4 ring-slate-100 dark:ring-slate-800'>
+              <Avatar className='w-28 h-28 ring-4 ring-slate-100 dark:ring-[var(--border-default)]'>
                 <AvatarImage
                   src={avatarPreview}
                   alt={user.fullname}
                   className='object-cover'
                 />
-                <AvatarFallback className='text-3xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-semibold'>
+                <AvatarFallback className='text-3xl bg-indigo-500 text-white font-semibold'>
                   {user.fullname.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -215,8 +215,8 @@ const ProfileSettings = ({ user }: Props) => {
                 htmlFor='avatar-upload'
                 className={cn(
                   'absolute bottom-0 right-0',
-                  'bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100',
-                  'text-white dark:text-slate-900 p-3 rounded-full',
+                  'bg-[var(--bg-page)] hover:bg-slate-800 dark:bg-white dark:hover:bg-[var(--bg-hover)]',
+                  'text-[var(--text-accent)] p-3 rounded-full',
                   'cursor-pointer transition-all',
                   'shadow-lg hover:scale-110',
                   avatarLoading && 'opacity-50 cursor-not-allowed'
@@ -239,24 +239,24 @@ const ProfileSettings = ({ user }: Props) => {
             </div>
 
             <div className='flex-1'>
-              <h3 className='font-semibold text-lg text-slate-900 dark:text-white'>
+              <h3 className='font-semibold text-lg text-[var(--text-primary)]'>
                 {user.fullname}
               </h3>
-              <p className='text-sm text-slate-600 dark:text-slate-400'>
+              <p className='text-sm text-[var(--text-secondary)]'>
                 {user.email}
               </p>
-              <p className='text-xs text-slate-500 dark:text-slate-500 mt-1'>
+              <p className='text-xs text-[var(--text-muted)] mt-1'>
                 Member since {memberSince}
               </p>
 
-              <div className='mt-4 p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800'>
+              <div className='mt-4 p-4 bg-slate-50 dark:bg-[var(--bg-page)] rounded-xl border border-[var(--border-default)]'>
                 <div className='flex items-start gap-3'>
-                  <Upload className='w-5 h-5 text-slate-600 dark:text-slate-400 mt-0.5 flex-shrink-0' />
+                  <Upload className='w-5 h-5 text-[var(--text-secondary)] mt-0.5 flex-shrink-0' />
                   <div>
-                    <p className='text-sm text-slate-900 dark:text-white font-medium'>
+                    <p className='text-sm text-[var(--text-primary)] font-medium'>
                       Upload a new picture
                     </p>
-                    <p className='text-xs text-slate-500 dark:text-slate-400 mt-1'>
+                    <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1'>
                       Click the camera icon to select an image from your
                       computer. Your picture will be uploaded and saved
                       automatically.
@@ -269,7 +269,7 @@ const ProfileSettings = ({ user }: Props) => {
         </CardContent>
       </Card>
 
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <CardTitle className='text-lg'>Personal Information</CardTitle>
           <CardDescription>Update your display name</CardDescription>
@@ -288,13 +288,13 @@ const ProfileSettings = ({ user }: Props) => {
                   disabled={isNameLocked}
                   className={cn(
                     'h-11 pr-10',
-                    isNameLocked && 'bg-slate-50 dark:bg-slate-900/50 cursor-not-allowed',
+                    isNameLocked && 'bg-slate-50 dark:bg-[var(--bg-page)]/50 cursor-not-allowed',
                     errors.fullname && 'border-red-500 focus-visible:ring-red-500'
                   )}
                 />
                 {isNameLocked && (
                   <div className='absolute right-3 top-1/2 -translate-y-1/2'>
-                    <Lock className='w-4 h-4 text-slate-400' />
+                    <Lock className='w-4 h-4 text-[var(--text-muted)]' />
                   </div>
                 )}
               </div>
@@ -309,18 +309,18 @@ const ProfileSettings = ({ user }: Props) => {
                   You can change your name again in {daysRemaining} day{daysRemaining !== 1 ? 's' : ''}
                 </p>
               ) : (
-                <p className='text-xs text-slate-500 dark:text-slate-400'>
+                <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
                   You can change your name once every 14 days
                 </p>
               )}
             </div>
 
-            <div className='flex justify-end pt-4 border-t border-slate-200 dark:border-slate-800'>
+            <div className='flex justify-end pt-4 border-t border-[var(--border-default)]'>
               <Button
                 type='submit'
                 disabled={loading || !isDirty || isNameLocked}
                 className={cn(
-                  'gap-2 bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900',
+                  'gap-2 bg-indigo-500 hover:bg-indigo-600 text-white',
                   'disabled:opacity-50 disabled:cursor-not-allowed',
                   'transition-all duration-200'
                 )}
@@ -342,31 +342,31 @@ const ProfileSettings = ({ user }: Props) => {
         </CardContent>
       </Card>
 
-      <Card className='border-slate-200 dark:border-slate-800'>
+      <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <CardTitle className='text-lg'>Account Information</CardTitle>
           <CardDescription>Your account details and status</CardDescription>
         </CardHeader>
         <CardContent>
           <div className='space-y-4'>
-            <div className='flex justify-between py-3 border-b border-slate-200 dark:border-slate-800'>
-              <span className='text-sm font-medium text-slate-600 dark:text-slate-400'>
+            <div className='flex justify-between py-3 border-b border-[var(--border-default)]'>
+              <span className='text-sm font-medium text-[var(--text-secondary)]'>
                 User ID
               </span>
-              <span className='text-sm font-mono text-slate-900 dark:text-white'>
+              <span className='text-sm font-mono text-[var(--text-primary)]'>
                 {user.id.slice(0, 8)}...
               </span>
             </div>
-            <div className='flex justify-between py-3 border-b border-slate-200 dark:border-slate-800'>
-              <span className='text-sm font-medium text-slate-600 dark:text-slate-400'>
+            <div className='flex justify-between py-3 border-b border-[var(--border-default)]'>
+              <span className='text-sm font-medium text-[var(--text-secondary)]'>
                 Account Created
               </span>
-              <span className='text-sm text-slate-900 dark:text-white'>
+              <span className='text-sm text-[var(--text-primary)]'>
                 {memberSince}
               </span>
             </div>
             <div className='flex justify-between py-3'>
-              <span className='text-sm font-medium text-slate-600 dark:text-slate-400'>
+              <span className='text-sm font-medium text-[var(--text-secondary)]'>
                 Account Status
               </span>
               <span className='text-sm font-semibold text-green-600 dark:text-green-400 flex items-center gap-2'>

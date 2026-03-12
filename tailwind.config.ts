@@ -43,6 +43,19 @@ const config: Config = {
   				'900': '#1E3A8A',
   				'950': '#0F172A'
   			},
+  			indigo: {
+  				'50':  '#EEF2FF',
+  				'100': '#E0E7FF',
+  				'200': '#C7D2FE',
+  				'300': '#A5B4FC',
+  				'400': '#818CF8',
+  				'500': '#6366F1',
+  				'600': '#4F46E5',
+  				'700': '#4338CA',
+  				'800': '#3730A3',
+  				'900': '#312E81',
+  				'950': '#1E1B4B',
+  			},
   			slate: {
   				'50': '#F8FAFC',
   				'100': '#F1F5F9',
@@ -74,8 +87,14 @@ const config: Config = {
   				'500': '#F59E0B',
   				'600': '#D97706'
   			},
-  			'auth-bg': '#0A0F1E',
-  			'auth-card': '#1A1F2E',
+  			'auth-bg':      '#0F1117',
+  			'auth-card':    '#161A23',
+  			/* Slate & Indigo semantic tokens */
+  			'surface':      'var(--bg-surface)',
+  			'page-bg':      'var(--bg-page)',
+  			'active-bg':    'var(--bg-active)',
+  			'input-field':  'var(--bg-input)',
+  			'hover-state':  'var(--bg-hover)',
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
@@ -122,12 +141,12 @@ const config: Config = {
   			xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
   			card: '0 2px 8px -2px rgb(0 0 0 / 0.08), 0 6px 12px -2px rgb(0 0 0 / 0.04)',
   			'card-hover': '0 8px 16px -4px rgb(0 0 0 / 0.12), 0 6px 12px -2px rgb(0 0 0 / 0.08)',
-  			'glow-blue': '0 0 20px rgb(59 130 246 / 0.4)',
+  			'glow-indigo': '0 0 20px rgb(99 102 241 / 0.4)',
   			'glow-purple': '0 0 20px rgb(124 58 237 / 0.4)',
-  			'auth-glow': '0 0 50px rgba(59, 130, 246, 0.3)'
+  			'auth-glow': '0 0 50px rgba(99, 102, 241, 0.3)'
   		},
   		backgroundImage: {
-  			'auth-gradient': 'radial-gradient(ellipse at 50% 50%, transparent 0%, #0A0F1E 70%)'
+  			'auth-gradient': 'radial-gradient(ellipse at 50% 50%, transparent 0%, #0F1117 70%)'
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
