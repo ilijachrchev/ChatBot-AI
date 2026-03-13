@@ -108,11 +108,11 @@ export const DomainSettingsNav = ({ domain }: DomainSettingsNavProps) => {
                 href={href}
                 className={cn(
                   'group relative flex items-center gap-2 px-4 py-4 text-sm font-medium transition-colors',
-                  'hover:text-slate-900 dark:hover:text-white',
+                  'hover:text-[var(--text-primary)]',
                   'border-b-2 -mb-[1px]',
                   isActive(item.path)
                     ? 'text-[var(--text-primary)] border-slate-900 dark:border-white'
-                    : 'text-slate-500 dark:text-[var(--text-secondary)] border-transparent'
+                    : 'text-[var(--text-muted)] border-transparent'
                 )}
               >
                 <span
@@ -120,14 +120,14 @@ export const DomainSettingsNav = ({ domain }: DomainSettingsNavProps) => {
                     'transition-colors',
                     isActive(item.path)
                       ? 'text-[var(--text-primary)]'
-                      : 'text-slate-400 dark:text-[var(--text-muted)] group-hover:text-slate-600 dark:group-hover:text-slate-300'
+                      : 'text-[var(--text-muted)] group-hover:text-[var(--text-primary)]'
                   )}
                 >
                   {item.icon}
                 </span>
                 <div className="flex flex-col">
                   <span className="leading-none">{item.label}</span>
-                  <span className="text-[10px] text-slate-400 dark:text-[var(--text-muted)] font-normal mt-0.5">
+                  <span className="text-[10px] text-[var(--text-muted)] font-normal mt-0.5">
                     {item.description}
                   </span>
                 </div>

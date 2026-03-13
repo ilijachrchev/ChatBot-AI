@@ -36,7 +36,7 @@ const AuthLayout = async ({ children }: Props) => {
                     <div className='mb-12 text-center'>
                         <h2 className='text-4xl xl:text-5xl font-bold text-white mb-4 leading-tight'>
                             Hi I am your AI powered sales assistant,{' '}
-                            <span className='bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent'>
+                            <span className='text-[var(--primary)]'>
                                 SendWise-AI!
                             </span>
                         </h2>

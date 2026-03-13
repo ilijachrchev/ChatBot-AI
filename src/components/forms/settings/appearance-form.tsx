@@ -112,7 +112,7 @@ const SectionCard = ({
           </div>
           <div>
             <h3 className="text-sm font-bold text-[var(--text-primary)]">{title}</h3>
-            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{subtitle}</p>
+            <p className="text-xs text-[var(--text-muted)]">{subtitle}</p>
           </div>
         </div>
         {badge}
@@ -194,10 +194,10 @@ const TeaserSection = ({
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]/50">
+      <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)]">
         <div className="space-y-0.5">
           <Label className="text-sm font-medium cursor-pointer">Enable teaser message</Label>
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+          <p className="text-xs text-[var(--text-muted)]">
             Show a speech bubble next to the chat button when the widget is closed
           </p>
         </div>
@@ -231,7 +231,7 @@ const TeaserSection = ({
         <div className="space-y-2">
           <div>
             <Label className="text-sm font-medium">Show after</Label>
-            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">How many seconds after page load</p>
+            <p className="text-xs text-[var(--text-muted)]">How many seconds after page load</p>
           </div>
           <div className="flex gap-2">
             {DELAY_OPTIONS.map((opt) => (
@@ -254,13 +254,13 @@ const TeaserSection = ({
 
         <div className="space-y-2">
           <Label className="text-sm font-medium">Preview</Label>
-          <div className="bg-slate-50 dark:bg-[var(--bg-page)] rounded-xl p-4 border border-[var(--border-default)]">
+          <div className="bg-[var(--bg-card)] rounded-xl p-4 border border-[var(--border-default)]">
             <div className="flex items-end justify-end gap-2 overflow-visible w-full">
-              <div className="relative bg-white border border-[var(--border-default)] rounded-2xl px-3 py-2 shadow-sm w-fit max-w-[260px] overflow-hidden">
-                <p className="text-xs text-slate-800 whitespace-nowrap pr-4">
+              <div className="relative bg-[var(--bg-surface)] border border-[var(--border-default)] rounded-2xl px-3 py-2 shadow-sm w-fit max-w-[260px] overflow-hidden">
+                <p className="text-xs text-[var(--text-primary)] whitespace-nowrap pr-4">
                   {message || 'Have a question? 💬'}
                 </p>
-                <div className="absolute -right-[6px] bottom-3 w-2.5 h-2.5 bg-white border-r border-b border-[var(--border-default)] rotate-[-45deg]" />
+                <div className="absolute -right-[6px] bottom-3 w-2.5 h-2.5 bg-[var(--bg-surface)] border-r border-b border-[var(--border-default)] rotate-[-45deg]" />
               </div>
               <div
                 className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center shadow-md"

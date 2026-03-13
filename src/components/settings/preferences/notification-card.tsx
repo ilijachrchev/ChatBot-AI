@@ -73,7 +73,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
     <Card className='border-[var(--border-default)]'>
       <CardHeader>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] flex items-center justify-center'>
+          <div className='w-10 h-10 rounded-lg bg-[var(--bg-card)] flex items-center justify-center'>
             <Bell className='w-5 h-5 text-[var(--text-primary)]' />
           </div>
           <div>
@@ -90,7 +90,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
             <Label htmlFor='emailNotifications' className='text-sm font-medium'>
               Email Notifications
             </Label>
-            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+            <p className='text-xs text-[var(--text-muted)]'>
               Receive notifications via email
             </p>
           </div>
@@ -109,7 +109,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
             <Label htmlFor='desktopNotifications' className='text-sm font-medium'>
               Desktop Notifications
             </Label>
-            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+            <p className='text-xs text-[var(--text-muted)]'>
               Show browser notifications
             </p>
           </div>
@@ -128,7 +128,7 @@ export function NotificationsCard({ preferences }: NotificationsCardProps) {
             <Label htmlFor='soundEnabled' className='text-sm font-medium'>
               Sound Alerts
             </Label>
-            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+            <p className='text-xs text-[var(--text-muted)]'>
               Play sound for new messages
             </p>
           </div>

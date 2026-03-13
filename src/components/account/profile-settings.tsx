@@ -249,14 +249,14 @@ const ProfileSettings = ({ user }: Props) => {
                 Member since {memberSince}
               </p>
 
-              <div className='mt-4 p-4 bg-slate-50 dark:bg-[var(--bg-page)] rounded-xl border border-[var(--border-default)]'>
+              <div className='mt-4 p-4 bg-[var(--bg-card)] rounded-xl border border-[var(--border-default)]'>
                 <div className='flex items-start gap-3'>
                   <Upload className='w-5 h-5 text-[var(--text-secondary)] mt-0.5 flex-shrink-0' />
                   <div>
                     <p className='text-sm text-[var(--text-primary)] font-medium'>
                       Upload a new picture
                     </p>
-                    <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1'>
+                    <p className='text-xs text-[var(--text-muted)] mt-1'>
                       Click the camera icon to select an image from your
                       computer. Your picture will be uploaded and saved
                       automatically.
@@ -288,7 +288,7 @@ const ProfileSettings = ({ user }: Props) => {
                   disabled={isNameLocked}
                   className={cn(
                     'h-11 pr-10',
-                    isNameLocked && 'bg-slate-50 dark:bg-[var(--bg-page)]/50 cursor-not-allowed',
+                    isNameLocked && 'bg-[var(--bg-card)] cursor-not-allowed',
                     errors.fullname && 'border-red-500 focus-visible:ring-red-500'
                   )}
                 />
@@ -309,7 +309,7 @@ const ProfileSettings = ({ user }: Props) => {
                   You can change your name again in {daysRemaining} day{daysRemaining !== 1 ? 's' : ''}
                 </p>
               ) : (
-                <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+                <p className='text-xs text-[var(--text-muted)]'>
                   You can change your name once every 14 days
                 </p>
               )}

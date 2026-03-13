@@ -20,7 +20,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     const total = payload.reduce((sum: number, entry: any) => sum + entry.value, 0)
 
     return (
-      <div className="bg-white dark:bg-[var(--bg-surface)] border border-[var(--border-default)] dark:border-[var(--border-strong)] rounded-lg shadow-lg p-3">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg shadow-lg p-3">
         <p className="text-sm font-medium text-[var(--text-primary)] mb-2">{label}</p>
         {total > 0 ? (
           payload.map((entry: any, index: number) => (
@@ -33,13 +33,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
                 {entry.dataKey === 'ai' ? 'AI' : 'Human'}:
               </span>
               <span className="font-medium text-[var(--text-primary)]">{entry.value}</span>
-              <span className="text-slate-500 dark:text-[var(--text-secondary)] text-xs">
+              <span className="text-[var(--text-muted)] text-xs">
                 ({Math.round((entry.value / total) * 100)}%)
               </span>
             </div>
           ))
         ) : (
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">No data for this period</p>
+          <p className="text-xs text-[var(--text-muted)]">No data for this period</p>
         )}
       </div>
     )
@@ -51,7 +51,7 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
   return (
     <div className={cn(
       'rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-      'bg-white dark:bg-[var(--bg-surface)] shadow-sm'
+      'bg-[var(--bg-surface)] shadow-sm'
     )}>
       <div className="p-5 md:p-6 pb-2">
         <div className="flex items-start justify-between flex-wrap gap-3">
@@ -59,7 +59,7 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
             <h3 className="text-xl font-bold text-[var(--text-primary)]">
               AI vs Human Resolution
             </h3>
-            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mt-0.5">
+            <p className="text-sm text-[var(--text-muted)] mt-0.5">
               Last 4 weeks
             </p>
           </div>
@@ -69,7 +69,7 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
                 {resolutionRate}%
               </span>
             </div>
-            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">AI resolved</p>
+            <p className="text-xs text-[var(--text-muted)]">AI resolved</p>
           </div>
         </div>
       </div>

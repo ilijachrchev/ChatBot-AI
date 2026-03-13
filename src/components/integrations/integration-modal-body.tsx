@@ -30,7 +30,7 @@ export const IntegrationModalBody = ({
               className="flex gap-2 items-center pl-3"
             >
               <CheckCircle2Icon className='text-green-600 w-5 h-5' />
-              <p className='text-gray-700'>{item}</p>
+              <p className='text-[var(--text-primary)]'>{item}</p>
             </div>
           ))}
           <div className="flex justify-between mt-10">

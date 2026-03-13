@@ -35,8 +35,8 @@ const WIDGET_SIZES: SizeOption[] = [
 ]
 
 const WIDGET_STYLES: WidgetStyleOption[] = [
-  { id: 'SOLID', name: 'Solid', description: 'Clean background', gradient: 'bg-white border-2 border-gray-300' },
-  { id: 'SOFT', name: 'Soft', description: 'Subtle backdrop', gradient: 'bg-gradient-to-br from-white/90 to-gray-100/90 border-2 border-gray-200/50' },
+  { id: 'SOLID', name: 'Solid', description: 'Clean background', gradient: 'bg-[var(--bg-surface)] border-2 border-[var(--border)]' },
+  { id: 'SOFT', name: 'Soft', description: 'Subtle backdrop', gradient: 'bg-gradient-to-br from-white/90 to-gray-100/90 border-2 border-[var(--border)]/50' },
   { id: 'GLASS', name: 'Glass', description: 'Frosted glass', gradient: 'bg-gradient-to-br from-white/60 to-white/40 backdrop-blur-sm border-2 border-white/20 shadow-xl' },
 ]
 
@@ -46,7 +46,7 @@ const CHAT_POSITIONS = [
     name: 'Bottom Right',
     diagram: (
       <svg viewBox="0 0 40 28" className="w-10 h-7" fill="none">
-        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-slate-300 dark:text-[var(--text-secondary)]" />
+        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-[var(--text-muted)]" />
         <circle cx="33" cy="22" r="3.5" fill="currentColor" className="text-indigo-500" />
       </svg>
     ),
@@ -56,7 +56,7 @@ const CHAT_POSITIONS = [
     name: 'Bottom Left',
     diagram: (
       <svg viewBox="0 0 40 28" className="w-10 h-7" fill="none">
-        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-slate-300 dark:text-[var(--text-secondary)]" />
+        <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-[var(--text-muted)]" />
         <circle cx="7" cy="22" r="3.5" fill="currentColor" className="text-indigo-500" />
       </svg>
     ),
@@ -144,8 +144,8 @@ export const WidgetSizeSelector = ({ setValue, currentValue }: WidgetSizeSelecto
         >
           <div className="flex flex-col items-center gap-2">
             <div className="text-sm font-semibold text-[var(--text-secondary)]">{size.name}</div>
-            <div className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{size.dimensions}</div>
-            <div className="text-[10px] text-slate-400 dark:text-[var(--text-muted)]">{size.description}</div>
+            <div className="text-xs text-[var(--text-muted)]">{size.dimensions}</div>
+            <div className="text-[10px] text-[var(--text-muted)]">{size.description}</div>
           </div>
         </button>
       ))}
@@ -181,7 +181,7 @@ export const WidgetStyleSelector = ({ setValue, currentValue }: WidgetStyleSelec
             <div className={cn('w-full h-16 rounded-lg', style.gradient)} />
             <div className="text-center">
               <div className="text-sm font-semibold text-[var(--text-secondary)]">{style.name}</div>
-              <div className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1">{style.description}</div>
+              <div className="text-xs text-[var(--text-muted)] mt-1">{style.description}</div>
             </div>
           </div>
         </button>
@@ -217,7 +217,7 @@ export const BubbleStyleSelector = ({ setValue, currentValue }: BubbleStyleSelec
           <div className="flex flex-col items-center gap-2">
             <div className="flex gap-1">
               <div className={cn('w-12 h-8 bg-indigo-500', style.preview)} />
-              <div className={cn('w-12 h-8 bg-gray-300', style.preview)} />
+              <div className={cn('w-12 h-8 bg-[var(--border)]', style.preview)} />
             </div>
             <span className="text-xs font-medium text-[var(--text-secondary)]">{style.name}</span>
           </div>
@@ -305,10 +305,10 @@ export const ShowAvatarsToggle = ({ currentValue, setValue }: ShowAvatarsToggleP
   }
 
   return (
-    <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]/50">
+    <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)]">
       <div className="space-y-0.5">
         <Label htmlFor="showAvatars" className="text-sm font-medium cursor-pointer">Show Team Avatars</Label>
-        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">Display team member avatars in the header (top right)</p>
+        <p className="text-xs text-[var(--text-muted)]">Display team member avatars in the header (top right)</p>
       </div>
       <Switch id="showAvatars" checked={checked} onCheckedChange={handle} />
     </div>
@@ -329,10 +329,10 @@ export const RemoveBrandingToggle = ({ currentValue, setValue }: RemoveBrandingT
   }
 
   return (
-    <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]/50">
+    <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)]">
       <div className="space-y-0.5">
         <Label htmlFor="removeBranding" className="text-sm font-medium cursor-pointer">Remove SendWise branding</Label>
-        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">Hide the &ldquo;Powered by SendWise AI&rdquo; footer</p>
+        <p className="text-xs text-[var(--text-muted)]">Hide the &ldquo;Powered by SendWise AI&rdquo; footer</p>
       </div>
       <Switch id="removeBranding" checked={checked} onCheckedChange={handle} />
     </div>
@@ -378,7 +378,7 @@ type CustomCssFieldProps = {
 export const CustomCssField = ({ register, currentValue }: CustomCssFieldProps) => (
   <div className="space-y-2">
     <Label htmlFor="customCss" className="text-sm font-medium">Custom CSS</Label>
-    <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">Inject custom CSS directly into the chat widget</p>
+    <p className="text-xs text-[var(--text-muted)]">Inject custom CSS directly into the chat widget</p>
     <Textarea
       id="customCss"
       {...register('customCss')}

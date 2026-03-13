@@ -152,24 +152,24 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
             <CardContent className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mb-1">Current Plan</p>
+                  <p className="text-sm text-[var(--text-muted)] mb-1">Current Plan</p>
                   <p className="text-2xl font-bold text-[var(--text-primary)]">
                     {planDetails.displayName}
                   </p>
                 </div>
                 
                 <div>
-                  <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mb-1">AI Credits</p>
+                  <p className="text-sm text-[var(--text-muted)] mb-1">AI Credits</p>
                   <p className="text-2xl font-bold text-[var(--text-primary)]">
                     {planDetails.monthlyCredits}
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1">
+                  <p className="text-xs text-[var(--text-muted)] mt-1">
                     For AI conversations
                   </p>
                 </div>
 
                 <div>
-                  <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mb-1">Cost</p>
+                  <p className="text-sm text-[var(--text-muted)] mb-1">Cost</p>
                   <p className="text-2xl font-bold text-[var(--text-primary)]">
                     {planDetails.priceDisplay}
                     {planDetails.price > 0 && <span className="text-sm font-normal">/month</span>}
@@ -177,7 +177,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                 </div>
 
                 <div>
-                  <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mb-1">Renewal Date</p>
+                  <p className="text-sm text-[var(--text-muted)] mb-1">Renewal Date</p>
                   <p className="text-2xl font-bold text-[var(--text-primary)]">
                     {new Date(new Date().setMonth(new Date().getMonth() + 1)).toLocaleDateString('en-US', { 
                       month: 'short', 
@@ -190,13 +190,13 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
 
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">AI Credits Used</p>
+                  <p className="text-sm text-[var(--text-muted)]">AI Credits Used</p>
                   <p className="text-sm font-medium text-[var(--text-primary)]">
                     {credits} of {planDetails.monthlyCredits}
                   </p>
                 </div>
                 <Progress value={usagePercentage} className="h-2" />
-                <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1">
+                <p className="text-xs text-[var(--text-muted)] mt-1">
                   These credits are used for AI-powered conversations
                 </p>
               </div>
@@ -256,7 +256,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                       <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
                         isAvailable 
                           ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' 
-                          : 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-muted)]'
+                          : 'bg-[var(--bg-card)] text-[var(--text-muted)]'
                       }`}>
                         {isAvailable ? (
                           <Check className="w-3 h-3" />
@@ -268,7 +268,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                         <p className="text-sm font-medium text-[var(--text-primary)] capitalize">
                           {key.replace(/([A-Z])/g, ' $1').trim()}
                         </p>
-                        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                        <p className="text-xs text-[var(--text-muted)]">
                           {displayValue}
                         </p>
                       </div>
@@ -278,7 +278,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
               </ul>
 
               {missingFeatures.length > 0 && !isHighestPlan && (
-                <div className="mt-6 p-4 bg-slate-50 dark:bg-[var(--bg-page)] rounded-lg border border-[var(--border-default)]">
+                <div className="mt-6 p-4 bg-[var(--bg-card)] rounded-lg border border-[var(--border-default)]">
                   <p className="text-sm font-medium text-[var(--text-primary)] mb-2">
                     Unlock more with {nextPlan && PRICING_CONFIG[nextPlan].displayName}:
                   </p>
@@ -321,19 +321,19 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
             {displayBillingInfo ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-1">Name</p>
+                  <p className="text-[var(--text-muted)] mb-1">Name</p>
                   <p className="font-medium text-[var(--text-primary)]">
                     {stripeBillingInfo?.name || billingAddress?.name || billingData.fullname}
                   </p>
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-1">Street</p>
+                  <p className="text-[var(--text-muted)] mb-1">Street</p>
                   <p className="font-medium text-[var(--text-primary)]">
                     {displayBillingInfo.street || '-'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-1">City/State</p>
+                  <p className="text-[var(--text-muted)] mb-1">City/State</p>
                   <p className="font-medium text-[var(--text-primary)]">
                     {displayBillingInfo.city && displayBillingInfo.state 
                       ? `${displayBillingInfo.city}, ${displayBillingInfo.state}`
@@ -341,19 +341,19 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                   </p>
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-1">Country</p>
+                  <p className="text-[var(--text-muted)] mb-1">Country</p>
                   <p className="font-medium text-[var(--text-primary)]">
                     {displayBillingInfo.country || '-'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-1">Zip/Postal code</p>
+                  <p className="text-[var(--text-muted)] mb-1">Zip/Postal code</p>
                   <p className="font-medium text-[var(--text-primary)]">
                     {displayBillingInfo.zipCode || '-'}
                   </p>
                 </div>
                 <div>
-                  <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-1">VAT Number</p>
+                  <p className="text-[var(--text-muted)] mb-1">VAT Number</p>
                   <p className="font-medium text-[var(--text-primary)]">
                     {billingAddress?.vatNumber || '-'}
                   </p>
@@ -361,7 +361,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
               </div>
             ) : (
               <div className="text-center py-8">
-                <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-4">
+                <p className="text-[var(--text-muted)] mb-4">
                   No billing information added yet
                 </p>
                 <Button 
@@ -411,7 +411,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                 
                 <button 
                   onClick={() => setAddPaymentModalOpen(true)}
-                  className="p-6 rounded-xl border-2 border-dashed border-[var(--border-strong)] hover:border-slate-400 dark:hover:border-slate-600 transition-colors flex flex-col items-center justify-center gap-2 text-slate-500 dark:text-[var(--text-secondary)] hover:text-slate-700 dark:hover:text-slate-300"
+                  className="p-6 rounded-xl border-2 border-dashed border-[var(--border-strong)] hover:border-[var(--border)] transition-colors flex flex-col items-center justify-center gap-2 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
                 >
                   <Plus className="w-6 h-6" />
                   <p className="text-sm font-medium">Add Payment Method</p>
@@ -419,8 +419,8 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
               </div>
             ) : (
               <div className="text-center py-12">
-                <CreditCard className="w-12 h-12 mx-auto text-slate-300 dark:text-[var(--text-secondary)] mb-4" />
-                <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-4">
+                <CreditCard className="w-12 h-12 mx-auto text-[var(--text-muted)] mb-4" />
+                <p className="text-[var(--text-muted)] mb-4">
                   No payment methods added yet
                 </p>
                 <Button 

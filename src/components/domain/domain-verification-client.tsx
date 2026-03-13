@@ -123,7 +123,7 @@ export function DomainVerificationClient({
                 )}
               </div>
               {verifiedAt && (
-                <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1'>
+                <p className='text-xs text-[var(--text-muted)] mt-1'>
                   Verified {new Date(verifiedAt).toLocaleDateString()} via {verificationMethod}
                 </p>
               )}
@@ -131,10 +131,10 @@ export function DomainVerificationClient({
           </div>
         </div>
 
-        <div className='mt-6 p-4 rounded-xl bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]'>
+        <div className='mt-6 p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)]'>
           <div className='flex items-center justify-between gap-4'>
             <div className='min-w-0 flex-1'>
-              <p className='text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)] uppercase tracking-wide mb-1'>
+              <p className='text-xs font-medium text-[var(--text-muted)] uppercase tracking-wide mb-1'>
                 Verification Token
               </p>
               <code className='text-sm font-mono text-[var(--text-primary)]'>
@@ -334,7 +334,7 @@ function VerificationMethodCard({
   return (
     <div className='rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6'>
       <div className='flex items-start gap-4 mb-4'>
-        <div className='p-2 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)]'>
+        <div className='p-2 rounded-lg bg-[var(--bg-card)]'>
           <Icon className='w-5 h-5 text-[var(--text-secondary)]' />
         </div>
         <div className='flex-1'>
@@ -355,10 +355,10 @@ function VerificationMethodCard({
           {fields.map((field) => (
             <div
               key={field.field}
-              className='flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]'
+              className='flex items-center gap-3 p-3 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]'
             >
               <div className='flex-1 min-w-0'>
-                <p className='text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)] uppercase'>
+                <p className='text-xs font-medium text-[var(--text-muted)] uppercase'>
                   {field.label}
                 </p>
                 <code className='text-sm font-mono text-[var(--text-primary)] break-all'>

@@ -38,7 +38,7 @@ export const EditEmail = ({
     <form onSubmit={onCreate} className="flex flex-col gap-4">
       <Loader loading={loading}>
         <div>
-          <label className="text-sm font-medium text-slate-700 dark:text-[var(--text-primary)] mb-2 block">
+          <label className="text-sm font-medium text-[var(--text-primary)] mb-2 block">
             Email Message
           </label>
           <FormGenerator

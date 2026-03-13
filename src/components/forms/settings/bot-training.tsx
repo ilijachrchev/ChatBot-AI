@@ -19,7 +19,7 @@ const BotTrainingForm = ({ id }: Props) => {
             <Brain className='h-5 w-5' />
           </div>
           <div>
-            <h2 className='text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]'>
+            <h2 className='text-lg font-bold text-[var(--text-primary)]'>
               Bot Training
             </h2>
             <p className='text-sm text-[var(--text-secondary)]'>

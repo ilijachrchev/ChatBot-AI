@@ -116,9 +116,9 @@ const getStatusBadge = (status?: string) => {
     case 'FAILED':
       return { text: 'Failed', className: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }
     case 'CANCELLED':
-      return { text: 'Cancelled', className: 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-muted)]' }
+      return { text: 'Cancelled', className: 'bg-[var(--bg-card)] text-[var(--text-muted)]' }
     default:
-      return { text: 'Draft', className: 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]' }
+      return { text: 'Draft', className: 'bg-[var(--bg-card)] text-[var(--text-secondary)]' }
   }
 }
 
@@ -246,12 +246,12 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             <h1 className="text-xl md:text-3xl font-bold tracking-tight text-[var(--text-primary)]">
               Email Marketing
             </h1>
-            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+            <p className="text-sm text-[var(--text-muted)]">
               Send targeted campaigns to your customers
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--bg-card)] border border-[var(--border-default)]">
           <Mail className="h-4 w-4 text-[var(--text-secondary)]" />
           <span className="text-sm font-semibold text-[var(--text-secondary)]">
             {creditsRemaining} credits remaining
@@ -267,7 +267,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
           >
             <div className="flex items-center gap-2 mb-1">
               <stat.icon className="h-4 w-4 text-[var(--text-muted)]" />
-              <span className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{stat.label}</span>
+              <span className="text-xs text-[var(--text-muted)]">{stat.label}</span>
             </div>
             <div className="text-2xl font-bold text-[var(--text-primary)]">{stat.value}</div>
           </div>
@@ -287,7 +287,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             </div>
             <button
               onClick={() => onSelectAll(allEmails)}
-              className="text-sm text-[var(--text-muted)] hover:text-slate-900 dark:hover:text-white transition-colors"
+              className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors"
             >
               {isSelected.length === allEmails.length && allEmails.length > 0
                 ? 'Deselect All'
@@ -386,7 +386,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                           </div>
 
                           <div className="flex flex-wrap gap-3 mb-3">
-                            <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
                               <Calendar className="h-3.5 w-3.5" />
                               <span>
                                 {new Date(camp.createdAt).toLocaleDateString('en-US', {
@@ -396,12 +396,12 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                                 })}
                               </span>
                             </div>
-                            <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                            <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
                               <Users className="h-3.5 w-3.5" />
                               <span>{camp.customers.length} customers</span>
                             </div>
                             {camp.recurringType && (
-                              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                              <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
                                 <RefreshCw className="h-3.5 w-3.5" />
                                 <span>
                                   {camp.recurringType.charAt(0) +
@@ -410,13 +410,13 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                               </div>
                             )}
                             {camp.nextSendAt && camp.recurringType && (
-                              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                              <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
                                 <Clock className="h-3.5 w-3.5" />
                                 <span>Next: {formatDateShort(camp.nextSendAt)}</span>
                               </div>
                             )}
                             {camp.lastSentAt && (
-                              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                              <div className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
                                 <CheckCircle className="h-3.5 w-3.5" />
                                 <span>Last sent {getTimeAgo(camp.lastSentAt)}</span>
                               </div>
@@ -476,7 +476,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                                   className="flex items-center gap-1.5"
                                   onClick={(e) => e.stopPropagation()}
                                 >
-                                  <span className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                                  <span className="text-xs text-[var(--text-muted)]">
                                     {camp.recurringActive ? 'Active' : 'Paused'}
                                   </span>
                                   <Switch
@@ -546,13 +546,13 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
               })
             ) : (
               <div className="text-center py-12 px-4 rounded-xl border-2 border-dashed border-[var(--border-default)]">
-                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-4">
+                <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg-card)] mb-4">
                   <Mail className="h-8 w-8 text-[var(--text-muted)]" />
                 </div>
                 <p className="text-lg font-semibold text-[var(--text-primary)] mb-1">
                   No Campaigns Yet
                 </p>
-                <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+                <p className="text-sm text-[var(--text-muted)]">
                   Create your first campaign to start email marketing
                 </p>
               </div>
@@ -567,7 +567,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             <AlertDialogTitle className="text-[var(--text-primary)]">
               Delete Campaign
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-slate-500 dark:text-[var(--text-secondary)]">
+            <AlertDialogDescription className="text-[var(--text-muted)]">
               This will permanently delete this campaign and cannot be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -591,7 +591,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             <DialogTitle className="text-xl font-bold text-[var(--text-primary)]">
               Create Campaign
             </DialogTitle>
-            <DialogDescription className="text-slate-500 dark:text-[var(--text-secondary)]">
+            <DialogDescription className="text-[var(--text-muted)]">
               Set up a one-time email blast
             </DialogDescription>
           </DialogHeader>
@@ -684,17 +684,17 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
           {createStep === 3 && (
             <div className="space-y-4 mt-2">
               <div className="space-y-3">
-                <div className="p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+                <div className="p-3 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
                   <p className="text-xs text-[var(--text-muted)] mb-1">Campaign name</p>
                   <p className="font-medium text-[var(--text-primary)]">{createName}</p>
                 </div>
-                <div className="p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+                <div className="p-3 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
                   <p className="text-xs text-[var(--text-muted)] mb-1">Recipients</p>
                   <p className="font-medium text-[var(--text-primary)]">
                     {isSelected.length} customer{isSelected.length !== 1 ? 's' : ''} selected
                   </p>
                 </div>
-                <div className="p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+                <div className="p-3 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
                   <p className="text-xs text-[var(--text-muted)] mb-1">Message preview</p>
                   <p className="text-sm text-[var(--text-secondary)] line-clamp-3">
                     {createTemplate}

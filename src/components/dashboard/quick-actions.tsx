@@ -78,14 +78,14 @@ export const QuickActions = () => {
     <div
       className={cn(
         'rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-        'bg-white dark:bg-[var(--bg-surface)] p-5 md:p-6 shadow-sm h-full flex flex-col'
+        'bg-[var(--bg-surface)] p-5 md:p-6 shadow-sm h-full flex flex-col'
       )}
     >
       <div className="mb-5">
         <h2 className="font-bold text-lg md:text-xl text-[var(--text-primary)]">
           Quick Actions
         </h2>
-        <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] mt-0.5">
+        <p className="text-sm text-[var(--text-muted)] mt-0.5">
           Common tasks to manage your chatbot
         </p>
       </div>
@@ -100,8 +100,8 @@ export const QuickActions = () => {
               className={cn(
                 'group flex items-center gap-3 p-3.5 rounded-xl',
                 'border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-                'bg-slate-50/50 dark:bg-[var(--bg-surface)]/60',
-                'hover:bg-white dark:hover:bg-[#243044]',
+                'bg-[var(--bg-card)]/60',
+                'hover:bg-[var(--bg-surface)]',
                 'hover:shadow-sm',
                 colors.hoverBorder,
                 'transition-all duration-200 hover:scale-[1.01]'
@@ -121,14 +121,14 @@ export const QuickActions = () => {
                 <p className="text-sm font-semibold text-[var(--text-primary)] leading-tight">
                   {action.label}
                 </p>
-                <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-0.5 leading-tight">
+                <p className="text-xs text-[var(--text-muted)] mt-0.5 leading-tight">
                   {action.description}
                 </p>
               </div>
 
               <ChevronRight
                 className={cn(
-                  'h-4 w-4 shrink-0 text-slate-400 dark:text-[var(--text-muted)]',
+                  'h-4 w-4 shrink-0 text-[var(--text-muted)]',
                   'group-hover:translate-x-0.5 transition-all duration-200',
                   colors.chevron
                 )}

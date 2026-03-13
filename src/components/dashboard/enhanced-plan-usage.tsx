@@ -17,7 +17,7 @@ type EnhancedPlanUsageProps = {
 }
 
 const PLAN_BADGE: Record<string, string> = {
-  STANDARD: 'bg-zinc-100 text-zinc-700 dark:bg-[var(--bg-surface)] dark:text-zinc-300',
+  STANDARD: 'bg-[var(--bg-card)] text-[var(--text-muted)]',
   PRO: 'bg-indigo-500/10 text-blue-700 dark:text-[var(--text-accent)]',
   ULTIMATE: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
 }
@@ -27,7 +27,7 @@ const PLAN_BUTTON: Record<string, string> = {
     'bg-zinc-900 hover:bg-zinc-700 text-white dark:bg-[var(--bg-hover)] dark:hover:bg-zinc-200 dark:text-zinc-900',
   PRO: 'bg-indigo-600 hover:bg-blue-700 text-white',
   ULTIMATE:
-    'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-slate-200 dark:hover:bg-[#334560]',
+    'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-card)]',
 }
 
 export const EnhancedPlanUsage = ({
@@ -59,7 +59,7 @@ export const EnhancedPlanUsage = ({
     <div
       className={cn(
         'rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-        'bg-white dark:bg-[var(--bg-surface)] p-5 md:p-6 shadow-sm h-full flex flex-col'
+        'bg-[var(--bg-surface)] p-5 md:p-6 shadow-sm h-full flex flex-col'
       )}
     >
       <div className="flex items-start justify-between mb-5">
@@ -71,7 +71,7 @@ export const EnhancedPlanUsage = ({
             <h2 className="font-bold text-lg md:text-xl text-[var(--text-primary)]">
               Usage &amp; Plan
             </h2>
-            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+            <p className="text-xs text-[var(--text-muted)]">
               Track your current limits
             </p>
           </div>
@@ -103,7 +103,7 @@ export const EnhancedPlanUsage = ({
             value={isUltimate ? 0 : conversationPercentage}
             className={cn('h-2', isUltimate ? '[&>div]:bg-emerald-500' : barColor)}
           />
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+          <p className="text-xs text-[var(--text-muted)]">
             {isUltimate
               ? 'Unlimited conversations'
               : `${remaining.toLocaleString()} remaining this month`}
@@ -114,10 +114,10 @@ export const EnhancedPlanUsage = ({
           <div
             className={cn(
               'flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-xl',
-              'bg-slate-50 dark:bg-[var(--bg-surface)]/60 border border-[var(--border-default)] dark:border-[var(--border-strong)]'
+              'bg-[var(--bg-card)] border border-[var(--border)]'
             )}
           >
-            <span className="text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)]">
+            <span className="text-xs font-medium text-[var(--text-muted)]">
               Domains
             </span>
             <span className="text-sm font-bold text-[var(--text-primary)] tabular-nums">
@@ -128,10 +128,10 @@ export const EnhancedPlanUsage = ({
           <div
             className={cn(
               'flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-xl',
-              'bg-slate-50 dark:bg-[var(--bg-surface)]/60 border border-[var(--border-default)] dark:border-[var(--border-strong)]'
+              'bg-[var(--bg-card)] border border-[var(--border)]'
             )}
           >
-            <span className="text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)]">
+            <span className="text-xs font-medium text-[var(--text-muted)]">
               Chatbots
             </span>
             <span className="text-sm font-bold text-[var(--text-primary)] tabular-nums">
@@ -142,10 +142,10 @@ export const EnhancedPlanUsage = ({
           <div
             className={cn(
               'flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 px-2 rounded-xl',
-              'bg-slate-50 dark:bg-[var(--bg-surface)]/60 border border-[var(--border-default)] dark:border-[var(--border-strong)]'
+              'bg-[var(--bg-card)] border border-[var(--border)]'
             )}
           >
-            <span className="text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)]">
+            <span className="text-xs font-medium text-[var(--text-muted)]">
               Campaigns
             </span>
             <span className="text-sm font-bold text-[var(--text-primary)] tabular-nums">

@@ -254,7 +254,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
           <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-5">
-            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] mb-3">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--bg-card)] mb-3">
               <Zap className="h-4 w-4 text-[var(--text-secondary)]" />
             </div>
             <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1.5">
@@ -269,7 +269,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
           </div>
 
           <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-5">
-            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] mb-3">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--bg-card)] mb-3">
               <FileText className="h-4 w-4 text-[var(--text-secondary)]" />
             </div>
             <h3 className="text-sm font-semibold text-[var(--text-primary)] mb-1.5">
@@ -283,7 +283,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
           </div>
 
           <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-5">
-            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] mb-3">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--bg-card)] mb-3">
               <Globe className="h-4 w-4 text-[var(--text-secondary)]" />
             </div>
             <div className="flex items-center gap-2 mb-1.5">
@@ -371,7 +371,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
             Scrape Website
           </h2>
           <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-8 flex flex-col items-center text-center gap-3">
-            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)]">
+            <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[var(--bg-card)]">
               <Lock className="h-6 w-6 text-[var(--text-muted)]" />
             </div>
             <p className="font-semibold text-[var(--text-primary)]">
@@ -444,7 +444,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
         {files.length === 0 ? (
           <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-12">
             <div className="flex flex-col items-center justify-center text-center">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-4">
+              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg-card)] mb-4">
                 <FileText className="h-8 w-8 text-[var(--text-muted)]" />
               </div>
               <p className="text-lg font-semibold text-[var(--text-primary)] mb-1">
@@ -483,7 +483,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                 </TableCell>
 
                 <TableCell>
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] text-sm font-medium">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md bg-[var(--bg-card)] text-[var(--text-secondary)] text-sm font-medium">
                     {getFileTypeLabel(file.fileType)}
                   </span>
                 </TableCell>
@@ -505,7 +505,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                       file.status === 'PROCESSING' &&
                         'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
                       file.status === 'DISABLED' &&
-                        'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]',
+                        'bg-[var(--bg-card)] text-[var(--text-secondary)]',
                       file.status === 'FAILED' &&
                         'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
                     )}

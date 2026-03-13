@@ -20,7 +20,7 @@ type Period = 'weekly' | 'monthly' | 'yearly'
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white dark:bg-[var(--bg-surface)] border border-[var(--border-default)] dark:border-[var(--border-strong)] rounded-lg shadow-lg p-3">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg shadow-lg p-3">
         <p className="text-sm font-medium text-[var(--text-primary)] mb-2">{label}</p>
         {payload.map((entry: any, index: number) => (
           <div key={index} className="flex items-center gap-2 text-sm">
@@ -47,7 +47,7 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
   return (
     <div className={cn(
       'rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-      'bg-white dark:bg-[var(--bg-surface)] shadow-sm'
+      'bg-[var(--bg-surface)] shadow-sm'
     )}>
       <div className="p-5 md:p-6 pb-2">
         <div className="flex items-start justify-between flex-wrap gap-3">
@@ -62,7 +62,7 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
             )}
           </div>
 
-          <div className="flex items-center gap-1 p-1 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)]">
+          <div className="flex items-center gap-1 p-1 rounded-lg bg-[var(--bg-card)]">
             {(['Weekly', 'Monthly', 'Yearly'] as const).map((period) => (
               <button
                 key={period}
@@ -70,8 +70,8 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
                 className={cn(
                   'px-3 py-1 rounded-md text-xs font-medium transition-all',
                   activePeriod === period.toLowerCase()
-                    ? 'bg-white dark:bg-[var(--bg-active)] text-[var(--text-primary)] shadow-sm'
-                    : 'text-slate-500 dark:text-[var(--text-secondary)] hover:text-slate-700 dark:hover:text-slate-300'
+                    ? 'bg-[var(--bg-surface)] text-[var(--text-primary)] shadow-sm'
+                    : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 )}
               >
                 {period}
@@ -83,11 +83,11 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
         <div className="flex items-center gap-4 text-sm mt-3">
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'rgb(99, 179, 246)' }} />
-            <span className="text-slate-500 dark:text-[var(--text-secondary)]">AI Handled</span>
+            <span className="text-[var(--text-muted)]">AI Handled</span>
           </div>
           <div className="flex items-center gap-1.5">
             <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'rgb(192, 132, 252)' }} />
-            <span className="text-slate-500 dark:text-[var(--text-secondary)]">Human</span>
+            <span className="text-[var(--text-muted)]">Human</span>
           </div>
         </div>
       </div>

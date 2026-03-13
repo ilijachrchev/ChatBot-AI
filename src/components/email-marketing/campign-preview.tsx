@@ -27,21 +27,21 @@ export const CampaignPreview = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2 p-4 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+      <div className="flex items-center gap-2 p-4 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
         <Users className="h-5 w-5 text-[var(--text-secondary)]" />
         <div>
           <p className="font-semibold text-[var(--text-primary)]">
             {validCustomers.length}{' '}
             {validCustomers.length === 1 ? 'Customer' : 'Customers'}
           </p>
-          <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+          <p className="text-sm text-[var(--text-muted)]">
             in this campaign
           </p>
         </div>
       </div>
 
       <div>
-        <p className="text-sm font-medium text-slate-700 dark:text-[var(--text-primary)] mb-3">
+        <p className="text-sm font-medium text-[var(--text-primary)] mb-3">
           Campaign Recipients
         </p>
         <ScrollArea className="h-[400px] rounded-lg border border-[var(--border-default)]">
@@ -50,7 +50,7 @@ export const CampaignPreview = ({
               validCustomers.map((customer, index) => (
                 <div
                   key={customer.id || index}
-                  className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)] hover:bg-[var(--bg-hover)] transition-colors"
+                  className="flex items-center justify-between p-3 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] transition-colors"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-900 dark:from-indigo-900 dark:to-indigo-700 text-white text-sm font-semibold flex-shrink-0">
@@ -60,7 +60,7 @@ export const CampaignPreview = ({
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <Mail className="h-3.5 w-3.5 text-[var(--text-muted)] flex-shrink-0" />
-                        <p className="text-sm font-medium text-slate-950 dark:text-[var(--text-primary)] truncate">
+                        <p className="text-sm font-medium text-[var(--text-primary)] truncate">
                           {customer.email || 'No email'}
                         </p>
                       </div>
@@ -87,7 +87,7 @@ export const CampaignPreview = ({
                       </button>
                     )}
 
-                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-slate-200 dark:bg-[var(--bg-active)] text-xs font-semibold text-[var(--text-secondary)]">
+                    <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-[var(--border)] text-xs font-semibold text-[var(--text-secondary)]">
                       {index + 1}
                     </span>
                   </div>

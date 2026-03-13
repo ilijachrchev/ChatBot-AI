@@ -42,7 +42,7 @@ const DashboardCard = ({
           <h3 className="text-xs md:text-sm font-medium text-[var(--text-secondary)] uppercase tracking-wider">
             {title}
           </h3>
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] flex-shrink-0">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--bg-card)] flex-shrink-0">
             {React.cloneElement(icon, { 
               className: cn('h-4 w-4', iconColorClass),
               strokeWidth: 2, 
@@ -62,10 +62,10 @@ const DashboardCard = ({
           )}>
             {trend.isPositive ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
             {trend.value}%
-            <span className='text-slate-500 dark:text-[var(--text-secondary)] font-normal ml-1'>vs last month</span>
+            <span className='text-[var(--text-muted)] font-normal ml-1'>vs last month</span>
           </div>
         ) : (
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1">
+          <p className="text-xs text-[var(--text-muted)] mt-1">
             {value === 0 ? 'Start tracking activity to see trends.' : 'Metrics calculated in real-time.'}
           </p>
         )}

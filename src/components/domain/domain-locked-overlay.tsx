@@ -78,11 +78,11 @@ export const DomainLockedOverlay = ({ domainId }: Props) => {
         </div>
       </div>
 
-      <div className="pointer-events-auto hidden lg:flex max-w-md mx-auto rounded-xl border border-slate-700 bg-[var(--bg-page)]/95 backdrop-blur-sm px-6 py-5 shadow-2xl flex-col items-center text-center gap-3">
+      <div className="pointer-events-auto hidden lg:flex max-w-md mx-auto rounded-xl border border-[var(--border)] bg-[var(--bg-page)]/95 backdrop-blur-sm px-6 py-5 shadow-2xl flex-col items-center text-center gap-3">
         <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-yellow-500/20 to-orange-500/20">
           <Lock className="h-5 w-5 text-yellow-500" />
         </div>
-        <h3 className="text-sm font-semibold text-slate-50">
+        <h3 className="text-sm font-semibold text-[var(--text-primary)]">
           Verify your domain to unlock settings
         </h3>
         <p className="text-xs text-[var(--text-muted)]">

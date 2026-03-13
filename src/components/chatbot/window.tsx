@@ -258,7 +258,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
 
         <TabsMenu
           triggers={BOT_TABS_MENU}
-          className="bg-gray-50/50 border-b border-gray-200 mx-3 mt-2 rounded-lg"
+          className="bg-[var(--bg-card)]/50 border-b border-[var(--border)] mx-3 mt-2 rounded-lg"
         >
           <TabsContent value="chat" className="mt-0 flex-1 flex flex-col min-h-0">
             <div className="flex flex-col flex-1 min-h-0">
@@ -308,7 +308,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 className={cn('flex px-4 py-3 flex-col gap-2', getInputAreaClass())}
               >
                 {imagePreview && (
-                  <div className="relative w-14 h-14 rounded-lg overflow-hidden border-2 border-gray-200 bg-white">
+                  <div className="relative w-14 h-14 rounded-lg overflow-hidden border-2 border-[var(--border)] bg-[var(--bg-surface)]">
                     <img
                       src={imagePreview}
                       alt="preview"
@@ -327,9 +327,9 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                 <div className="flex items-center gap-2">
                   <Label
                     htmlFor="bot-image"
-                    className="cursor-pointer hover:bg-gray-200 p-2 rounded-lg transition-colors"
+                    className="cursor-pointer hover:bg-[var(--bg-card)] p-2 rounded-lg transition-colors"
                   >
-                    <Paperclip className="w-4 h-4 text-gray-500" />
+                    <Paperclip className="w-4 h-4 text-[var(--text-muted)]" />
                     <Input
                       type="file"
                       id="bot-image"
@@ -343,7 +343,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                     <Input
                       {...register('content')}
                       placeholder="Type your message..."
-                      className="w-full bg-white border-gray-200 focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-0 rounded-lg px-3 py-2 text-sm pr-10"
+                      className="w-full bg-[var(--bg-surface)] border-[var(--border)] focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-0 rounded-lg px-3 py-2 text-sm pr-10"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault()
@@ -394,9 +394,9 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
         </TabsMenu>
 
         {showPoweredBy && (
-          <div className="flex justify-center py-2 bg-gray-50/50 border-t border-gray-100">
-            <p className="text-gray-400 text-[10px] font-medium">
-              Powered by <span className="text-gray-500">SendWise-AI</span>
+          <div className="flex justify-center py-2 bg-[var(--bg-card)]/50 border-t border-[var(--border)]">
+            <p className="text-[var(--text-muted)] text-[10px] font-medium">
+              Powered by <span className="text-[var(--text-muted)]">SendWise-AI</span>
             </p>
           </div>
         )}

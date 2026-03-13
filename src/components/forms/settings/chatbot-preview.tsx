@@ -81,25 +81,25 @@ export const ChatbotPreview = ({
 
   const getStyleClasses = () => {
     switch (widgetStyle) {
-      case 'SOFT': return 'bg-white/95 backdrop-blur-sm border border-gray-200/50'
-      case 'GLASS': return 'bg-white/70 backdrop-blur-md border border-white/30 shadow-2xl'
-      default: return 'bg-white border border-gray-200'
+      case 'SOFT': return 'bg-[var(--bg-surface)]/95 backdrop-blur-sm border border-[var(--border)]/50'
+      case 'GLASS': return 'bg-[var(--bg-surface)]/70 backdrop-blur-md border border-white/30 shadow-2xl'
+      default: return 'bg-[var(--bg-surface)] border border-[var(--border)]'
     }
   }
 
   const getContentAreaClass = () => {
     switch (widgetStyle) {
-      case 'SOFT': return 'bg-slate-50/80'
-      case 'GLASS': return 'bg-white/40 backdrop-blur-sm'
-      default: return 'bg-slate-50'
+      case 'SOFT': return 'bg-[var(--bg-card)]/80'
+      case 'GLASS': return 'bg-[var(--bg-surface)]/40 backdrop-blur-sm'
+      default: return 'bg-[var(--bg-card)]'
     }
   }
 
   const getInputAreaClass = () => {
     switch (widgetStyle) {
-      case 'SOFT': return 'bg-white/60 border-t border-gray-200/60'
-      case 'GLASS': return 'bg-white/20 backdrop-blur-sm border-t border-white/20'
-      default: return 'bg-white border-t border-[var(--border-default)]'
+      case 'SOFT': return 'bg-[var(--bg-surface)]/60 border-t border-[var(--border)]/60'
+      case 'GLASS': return 'bg-[var(--bg-surface)]/20 backdrop-blur-sm border-t border-white/20'
+      default: return 'bg-[var(--bg-surface)] border-t border-[var(--border-default)]'
     }
   }
 
@@ -107,7 +107,7 @@ export const ChatbotPreview = ({
     switch (widgetStyle) {
       case 'GLASS': return 'bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 dark:from-blue-950 dark:via-purple-950 dark:to-pink-950'
       case 'SOFT': return 'bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900'
-      default: return 'bg-slate-100 dark:bg-[var(--bg-surface)]'
+      default: return 'bg-[var(--bg-card)]'
     }
   }
 
@@ -118,19 +118,19 @@ export const ChatbotPreview = ({
       <div className="absolute -top-3 right-4 z-10">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold shadow-lg">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--bg-surface)] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--bg-surface)]" />
           </span>
           Live Preview
         </div>
       </div>
 
       <div className="rounded-2xl overflow-hidden shadow-2xl border border-[var(--border-default)] dark:border-[var(--border-strong)]">
-        <div className="bg-slate-200 dark:bg-[var(--bg-active)] px-3 py-2 flex items-center gap-1.5">
+        <div className="bg-[var(--border)] px-3 py-2 flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
           <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
-          <div className="flex-1 mx-3 h-4 rounded bg-slate-300 dark:bg-[var(--bg-active)] text-[9px] text-slate-500 dark:text-[var(--text-secondary)] flex items-center px-2">
+          <div className="flex-1 mx-3 h-4 rounded bg-[var(--border)] text-[9px] text-[var(--text-muted)] flex items-center px-2">
             yourwebsite.com
           </div>
         </div>
@@ -150,7 +150,7 @@ export const ChatbotPreview = ({
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="h-10 w-10 rounded-full border-2 border-white overflow-hidden bg-white flex items-center justify-center">
+                    <div className="h-10 w-10 rounded-full border-2 border-white overflow-hidden bg-[var(--bg-surface)] flex items-center justify-center">
                       {displayIcon ? (
                         <Image src={displayIcon} alt="Bot" width={40} height={40} className="object-cover" />
                       ) : (
@@ -173,7 +173,7 @@ export const ChatbotPreview = ({
                   </div>
                 )}
 
-                <button className="text-white hover:bg-white/20 rounded-lg p-1 transition-colors">
+                <button className="text-white hover:bg-[var(--bg-surface)]/20 rounded-lg p-1 transition-colors">
                   <Minimize2 className="h-3.5 w-3.5" />
                 </button>
               </div>
@@ -229,7 +229,7 @@ export const ChatbotPreview = ({
                   type="text"
                   placeholder="Type your message..."
                   className={cn(
-                    'flex-1 px-3 py-1.5 border border-[var(--border-strong)] bg-slate-50 text-xs focus:outline-none text-slate-900 placeholder:text-[var(--text-muted)]',
+                    'flex-1 px-3 py-1.5 border border-[var(--border-strong)] bg-[var(--bg-card)] text-xs focus:outline-none text-[var(--text-primary)] placeholder:text-[var(--text-muted)]',
                     getButtonClass()
                   )}
                   disabled
@@ -245,7 +245,7 @@ export const ChatbotPreview = ({
             </div>
 
             {showPoweredBy && (
-              <div className="flex justify-center py-1.5 border-t border-slate-100">
+              <div className="flex justify-center py-1.5 border-t border-[var(--border)]">
                 <p className="text-[10px] text-[var(--text-muted)]">
                   Powered by <span className="font-semibold">SendWise AI</span>
                 </p>

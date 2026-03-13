@@ -67,7 +67,7 @@ export const RecentTransactionsCard = ({ transactions }: RecentTransactionsCardP
                                         <p className='font-semibold text-sm text-[var(--text-primary)] truncate'>
                                             {transaction.calculated_statement_descriptor || 'Payment'}
                                         </p>
-                                        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+                                        <p className="text-xs text-[var(--text-muted)]">
                                             {formatDate(transaction.created)}
                                         </p>
                                     </div>
@@ -81,7 +81,7 @@ export const RecentTransactionsCard = ({ transactions }: RecentTransactionsCardP
                     </div>
                 ) : (
                     <div className="text-center py-12 flex flex-col items-center justify-center h-full">
-                        <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-4">
+                        <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg-card)] mb-4">
                             <Receipt className="h-8 w-8 text-[var(--text-muted)]" />
                         </div>
                         <p className="text-sm font-medium text-[var(--text-primary)] mb-1">
@@ -96,7 +96,7 @@ export const RecentTransactionsCard = ({ transactions }: RecentTransactionsCardP
 
             {hasTransactions && transactions.length > 5 && (
                 <div className="mt-4 pt-4 border-t border-[var(--border-default)]">
-                    <p className="text-xs text-center text-slate-500 dark:text-[var(--text-secondary)]">
+                    <p className="text-xs text-center text-[var(--text-muted)]">
                         Showing 5 of {transactions.length} transactions
                     </p>
                 </div>

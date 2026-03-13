@@ -41,7 +41,7 @@ export const CustomerTable = ({
             className={cn(
               'transition-all duration-200',
               'hover:bg-[var(--bg-hover)]',
-              select.includes(c.email as string) && 'bg-slate-100 dark:bg-[var(--bg-hover)]'
+              select.includes(c.email as string) && 'bg-[var(--bg-card)]'
             )}
           >
             <TableCell>
@@ -60,7 +60,7 @@ export const CustomerTable = ({
               </button>
             </TableCell>
 
-            <TableCell className="font-medium text-slate-950 dark:text-[var(--text-primary)]">
+            <TableCell className="font-medium text-[var(--text-primary)]">
               {c.email}
             </TableCell>
 
@@ -73,12 +73,12 @@ export const CustomerTable = ({
                     className={cn(
                       'inline-flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer',
                       'text-sm font-medium transition-all duration-200',
-                      'bg-slate-100 dark:bg-[var(--bg-surface)]',
-                      'hover:bg-slate-200 dark:hover:bg-[var(--bg-active)]',
+                      'bg-[var(--bg-card)]',
+                      'hover:bg-[var(--bg-card)]',
                       'text-[var(--text-secondary)]',
-                      'hover:text-slate-900 dark:hover:text-white',
+                      'hover:text-[var(--text-primary)]',
                       'border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-                      'hover:border-slate-400 dark:hover:border-slate-500'
+                      'hover:border-[var(--border)] dark:hover:border-slate-500'
                     )}
                     onClick={() => onId(c.id)}
                   >
@@ -93,12 +93,12 @@ export const CustomerTable = ({
 
             <TableCell className="text-right">
               {c.Domain?.name ? (
-                <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-sm text-[var(--text-secondary)]">
+                <div className="inline-flex items-center gap-1.5 px-2 py-1 rounded-md bg-[var(--bg-card)] text-sm text-[var(--text-secondary)]">
                   <Globe className="h-3.5 w-3.5" />
                   {c.Domain.name}
                 </div>
               ) : (
-                <span className="text-sm text-slate-400 dark:text-[var(--text-secondary)]">
+                <span className="text-sm text-[var(--text-muted)]">
                   No domain
                 </span>
               )}

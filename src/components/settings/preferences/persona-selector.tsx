@@ -77,7 +77,7 @@ export const PersonaSelector = ({
       <div>
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="h-5 w-5 text-[var(--text-accent)]" />
-          <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
+          <h3 className="text-lg font-bold text-[var(--text-primary)]">
             AI Assistant Persona
           </h3>
         </div>
@@ -116,7 +116,7 @@ export const PersonaSelector = ({
                 )}>
                   {persona.icon}
                 </div>
-                <h4 className="font-semibold text-slate-950 dark:text-[var(--text-primary)] text-sm">
+                <h4 className="font-semibold text-[var(--text-primary)] text-sm">
                   {persona.name}
                 </h4>
                 <p className="text-xs text-[var(--text-secondary)] line-clamp-3">
@@ -160,7 +160,7 @@ You are a friendly tech support assistant for a SaaS company. Always be patient,
             rows={12}
             className="font-mono text-sm"
           />
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+          <p className="text-xs text-[var(--text-muted)]">
             💡 Tip: Be specific about the assistant's role, goals, communication style, and any constraints.
           </p>
         </div>

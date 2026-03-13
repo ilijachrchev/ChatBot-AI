@@ -42,7 +42,7 @@ export const ProgressBar = ({
         </span>
       </div>
       
-      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-[var(--bg-active)]">
+      <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-[var(--border)]">
         <div
           className={cn(
             'h-full rounded-full transition-all duration-500 ease-out relative',
@@ -62,7 +62,7 @@ export const ProgressBar = ({
         </p>
       )}
       {!isOverLimit && remainingCredits > 0 && (
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] font-normal pt-1">
+          <p className="text-xs text-[var(--text-muted)] font-normal pt-1">
              {remainingCredits.toLocaleString()} {label.toLowerCase().includes('credit') ? 'credits' : label.toLowerCase().includes('domain') ? 'domains' : 'contacts'} remaining.
           </p>
       )}

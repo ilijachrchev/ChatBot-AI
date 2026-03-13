@@ -58,14 +58,14 @@ export function SubscriptionPaymentForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="bg-slate-50 dark:bg-[var(--bg-page)] rounded-lg p-4">
+      <div className="bg-[var(--bg-card)] rounded-lg p-4">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm text-[var(--text-secondary)]">Amount due today</span>
           <span className="text-2xl font-bold text-[var(--text-primary)]">
             ${amount.toFixed(2)}
           </span>
         </div>
-        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+        <p className="text-xs text-[var(--text-muted)]">
           Then ${amount.toFixed(2)}/month until you cancel
         </p>
       </div>
@@ -77,7 +77,7 @@ export function SubscriptionPaymentForm({
         <PaymentElement />
       </div>
 
-      <div className="flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+      <div className="flex items-center justify-center gap-2 text-xs text-[var(--text-muted)]">
         <Lock className="w-3 h-3" />
         <span>Secure payment powered by Stripe</span>
       </div>

@@ -84,12 +84,12 @@ const AllApointments = ({ bookings }: Props) => {
 
             <TableCell className='text-right'>
               {booking.Customer?.Domain?.name ? (
-                <div className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] text-sm font-medium text-[var(--text-secondary)]'>
+                <div className='inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--bg-card)] text-sm font-medium text-[var(--text-secondary)]'>
                   <Globe className='w-3.5 h-3.5' />
                   {booking.Customer.Domain.name}
                 </div>
               ) : (
-                <span className='text-sm text-slate-400 dark:text-[var(--text-secondary)]'>
+                <span className='text-sm text-[var(--text-muted)]'>
                   No domain
                 </span>
               )}
@@ -100,7 +100,7 @@ const AllApointments = ({ bookings }: Props) => {
         <TableRow>
           <TableCell colSpan={4} className='h-64 text-center'>
             <div className='flex flex-col items-center justify-center'>
-              <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-4'>
+              <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg-card)] mb-4'>
                 <Calendar className='h-8 w-8 text-[var(--text-muted)]' />
               </div>
               <p className='text-lg font-semibold text-[var(--text-primary)] mb-1'>

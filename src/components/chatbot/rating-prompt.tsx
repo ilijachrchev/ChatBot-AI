@@ -55,7 +55,7 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
 
   return (
     <div className="flex gap-2 items-end self-start animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
-      <Avatar className="w-6 h-6 flex-shrink-0 border border-gray-200">
+      <Avatar className="w-6 h-6 flex-shrink-0 border border-[var(--border)]">
         {botIcon ? (
           <AvatarImage src={botIcon} alt="bot" className="object-cover" />
         ) : (
@@ -67,14 +67,14 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
       </Avatar>
 
       {step === 'prompt' && (
-        <div className="bg-gray-50 border border-gray-200 rounded-xl rounded-bl-sm px-4 py-3 max-w-[85%]">
-          <p className="text-sm font-medium text-gray-700">Was this conversation helpful?</p>
+        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl rounded-bl-sm px-4 py-3 max-w-[85%]">
+          <p className="text-sm font-medium text-[var(--text-primary)]">Was this conversation helpful?</p>
           <div className="flex gap-2 mt-3">
             <button
               type="button"
               onClick={handlePositive}
               className={cn(
-                'bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150',
+                'bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150',
                 selected === 'POSITIVE'
                   ? 'bg-green-500 text-white border-green-500'
                   : 'hover:border-green-400 hover:bg-green-50'
@@ -86,7 +86,7 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
               type="button"
               onClick={handleNegative}
               className={cn(
-                'bg-white border border-gray-200 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150',
+                'bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150',
                 selected === 'NEGATIVE'
                   ? 'bg-red-500 text-white border-red-500'
                   : 'hover:border-red-400 hover:bg-red-50'
@@ -99,23 +99,23 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
       )}
 
       {step === 'feedback' && (
-        <div className="bg-gray-50 border border-gray-200 rounded-xl rounded-bl-sm px-4 py-3 max-w-[85%] animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
-          <p className="text-sm font-medium text-gray-700">👎 Sorry to hear that!</p>
-          <p className="text-xs text-gray-500 mt-1">What could we improve?</p>
+        <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-xl rounded-bl-sm px-4 py-3 max-w-[85%] animate-in fade-in-0 slide-in-from-bottom-2 duration-500">
+          <p className="text-sm font-medium text-[var(--text-primary)]">👎 Sorry to hear that!</p>
+          <p className="text-xs text-[var(--text-muted)] mt-1">What could we improve?</p>
           <textarea
-            className="mt-3 w-full text-sm bg-white border border-gray-200 rounded-lg px-3 py-2 resize-none focus:ring-2 focus:ring-red-200 focus:border-red-300 outline-none"
+            className="mt-3 w-full text-sm bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg px-3 py-2 resize-none focus:ring-2 focus:ring-red-200 focus:border-red-300 outline-none"
             rows={3}
             placeholder="Tell us what went wrong or what information was missing..."
             value={feedback}
             onChange={(e) => setFeedback(e.target.value.slice(0, 500))}
           />
-          <p className="text-xs text-gray-400 text-right mt-1">{feedback.length}/500</p>
+          <p className="text-xs text-[var(--text-muted)] text-right mt-1">{feedback.length}/500</p>
           <div className="flex items-center justify-between mt-3">
             <button
               type="button"
               onClick={handleSkip}
               disabled={submitting}
-              className="text-xs text-gray-400 hover:text-gray-600 underline"
+              className="text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] underline"
             >
               Skip
             </button>
@@ -137,15 +137,15 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
             'border rounded-xl rounded-bl-sm px-4 py-3 max-w-[85%] animate-in fade-in-0 slide-in-from-bottom-2 duration-500',
             selected === 'POSITIVE'
               ? 'bg-green-50 border-green-200'
-              : 'bg-gray-50 border-gray-200'
+              : 'bg-[var(--bg-card)] border-[var(--border)]'
           )}
         >
           {selected === 'POSITIVE' ? (
             <p className="text-sm font-medium text-green-700">🎉 Thank you for the feedback!</p>
           ) : (
             <>
-              <p className="text-sm font-medium text-gray-700">Thank you for letting us know.</p>
-              <p className="text-xs text-gray-500 mt-1">Your feedback helps us improve.</p>
+              <p className="text-sm font-medium text-[var(--text-primary)]">Thank you for letting us know.</p>
+              <p className="text-xs text-[var(--text-muted)] mt-1">Your feedback helps us improve.</p>
             </>
           )}
         </div>

@@ -112,7 +112,7 @@ export const DomainConfigurationForm = ({
               <div className="mt-6 pt-6 border-t border-[var(--border-default)]">
                 <div className="grid grid-cols-3 gap-4">
                   <div className="text-center">
-                    <div className="flex items-center justify-center w-10 h-10 mx-auto mb-2 rounded-full bg-slate-100 dark:bg-[var(--bg-page)]">
+                    <div className="flex items-center justify-center w-10 h-10 mx-auto mb-2 rounded-full bg-[var(--bg-card)]">
                       <Shield className="h-5 w-5 text-[var(--text-secondary)]" />
                     </div>
                     <p className="text-xs font-medium text-[var(--text-secondary)]">
@@ -120,7 +120,7 @@ export const DomainConfigurationForm = ({
                     </p>
                   </div>
                   <div className="text-center">
-                    <div className="flex items-center justify-center w-10 h-10 mx-auto mb-2 rounded-full bg-slate-100 dark:bg-[var(--bg-page)]">
+                    <div className="flex items-center justify-center w-10 h-10 mx-auto mb-2 rounded-full bg-[var(--bg-card)]">
                       <Zap className="h-5 w-5 text-[var(--text-secondary)]" />
                     </div>
                     <p className="text-xs font-medium text-[var(--text-secondary)]">
@@ -128,7 +128,7 @@ export const DomainConfigurationForm = ({
                     </p>
                   </div>
                   <div className="text-center">
-                    <div className="flex items-center justify-center w-10 h-10 mx-auto mb-2 rounded-full bg-slate-100 dark:bg-[var(--bg-page)]">
+                    <div className="flex items-center justify-center w-10 h-10 mx-auto mb-2 rounded-full bg-[var(--bg-card)]">
                       <Rocket className="h-5 w-5 text-[var(--text-secondary)]" />
                     </div>
                     <p className="text-xs font-medium text-[var(--text-secondary)]">
@@ -225,7 +225,7 @@ export const DomainConfigurationForm = ({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]/30 p-6">
+        <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6">
           <div className="flex items-start gap-4">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-950/50 flex-shrink-0">
               <AlertCircle className="h-5 w-5 text-[var(--text-accent)]" />

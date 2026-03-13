@@ -159,7 +159,7 @@ export function SecuritySection() {
         </CardHeader>
         <CardContent>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-            <div className='p-4 bg-white/60 dark:bg-[var(--bg-page)]/60 rounded-xl border border-[var(--border-default)]'>
+            <div className='p-4 bg-[var(--bg-card)] rounded-xl border border-[var(--border-default)]'>
               <div className='flex items-center gap-3 mb-2'>
                 <Mail className='w-5 h-5 text-[var(--text-secondary)]' />
                 <h4 className='text-sm font-semibold text-[var(--text-primary)]'>
@@ -171,7 +171,7 @@ export function SecuritySection() {
               </p>
             </div>
 
-            <div className='p-4 bg-white/60 dark:bg-[var(--bg-page)]/60 rounded-xl border border-[var(--border-default)]'>
+            <div className='p-4 bg-[var(--bg-card)] rounded-xl border border-[var(--border-default)]'>
               <div className='flex items-center gap-3 mb-2'>
                 <Key className='w-5 h-5 text-green-600 dark:text-green-400' />
                 <h4 className='text-sm font-semibold text-[var(--text-primary)]'>
@@ -203,9 +203,9 @@ export function SecuritySection() {
               type='email'
               value={userEmail}
               disabled
-              className='h-11 bg-slate-50 dark:bg-[var(--bg-page)]/50 cursor-not-allowed'
+              className='h-11 bg-[var(--bg-card)] cursor-not-allowed'
             />
-            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+            <p className='text-xs text-[var(--text-muted)]'>
               Your email is managed by Clerk and cannot be changed here
             </p>
           </div>
@@ -279,7 +279,7 @@ export function SecuritySection() {
                       'flex items-center justify-between p-4 rounded-xl border transition-all',
                       isCurrentSession
                         ? 'bg-slate-900 dark:bg-white border-slate-900 dark:border-white'
-                        : 'bg-slate-50 dark:bg-[var(--bg-page)]/50 border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
+                        : 'bg-[var(--bg-card)] border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
                     )}
                   >
                     <div className='flex items-center gap-4'>
@@ -288,7 +288,7 @@ export function SecuritySection() {
                           'w-10 h-10 rounded-lg flex items-center justify-center',
                           isCurrentSession
                             ? 'bg-white/10 dark:bg-[var(--bg-page)]/10'
-                            : 'bg-slate-100 dark:bg-[var(--bg-surface)]'
+                            : 'bg-[var(--bg-card)]'
                         )}
                       >
                         <DeviceIcon
@@ -322,7 +322,7 @@ export function SecuritySection() {
                         <p className={cn(
                           'text-xs mt-0.5',
                           isCurrentSession
-                            ? 'text-slate-300 dark:text-[var(--text-secondary)]'
+                            ? 'text-[var(--text-muted)]'
                             : 'text-[var(--text-secondary)]'
                         )}>
                           {session.latestActivity?.city && session.latestActivity?.country
@@ -370,7 +370,7 @@ export function SecuritySection() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className='p-6 bg-slate-50 dark:bg-[var(--bg-page)]/50 rounded-xl border border-dashed border-[var(--border-strong)] text-center'>
+          <div className='p-6 bg-[var(--bg-card)] rounded-xl border border-dashed border-[var(--border-strong)] text-center'>
             <Shield className='w-12 h-12 text-[var(--text-muted)] mx-auto mb-3' />
             <p className='text-sm text-[var(--text-secondary)]'>
               Two-factor authentication will be available soon to further

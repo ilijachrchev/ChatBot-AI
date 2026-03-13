@@ -285,7 +285,7 @@ export const AIPersonaForm = ({
                         'flex h-12 w-12 items-center justify-center rounded-xl transition-all',
                         isSelected
                           ? 'bg-[var(--bg-page)]'
-                          : 'bg-slate-100 dark:bg-[var(--bg-page)] group-hover:scale-110'
+                          : 'bg-[var(--bg-card)] group-hover:scale-110'
                       )}
                     >
                       <Icon
@@ -346,7 +346,7 @@ export const AIPersonaForm = ({
                             'px-2 py-1 text-[10px] font-semibold rounded-md transition-colors',
                             isSelected
                               ? 'bg-white/10 dark:bg-[var(--bg-page)]/20 text-[var(--text-primary)] border border-white/20 dark:border-[var(--border-default)]/30'
-                              : 'bg-slate-100 dark:bg-[var(--bg-page)] text-[var(--text-secondary)] border border-[var(--border-default)]'
+                              : 'bg-[var(--bg-card)] text-[var(--text-secondary)] border border-[var(--border-default)]'
                           )}
                         >
                           {trait}
@@ -818,7 +818,7 @@ export const AIPersonaForm = ({
               className="min-h-[200px] text-sm leading-relaxed resize-none border-2 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white"
             />
 
-            <div className="mt-4 p-4 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)]/50 border border-[var(--border-default)]">
+            <div className="mt-4 p-4 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
               <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                 <span className="font-bold text-[var(--text-primary)]">Pro Tip:</span> Include tone, expertise level, communication style, and key behaviors. The more specific you are, the better your AI assistant will perform.
               </p>
@@ -827,8 +827,8 @@ export const AIPersonaForm = ({
         )}
 
         {cooldownInfo && (
-          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-100 dark:bg-[var(--bg-page)] border border-[var(--border-default)] animate-in slide-in-from-bottom-2 duration-300">
-            <Lock className="h-4 w-4 text-slate-500 dark:text-[var(--text-secondary)] flex-shrink-0" />
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] animate-in slide-in-from-bottom-2 duration-300">
+            <Lock className="h-4 w-4 text-[var(--text-muted)] flex-shrink-0" />
             <p className="text-sm text-[var(--text-secondary)]">
               <span className="font-semibold text-[var(--text-primary)]">
                 Persona locked for {cooldownInfo.hoursRemaining} more hour{cooldownInfo.hoursRemaining !== 1 ? 's' : ''}
@@ -840,7 +840,7 @@ export const AIPersonaForm = ({
 
         <div className="flex flex-col sm:flex-row gap-3 justify-between items-center pt-6 border-t border-[var(--border-default)]">
           {!hasChanges ? (
-            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-slate-100 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
               <CheckCircle2 className="h-4 w-4 text-[var(--text-secondary)]" />
               <span className="text-sm font-medium text-[var(--text-secondary)]">
                 No changes to save
@@ -864,7 +864,7 @@ export const AIPersonaForm = ({
             className={cn(
               'h-11 px-8 font-bold shadow-lg transition-all duration-300',
               isSaveDisabled
-                ? 'bg-slate-200 dark:bg-[var(--bg-surface)] text-slate-400 dark:text-[var(--text-muted)] cursor-not-allowed hover:shadow-lg'
+                ? 'bg-[var(--bg-card)] text-[var(--text-muted)] cursor-not-allowed hover:shadow-lg'
                 : 'bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:shadow-xl'
             )}
           >

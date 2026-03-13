@@ -49,7 +49,7 @@ export const KpiCard = ({
   return (
     <div className={cn(
       'relative overflow-hidden rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-      'bg-white dark:bg-[var(--bg-surface)] p-5 md:p-6',
+      'bg-[var(--bg-surface)] p-5 md:p-6',
       'shadow-sm'
     )}>
       {/* ICON — uncomment to show icon
@@ -61,7 +61,7 @@ export const KpiCard = ({
       </div>
       */}
 
-      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[var(--text-secondary)] mb-2">
+      <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-muted)] mb-2">
         {title}
       </p>
 
@@ -82,12 +82,12 @@ export const KpiCard = ({
               {trend.value}%
             </span>
           )}
-          <span className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{trend.label}</span>
+          <span className="text-xs text-[var(--text-muted)]">{trend.label}</span>
         </div>
       )}
 
       {value === 0 && (
-        <p className="text-xl font-medium text-slate-300 dark:text-[var(--text-secondary)] mt-3 select-none">
+        <p className="text-xl font-medium text-[var(--text-muted)] mt-3 select-none">
           —
         </p>
       )}

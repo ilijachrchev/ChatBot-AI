@@ -127,7 +127,7 @@ export const OnboardingOverlay = () => {
                 </p>
               </div>
 
-              <div className="bg-white dark:bg-[var(--bg-surface)] shadow-xl rounded-2xl p-8 border border-border mb-8">
+              <div className="bg-[var(--bg-surface)] shadow-xl rounded-2xl p-8 border border-border mb-8">
                 <form className="flex flex-col gap-4" onSubmit={onAddDomain}>
                   <FormGenerator
                     inputType="input"

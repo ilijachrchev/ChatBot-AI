@@ -80,12 +80,12 @@ const CodeSnippet = ({ id }: Props) => {
       <div className="hidden sm:block w-full">
         <div className="relative rounded-lg bg-cream px-4 py-4">
           <Copy
-            className="absolute top-3 right-3 h-4 w-4 text-gray-500 cursor-pointer hover:text-gray-700"
+            className="absolute top-3 right-3 h-4 w-4 text-[var(--text-muted)] cursor-pointer hover:text-[var(--text-primary)]"
             onClick={handleCopy}
           />
-          <div className="max-h-96 overflow-x-auto overflow-y-auto rounded-md bg-white/70 px-3 py-3">
+          <div className="max-h-96 overflow-x-auto overflow-y-auto rounded-md bg-[var(--bg-surface)]/70 px-3 py-3">
             <pre className="whitespace-pre text-[11px] leading-relaxed">
-              <code className="text-gray-700">{snippet}</code>
+              <code className="text-[var(--text-primary)]">{snippet}</code>
             </pre>
           </div>
         </div>

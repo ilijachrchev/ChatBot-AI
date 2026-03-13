@@ -57,7 +57,7 @@ export const RealtimeSettings = ({
         <h1 className="text-2xl font-semibold text-[var(--text-primary)]">
           Realtime &amp; Human Handoff
         </h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+        <p className="mt-1 text-sm text-[var(--text-muted)]">
           Control whether this chatbot uses live infrastructure or runs as a stateless AI assistant.
         </p>
       </div>
@@ -68,7 +68,7 @@ export const RealtimeSettings = ({
             <p className="text-sm font-medium text-[var(--text-primary)]">
               Enable Realtime &amp; Human Handoff
             </p>
-            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+            <p className="text-sm text-[var(--text-muted)]">
               When enabled, all conversations are stored in the database, live dashboard updates
               are active, and human agents can take over at any time.
             </p>
@@ -88,7 +88,7 @@ export const RealtimeSettings = ({
             color: enabled ? 'rgb(21 128 61)' : 'rgb(100 116 139)',
           }}
         >
-          <span className={`h-1.5 w-1.5 rounded-full ${enabled ? 'bg-green-500' : 'bg-slate-400'}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${enabled ? 'bg-green-500' : 'bg-[var(--text-muted)]'}`} />
           {enabled ? 'Realtime mode is ON' : 'Stateless AI mode is ON'}
         </div>
       </div>
@@ -107,12 +107,12 @@ export const RealtimeSettings = ({
                 Email notifications for live chat requests
               </p>
             </div>
-            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+            <p className="text-sm text-[var(--text-muted)]">
               Get an email at{' '}
               <span className="font-medium text-[var(--text-secondary)]">{ownerEmail}</span>{' '}
               whenever a customer requests to speak with a human agent.
             </p>
-            <p className="text-xs text-slate-400 dark:text-[var(--text-muted)]">
+            <p className="text-xs text-[var(--text-muted)]">
               Only sends when Realtime is enabled and a customer triggers handoff.
             </p>
           </div>
@@ -131,12 +131,12 @@ export const RealtimeSettings = ({
             color: notificationsEnabled ? 'rgb(29 78 216)' : 'rgb(100 116 139)',
           }}
         >
-          <span className={`h-1.5 w-1.5 rounded-full ${notificationsEnabled ? 'bg-indigo-500' : 'bg-slate-400'}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${notificationsEnabled ? 'bg-indigo-500' : 'bg-[var(--text-muted)]'}`} />
           {notificationsEnabled ? 'Notifications ON' : 'Notifications OFF'}
         </div>
 
         {!enabled && (
-          <p className="mt-3 text-xs text-slate-400 dark:text-[var(--text-muted)]">
+          <p className="mt-3 text-xs text-[var(--text-muted)]">
             Enable Realtime first to use notifications.
           </p>
         )}
@@ -156,7 +156,7 @@ export const RealtimeSettings = ({
           </ul>
         </div>
 
-        <div className={`rounded-xl border p-5 space-y-3 transition-opacity ${!enabled ? 'border-[var(--border-strong)] bg-slate-50 dark:bg-[var(--bg-page)]/40' : 'border-[var(--border-default)] opacity-50'}`}>
+        <div className={`rounded-xl border p-5 space-y-3 transition-opacity ${!enabled ? 'border-[var(--border-strong)] bg-[var(--bg-card)]' : 'border-[var(--border-default)] opacity-50'}`}>
           <div className="flex items-center gap-2 text-sm font-medium text-[var(--text-secondary)]">
             <WifiOff className="h-4 w-4" />
             When Realtime is OFF
@@ -170,7 +170,7 @@ export const RealtimeSettings = ({
         </div>
       </div>
 
-      <p className="text-xs text-slate-400 dark:text-[var(--text-muted)]">
+      <p className="text-xs text-[var(--text-muted)]">
         Changes take effect immediately for new conversations. Existing open conversations are not affected.
       </p>
     </div>

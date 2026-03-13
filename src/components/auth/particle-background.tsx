@@ -29,8 +29,8 @@ const ParticleBackground = () => {
         left: ${left}%;
         top: ${Math.random() * 100}%;
         animation: flaot ${duration}s ease-in-out ${delay}s infinite;
-        background: rgba(96, 165, 250, ${opacity});
-        box-shadow: 0 0 ${size * 4}px rgba(96, 165, 250, ${opacity * 0.8});
+        background: rgba(99, 102, 241, ${opacity});
+        box-shadow: 0 0 ${size * 4}px rgba(99, 102, 241, ${opacity * 0.8});
         position: absolute;
         border-radius: 50%;
         pointer-events: none;
@@ -52,7 +52,7 @@ const ParticleBackground = () => {
       <div 
         className="absolute w-[600px] h-[600px] -top-48 -left-48 rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%)',
           filter: 'blur(80px)',
           animation: 'orb-float 20s ease-in-out infinite',
           animationDelay: '0s',
@@ -61,7 +61,7 @@ const ParticleBackground = () => {
       <div 
         className="absolute w-[500px] h-[500px] top-1/2 -right-48 rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.10) 0%, transparent 70%)',
           filter: 'blur(80px)',
           animation: 'orb-float 20s ease-in-out infinite',
           animationDelay: '2s',
@@ -70,7 +70,7 @@ const ParticleBackground = () => {
       <div 
         className="absolute w-[400px] h-[400px] -bottom-32 left-1/3 rounded-full"
         style={{
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%)',
           filter: 'blur(80px)',
           animation: 'orb-float 20s ease-in-out infinite',
           animationDelay: '4s',
@@ -81,8 +81,8 @@ const ParticleBackground = () => {
         className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(59, 130, 246, 0.3) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(59, 130, 246, 0.3) 1px, transparent 1px)
+            linear-gradient(rgba(99, 102, 241, 0.2) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(99, 102, 241, 0.2) 1px, transparent 1px)
           `,
           backgroundSize: '60px 60px',
         }}

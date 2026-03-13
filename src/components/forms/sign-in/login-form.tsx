@@ -89,11 +89,11 @@ const LoginForm = () => {
                         id='keepMeLoggedIn'
                         checked={keepMeLoggedIn}
                         onCheckedChange={(checked) => setValue('keepMeLoggedIn', checked)}
-                        className='border-white/20 data-[state=checked]:bg-indigo-500 data-[state=checked]:border-blue-500'
+                        className='border-white/20 data-[state=checked]:bg-[var(--primary)] data-[state=checked]:border-[var(--primary)]'
                     />
                     <label
                         htmlFor='keepMeLoggedIn'
-                        className='text-sm text-slate-300 cursor-pointer select-none'
+                        className='text-sm text-[var(--text-muted)] cursor-pointer select-none'
                     >
                         Keep me logged in
                     </label>
@@ -101,7 +101,7 @@ const LoginForm = () => {
 
                 <button
                     type='button'
-                    className='text-sm text-indigo-500 hover:text-indigo-400 transition-colors'
+                    className='text-sm text-[var(--primary)] hover:text-[var(--primary-hover)] transition-colors'
                 >
                     Forgot password?
                 </button>
@@ -109,7 +109,7 @@ const LoginForm = () => {
 
             <Button
                 type='submit'
-                className='w-full h-12 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all'
+                className='w-full h-12 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold rounded-xl shadow-lg shadow-[var(--primary)]/25 transition-all'
             >
                 Sign In
             </Button>
@@ -118,7 +118,7 @@ const LoginForm = () => {
                 Don't have an account?{' '}
                 <Link
                     href="/auth/sign-up"
-                    className="text-indigo-500 hover:text-indigo-400 font-semibold transition-colors"
+                    className="text-[var(--primary)] hover:text-[var(--primary-hover)] font-semibold transition-colors"
                 >
                     Create one
                 </Link>

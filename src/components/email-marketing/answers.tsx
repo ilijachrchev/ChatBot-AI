@@ -20,14 +20,14 @@ const Answers = ({ id }: Props) => {
                 customer.questions.map((question, questionIndex) => (
                   <div
                     key={`${answerIndex}-${customerIndex}-${questionIndex}`}
-                    className="p-4 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]"
+                    className="p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)]"
                   >
                     <div className="flex items-start gap-3 mb-2">
                       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
                         <MessageSquare className="h-4 w-4 text-[var(--text-accent)]" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-semibold text-slate-950 dark:text-[var(--text-primary)] mb-1">
+                        <p className="font-semibold text-[var(--text-primary)] mb-1">
                           {question.question}
                         </p>
                         <p className="text-sm text-[var(--text-secondary)]">

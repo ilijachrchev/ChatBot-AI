@@ -114,7 +114,7 @@ export const RecurringCampaignModal = ({
           <DialogTitle className="text-xl font-bold text-[var(--text-primary)]">
             Create Recurring Campaign
           </DialogTitle>
-          <DialogDescription className="text-slate-500 dark:text-[var(--text-secondary)]">
+          <DialogDescription className="text-[var(--text-muted)]">
             Automatically send this campaign on a schedule
           </DialogDescription>
         </DialogHeader>
@@ -236,7 +236,7 @@ export const RecurringCampaignModal = ({
             </div>
           )}
 
-          <div className="rounded-xl bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)] p-4">
+          <div className="rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)] p-4">
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
               {selectedCount === 0
                 ? 'Select customers first to preview the schedule'

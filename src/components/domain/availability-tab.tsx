@@ -103,7 +103,7 @@ export function AvailabilityTab({
               <Label htmlFor='enable-hours' className='text-sm font-medium'>
                 Enable Working Hours
               </Label>
-              <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+              <p className='text-xs text-[var(--text-muted)]'>
                 Restrict chatbot availability to specific hours
               </p>
             </div>
@@ -237,7 +237,7 @@ export function AvailabilityTab({
               className='resize-none'
               placeholder='Enter your offline message...'
             />
-            <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+            <p className='text-xs text-[var(--text-muted)]'>
               This message will be shown to visitors when you're offline
             </p>
           </div>
@@ -264,7 +264,7 @@ export function AvailabilityTab({
               <Label htmlFor='enable-handoff' className='text-sm font-medium'>
                 Enable Human Handoff
               </Label>
-              <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+              <p className='text-xs text-[var(--text-muted)]'>
                 Allow visitors to request a human agent
               </p>
             </div>
@@ -321,7 +321,7 @@ export function AvailabilityTab({
                   className='flex h-11 w-full rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] px-3 py-2 text-sm'
                   placeholder='support@example.com'
                 />
-                <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)]'>
+                <p className='text-xs text-[var(--text-muted)]'>
                   Receive notifications when a human handoff is requested.
                 </p>
               </div>

@@ -92,7 +92,7 @@ const BillingSettings = async (props: Props) => {
           <label className="text-sm font-medium text-[var(--text-secondary)] mb-3 block">
             Payment Method
           </label>
-          <div className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-hover)]">
+          <div className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)]">
             <div className="flex items-center gap-4">
               <div className="h-12 w-16 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
                 <CreditCard className="h-6 w-6 text-white" />

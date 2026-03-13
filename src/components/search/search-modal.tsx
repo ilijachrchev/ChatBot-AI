@@ -45,7 +45,7 @@ const PAGE_ICONS: Record<string, React.ReactNode> = {
   '/account/security': <Shield className="h-4 w-4 text-purple-500" />,
   '/billing': <CreditCard className="h-4 w-4 text-green-500" />,
   '/account/notifications': <Bell className="h-4 w-4 text-yellow-500" />,
-  '/account/preferences': <Settings className="h-4 w-4 text-slate-500" />,
+  '/account/preferences': <Settings className="h-4 w-4 text-[var(--text-muted)]" />,
 }
 
 type FlatResult = {

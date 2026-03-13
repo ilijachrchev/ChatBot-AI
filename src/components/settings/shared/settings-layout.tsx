@@ -42,7 +42,7 @@ export function SettingsLayout({ user, subscriptionPlan, children }: SettingsLay
   const config = sectionTitles[pathname || '/account'] || sectionTitles['/account']
 
   return (
-    <div className='min-h-screen bg-slate-50 dark:bg-[var(--bg-page)] flex'>
+    <div className='min-h-screen bg-[var(--bg-page)] flex'>
       <SettingsSidebar
         userName={user.fullname}
         userEmail={user.email}
@@ -54,7 +54,7 @@ export function SettingsLayout({ user, subscriptionPlan, children }: SettingsLay
           <div className='mb-8 animate-fade-in'>
             <Link
               href='/dashboard'
-              className='inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-slate-900 dark:hover:text-white transition-colors mb-6 group'
+              className='inline-flex items-center gap-2 text-sm text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors mb-6 group'
             >
               <ArrowLeft className='w-4 h-4 group-hover:-translate-x-1 transition-transform' />
               Back to Dashboard

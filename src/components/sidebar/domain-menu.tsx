@@ -42,7 +42,7 @@ const DomainMenu = ({ domains, min }: Props) => {
     <div className={cn('flex flex-col gap-1.5 md:gap-2', min ? 'mt-2 md:mt-4' : 'mt-1.5 md:mt-2')}>
       <div className="flex justify-between w-full items-center">
         {!min && (
-          <p className="text-xs font-semibold text-slate-500 dark:text-[var(--text-secondary)] uppercase tracking-wider">
+          <p className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider">
             Domains
           </p>
         )}
@@ -134,7 +134,7 @@ const DomainMenu = ({ domains, min }: Props) => {
                     !isActive && [
                       'text-[var(--text-secondary)]',
                       'hover:bg-[var(--bg-hover)]',
-                      'hover:text-slate-900 dark:hover:text-white'
+                      'hover:text-[var(--text-primary)]'
                     ]
                   )}
                 >

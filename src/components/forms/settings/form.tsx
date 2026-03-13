@@ -126,7 +126,7 @@ const SettingsForm = ({
                   <Globe className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
+                  <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Domain Configuration
                   </h3>
                   <p className="text-sm text-[var(--text-secondary)]">
@@ -147,7 +147,7 @@ const SettingsForm = ({
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
+                      <h3 className="text-lg font-bold text-[var(--text-primary)]">
                         Embed Code
                       </h3>
                       <Badge variant="secondary" className="text-xs font-semibold">
@@ -223,7 +223,7 @@ const SettingsForm = ({
                     <Palette className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]">
+                    <h3 className="text-lg font-bold text-[var(--text-primary)]">
                       Chatbot Appearance & Customization
                     </h3>
                     <p className="text-sm text-[var(--text-secondary)]">

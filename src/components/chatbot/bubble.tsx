@@ -58,7 +58,7 @@ const Bubble = ({
       message.role == 'assistant' ? 'self-start' : 'self-end flex-row-reverse'
     )}>
       {message.role == 'assistant' ? (
-        <Avatar className='w-6 h-6 flex-shrink-0 border border-gray-200'>
+        <Avatar className='w-6 h-6 flex-shrink-0 border border-[var(--border)]'>
           {botIcon ? (
             <AvatarImage src={botIcon} alt="bot" className="object-cover" />
           ) : (
@@ -74,9 +74,9 @@ const Bubble = ({
           )}
         </Avatar>
       ) : (
-        <Avatar className="w-6 h-6 flex-shrink-0 border border-gray-200">
-          <AvatarFallback className="bg-gray-100">
-            <User className="w-3 h-3 text-gray-600" />
+        <Avatar className="w-6 h-6 flex-shrink-0 border border-[var(--border)]">
+          <AvatarFallback className="bg-[var(--bg-card)]">
+            <User className="w-3 h-3 text-[var(--text-primary)]" />
           </AvatarFallback>
         </Avatar>
       )}
@@ -113,7 +113,7 @@ const Bubble = ({
           )}
 
           {isImageUrl ? (
-              <div className='relative w-full max-w-[200px] h-[180px] rounded-lg overflow-hidden bg-gray-100 border border-gray-200'>
+              <div className='relative w-full max-w-[200px] h-[180px] rounded-lg overflow-hidden bg-[var(--bg-card)] border border-[var(--border)]'>
                   <img 
                       src={message.content}
                       alt="Uploaded Image"

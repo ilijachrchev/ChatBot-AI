@@ -34,7 +34,7 @@ export const ColorPicker = ({ defaultColor = '#3B82F6', setValue }: ColorPickerP
     <div className='flex flex-col gap-4'>
       <div className='flex items-center gap-2'>
         <Paintbrush className='h-4 w-4 text-[var(--text-secondary)]' />
-        <label className='text-sm font-medium text-slate-700 dark:text-[var(--text-primary)]'>
+        <label className='text-sm font-medium text-[var(--text-primary)]'>
           Chatbot Color
         </label>
       </div>
@@ -82,7 +82,7 @@ export const ColorPicker = ({ defaultColor = '#3B82F6', setValue }: ColorPickerP
         </div>
       </div>
 
-      <div className='flex items-center gap-3 p-3 rounded-lg border border-[var(--border-default)] bg-slate-50 dark:bg-[var(--bg-page)]'>
+      <div className='flex items-center gap-3 p-3 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)]'>
         <div
           className='h-8 w-8 rounded-full border-2 border-white shadow-md'
           style={{ backgroundColor: selectedColor }}

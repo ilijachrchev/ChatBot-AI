@@ -97,7 +97,7 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
     <Card className='border-[var(--border-default)]'>
       <CardHeader>
         <div className='flex items-center gap-3'>
-          <div className='w-10 h-10 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] flex items-center justify-center'>
+          <div className='w-10 h-10 rounded-lg bg-[var(--bg-card)] flex items-center justify-center'>
             <Clock className='w-5 h-5 text-[var(--text-primary)]' />
           </div>
           <div className='flex-1'>
@@ -160,7 +160,7 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       isSelected
                         ? 'bg-indigo-500 text-white'
-                        : 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:bg-slate-200 dark:hover:bg-[var(--bg-active)]'
+                        : 'bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-card)]'
                     }`}
                   >
                     {day.label}

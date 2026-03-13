@@ -22,7 +22,7 @@ export function SyntaxHighlighterComponent({
   if (!mounted) {
     return (
       <pre className="bg-[var(--bg-active)] p-4 rounded-lg overflow-x-auto">
-        <code className="text-sm text-gray-300">{code}</code>
+        <code className="text-sm text-[var(--text-muted)]">{code}</code>
       </pre>
     )
   }

@@ -32,7 +32,7 @@ export const FeatureLockCard = ({ planRequired, feature }: Props) => {
           <p className="font-bold text-[var(--text-primary)] text-sm">
             {isPro ? 'Pro Feature' : 'Ultimate Feature'}
           </p>
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] leading-relaxed">
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
             {feature}
           </p>
         </div>

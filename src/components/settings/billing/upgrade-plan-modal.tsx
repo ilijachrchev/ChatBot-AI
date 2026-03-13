@@ -141,10 +141,10 @@ export function UpgradePlanModal({
             </DialogHeader>
 
             <div className="space-y-6 py-4">
-              <div className="bg-slate-50 dark:bg-[var(--bg-page)] rounded-lg p-6">
+              <div className="bg-[var(--bg-card)] rounded-lg p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div>
-                    <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">Current Plan</p>
+                    <p className="text-sm text-[var(--text-muted)]">Current Plan</p>
                     <p className="text-xl font-semibold text-[var(--text-primary)]">
                       {currentPlanDetails.displayName}
                     </p>
@@ -156,7 +156,7 @@ export function UpgradePlanModal({
                   <ArrowRight className="w-6 h-6 text-[var(--text-muted)]" />
                   
                   <div>
-                    <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">New Plan</p>
+                    <p className="text-sm text-[var(--text-muted)]">New Plan</p>
                     <p className="text-xl font-semibold text-[var(--text-primary)]">
                       {targetPlanDetails.displayName}
                     </p>
@@ -174,7 +174,7 @@ export function UpgradePlanModal({
                         {targetPlanDetails.priceDisplay}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-1">
+                    <p className="text-xs text-[var(--text-muted)] mt-1">
                       Billed monthly • Cancel anytime
                     </p>
                   </div>
@@ -212,7 +212,7 @@ export function UpgradePlanModal({
 
               <Separator />
 
-              <div className="text-xs text-slate-500 dark:text-[var(--text-secondary)] space-y-1">
+              <div className="text-xs text-[var(--text-muted)] space-y-1">
                 <p>
                   • Your card will be charged {targetPlanDetails.priceDisplay} today
                 </p>

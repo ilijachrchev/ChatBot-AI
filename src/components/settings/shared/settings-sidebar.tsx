@@ -98,7 +98,7 @@ export function SettingsSidebar({
 
             <button
               onClick={() => setCollapsed(!collapsed)}
-              className='hidden lg:block p-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-slate-900 dark:hover:text-white transition-colors'
+              className='hidden lg:block p-2 rounded-lg hover:bg-[var(--bg-hover)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors'
             >
               {collapsed ? (
                 <ChevronLeft className='w-4 h-4 rotate-180' />
@@ -145,7 +145,7 @@ export function SettingsSidebar({
                                 collapsed ? 'justify-center' : 'justify-start',
                                 isActive
                                   ? 'bg-indigo-500 text-white font-semibold'
-                                  : 'font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-slate-900 dark:hover:text-white'
+                                  : 'font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
                               )}
                               title={collapsed ? item.label : undefined}
                             >
@@ -166,7 +166,7 @@ export function SettingsSidebar({
 
           {!collapsed && (
             <div className='p-4 border-t border-[var(--border-default)]'>
-              <div className='flex items-center gap-3 p-3 rounded-xl bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]'>
+              <div className='flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)]'>
                 <div className='w-10 h-10 rounded-full bg-slate-900 dark:bg-white flex items-center justify-center text-[var(--text-primary)] font-semibold text-sm flex-shrink-0'>
                   {userName.charAt(0).toUpperCase()}
                 </div>

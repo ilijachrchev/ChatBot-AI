@@ -156,7 +156,7 @@ export const MinMenu = ({
                   : [
                       'text-[var(--text-secondary)]',
                       'hover:bg-[var(--bg-hover)]',
-                      'hover:text-slate-900 dark:hover:text-white',
+                      'hover:text-[var(--text-primary)]',
                     ]
               )}
             >

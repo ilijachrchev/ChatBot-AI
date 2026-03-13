@@ -62,13 +62,13 @@ export const ScheduleEmail = ({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-2 p-3 rounded-lg bg-slate-50 dark:bg-[var(--bg-page)]/50 border border-[var(--border-default)]">
-        <Globe className="h-4 w-4 text-slate-500 dark:text-[var(--text-secondary)]" />
+      <div className="flex items-center gap-2 p-3 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
+        <Globe className="h-4 w-4 text-[var(--text-muted)]" />
         <div className="flex-1">
           <p className="text-sm font-medium text-[var(--text-primary)]">
             Your timezone: {userTimezone}
           </p>
-          <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">
+          <p className="text-xs text-[var(--text-muted)]">
             All times shown in your local timezone
           </p>
         </div>
@@ -79,7 +79,7 @@ export const ScheduleEmail = ({
           className={cn(
             'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
             sendType === 'immediate'
-              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-[var(--bg-page)]/50'
+              ? 'border-slate-900 dark:border-white bg-[var(--bg-card)]'
               : 'border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
           )}
           onClick={() => setSendType('immediate')}
@@ -99,7 +99,7 @@ export const ScheduleEmail = ({
                 Send Immediately
               </span>
             </div>
-            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+            <p className="text-sm text-[var(--text-muted)]">
               Campaign will be sent right away to all recipients
             </p>
           </div>
@@ -109,7 +109,7 @@ export const ScheduleEmail = ({
           className={cn(
             'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
             sendType === 'scheduled'
-              ? 'border-slate-900 dark:border-white bg-slate-50 dark:bg-[var(--bg-page)]/50'
+              ? 'border-slate-900 dark:border-white bg-[var(--bg-card)]'
               : 'border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
           )}
           onClick={() => setSendType('scheduled')}
@@ -129,7 +129,7 @@ export const ScheduleEmail = ({
                 Schedule for Later
               </span>
             </div>
-            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">
+            <p className="text-sm text-[var(--text-muted)]">
               Choose a specific date and time to send
             </p>
           </div>
@@ -138,7 +138,7 @@ export const ScheduleEmail = ({
 
       {sendType === 'scheduled' && (
         <div className="space-y-4">
-          <div className="p-4 rounded-xl bg-slate-50 dark:bg-[var(--bg-page)] border border-[var(--border-default)]">
+          <div className="p-4 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)]">
             <div className="mb-4">
               <Label className="text-sm font-medium mb-2 block text-[var(--text-secondary)]">
                 <div className="flex items-center gap-2">
@@ -188,7 +188,7 @@ export const ScheduleEmail = ({
             </div>
 
             {selectedDate && selectedTime && (
-              <div className="mt-4 p-3 rounded-lg bg-slate-100 dark:bg-[var(--bg-surface)] border border-[var(--border-default)] dark:border-[var(--border-strong)]">
+              <div className="mt-4 p-3 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)] dark:border-[var(--border-strong)]">
                 <p className="text-sm font-medium text-[var(--text-primary)]">
                   Campaign will send at:
                 </p>
