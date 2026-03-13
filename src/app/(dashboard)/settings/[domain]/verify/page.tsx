@@ -29,7 +29,7 @@ const DomainVerifyPage = async ({ params }: Props) => {
   }
 
   return (
-    <>
+    <div className='flex flex-col h-full'>
       <InfoBar />
       <div className='overflow-y-auto w-full chat-window flex-1 h-0'>
         <div className='max-w-5xl mx-auto py-8 px-4 md:px-6'>
@@ -43,7 +43,7 @@ const DomainVerifyPage = async ({ params }: Props) => {
           />
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

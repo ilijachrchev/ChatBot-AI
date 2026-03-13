@@ -5,59 +5,61 @@
 @layer base {
   :root {
     /* shadcn tokens - light mode */
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --card: 210 40% 98%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 239 84% 67%;
+    --background: 30 33% 97%;
+    --foreground: 0 0% 17%;
+    --card: 30 55% 88%;
+    --card-foreground: 0 0% 17%;
+    --popover: 30 33% 97%;
+    --popover-foreground: 0 0% 17%;
+    --primary: 208 38% 64%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 214 95% 93%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 239 84% 67%;
+    --secondary: 198 42% 76%;
+    --secondary-foreground: 0 0% 17%;
+    --muted: 30 25% 90%;
+    --muted-foreground: 25 14% 47%;
+    --accent: 208 38% 64%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --success: 160 61% 52%;
     --success-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 239 84% 67%;
+    --border: 32 25% 76%;
+    --input: 32 25% 76%;
+    --ring: 208 38% 64%;
     --radius: 0.5rem;
-    --chart-1: 239 84% 67%;
-    --chart-2: 160 61% 52%;
-    --chart-3: 232 95% 82%;
+    --chart-1: 208 38% 64%;
+    --chart-2: 198 42% 76%;
+    --chart-3: 30 55% 88%;
     --chart-4: 39 84% 52%;
     --chart-5: 346 77% 50%;
 
-    /* Slate & Indigo design tokens — always available */
-    --bg-page:          #0F1117;
-    --bg-surface:       #161A23;
-    --bg-active:        #1E2340;
-    --bg-input:         #12151E;
-    --bg-hover:         #1A1F2E;
-    --color-accent:     #6366F1;
-    --accent-light:     #A5B4FC;
-    --accent-muted:     #1E2340;
-    --text-primary:     #F1F5F9;
-    --text-secondary:   #94A3B8;
-    --text-muted:       #64748B;
-    --text-accent:      #A5B4FC;
-    --border-default:   rgba(255, 255, 255, 0.06);
-    --border-strong:    rgba(255, 255, 255, 0.10);
-    --border-accent:    rgba(99, 102, 241, 0.20);
+    /* Semantic tokens — light mode */
+    --bg-page:          #FAF7F4;
+    --bg-surface:       #F3E3D0;
+    --bg-surface-2:     #EDD9C4;
+    --bg-active:        #E8EFF5;
+    --bg-input:         #FFFFFF;
+    --bg-hover:         #EDD9C4;
+    --color-accent:     #81A6C6;
+    --accent-light:     #AACDDC;
+    --accent-muted:     #E8EFF5;
+    --text-primary:     #2C2C2C;
+    --text-secondary:   #6B5B4E;
+    --text-muted:       #9E8E82;
+    --text-accent:      #81A6C6;
+    --border-default:   #D2C4B4;
+    --border-strong:    #BFB0A4;
+    --border-accent:    rgba(129, 166, 198, 0.30);
+    --border-subtle:    #E8DDD4;
     --status-online:    #22C55E;
     --status-warn:      #F59E0B;
     --status-error:     #EF4444;
     --status-success:   #34D399;
-    --badge-bg:         #1E2340;
-    --badge-text:       #818CF8;
-    --scrollbar-track:  #0F1117;
-    --scrollbar-thumb:  #1E2340;
-    --scrollbar-hover:  #6366F1;
+    --badge-bg:         #E8EFF5;
+    --badge-text:       #81A6C6;
+    --scrollbar-track:  #F3E3D0;
+    --scrollbar-thumb:  #D2C4B4;
+    --scrollbar-hover:  #81A6C6;
 
     --payment-bg: #FDFFFC;
     --payment-accent: #4D7298;
@@ -67,34 +69,83 @@
   }
 
   .dark {
-    /* shadcn tokens — Slate & Indigo dark */
-    --background: 228 21% 7%;           /* #0F1117  bg-page   */
-    --foreground: 214 32% 96%;          /* #F1F5F9  text-primary */
-    --card: 226 23% 11%;                /* #161A23  bg-surface */
-    --card-foreground: 214 32% 96%;
-    --popover: 226 23% 11%;             /* #161A23  bg-surface */
-    --popover-foreground: 214 32% 96%;
-    --primary: 239 84% 67%;             /* #6366F1  accent    */
-    --primary-foreground: 0 0% 100%;
-    --secondary: 237 36% 18%;           /* #1E2340  bg-active */
-    --secondary-foreground: 232 95% 82%; /* #A5B4FC accent-light */
-    --muted: 237 36% 18%;               /* #1E2340  bg-active */
-    --muted-foreground: 215 16% 47%;    /* #64748B  text-muted */
-    --accent: 239 84% 67%;              /* #6366F1  accent    */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;           /* #EF4444 */
-    --destructive-foreground: 0 0% 100%;
-    --success: 160 61% 52%;             /* #34D399 */
-    --success-foreground: 0 0% 100%;
-    --border: 228 12% 13%;              /* ≈ rgba(255,255,255,0.06) */
-    --input: 228 16% 15%;               /* ≈ rgba(255,255,255,0.10) */
-    --ring: 239 84% 67%;                /* #6366F1 */
-    --chart-1: 239 84% 67%;
-    --chart-2: 160 61% 52%;
-    --chart-3: 232 95% 82%;
-    --chart-4: 39 84% 52%;
-    --chart-5: 346 77% 50%;
-  }
+    /* shadcn tokens — neutral dark */
+  --background: 222 20% 8%;          /* #0F1117 page background */
+  --foreground: 210 20% 96%;         /* #F1F5F9 text */
+
+  --card: 222 18% 12%;               /* #161B27 cards */
+  --card-foreground: 210 20% 96%;
+
+  --popover: 222 18% 12%;
+  --popover-foreground: 210 20% 96%;
+
+  --primary: 208 38% 64%;            /* #81A6C6 accent */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 222 18% 18%;          /* hover / secondary surface */
+  --secondary-foreground: 210 20% 96%;
+
+  --muted: 222 18% 18%;
+  --muted-foreground: 215 16% 65%;
+
+  --accent: 208 38% 64%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+
+  --success: 160 61% 52%;
+  --success-foreground: 0 0% 100%;
+
+  --border: 220 14% 22%;             /* #2D3748 */
+  --input: 222 18% 18%;
+  --ring: 208 38% 64%;
+
+  --chart-1: 208 38% 64%;
+  --chart-2: 198 42% 76%;
+  --chart-3: 222 18% 18%;
+  --chart-4: 39 84% 52%;
+  --chart-5: 346 77% 50%;
+
+  --sidebar-background: 222 20% 8%;
+  --sidebar-border: 220 14% 22%;
+  --sidebar-accent: 222 18% 18%;
+
+  /* Semantic tokens */
+  --bg-page: #0F1117;
+  --bg-surface: #161B27;
+  --bg-surface-2: #1E2435;
+
+  --bg-active: #1E293B;
+  --bg-input: #1E2435;
+  --bg-hover: #1E293B;
+
+  --color-accent: #81A6C6;
+  --accent-light: #AACDDC;
+  --accent-muted: #1E293B;
+
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --text-accent: #81A6C6;
+
+  --border-default: #2D3748;
+  --border-strong: rgba(255,255,255,0.12);
+  --border-accent: rgba(129,166,198,0.30);
+  --border-subtle: rgba(255,255,255,0.06);
+
+  --status-online: #22C55E;
+  --status-warn: #F59E0B;
+  --status-error: #EF4444;
+  --status-success: #34D399;
+
+  --badge-bg: #1E2435;
+  --badge-text: #81A6C6;
+
+  --scrollbar-track: #0F1117;
+  --scrollbar-thumb: #2D3748;
+  --scrollbar-hover: #81A6C6;
+}
 
   * {
     @apply border-border;
@@ -109,7 +160,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* ─── Global scrollbar — Slate & Indigo ─────────────────────────────────── */
+/* ─── Global scrollbar ───────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -200,9 +251,13 @@ section[id] {
 
 /* ─── Glass card ─────────────────────────────────────────────────────────── */
 .glass-card {
-  background: rgba(22, 26, 35, 0.8);
+  background: rgba(243, 227, 208, 0.8);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-default);
+}
+
+.dark .glass-card {
+  background: rgba(35, 76, 106, 0.85);
 }
 
 /* ─── Sonner toasts ──────────────────────────────────────────────────────── */

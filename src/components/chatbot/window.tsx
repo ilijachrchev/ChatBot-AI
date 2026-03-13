@@ -150,12 +150,12 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
     const getSizeClasses = () => {
       switch (widgetSize) {
         case 'COMPACT':
-          return 'h-[500px] w-[360px]'
+          return 'w-screen h-screen sm:h-[500px] sm:w-[360px]'
         case 'FULL':
-          return 'h-[700px] w-[480px]'
+          return 'w-screen h-screen sm:h-[700px] sm:w-[480px]'
         case 'MEDIUM':
         default:
-          return 'h-[600px] w-[420px]'
+          return 'w-screen h-screen sm:h-[600px] sm:w-[420px]'
       }
     }
     const getStyleClasses = () => {
@@ -209,8 +209,10 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
 
     return (
       <div className={cn(
-        'flex flex-col rounded-2xl shadow-xl overflow-hidden',
-        chatPosition === 'BOTTOM_LEFT' ? 'ml-[80px]' : 'mr-[80px]',
+        'flex flex-col overflow-hidden shadow-xl',
+        'fixed inset-0 rounded-none',
+        'sm:static sm:inset-auto sm:rounded-2xl',
+        chatPosition === 'BOTTOM_LEFT' ? 'sm:ml-[80px]' : 'sm:mr-[80px]',
         getSizeClasses(),
         getStyleClasses()
       )}>

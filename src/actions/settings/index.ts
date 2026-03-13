@@ -148,7 +148,7 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
         domains: {
           where: {
             name: {
-              equals: domain,
+              contains: domain,
             },
           },
           select: {

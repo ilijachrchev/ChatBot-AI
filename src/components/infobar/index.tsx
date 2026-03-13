@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react'
 import BreadCrumb from './bread-crumb'
 import {
-  Headphones,
   Bell,
   User,
   Shield,
@@ -12,7 +11,9 @@ import {
   AlertTriangle,
   CheckCircle,
   CreditCard,
+  Search,
 } from 'lucide-react'
+import { SearchModal } from '@/components/search/search-modal'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 import {
   DropdownMenu,
@@ -137,8 +138,20 @@ const InfoBar = (props: Props) => {
   const { signOut } = useClerk()
   const router = useRouter()
   const [customAvatar, setCustomAvatar] = useState<string | null>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
   const { notifications, unreadCount, loading, open, onOpen, onClose, onDelete } =
     useNotifications()
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault()
+        setSearchOpen(true)
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   useEffect(() => {
     const fetchAvatar = async () => {
@@ -166,38 +179,42 @@ const InfoBar = (props: Props) => {
   const avatarUrl = customAvatar || user?.imageUrl
 
   return (
-    <div className="flex w-full items-center py-3 md:py-4 mb-4 md:mb-6 gap-3 md:gap-4">
+    <div className="flex w-full items-center border-b border-border px-6 py-4 min-h-[64px] bg-transparent mb-6">
       <div className="flex-1 min-w-0">
         <BreadCrumb />
       </div>
 
-      <div className="flex gap-2 md:gap-3 items-center flex-shrink-0">
+      <div className="flex items-center gap-3 flex-shrink-0">
+        <button
+          onClick={() => setSearchOpen(true)}
+          className={cn(
+            'relative hidden sm:flex items-center gap-2',
+            'h-9 w-[220px] rounded-full border border-border bg-transparent',
+            'pl-9 pr-3 text-sm text-muted-foreground',
+            'hover:border-ring hover:text-foreground transition-colors cursor-pointer'
+          )}
+        >
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 pointer-events-none" />
+          <span className="flex-1 text-left">Search...</span>
+          <kbd className="hidden lg:flex items-center gap-0.5 rounded border border-border bg-muted px-1.5 text-[10px] text-muted-foreground/70 font-sans">
+            ⌘K
+          </kbd>
+        </button>
+
         <DropdownMenu open={open} onOpenChange={(v) => (v ? onOpen() : onClose())}>
           <DropdownMenuTrigger asChild>
             <div className="relative">
-              <button
-                className={cn(
-                  'h-9 w-9 md:h-10 md:w-10 rounded-lg',
-                  'border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-                  'bg-[var(--bg-page)]',
-                  'hover:bg-[var(--bg-hover)]',
-                  'hover:border-blue-300 dark:hover:border-blue-700',
-                  'transition-all duration-200',
-                  'flex items-center justify-center group'
-                )}
-              >
-                <Bell className="h-4 w-4 text-[var(--text-secondary)] group-hover:text-indigo-500 transition-colors" />
+              <button className="h-9 w-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+                <Bell className="h-4 w-4" />
               </button>
               {unreadCount > 0 && (
                 <span
                   className={cn(
                     'absolute -top-1 -right-1',
-                    'h-5 min-w-[20px] px-1 rounded-full',
-                    'bg-gradient-to-br from-rose-500 to-rose-600',
-                    'text-white text-xs font-semibold',
+                    'h-4 min-w-[16px] px-0.5 rounded-full',
+                    'bg-rose-500 text-white text-[10px] font-semibold',
                     'flex items-center justify-center',
-                    'shadow-lg shadow-rose-500/50',
-                    'ring-2 ring-white dark:ring-slate-900'
+                    'ring-2 ring-background'
                   )}
                 >
                   {unreadCount > 99 ? '99+' : unreadCount}
@@ -263,29 +280,15 @@ const InfoBar = (props: Props) => {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <Avatar
-          className={cn(
-            'h-9 w-9 md:h-10 md:w-10',
-            'ring-2 ring-offset-2 ring-blue-500/20',
-            'hover:ring-blue-500/40',
-            'transition-all cursor-pointer',
-            'ring-offset-white dark:ring-offset-slate-950'
-          )}
-        >
-          <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white">
-            <Headphones className="h-4 w-4" />
-          </AvatarFallback>
-        </Avatar>
-
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Avatar
               className={cn(
-                'h-9 w-9 md:h-10 md:w-10',
-                'ring-2 ring-offset-2 ring-slate-200 dark:ring-[var(--border-strong)]',
+                'h-9 w-9',
+                'ring-2 ring-offset-2 ring-border',
                 'hover:ring-blue-500/40',
                 'transition-all cursor-pointer',
-                'ring-offset-white dark:ring-offset-slate-950'
+                'ring-offset-background'
               )}
             >
               <AvatarImage src={avatarUrl || undefined} alt={displayName || 'User'} className="object-cover" />
@@ -369,6 +372,7 @@ const InfoBar = (props: Props) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   )
 }

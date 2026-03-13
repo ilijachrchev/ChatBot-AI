@@ -19,7 +19,7 @@ const TeaserBubble = ({ message, position, onDismiss }: Props) => {
       exit={{ opacity: 0, y: 8, scale: 0.95 }}
       transition={{ duration: 0.25, ease: 'easeOut' }}
       className={cn(
-        'absolute bottom-0 z-50',
+        'absolute bottom-0 z-50 hidden sm:block',
         position === 'left' ? 'right-[88px]' : 'left-[88px]'
       )}
     >

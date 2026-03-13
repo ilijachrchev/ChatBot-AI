@@ -129,7 +129,7 @@ const AiChatBot = (props: Props) => {
                 persona={currentBot?.chatBot?.persona ?? undefined}
             />
         )}
-        <div className="relative w-20 h-20 flex-shrink-0">
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex-shrink-0">
             <AnimatePresence>
                 {showTeaser && !teaserDismissed && !botOpened && (
                     <TeaserBubble
@@ -148,7 +148,7 @@ const AiChatBot = (props: Props) => {
             )}
             <div
                 className={cn(
-                  'rounded-full cursor-pointer shadow-md w-20 h-20 flex items-center justify-center'
+                  'rounded-full cursor-pointer shadow-md w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center'
                 )}
                 style={{ backgroundColor: themeColor }}
                 onClick={handleOpenChatBot}

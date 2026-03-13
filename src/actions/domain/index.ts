@@ -7,7 +7,7 @@ import {
   generateVerificationToken 
 } from '@/lib/domain-utils'
 import { verifyDomainOwnership } from '@/lib/domain-verification'
-import { Domain } from '@/generated/prisma/wasm'
+import { Domain } from '@prisma/client'
 
 
 export const onCreateDomain = async (
