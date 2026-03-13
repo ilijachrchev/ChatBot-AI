@@ -37,7 +37,7 @@ const BotTrainingPage = async ({ params }: Props) => {
           <BotTrainingForm id={currentDomain.id} />
         </div>
         
-        {isLocked && <DomainLockedOverlay />}
+        {isLocked && <DomainLockedOverlay domainId={currentDomain.id} />}
       </div>
     </>
   )

@@ -41,7 +41,7 @@ const AIPersonaPage = async ({ params }: Props) => {
           />
         </div>
 
-        {isLocked && <DomainLockedOverlay />}
+        {isLocked && <DomainLockedOverlay domainId={currentDomain.id} />}
       </div>
     </>
   )

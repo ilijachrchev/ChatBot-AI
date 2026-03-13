@@ -3,7 +3,7 @@
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { mkdir, unlink, writeFile } from 'fs/promises'
-import { join } from 'path'
+import { join, resolve } from 'path'
 
 export const getKnowledgeBaseFiles = async (domainId?: string) => {
   try {
@@ -120,7 +120,11 @@ export const deleteKnowledgeBaseFile = async (fileId: string) => {
     )
 
     try {
-      const fullPath = join(process.cwd(), 'public', file.filePath.replace(/^\//, ''))
+      const uploadsDir = resolve(process.cwd(), 'public', 'uploads')
+      const fullPath = resolve(process.cwd(), 'public', file.filePath.replace(/^\//, ''))
+      if (!fullPath.startsWith(uploadsDir)) {
+        throw new Error('Invalid file path')
+      }
       await unlink(fullPath)
     } catch (fileError) {
       console.error('Error deleting physical file:', fileError)
@@ -185,7 +189,11 @@ export const scrapeWebsiteToKnowledgeBase = async (
   domainId?: string
 ) => {
   try {
-    const scrapeRes = await fetch('http://localhost:3001/scrape', {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const scraperBase = process.env.SCRAPER_SERVICE_URL || 'http://localhost:3001'
+    const scrapeRes = await fetch(`${scraperBase}/scrape`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ url, maxPages }),

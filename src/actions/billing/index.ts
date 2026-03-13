@@ -184,6 +184,11 @@ export const onDeletePaymentMethod = async (paymentMethodId: string) => {
       return { success: false, message: 'No Stripe customer found' }
     }
 
+    const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId)
+    if (paymentMethod.customer !== profile.stripeCustomerId) {
+      return { success: false, message: 'Unauthorized' }
+    }
+
     await stripe.paymentMethods.detach(paymentMethodId)
 
     return { success: true, message: 'Payment method removed' }
@@ -364,15 +369,17 @@ export const onChargeWithSavedCard = async (
     if (paymentIntent.status === 'succeeded') {
        const result = await onUpdateSubscription(plan)
       
+      const usedPaymentMethod = paymentIntent.payment_method
+        ? await stripe.paymentMethods.retrieve(paymentIntent.payment_method as string)
+        : null
+
       await onSavePaymentHistory({
         userId: profile.id,
         amount: amount,
         plan: plan,
         paymentIntentId: paymentIntent.id,
-        paymentMethod: paymentIntent.payment_method ? 
-          (await stripe.paymentMethods.retrieve(paymentIntent.payment_method as string)).card?.last4 : undefined,
-        paymentBrand: paymentIntent.payment_method ?
-          (await stripe.paymentMethods.retrieve(paymentIntent.payment_method as string)).card?.brand : undefined,
+        paymentMethod: usedPaymentMethod?.card?.last4,
+        paymentBrand: usedPaymentMethod?.card?.brand,
         status: 'succeeded',
       })
       

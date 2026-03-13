@@ -1,10 +1,12 @@
 import { currentUser } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
-import { AvailabilityTab } from '@/components/domain/availability-tab' 
+import { AvailabilityTab } from '@/components/domain/availability-tab'
 import { onGetCurrentDomainInfo } from '@/actions/settings'
 import { onGetDomainWorkingHours } from '@/actions/working-hours'
 import { DomainSettingsNav } from '@/components/domain/domain-settings-nav'
+import { DomainLockedOverlay } from '@/components/domain/domain-locked-overlay'
 import InfoBar from '@/components/infobar'
+import { cn } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
@@ -28,15 +30,16 @@ const AvailabilityPage = async ({ params }: PageProps) => {
 
   const domainData = domainInfo.domains[0]
   const workingHours = await onGetDomainWorkingHours(domainData.id)
+  const isLocked = domainData.verificationStatus !== 'VERIFIED'
 
   return (
     <>
       <InfoBar />
-      
+
       <DomainSettingsNav domain={domain} />
 
       <div className="relative overflow-y-auto w-full chat-window flex-1 h-0">
-        <div className='p-6'>
+        <div className={cn('p-6', isLocked && 'opacity-40 blur-[1px] pointer-events-none')}>
           <AvailabilityTab
             domainId={domainData.id}
             timezone={domainData.timezone}
@@ -45,6 +48,8 @@ const AvailabilityPage = async ({ params }: PageProps) => {
             offlineMessage={domainData.chatBot?.offlineCustomMessage ?? undefined}
           />
         </div>
+
+        {isLocked && <DomainLockedOverlay domainId={domainData.id} />}
       </div>
     </>
   )

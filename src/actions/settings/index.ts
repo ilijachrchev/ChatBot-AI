@@ -46,7 +46,7 @@ export const onIntegrateDomain = async (domain: string, icon: string) => {
     const result = await onCreateDomain(domain, icon)
     return result
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return {
       status: 500,
       message: 'Internal server error',
@@ -74,7 +74,7 @@ export const onGetSubscriptionPlan = async () => {
       return plan.subscription?.plan
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -112,7 +112,7 @@ export const onGetAllAccountDomains = async () => {
     })
     return { ...domains }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 export const onUpdatePassword = async (password: string) => {
@@ -127,7 +127,7 @@ export const onUpdatePassword = async (password: string) => {
       return { status: 200, message: 'Password updated' }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -148,7 +148,7 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
         domains: {
           where: {
             name: {
-              contains: domain,
+              equals: domain,
             },
           },
           select: {
@@ -203,12 +203,21 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
       return userDomain
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
 export const onUpdateDomain = async (id: string, name: string) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized' }
+
     const domainExists = await client.domain.findFirst({
       where: {
         name: {
@@ -245,12 +254,27 @@ export const onUpdateDomain = async (id: string, name: string) => {
       message: 'Domain with this name already exists',
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
 export const onChatBotImageUpdate = async (id: string, imageUrl: string) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const existing = await client.chatBot.findUnique({
+      where: { id },
+      select: { domainId: true },
+    })
+    if (!existing) return { status: 404, message: 'Chatbot not found' }
+
+    const domain = await client.domain.findFirst({
+      where: { id: existing.domainId!, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domain) return { status: 403, message: 'Unauthorized' }
+
     const chatbot = await client.chatBot.update({
       where: { id },
       data: {
@@ -270,7 +294,7 @@ export const onChatBotImageUpdate = async (id: string, imageUrl: string) => {
       message: 'Failed to update chatbot icon!',
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
   return {
     status: 500,
@@ -280,6 +304,21 @@ export const onChatBotImageUpdate = async (id: string, imageUrl: string) => {
 
 export const onUpdateChatbotColor = async (id: string, color: string) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const existing = await client.chatBot.findUnique({
+      where: { id },
+      select: { domainId: true },
+    })
+    if (!existing) return { status: 404, message: 'Chatbot not found' }
+
+    const domain = await client.domain.findFirst({
+      where: { id: existing.domainId!, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domain) return { status: 403, message: 'Unauthorized' }
+
     const chatbot = await client.chatBot.update({
       where: { id },
       data: {
@@ -311,6 +350,15 @@ export const onUpdateWelcomeMessage = async (
   domainId: string
 ) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id: domainId, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized' }
+
     const update = await client.domain.update({
       where: {
         id: domainId,
@@ -330,7 +378,7 @@ export const onUpdateWelcomeMessage = async (
       return { status: 200, message: 'Welcome message updated' }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -368,7 +416,7 @@ export const onDeleteUserDomain = async (id: string) => {
       }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -378,6 +426,15 @@ export const onCreateHelpDeskQuestion = async (
   answer: string
 ) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized' }
+
     const helpDeskQuestion = await client.domain.update({
       where: {
         id,
@@ -414,12 +471,21 @@ export const onCreateHelpDeskQuestion = async (
       message: 'Oops! something went wrong',
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
 export const onGetAllHelpDeskQuestions = async (id: string) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized', questions: [] }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized', questions: [] }
+
     const questions = await client.helpDesk.findMany({
       where: {
         domainId: id,
@@ -437,12 +503,21 @@ export const onGetAllHelpDeskQuestions = async (id: string) => {
       questions: questions,
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
 export const onCreateFilterQuestions = async (id: string, question: string) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized' }
+
     const filterQuestion = await client.domain.update({
       where: {
         id,
@@ -476,12 +551,21 @@ export const onCreateFilterQuestions = async (id: string, question: string) => {
       message: 'Oops! something went wrong',
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
 export const onGetAllFilterQuestions = async (id: string) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized', questions: [] }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized', questions: [] }
+
     const questions = await client.filterQuestions.findMany({
       where: {
         domainId: id,
@@ -501,7 +585,7 @@ export const onGetAllFilterQuestions = async (id: string) => {
       questions: questions,
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -522,7 +606,7 @@ export const onGetPaymentConnected = async () => {
       }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -533,6 +617,18 @@ export const onCreateNewDomainProduct = async (
   price: string
 ) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized' }
+
+    const parsedPrice = parseInt(price)
+    if (isNaN(parsedPrice)) return { status: 400, message: 'Invalid price' }
+
     const product = await client.domain.update({
       where: {
         id,
@@ -542,7 +638,7 @@ export const onCreateNewDomainProduct = async (
           create: {
             name,
             image,
-            price: parseInt(price),
+            price: parsedPrice,
           },
         },
       },
@@ -555,7 +651,7 @@ export const onCreateNewDomainProduct = async (
       }
     }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -634,7 +730,7 @@ export const onGetUserProfile = async () => {
 
     return null
   } catch (error) {
-    console.log('Error fetching user profile:', error)
+    console.error('Error fetching user profile:', error)
     return null
   }
 }
@@ -695,7 +791,7 @@ export const onUpdateUserProfile = async (fullname: string) => {
       message: 'Failed to update profile',
     }
   } catch (error) {
-    console.log('Error updating profile:', error)
+    console.error('Error updating profile:', error)
     return {
       status: 500,
       message: 'Internal server error',
@@ -730,7 +826,7 @@ export const onUpdateUserAvatar = async (imageUrl: string) => {
       message: 'Failed to update profile picture',
     }
   } catch (error) {
-    console.log('Error updating avatar:', error)
+    console.error('Error updating avatar:', error)
     return {
       status: 500,
       message: 'Failed to update profile picture',
@@ -752,6 +848,12 @@ export const onUpdateChatbotPersona = async (
   })
 
   if (!chatbot) return { status: 404, message: 'Chatbot not found' }
+
+  const domainOwned = await client.domain.findFirst({
+    where: { id: chatbot.domainId!, User: { clerkId: user.id } },
+    select: { id: true },
+  })
+  if (!domainOwned) return { status: 403, message: 'Unauthorized' }
 
   const isSamePersona = chatbot.persona === persona
 
@@ -815,6 +917,21 @@ export const onUpdateChatbotCustomization = async (
   }
 ) => {
   try {
+    const user = await currentUser()
+    if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const existing = await client.chatBot.findUnique({
+      where: { id: chatBotId },
+      select: { domainId: true },
+    })
+    if (!existing) return { status: 404, message: 'Chatbot not found' }
+
+    const domain = await client.domain.findFirst({
+      where: { id: existing.domainId!, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domain) return { status: 403, message: 'Unauthorized' }
+
     const chatbot = await client.chatBot.update({
       where: { id: chatBotId },
       data: customization,
@@ -857,7 +974,7 @@ export const onGetUserSessions = async () => {
 
     return userSessions
   } catch (error) {
-    console.log('Error fetching sessions:', error)
+    console.error('Error fetching sessions:', error)
     return []
   }
 }
@@ -868,7 +985,11 @@ export const onRevokeSession = async (sessionId: string) => {
     if (!user) return { status: 401, message: 'Unauthorized' }
 
     const clerk = await clerkClient()
-    
+
+    const userSessions = await clerk.sessions.getSessionList({ userId: user.id })
+    const sessionBelongsToUser = userSessions.data.some((s) => s.id === sessionId)
+    if (!sessionBelongsToUser) return { status: 403, message: 'Unauthorized' }
+
     await clerk.sessions.revokeSession(sessionId)
 
     return {
@@ -876,7 +997,7 @@ export const onRevokeSession = async (sessionId: string) => {
       message: 'Session revoked successfully',
     }
   } catch (error) {
-    console.log('Error revoking session:', error)
+    console.error('Error revoking session:', error)
     return {
       status: 500,
       message: 'Failed to revoke session',
@@ -946,6 +1067,12 @@ export const onUpdateDomainRealtimeEnabled = async (
   try {
     const user = await currentUser()
     if (!user) return { status: 401, message: 'Unauthorized' }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id: domainId, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized' }
 
     const updated = await client.domain.update({
       where: { id: domainId },
@@ -1117,6 +1244,15 @@ export const onGetDomainName = async (domainId: string) => {
 }
 
 export const onGetDomainProducts = async (domainId: string) => {
+  const user = await currentUser()
+  if (!user) return []
+
+  const domainOwned = await client.domain.findFirst({
+    where: { id: domainId, User: { clerkId: user.id } },
+    select: { id: true },
+  })
+  if (!domainOwned) return []
+
   return await client.product.findMany({
     where: { domainId },
     orderBy: { createdAt: 'desc' },
@@ -1137,6 +1273,18 @@ export const onUpdateDomainProduct = async (
     const user = await currentUser()
     if (!user) return { status: 401, message: 'Unauthorized' }
 
+    const existing = await client.product.findUnique({
+      where: { id },
+      select: { domainId: true },
+    })
+    if (!existing) return { status: 404, message: 'Product not found' }
+
+    const domainOwned = await client.domain.findFirst({
+      where: { id: existing.domainId, User: { clerkId: user.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) return { status: 403, message: 'Unauthorized' }
+
     const product = await client.product.update({
       where: { id },
       data,
@@ -1147,7 +1295,7 @@ export const onUpdateDomainProduct = async (
     }
     return { status: 400, message: 'Failed to update product' }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return { status: 500, message: 'Internal server error' }
   }
 }
@@ -1175,7 +1323,7 @@ export const onDeleteDomainProduct = async (id: string, domainId: string) => {
 
     return { status: 200, message: 'Product deleted' }
   } catch (error) {
-    console.log(error)
+    console.error(error)
     return { status: 500, message: 'Internal server error' }
   }
 }

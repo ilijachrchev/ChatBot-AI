@@ -6,8 +6,20 @@ type Params = {
   params: { chatroomId: string }
 }
 
+async function verifyChatroomOwnership(chatroomId: string, clerkId: string) {
+  const room = await client.chatRoom.findUnique({
+    where: { id: chatroomId },
+    select: {
+      Domain: {
+        select: { User: { select: { clerkId: true } } },
+      },
+    },
+  })
+  return room?.Domain?.User?.clerkId === clerkId
+}
+
 export async function GET(_req: NextRequest, { params }: Params) {
-  const { response } = await requireAuth()
+  const { user, response } = await requireAuth()
   if (response) return response
 
   const { chatroomId } = params
@@ -17,6 +29,11 @@ export async function GET(_req: NextRequest, { params }: Params) {
       { error: 'chatroomId is required' },
       { status: 400 }
     )
+  }
+
+  const isOwner = await verifyChatroomOwnership(chatroomId, user!.id)
+  if (!isOwner) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   }
 
   try {
@@ -84,6 +101,11 @@ export async function POST(req: NextRequest, { params }: Params) {
       { error: 'chatroomId is required' },
       { status: 400 }
     )
+  }
+
+  const isOwner = await verifyChatroomOwnership(chatroomId, user!.id)
+  if (!isOwner) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
   }
 
   const body = await req.json().catch(() => null)

@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
+import { currentUser } from '@clerk/nextjs/server'
 
 const openai = new OpenAI()
 
 export async function POST(req: NextRequest) {
   try {
+    const user = await currentUser()
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
     const { description } = await req.json()
 
     if (!description?.trim()) {

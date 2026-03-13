@@ -3,7 +3,7 @@ import { requireAuth } from '../_utils'
 import { client } from '@/lib/prisma'
 
 export async function GET(req: NextRequest) {
-  const { response } = await requireAuth()
+  const { user, response } = await requireAuth()
   if (response) return response
 
   const url = new URL(req.url)
@@ -17,6 +17,14 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    const domainOwned = await client.domain.findFirst({
+      where: { id: domainId, User: { clerkId: user!.id } },
+      select: { id: true },
+    })
+    if (!domainOwned) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+    }
+
     const domain = await client.domain.findUnique({
       where: { id: domainId },
       select: {

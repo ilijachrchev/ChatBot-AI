@@ -8,7 +8,6 @@ import { onMailer } from "../mailer"
 import OpenAi from "openai"
 import { getPersonaSystemPrompt } from "@/constants/personas"
 import { onGetChatbotPresence } from "../chatbot/presence"
-import { off } from "process"
 import { getKnowledgeBaseContext } from "@/lib/knowledge-base/retrieve"
 import { checkAndIncrementConversation } from "@/lib/conversation-usage"
 import { sendLiveChatNotification } from "@/lib/email"
@@ -237,7 +236,7 @@ export const onGetCurrentChatBot = async (id: string) => {
           }
         }
     } catch (error) {
-        console.log(error)
+        console.error(error)
     }
 }
 
@@ -342,7 +341,7 @@ export const onAiChatBotAssistant = async (
         )
 
         if (chatBotConfig.chatBot?.persona === 'APPOINTMENT_SETTER') {
-          const appointmentLink = `https://sendwiseai.com/portal/${id}/appointment/portal`
+          const appointmentLink = `${process.env.NEXT_PUBLIC_URL}/portal/${id}/appointment/portal`
           personaPrompt = personaPrompt.replace('[APPOINTMENT_LINK]', appointmentLink)
         }
 
@@ -374,7 +373,7 @@ export const onAiChatBotAssistant = async (
         }
 
         if (chatBotConfig.chatBot?.persona === 'REAL_ESTATE_QUALIFIER') {
-          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `https://sendwiseai.com/portal/${id}/booking`)
+          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `${process.env.NEXT_PUBLIC_URL}/portal/${id}/booking`)
           const properties: Array<{ title: string; price: number | null; bedrooms: number | null; bathrooms: number | null; location: string | null; status: string }> = await (db as any).property.findMany({
             where: { domainId: id },
             select: { title: true, price: true, bedrooms: true, bathrooms: true, location: true, status: true },
@@ -682,8 +681,8 @@ export const onAiChatBotAssistant = async (
         if (chatBotDomain.chatBot?.persona === 'APPOINTMENT_SETTER') {
           const customerId = room.customerId ?? undefined
           const appointmentLink = customerId
-            ? `https://sendwiseai.com/portal/${id}/appointment/${customerId}`
-            : `https://sendwiseai.com/portal/${id}/appointment/portal`
+            ? `${process.env.NEXT_PUBLIC_URL}/portal/${id}/appointment/${customerId}`
+            : `${process.env.NEXT_PUBLIC_URL}/portal/${id}/appointment/portal`
           personaPrompt = personaPrompt.replace('[APPOINTMENT_LINK]', appointmentLink)
         }
 
@@ -715,7 +714,7 @@ export const onAiChatBotAssistant = async (
         }
 
         if (chatBotDomain.chatBot?.persona === 'REAL_ESTATE_QUALIFIER') {
-          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `https://sendwiseai.com/portal/${id}/booking`)
+          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `${process.env.NEXT_PUBLIC_URL}/portal/${id}/booking`)
           const properties: Array<{ title: string; price: number | null; bedrooms: number | null; bathrooms: number | null; location: string | null; status: string }> = await (db as any).property.findMany({
             where: { domainId: id },
             select: { title: true, price: true, bedrooms: true, bathrooms: true, location: true, status: true },
@@ -915,7 +914,7 @@ export const onAiChatBotAssistant = async (
                       chatRoom: room.id,
                     };
                   } catch (error) {
-                    console.log('Error sending mail:', error);
+                    console.error('Error sending mail:', error);
                   }
                 }
                 return {
@@ -1224,6 +1223,6 @@ IMPORTANT: Use the knowledge base context above if it's relevant to the user's q
         }
       }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }

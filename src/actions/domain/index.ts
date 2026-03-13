@@ -280,6 +280,30 @@ export const onVerifyDomain = async (domainId: string) => {
 }
 
 
+export const onDeleteDomain = async (domainId: string) => {
+  const user = await currentUser()
+  if (!user) return { status: 401, message: 'Unauthorized' }
+
+  try {
+    const domain = await client.domain.findFirst({
+      where: {
+        id: domainId,
+        User: { clerkId: user.id },
+      },
+      select: { id: true },
+    })
+
+    if (!domain) return { status: 404, message: 'Domain not found' }
+
+    await client.domain.delete({ where: { id: domainId } })
+
+    return { status: 200, message: 'Domain deleted successfully' }
+  } catch (error) {
+    console.error('Error deleting domain:', error)
+    return { status: 500, message: 'Failed to delete domain' }
+  }
+}
+
 export const onGetDomainVerificationStatus = async (domainId: string) => {
   const user = await currentUser()
   if (!user) {
