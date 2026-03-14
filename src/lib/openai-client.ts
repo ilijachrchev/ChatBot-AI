@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import client from '@/lib/prisma'
+import { client } from '@/lib/prisma'
 import {
   checkOpenAIAccess,
   releaseOpenAIConcurrency,

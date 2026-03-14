@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { Cancel01Icon, Home01Icon, Search01Icon } from "@hugeicons/core-free-icons"
 import { HugeiconsIcon } from "@hugeicons/react"
-import { Button } from "@/components/ui/button"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty"
 import { FullWidthDivider } from "@/components/ui/full-width-divider"
 
@@ -33,25 +32,20 @@ export default function NotFound() {
 
           <EmptyContent>
             <div className="flex w-full flex-col gap-3 sm:flex-row">
-              <Button
-                asChild
-                className="flex-1 bg-white text-black hover:bg-white/90"
+              <Link
+                href="/dashboard"
+                className="flex flex-1 items-center justify-center gap-2 rounded-md bg-white px-4 py-2 text-sm font-medium text-black hover:bg-white/90 transition-colors"
               >
-                <Link href="/dashboard">
-                  <HugeiconsIcon icon={Home01Icon} className="mr-2 size-4" />
-                  Go Home
-                </Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                className="flex-1 border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white"
+                <HugeiconsIcon icon={Home01Icon} className="size-4" />
+                Go Home
+              </Link>
+              <Link
+                href="/"
+                className="flex flex-1 items-center justify-center gap-2 rounded-md border border-white/20 bg-transparent px-4 py-2 text-sm font-medium text-white hover:bg-white/10 transition-colors"
               >
-                <Link href="/">
-                  <HugeiconsIcon icon={Search01Icon} className="mr-2 size-4" />
-                  Explore
-                </Link>
-              </Button>
+                <HugeiconsIcon icon={Search01Icon} className="size-4" />
+                Explore
+              </Link>
             </div>
           </EmptyContent>
         </Empty>

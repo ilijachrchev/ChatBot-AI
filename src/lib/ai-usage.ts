@@ -1,4 +1,4 @@
-import client from '@/lib/prisma'
+import { client } from '@/lib/prisma'
 import { Plans } from '@prisma/client'
 
 export const GLOBAL_BUDGET_USD = 50.0

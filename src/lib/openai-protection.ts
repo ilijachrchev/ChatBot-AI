@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import client from '@/lib/prisma'
+import { client } from '@/lib/prisma'
 import {
   getUserMonthlyUsageCost,
   getGlobalMonthlyUsageCost,
@@ -16,7 +16,6 @@ export type AccessResult = {
   code?: string
 }
 
-// ─── In-memory rate limit stores ──────────────────────────────────────────────
 
 interface WindowCounter {
   count: number
@@ -37,22 +36,17 @@ interface UserRateLimits {
 const ipRateLimits = new Map<string, IpRateLimits>()
 const userRateLimits = new Map<string, UserRateLimits>()
 
-// ─── IP sliding window for auto-blocking ──────────────────────────────────────
 
 const ipRequestTimestamps = new Map<string, number[]>()
 const ipBlocklist = new Map<string, number>()
 
-// ─── Global per-second window ─────────────────────────────────────────────────
 
 const globalSecondTimestamps: number[] = []
-
-// ─── Concurrency semaphore ────────────────────────────────────────────────────
 
 let activeConcurrent = 0
 const MAX_CONCURRENT = 2
 const MAX_PER_SECOND = 2
 
-// ─── Circuit breaker ──────────────────────────────────────────────────────────
 
 interface CircuitBreaker {
   open: boolean
@@ -70,12 +64,10 @@ const circuitBreaker: CircuitBreaker = {
   consecutiveSlowResponses: 0,
 }
 
-// ─── Admin alert dedup flags ──────────────────────────────────────────────────
 
 let globalBudgetAlertMonth = -1
 let tokenSpikeAlertAt = 0
 
-// ─── Nodemailer transporter ───────────────────────────────────────────────────
 
 const mailer = nodemailer.createTransport({
   service: 'gmail',
@@ -107,7 +99,6 @@ async function sendAdminAlert(subject: string, body: string): Promise<void> {
   }
 }
 
-// ─── Fixed-window counter helpers ─────────────────────────────────────────────
 
 function incrementCounter(counter: WindowCounter, windowMs: number): number {
   const now = Date.now()
@@ -141,7 +132,6 @@ function getOrCreateUserLimits(userId: string): UserRateLimits {
   return userRateLimits.get(userId)!
 }
 
-// ─── IP auto-block tracker ────────────────────────────────────────────────────
 
 function trackAndMaybeBlockIp(ip: string): void {
   const now = Date.now()
@@ -168,7 +158,6 @@ function trackAndMaybeBlockIp(ip: string): void {
   }
 }
 
-// ─── Global per-second rate limit ─────────────────────────────────────────────
 
 function checkGlobalPerSecond(): boolean {
   const now = Date.now()
@@ -181,7 +170,6 @@ function checkGlobalPerSecond(): boolean {
   return true
 }
 
-// ─── Circuit breaker public API ───────────────────────────────────────────────
 
 export function recordOpenAIError(): void {
   const now = Date.now()
@@ -275,19 +263,16 @@ function getCircuitBreakerStatus(): { open: boolean; retryAfter: number } {
   return { open: true, retryAfter: Math.ceil((circuitBreaker.openUntil - now) / 1000) }
 }
 
-// ─── Concurrency release ──────────────────────────────────────────────────────
 
 export function releaseOpenAIConcurrency(): void {
   if (activeConcurrent > 0) activeConcurrent--
 }
 
-// ─── Main protection check ────────────────────────────────────────────────────
 
 export async function checkOpenAIAccess(
   userId: string,
   ipAddress: string
 ): Promise<AccessResult> {
-  // 1. Kill switch
   if (process.env.AI_ENABLED === 'false') {
     return {
       allowed: false,
@@ -297,7 +282,6 @@ export async function checkOpenAIAccess(
     }
   }
 
-  // 2. Circuit breaker
   const cb = getCircuitBreakerStatus()
   if (cb.open) {
     return {
@@ -309,7 +293,6 @@ export async function checkOpenAIAccess(
     }
   }
 
-  // 3. IP blocklist
   const ipBlockedUntil = ipBlocklist.get(ipAddress)
   if (ipBlockedUntil) {
     if (Date.now() < ipBlockedUntil) {
@@ -318,10 +301,8 @@ export async function checkOpenAIAccess(
     ipBlocklist.delete(ipAddress)
   }
 
-  // 4. Track IP request (for auto-block detection on subsequent requests)
   trackAndMaybeBlockIp(ipAddress)
 
-  // 5. IP rate limits
   const ipLimits = getOrCreateIpLimits(ipAddress)
   const ipMinute = incrementCounter(ipLimits.minute, 60_000)
   if (ipMinute > 5) {
@@ -342,7 +323,6 @@ export async function checkOpenAIAccess(
     }
   }
 
-  // 6. Per-user rate limits
   const uLimits = getOrCreateUserLimits(userId)
   const uMinute = incrementCounter(uLimits.minute, 60_000)
   if (uMinute > 20) {
@@ -372,17 +352,14 @@ export async function checkOpenAIAccess(
     }
   }
 
-  // 7. Global per-second rate
   if (!checkGlobalPerSecond()) {
     return { allowed: false, reason: 'Too many requests', statusCode: 429, retryAfter: 1 }
   }
 
-  // 8. Global concurrency
   if (activeConcurrent >= MAX_CONCURRENT) {
     return { allowed: false, reason: 'Too many requests', statusCode: 429, retryAfter: 5 }
   }
 
-  // 9. DB checks in parallel (user block, quota, global budget)
   const [dbUser, userCost, userLimit, globalCost] = await Promise.all([
     client.user.findUnique({
       where: { id: userId },
@@ -393,12 +370,10 @@ export async function checkOpenAIAccess(
     getGlobalMonthlyUsageCost(),
   ])
 
-  // 9a. User DB block
   if (dbUser?.blockedUntil && dbUser.blockedUntil > new Date()) {
     return { allowed: false, reason: 'Access denied', statusCode: 403 }
   }
 
-  // 9b. Global monthly budget
   if (globalCost >= GLOBAL_BUDGET_USD) {
     const month = new Date().getMonth()
     if (globalBudgetAlertMonth !== month) {
@@ -421,7 +396,6 @@ export async function checkOpenAIAccess(
     }
   }
 
-  // 9c. Per-user monthly quota
   if (userCost >= userLimit) {
     return {
       allowed: false,
@@ -431,7 +405,6 @@ export async function checkOpenAIAccess(
     }
   }
 
-  // 10. Acquire concurrency slot
   activeConcurrent++
   return { allowed: true }
 }

@@ -206,7 +206,6 @@ export default function SupportTicketsPage() {
             })}
           </div>
           </div>
-          </div>
           {hasMore && (
             <div className="flex justify-center mt-4">
               <button

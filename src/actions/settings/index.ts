@@ -1280,7 +1280,7 @@ export const onUpdateDomainProduct = async (
     if (!existing) return { status: 404, message: 'Product not found' }
 
     const domainOwned = await client.domain.findFirst({
-      where: { id: existing.domainId, User: { clerkId: user.id } },
+      where: { id: existing.domainId ?? undefined, User: { clerkId: user.id } },
       select: { id: true },
     })
     if (!domainOwned) return { status: 403, message: 'Unauthorized' }

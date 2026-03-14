@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
-import client from '@/lib/prisma'
+import { client } from '@/lib/prisma'
 import { callOpenAIWithProtection, isError } from '@/lib/openai-client'
 
 const MAX_MESSAGE_LENGTH = 2000

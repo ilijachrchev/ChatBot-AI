@@ -21,7 +21,6 @@ const features = [
 
 export function BentoFeatures() {
   return (
-    // id="features" — matched by navbar "Features" link → #features
     <section id="features" className="relative bg-[var(--bg-page)] py-16 px-4">
       <div className="relative mx-auto grid w-full max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-6">
         {features.map((f) => (
