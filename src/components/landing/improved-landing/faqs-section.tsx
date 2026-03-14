@@ -47,7 +47,7 @@ export function FaqsSection() {
   });
 
   return (
-    <section id="faq" className="relative bg-[var(--bg-page)]">
+    <section id="faq" className="relative bg-[#080808]">
       <div className="mx-auto min-h-screen w-full max-w-3xl md:border-x md:border-white/[0.06]">
 
         <div className="px-4 py-16 lg:px-6">

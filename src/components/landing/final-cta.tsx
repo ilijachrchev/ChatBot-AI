@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 export function FinalCTA() {
   return (
-    <section className="relative bg-[var(--bg-page)] py-32 px-4 overflow-hidden">
+    <section className="relative bg-[#080808] py-32 px-4 overflow-hidden">
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] pointer-events-none blur-[120px]"
         style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.05) 0%, transparent 70%)" }}

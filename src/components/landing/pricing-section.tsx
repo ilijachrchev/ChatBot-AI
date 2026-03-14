@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export function PricingSection() {
   return (
-    <section id="pricing" className="relative bg-[var(--bg-page)] py-28 px-4">
+    <section id="pricing" className="relative bg-[#080808] py-28 px-4">
       <div
         className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[200px] pointer-events-none blur-[120px]"
         style={{ background: "radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%)" }}

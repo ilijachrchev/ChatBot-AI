@@ -4,103 +4,115 @@
 
 @layer base {
   :root {
-    /* Backgrounds */
-    --bg-page: #F5F7FA;
-    --bg-surface: #FFFFFF;
-    --bg-card: #F8FAFC;
-    --bg-sidebar: #F1F5F9;
+    --bg-page:        #F3E3D0;  
+    --bg-surface:     #FDFAF7;  
+    --bg-card:        #FAF6F1;   
+    --bg-sidebar:     #EDD9C4;   
 
     /* Borders */
-    --border-subtle: rgba(0,0,0,0.06);
+    --border-subtle:  rgba(0,0,0,0.07);
+    --border-default: #D2C4B4;   
+    --border-strong:  #AACDDC;   
 
-    /* Text */
-    --text-primary: #0F172A;
-    --text-muted: #64748B;
+    --text-primary:   #1B3C53;   
+    --text-secondary: #456882;  
+    --text-muted:     #8A9BAA;   
 
-    /* Accent */
-    --primary: #6366F1;
-    --primary-hover: #4F46E5;
+    --primary:        #81A6C6;  
+    --primary-hover:  #6B92B5;  
+    --primary-light:  #AACDDC;  
 
-    /* Semantic */
-    --success: #22C55E;
-    --warning: #F59E0B;
-    --danger: #EF4444;
+    --success:        #2D9E6B;  
+    --warning:        #D4850A;  
+    --danger:         #C94040;  
+    --info:           #456882;  
 
-    /* shadcn HSL equivalents for light mode */
-    --background: 210 20% 98%;
-    --foreground: 222 47% 7%;
-    --card: 210 40% 98%;
-    --card-foreground: 222 47% 7%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 7%;
-    --primary-hsl: 239 84% 67%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --accent: 239 84% 67%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 239 84% 67%;
-    --radius: 0.5rem;
-    --sidebar-background: 210 40% 96%;
-    --sidebar-border: 214 32% 91%;
-    --sidebar-accent: 210 40% 96%;
-    --scrollbar-track: #F1F5F9;
-    --scrollbar-thumb: #CBD5E1;
-    --scrollbar-hover: #94A3B8;
-    --border-default: #E2E8F0;
+    --background:           36  43%  89%;   
+    --foreground:           207 52%  22%;  
+    --card:                 36  40%  96%;  
+    --card-foreground:      207 52%  22%;
+    --popover:              36  40%  98%;
+    --popover-foreground:   207 52%  22%;
+    --primary-hsl:          207 37%  64%;   
+    --primary-foreground:   0   0%  100%;
+    --secondary:            34  23%  77%;  
+    --secondary-foreground: 207 52%  22%;
+    --muted:                34  23%  82%;
+    --muted-foreground:     207 19%  56%;  
+    --accent:               198 39%  76%;   
+    --accent-foreground:    207 52%  22%;
+    --destructive:          0   54%  52%;
+    --destructive-foreground: 0  0% 100%;
+    --border:               34  23%  77%;  
+    --input:                34  23%  82%;
+    --ring:                 207 37%  64%;   
+    --radius:               0.5rem;
+
+    --sidebar-background: 34 30% 85%;      
+    --sidebar-border:     34 23% 77%;
+    --sidebar-accent:     198 39% 76%;
+
+    --scrollbar-track: #EDD9C4;
+    --scrollbar-thumb: #D2C4B4;
+    --scrollbar-hover: #AACDDC;
+
+    --success-hsl:          158 55%  40%;
+    --success-foreground:   0   0%  100%;
   }
 
   .dark {
-    /* Backgrounds */
-    --bg-page: #0B1220;
-    --bg-surface: #111827;
-    --bg-card: #1F2937;
-    --bg-sidebar: #111827;
+    --bg-page:        #0F2333;   
+    --bg-surface:     #1B3C53;  
+    --bg-card:        #234C6A;   
+    --bg-sidebar:     #152D42;   
 
-    /* Borders */
-    --border-subtle: rgba(255,255,255,0.06);
+    --border-subtle:  rgba(255,255,255,0.06);
+    --border-default: rgba(69,104,130,0.45); 
+    --border-strong:  #456882;                
 
-    /* Text */
-    --text-primary: #F9FAFB;
-    --text-muted: #9CA3AF;
+    --text-primary:   #F0EAE3;   
+    --text-secondary: #C4B8AE;   
+    --text-muted:     #7A9AAF;   
 
-    /* Accent — same as light */
-    --primary: #6366F1;
-    --primary-hover: #4F46E5;
+    --primary:        #AACDDC;   
+    --primary-hover:  #81A6C6;   
+    --primary-light:  rgba(170,205,220,0.15); 
 
-    /* shadcn HSL equivalents for dark mode */
-    --background: 222 47% 9%;
-    --foreground: 210 40% 98%;
-    --card: 217 33% 17%;
-    --card-foreground: 210 40% 98%;
-    --popover: 217 33% 17%;
-    --popover-foreground: 210 40% 98%;
-    --primary-hsl: 239 84% 67%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 239 84% 67%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 217 19% 27%;
-    --input: 217 19% 27%;
-    --ring: 239 84% 67%;
-    --sidebar-background: 222 47% 9%;
-    --sidebar-border: 217 19% 27%;
-    --sidebar-accent: 217 33% 17%;
-    --scrollbar-track: #111827;
-    --scrollbar-thumb: #374151;
-    --scrollbar-hover: #4B5563;
-    --border-default: #374151;
+    --success:        #3DB882;
+    --warning:        #E09B1A;
+    --danger:         #E05555;
+    --info:           #AACDDC;
+
+    --background:           207 55%  20%;  
+    --foreground:           34  35%  91%;   
+    --card:                 207 52%  26%; 
+    --card-foreground:      34  35%  91%;
+    --popover:              207 52%  26%;
+    --popover-foreground:   34  35%  91%;
+    --primary-hsl:          198 39%  76%; 
+    --primary-foreground:   207 55%  20%;
+    --secondary:            207 30%  38%;  
+    --secondary-foreground: 34  35%  91%;
+    --muted:                207 30%  32%;
+    --muted-foreground:     207 22%  58%;  
+    --accent:               207 37%  64%;  
+    --accent-foreground:    0   0%  100%;
+    --destructive:          0   60%  59%;
+    --destructive-foreground: 0  0% 100%;
+    --border:               207 30%  36%;   
+    --input:                207 30%  32%;
+    --ring:                 198 39%  76%;  
+
+    --sidebar-background: 207 54% 17%;     
+    --sidebar-border:     207 30% 36%;
+    --sidebar-accent:     207 37% 64%;
+
+    --scrollbar-track: #152D42;
+    --scrollbar-thumb: #234C6A;
+    --scrollbar-hover: #456882;
+
+    --success-hsl:          158 52%  47%;
+    --success-foreground:   0   0%  100%;
   }
 
   * {
@@ -108,7 +120,8 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    background: var(--bg-page);
+      color: var(--text-primary);
   }
 }
 
@@ -116,7 +129,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* ─── Global scrollbar ───────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -153,7 +165,6 @@ section[id] {
   scroll-margin-top: 5rem;
 }
 
-/* ─── Animations ─────────────────────────────────────────────────────────── */
 @keyframes float {
   0% {
     transform: translateY(0) translateX(0) scale(1);
@@ -205,30 +216,29 @@ section[id] {
   pointer-events: none;
 }
 
-/* ─── Glass card ─────────────────────────────────────────────────────────── */
 .glass-card {
-  background: rgba(243, 227, 208, 0.8);
+  background: rgba(243, 227, 208, 0.75);
   backdrop-filter: blur(20px);
   border: 1px solid var(--border-default);
 }
 
 .dark .glass-card {
-  background: rgba(35, 76, 106, 0.85);
+  background: rgba(35, 76, 106, 0.80);
+  border: 1px solid var(--border-strong);
 }
 
-/* ─── Sonner toasts ──────────────────────────────────────────────────────── */
 [data-sonner-toast] {
   background: var(--bg-surface) !important;
-  border: 1px solid var(--border-strong) !important;
+  border: 1px solid var(--border-default) !important;
   backdrop-filter: blur(20px) !important;
 }
 
 [data-sonner-toast][data-type="success"] {
-  border-color: rgba(52, 211, 153, 0.30) !important;
+  border-color: rgba(45, 158, 107, 0.35) !important;
 }
 
 [data-sonner-toast][data-type="error"] {
-  border-color: rgba(239, 68, 68, 0.30) !important;
+  border-color: rgba(201, 64, 64, 0.35) !important;
 }
 
 [data-sonner-toast] [data-title] {
@@ -241,12 +251,12 @@ section[id] {
 }
 
 [data-sonner-toast] [data-button] {
-  background: var(--bg-active) !important;
+  background: var(--primary-light) !important;
   color: var(--text-primary) !important;
 }
 
 [data-sonner-toast] [data-button]:hover {
-  background: var(--color-accent) !important;
+  background: var(--primary) !important;
 }
 
 @keyframes pulse-border {

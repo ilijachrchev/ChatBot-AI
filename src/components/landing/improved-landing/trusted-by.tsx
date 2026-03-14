@@ -29,7 +29,7 @@ import { HyperText } from "@/components/ui/hyper-text"
 
 export function TrustedBy() {
   return (
-    <section className="relative bg-[var(--bg-page)] py-14 overflow-hidden">
+    <section className="relative bg-[#080808] py-14 overflow-hidden">
 
       <div
         className="absolute inset-0 pointer-events-none"
@@ -51,7 +51,7 @@ export function TrustedBy() {
       {/* Notch label */}
       <div className="relative z-10 flex justify-center mb-10">
         <div
-          className="px-8 py-2.5 text-sm text-white/40 border border-white/8 bg-[var(--bg-page)] font-medium"
+          className="px-8 py-2.5 text-sm text-white/40 border border-white/8 bg-[#080808] font-medium"
           style={{ clipPath: "polygon(16px 0%, calc(100% - 16px) 0%, 100% 100%, 0% 100%)" }}
         >
           {/*

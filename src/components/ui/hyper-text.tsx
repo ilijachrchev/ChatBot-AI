@@ -94,6 +94,7 @@ export function HyperText({
     }
   }
 
+  // Handle animation start based on view or delay
   useEffect(() => {
     if (!startOnView) {
       const startTimeout = setTimeout(() => {
@@ -121,6 +122,7 @@ export function HyperText({
     return () => observer.disconnect()
   }, [delay, startOnView])
 
+  // Handle scramble animation
   useEffect(() => {
     let animationFrameId: number | null = null
 
