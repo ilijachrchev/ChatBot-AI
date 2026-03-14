@@ -22,7 +22,7 @@ const AccountSettings = (props: Props) => {
   return (
     <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] text-white">
           <User className="h-5 w-5" />
         </div>
         <div>
@@ -92,7 +92,7 @@ const AccountSettings = (props: Props) => {
 
         <Button 
           type="submit"
-          className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/40"
+          className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] hover:from-[var(--primary)] hover:to-[var(--primary-light)] text-white font-semibold shadow-lg shadow-[var(--primary)] transition-all duration-200 hover:shadow-xl hover:shadow-[var(--primary)]"
         >
           <Loader loading={loading}>Save Changes</Loader>
         </Button>

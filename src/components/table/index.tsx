@@ -23,15 +23,15 @@ export const DataTable = ({ headers, children }: DataTableProps) => {
     >
       <TableHeader>
         <TableRow className="
-          bg-gradient-to-r from-blue-600 to-blue-700
-          dark:from-indigo-500 dark:to-indigo-600
+          bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)]
+          dark:from-[var(--primary)] dark:to-[var(--primary-light)]
         ">
           {headers.map((header, key) => (
             <TableHead
               key={key}
               className={cn(
                 'px-4 py-3 text-xs font-semibold uppercase tracking-wide',
-                'text-slate-50',
+                'text-[var(--text-primary)]',
                 key === headers.length - 1 && 'text-right'
               )}
             >

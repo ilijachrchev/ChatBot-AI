@@ -32,7 +32,7 @@ const UserTypeCard = ({
         className={cn(
           'transition-all duration-300 border-2 hover:scale-[1.02]',
           isSelected
-            ? 'border-blue-500 bg-indigo-500/10'
+            ? 'border-[var(--primary)] bg-[var(--primary)]'
             : 'border-white/10 bg-white/5 hover:border-white/20'
         )}
       >
@@ -41,7 +41,7 @@ const UserTypeCard = ({
             className={cn(
               'w-12 h-12 rounded-xl flex items-center justify-center transition-all',
               isSelected
-                ? 'bg-gradient-to-br from-indigo-500 to-purple-500'
+                ? 'bg-gradient-to-br from-[var(--primary)] to-[var(--info)]'
                 : 'bg-white/10'
             )}
           >
@@ -53,7 +53,7 @@ const UserTypeCard = ({
           </div>
           
           <div className='flex-1'>
-            <h3 className={cn('font-semibold', isSelected ? 'text-white' : 'text-slate-300')}>
+            <h3 className={cn('font-semibold', isSelected ? 'text-white' : 'text-[var(--text-muted)]')}>
               {title}
             </h3>
             <p className='text-sm text-[var(--text-muted)]'>{text}</p>
@@ -62,7 +62,7 @@ const UserTypeCard = ({
           <div
             className={cn(
               'w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all',
-              isSelected ? 'border-blue-500 bg-indigo-500' : 'border-white/20'
+              isSelected ? 'border-[var(--primary)] bg-[var(--primary)]' : 'border-white/20'
             )}
           >
             {isSelected && (

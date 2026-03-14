@@ -159,7 +159,7 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
                     disabled={saving}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       isSelected
-                        ? 'bg-indigo-500 text-white'
+                        ? 'bg-[var(--primary)] text-white'
                         : 'bg-[var(--bg-card)] text-[var(--text-secondary)] hover:bg-[var(--bg-card)]'
                     }`}
                   >
@@ -188,7 +188,7 @@ export function WorkingHoursCard({ preferences }: WorkingHoursCardProps) {
                   onClick={handleSave}
                   size='sm'
                   disabled={saving}
-                  className='bg-indigo-500 hover:bg-indigo-600 text-white'
+                  className='bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white'
                 >
                   {saving ? (
                     <>

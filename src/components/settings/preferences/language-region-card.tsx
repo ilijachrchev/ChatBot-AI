@@ -225,7 +225,7 @@ export function LanguageRegionCard({ preferences }: LanguageRegionCardProps) {
                 onClick={handleSave}
                 size='sm'
                 disabled={saving}
-                className='bg-indigo-500 hover:bg-indigo-600 text-white'
+                className='bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white'
               >
                 {saving ? (
                   <>

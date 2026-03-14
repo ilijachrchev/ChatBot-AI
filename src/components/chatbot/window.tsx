@@ -173,7 +173,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
     const getContentAreaClass = () => {
       switch (widgetStyle) {
         case 'SOFT':
-          return 'bg-slate-50/80'
+          return 'bg-[var(--bg-surface)]/80'
         case 'GLASS':
           return 'bg-white/40 backdrop-blur-sm'
         default:
@@ -237,7 +237,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               </div>
             ) : (
               <div className="w-9 h-9 flex items-center justify-center bg-white rounded-full flex-shrink-0">
-                <Sparkles className="w-5 h-5 text-indigo-600" />
+                <Sparkles className="w-5 h-5 text-[var(--primary)]" />
               </div>
             )}
 
@@ -317,7 +317,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                     <button
                       type="button"
                       onClick={removeImage}
-                      className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-red-600 transition-colors shadow-sm"
+                      className="absolute -top-1.5 -right-1.5 bg-[var(--danger)] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs hover:bg-[var(--danger)] transition-colors shadow-sm"
                     >
                       ×
                     </button>
@@ -343,7 +343,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
                     <Input
                       {...register('content')}
                       placeholder="Type your message..."
-                      className="w-full bg-[var(--bg-surface)] border-[var(--border)] focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-0 rounded-lg px-3 py-2 text-sm pr-10"
+                      className="w-full bg-[var(--bg-surface)] border-[var(--border)] focus-visible:ring-2 focus-visible:ring-[var(--primary)] focus-visible:ring-offset-0 rounded-lg px-3 py-2 text-sm pr-10"
                       onKeyDown={(e) => {
                         if (e.key === 'Enter' && !e.shiftKey) {
                           e.preventDefault()
@@ -377,7 +377,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               <Separator orientation="horizontal" className="my-2" />
 
               {persona === 'CUSTOMER_SUPPORT' && (
-                <div className="flex items-center gap-2 bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-300 text-xs rounded-lg px-3 py-2 mb-1">
+                <div className="flex items-center gap-2 bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] text-xs rounded-lg px-3 py-2 mb-1">
                   <span>🎧 Support mode active — {helpdesk?.length ?? 0} FAQ{(helpdesk?.length ?? 0) !== 1 ? 's' : ''} loaded</span>
                 </div>
               )}

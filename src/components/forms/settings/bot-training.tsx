@@ -15,7 +15,7 @@ const BotTrainingForm = ({ id }: Props) => {
     <div className='px-4 md:px-6 py-6 mb-10'>
       <div className='rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6'>
         <div className='flex items-center gap-3 mb-6'>
-          <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 text-white'>
+          <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--primary)] text-white'>
             <Brain className='h-5 w-5' />
           </div>
           <div>

@@ -88,7 +88,7 @@ export const RealtimeSettings = ({
             color: enabled ? 'rgb(21 128 61)' : 'rgb(100 116 139)',
           }}
         >
-          <span className={`h-1.5 w-1.5 rounded-full ${enabled ? 'bg-green-500' : 'bg-[var(--text-muted)]'}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${enabled ? 'bg-[var(--success)]' : 'bg-[var(--text-muted)]'}`} />
           {enabled ? 'Realtime mode is ON' : 'Stateless AI mode is ON'}
         </div>
       </div>
@@ -131,7 +131,7 @@ export const RealtimeSettings = ({
             color: notificationsEnabled ? 'rgb(29 78 216)' : 'rgb(100 116 139)',
           }}
         >
-          <span className={`h-1.5 w-1.5 rounded-full ${notificationsEnabled ? 'bg-indigo-500' : 'bg-[var(--text-muted)]'}`} />
+          <span className={`h-1.5 w-1.5 rounded-full ${notificationsEnabled ? 'bg-[var(--primary)]' : 'bg-[var(--text-muted)]'}`} />
           {notificationsEnabled ? 'Notifications ON' : 'Notifications OFF'}
         </div>
 
@@ -143,8 +143,8 @@ export const RealtimeSettings = ({
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <div className={`rounded-xl border p-5 space-y-3 transition-opacity ${enabled ? 'border-green-200 dark:border-green-900 bg-green-50 dark:bg-green-950/20' : 'border-[var(--border-default)] opacity-50'}`}>
-          <div className="flex items-center gap-2 text-sm font-medium text-green-700 dark:text-green-400">
+        <div className={`rounded-xl border p-5 space-y-3 transition-opacity ${enabled ? 'border-[var(--success)] dark:border-[var(--success)] bg-[var(--success)] dark:bg-[var(--success)]' : 'border-[var(--border-default)] opacity-50'}`}>
+          <div className="flex items-center gap-2 text-sm font-medium text-[var(--success)] dark:text-[var(--success)]">
             <Zap className="h-4 w-4" />
             When Realtime is ON
           </div>

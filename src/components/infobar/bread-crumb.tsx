@@ -94,7 +94,7 @@ const BreadCrumb = () => {
             {title}
           </h2>
           {isDomainPage && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium">
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-[var(--primary)] dark:bg-[var(--primary)] text-[var(--primary)] dark:text-[var(--primary)] text-xs font-medium">
               <Globe className="w-3 h-3" />
               Domain Settings
             </span>
@@ -112,7 +112,7 @@ const BreadCrumb = () => {
           <Activity
             className={cn(
               'w-4 h-4 transition-colors',
-              realtime ? 'text-emerald-500 animate-pulse' : 'text-muted-foreground'
+              realtime ? 'text-[var(--success)] animate-pulse' : 'text-muted-foreground'
             )}
           />
           <span className="text-sm font-medium text-foreground">
@@ -123,8 +123,8 @@ const BreadCrumb = () => {
               checked={realtime}
               onCheckedChange={onActivateRealtime}
               className={cn(
-                'data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-slate-300',
-                'dark:data-[state=checked]:bg-emerald-600 dark:data-[state=unchecked]:bg-slate-600'
+                'data-[state=checked]:bg-[var(--success)] data-[state=unchecked]:bg-[var(--bg-card)]',
+                'dark:data-[state=checked]:bg-[var(--success)] dark:data-[state=unchecked]:bg-[var(--bg-card)]'
               )}
             />
           </Loader>

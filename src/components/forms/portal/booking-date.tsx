@@ -73,7 +73,7 @@ const BookAppointmentDate = ({
                                             &&
                                         booking.slot == slot.slot
                                 )
-                                ? 'bg-gray-300'
+                                ? 'bg-[var(--bg-surface)] opacity-50'
                                 : 'cursor-pointer border-orange hover:bg-grandis transition duration-150 ease-in-out'
                             )}
                             >

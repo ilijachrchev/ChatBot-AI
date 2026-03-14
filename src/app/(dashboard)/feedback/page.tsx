@@ -21,11 +21,11 @@ type RatingItem = {
 }
 
 const DOMAIN_COLORS = [
-  'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-  'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
-  'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
-  'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
-  'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300',
+  'bg-[var(--primary-light)] text-[var(--text-primary)]',
+  'bg-[var(--primary-light)] text-[var(--text-primary)]',
+  'bg-[rgba(61,184,130,0.15)] text-[var(--success)]',
+  'bg-[rgba(224,155,26,0.15)] text-[var(--warning)]',
+  'bg-[rgba(224,85,85,0.15)] text-[var(--danger)]',
 ]
 
 function getDomainColor(name: string): string {
@@ -105,7 +105,7 @@ const FeedbackPage = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {statCards.map((card) => (
-              <div key={card.label} className="bg-background border rounded-xl p-4 space-y-1">
+              <div key={card.label} className="bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl p-4 space-y-1">
                 <p className="text-2xl font-bold">{card.value}</p>
                 <p className="text-sm text-muted-foreground">{card.label}</p>
               </div>
@@ -116,7 +116,7 @@ const FeedbackPage = () => {
             <select
               value={domainFilter}
               onChange={(e) => { setDomainFilter(e.target.value); setPage(1) }}
-              className="text-sm border rounded-md px-3 py-1.5 bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              className="text-sm border border-[var(--border-default)] rounded-md px-3 py-1.5 bg-[var(--bg-card)] focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All domains</option>
               {domains.map((d) => (
@@ -125,7 +125,7 @@ const FeedbackPage = () => {
             </select>
           </div>
 
-          <div className="bg-background border rounded-xl overflow-hidden">
+          <div className="bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl overflow-hidden">
             {loading ? (
               <div className="flex items-center justify-center py-20 text-muted-foreground text-sm">
                 Loading feedback...
@@ -141,7 +141,7 @@ const FeedbackPage = () => {
             ) : (
               <div className="overflow-x-auto">
                 <div className="min-w-[700px]">
-                  <div className="grid grid-cols-[110px_130px_80px_1fr_90px] gap-3 px-4 py-2.5 border-b text-xs font-medium text-muted-foreground bg-muted/40">
+                  <div className="grid grid-cols-[110px_130px_80px_1fr_90px] gap-3 px-4 py-2.5 border-b text-xs font-medium text-muted-foreground bg-[var(--bg-surface)]">
                     <span>Date</span>
                     <span>Domain</span>
                     <span>Rating</span>
@@ -152,7 +152,7 @@ const FeedbackPage = () => {
                   {paginated.map((item) => (
                     <div
                       key={item.id}
-                      className="grid grid-cols-[110px_130px_80px_1fr_90px] gap-3 px-4 py-3.5 border-b last:border-0 hover:bg-muted/30 items-start transition-all duration-150"
+                      className="grid grid-cols-[110px_130px_80px_1fr_90px] gap-3 px-4 py-3.5 border-b last:border-0 hover:bg-[var(--primary-light)] items-start transition-all duration-150"
                     >
                       <span className="text-xs text-muted-foreground pt-0.5">
                         {relativeTime(item.createdAt)}
@@ -166,11 +166,11 @@ const FeedbackPage = () => {
 
                       <div>
                         {item.rating === 'POSITIVE' ? (
-                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[rgba(61,184,130,0.15)] text-[var(--success)]">
                             👍 Yes
                           </span>
                         ) : (
-                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[rgba(224,85,85,0.15)] text-[var(--danger)]">
                             👎 No
                           </span>
                         )}
@@ -182,7 +182,7 @@ const FeedbackPage = () => {
 
                       <Link
                         href="/conversation"
-                        className="text-xs text-indigo-500 hover:text-blue-700 hover:underline whitespace-nowrap pt-0.5"
+                        className="text-xs text-[var(--primary)] hover:text-[var(--primary)] hover:underline whitespace-nowrap pt-0.5"
                       >
                         View chat →
                       </Link>

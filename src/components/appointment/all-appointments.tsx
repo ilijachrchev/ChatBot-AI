@@ -38,7 +38,7 @@ const AllApointments = ({ bookings }: Props) => {
           >
             <TableCell className='font-medium'>
               <div className='flex items-center gap-2'>
-                <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-indigo-600 text-white text-xs font-semibold flex-shrink-0'>
+                <div className='flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] text-white text-xs font-semibold flex-shrink-0'>
                   {booking.email[0].toUpperCase()}
                 </div>
                 <div className='min-w-0'>

@@ -105,8 +105,8 @@ export const ChatbotPreview = ({
 
   const getMockBrowserBg = () => {
     switch (widgetStyle) {
-      case 'GLASS': return 'bg-gradient-to-br from-blue-100 via-purple-50 to-pink-100 dark:from-blue-950 dark:via-purple-950 dark:to-pink-950'
-      case 'SOFT': return 'bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900'
+      case 'GLASS': return 'bg-gradient-to-br from-[var(--primary)] via-[var(--primary-light)] to-[var(--bg-surface)]'
+      case 'SOFT': return 'bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] dark:from-[var(--bg-page)] dark:to-[var(--bg-page)]'
       default: return 'bg-[var(--bg-card)]'
     }
   }
@@ -116,7 +116,7 @@ export const ChatbotPreview = ({
   return (
     <div className={cn('relative w-full mx-auto transition-all duration-300', sizeClasses.container)}>
       <div className="absolute -top-3 right-4 z-10">
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white text-xs font-semibold shadow-lg">
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--success)] text-white text-xs font-semibold shadow-lg">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--bg-surface)] opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--bg-surface)]" />
@@ -127,9 +127,9 @@ export const ChatbotPreview = ({
 
       <div className="rounded-2xl overflow-hidden shadow-2xl border border-[var(--border-default)] dark:border-[var(--border-strong)]">
         <div className="bg-[var(--border)] px-3 py-2 flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-red-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-          <span className="h-2.5 w-2.5 rounded-full bg-green-400" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[var(--danger)]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[var(--warning)]" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[var(--success)]" />
           <div className="flex-1 mx-3 h-4 rounded bg-[var(--border)] text-[9px] text-[var(--text-muted)] flex items-center px-2">
             yourwebsite.com
           </div>
@@ -157,7 +157,7 @@ export const ChatbotPreview = ({
                         <MessageSquare className="h-5 w-5" style={{ color: chatbotColor }} />
                       )}
                     </div>
-                    <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-green-400 border-2 border-white" />
+                    <span className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-[var(--success)] border-2 border-white" />
                   </div>
                   <div>
                     <h3 className="text-white font-semibold text-sm">{displayTitle}</h3>
@@ -167,9 +167,9 @@ export const ChatbotPreview = ({
 
                 {finalShowAvatars && (
                   <div className="flex -space-x-2">
-                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white text-[10px] font-bold">A</div>
-                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center text-white text-[10px] font-bold">B</div>
-                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center text-white text-[10px] font-bold">C</div>
+                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white text-[10px] font-bold">A</div>
+                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-[var(--info)] to-[var(--info)] flex items-center justify-center text-white text-[10px] font-bold">B</div>
+                    <div className="h-7 w-7 rounded-full border-2 border-white bg-gradient-to-br from-[var(--danger)] to-[var(--danger)] flex items-center justify-center text-white text-[10px] font-bold">C</div>
                   </div>
                 )}
 
@@ -269,12 +269,12 @@ export const ChatbotPreview = ({
 
       <div className="absolute -top-3 left-4 z-10 flex gap-2">
         {widgetSize && (
-          <div className="px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 text-[10px] font-semibold">
+          <div className="px-2.5 py-1 rounded-full bg-[var(--primary-light)] text-[var(--primary)] text-[10px] font-semibold">
             {widgetSize}
           </div>
         )}
         {widgetStyle && (
-          <div className="px-2.5 py-1 rounded-full bg-purple-100 text-purple-700 text-[10px] font-semibold">
+          <div className="px-2.5 py-1 rounded-full bg-[var(--primary-light)] text-[var(--primary)] text-[10px] font-semibold">
             {widgetStyle}
           </div>
         )}

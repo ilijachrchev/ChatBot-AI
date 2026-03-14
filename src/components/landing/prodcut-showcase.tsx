@@ -27,7 +27,7 @@ export const ProductShowcase = () => {
             </div>
           </div>
           <div className="flex justify-center pt-1">
-            <span className="text-[8px] text-emerald-400 font-medium">
+            <span className="text-[8px] text-[var(--success)] font-medium">
               AI Resolved ✓
             </span>
           </div>
@@ -48,13 +48,13 @@ export const ProductShowcase = () => {
           </div>
           <div className="flex items-center gap-2 py-1">
             <div className="flex-1 h-px bg-[var(--bg-active)]" />
-            <span className="text-[8px] text-emerald-400 shrink-0">
+            <span className="text-[8px] text-[var(--success)] shrink-0">
               👤 Agent joined
             </span>
             <div className="flex-1 h-px bg-[var(--bg-active)]" />
           </div>
           <div className="flex">
-            <div className="bg-emerald-500/20 text-emerald-300 rounded-2xl p-2 text-[9px] max-w-[70%]">
+            <div className="bg-[var(--success)] text-[var(--success)] rounded-2xl p-2 text-[9px] max-w-[70%]">
               Hi! I&apos;m here to help you.
             </div>
           </div>
@@ -100,11 +100,11 @@ export const ProductShowcase = () => {
             </div>
             <div>
               <span className="text-sky-400">{"  src="}</span>
-              <span className="text-emerald-400">{'"sendwise.js"'}</span>
+              <span className="text-[var(--success)]">{'"sendwise.js"'}</span>
             </div>
             <div>
               <span className="text-sky-400">{"  data-id="}</span>
-              <span className="text-emerald-400">{'"your-id"'}</span>
+              <span className="text-[var(--success)]">{'"your-id"'}</span>
             </div>
             <div>
               <span className="text-violet-400">&gt;&lt;/script&gt;</span>
@@ -114,7 +114,7 @@ export const ProductShowcase = () => {
             {["React", "Vue", "PHP", "JS"].map((lang) => (
               <span
                 key={lang}
-                className="bg-[var(--bg-active)] rounded px-1.5 py-0.5 text-[7px] text-slate-300"
+                className="bg-[var(--bg-active)] rounded px-1.5 py-0.5 text-[7px] text-[var(--text-muted)]"
               >
                 {lang}
               </span>
@@ -154,7 +154,7 @@ export const ProductShowcase = () => {
       mockupContent: (
         <div className="space-y-2">
           <div className="flex gap-1.5 flex-wrap">
-            <span className="bg-emerald-500/20 text-emerald-400 rounded-full px-2 py-0.5 text-[8px]">
+            <span className="bg-[var(--success)] text-[var(--success)] rounded-full px-2 py-0.5 text-[8px]">
               94% AI resolved
             </span>
             <span className="bg-sky-500/20 text-sky-400 rounded-full px-2 py-0.5 text-[8px]">
@@ -182,11 +182,11 @@ export const ProductShowcase = () => {
 
   return (
     <section className="py-24 px-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-slate-900/70 to-[#020617]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[var(--bg-card)] to-[#020617]" />
 
       <div className="relative z-10 max-w-7xl mx-auto">
         <div className="text-center mb-16 animate-fade-in-up">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-slate-50">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-[var(--text-primary)]">
             Everything your customer service needs
           </h2>
           <p className="text-xl text-[var(--text-muted)] max-w-2xl mx-auto">
@@ -206,12 +206,12 @@ export const ProductShowcase = () => {
               >
                 <div className="absolute inset-0 bg-gradient-to-br from-sky-500/25 to-violet-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                <div className="relative bg-[var(--bg-page)]/70 border border-slate-700 rounded-2xl p-6 hover:border-sky-500 transition-all duration-300 hover:shadow-[0_0_40px_rgba(56,189,248,0.45)] h-full flex flex-col">
+                <div className="relative bg-[var(--bg-page)]/70 border border-[var(--border-strong)] rounded-2xl p-6 hover:border-sky-500 transition-all duration-300 hover:shadow-[0_0_40px_rgba(56,189,248,0.45)] h-full flex flex-col">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-12 h-12 rounded-lg bg-sky-500/15 flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Icon className="w-6 h-6 text-sky-400" />
                     </div>
-                    <h3 className="text-xl font-semibold text-slate-50">
+                    <h3 className="text-xl font-semibold text-[var(--text-primary)]">
                       {feature.title}
                     </h3>
                   </div>
@@ -220,7 +220,7 @@ export const ProductShowcase = () => {
                     {feature.description}
                   </p>
 
-                  <div className="relative aspect-video bg-gradient-to-br from-slate-900 to-slate-950 rounded-lg overflow-hidden border border-slate-700/80">
+                  <div className="relative aspect-video bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] rounded-lg overflow-hidden border border-[var(--border-strong)]/80">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="w-full h-full p-4">
                         {feature.mockupContent}

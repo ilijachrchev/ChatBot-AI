@@ -126,7 +126,7 @@ export function UpgradePlanModal({
           <>
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center">
+                <div className="w-12 h-12 rounded-xl bg-[var(--bg-page)] dark:bg-white flex items-center justify-center">
                   <TargetIcon className="w-6 h-6 text-[var(--text-primary)]" />
                 </div>
                 <div>
@@ -197,8 +197,8 @@ export function UpgradePlanModal({
                       
                       return (
                         <li key={key} className="flex items-start gap-3">
-                          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                            <Check className="w-3 h-3 text-green-600 dark:text-green-400" />
+                          <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[var(--success)] dark:bg-[var(--success)] flex items-center justify-center">
+                            <Check className="w-3 h-3 text-[var(--success)] dark:text-[var(--success)]" />
                           </div>
                           <span className="text-sm text-[var(--text-secondary)] capitalize">
                             {displayText}
@@ -237,7 +237,7 @@ export function UpgradePlanModal({
               <Button
                 onClick={handleContinue}
                 disabled={loading || !publishableKey || !stripePromise}
-                className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white"
+                className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white"
               >
                 {loading ? (
                   <>

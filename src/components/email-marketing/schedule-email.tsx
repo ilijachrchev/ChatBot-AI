@@ -79,8 +79,8 @@ export const ScheduleEmail = ({
           className={cn(
             'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
             sendType === 'immediate'
-              ? 'border-slate-900 dark:border-white bg-[var(--bg-card)]'
-              : 'border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
+              ? 'border-[var(--border-strong)] dark:border-white bg-[var(--bg-card)]'
+              : 'border-[var(--border-default)] hover:border-[var(--border-default)]'
           )}
           onClick={() => setSendType('immediate')}
         >
@@ -88,7 +88,7 @@ export const ScheduleEmail = ({
             className={cn(
               'mt-0.5 h-4 w-4 rounded-full border-2 flex-shrink-0 transition-all',
               sendType === 'immediate'
-                ? 'border-slate-900 dark:border-white bg-slate-900 dark:bg-white'
+                ? 'border-[var(--border-strong)] dark:border-white bg-[var(--bg-page)] dark:bg-white'
                 : 'border-[var(--border-strong)]'
             )}
           />
@@ -109,8 +109,8 @@ export const ScheduleEmail = ({
           className={cn(
             'flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all',
             sendType === 'scheduled'
-              ? 'border-slate-900 dark:border-white bg-[var(--bg-card)]'
-              : 'border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
+              ? 'border-[var(--border-strong)] dark:border-white bg-[var(--bg-card)]'
+              : 'border-[var(--border-default)] hover:border-[var(--border-default)]'
           )}
           onClick={() => setSendType('scheduled')}
         >
@@ -118,7 +118,7 @@ export const ScheduleEmail = ({
             className={cn(
               'mt-0.5 h-4 w-4 rounded-full border-2 flex-shrink-0 transition-all',
               sendType === 'scheduled'
-                ? 'border-slate-900 dark:border-white bg-slate-900 dark:bg-white'
+                ? 'border-[var(--border-strong)] dark:border-white bg-[var(--bg-page)] dark:bg-white'
                 : 'border-[var(--border-strong)]'
             )}
           />
@@ -149,7 +149,7 @@ export const ScheduleEmail = ({
               <select
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="w-full h-11 px-3 rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none focus:border-slate-900 dark:focus:border-white transition-all"
+                className="w-full h-11 px-3 rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none focus:border-[var(--border-default)] dark:focus:border-white transition-all"
               >
                 <option value="">Choose a date...</option>
                 {dateOptions.map((date) => (
@@ -176,7 +176,7 @@ export const ScheduleEmail = ({
                 value={selectedTime}
                 onChange={(e) => setSelectedTime(e.target.value)}
                 disabled={!selectedDate}
-                className="w-full h-11 px-3 rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none focus:border-slate-900 dark:focus:border-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full h-11 px-3 rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] outline-none focus:border-[var(--border-default)] dark:focus:border-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <option value="">Choose a time...</option>
                 {timeOptions.map((time) => (
@@ -215,7 +215,7 @@ export const ScheduleEmail = ({
           type="button"
           onClick={handleSubmit}
           disabled={loading || (sendType === 'scheduled' && (!selectedDate || !selectedTime))}
-          className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold"
+          className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold"
         >
           {loading ? (
             'Processing...'

@@ -8,11 +8,11 @@ import { formatDistanceToNow } from 'date-fns'
 export const dynamic = 'force-dynamic'
 
 const STAGES = [
-  { key: 'NEW', label: 'New', color: 'border-[var(--border-strong)]', headerColor: 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]' },
-  { key: 'CONTACTED', label: 'Contacted', color: 'border-blue-300 dark:border-[var(--border-accent)]', headerColor: 'bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300' },
-  { key: 'QUALIFIED', label: 'Qualified', color: 'border-amber-300 dark:border-amber-800', headerColor: 'bg-amber-50 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300' },
-  { key: 'PROPOSAL', label: 'Proposal', color: 'border-purple-300 dark:border-purple-800', headerColor: 'bg-purple-50 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300' },
-  { key: 'CLOSED', label: 'Closed', color: 'border-green-300 dark:border-green-800', headerColor: 'bg-green-50 dark:bg-green-950/50 text-green-700 dark:text-green-300' },
+  { key: 'NEW', label: 'New', color: 'border-[var(--border-strong)]', headerColor: 'bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]' },
+  { key: 'CONTACTED', label: 'Contacted', color: 'border-[var(--primary)] dark:border-[var(--border-accent)]', headerColor: 'bg-[var(--primary)] dark:bg-[var(--primary)] text-[var(--primary)] dark:text-[var(--primary)]' },
+  { key: 'QUALIFIED', label: 'Qualified', color: 'border-[var(--warning)] dark:border-[var(--warning)]', headerColor: 'bg-[var(--warning)] dark:bg-[var(--warning)] text-[var(--warning)] dark:text-[var(--warning)]' },
+  { key: 'PROPOSAL', label: 'Proposal', color: 'border-[var(--border-strong)]', headerColor: 'bg-[var(--primary-light)] text-[var(--primary)]' },
+  { key: 'CLOSED', label: 'Closed', color: 'border-[var(--success)] dark:border-[var(--success)]', headerColor: 'bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)]' },
 ]
 
 type Props = {
@@ -43,20 +43,20 @@ export default async function SalesPipelinePage({ searchParams }: Props) {
     return (
       <div className="p-6 md:p-8 max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold text-[var(--text-primary)] mb-2">Sales Pipeline</h1>
-        <p className="text-slate-500 dark:text-[var(--text-secondary)] mb-8">Select a domain to view its pipeline.</p>
+        <p className="text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-8">Select a domain to view its pipeline.</p>
         <div className="flex flex-col gap-3">
           {salesDomains.map(d => (
             <Link
               key={d.id}
               href={`/sales-pipeline?domain=${d.id}`}
-              className="flex items-center justify-between p-4 rounded-xl border-2 border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600 bg-[var(--bg-page)] transition-all"
+              className="flex items-center justify-between p-4 rounded-xl border-2 border-[var(--border-default)] hover:border-[var(--border-default)] bg-[var(--bg-page)] transition-all"
             >
               <span className="font-semibold text-[var(--text-primary)]">{d.name}</span>
               <ExternalLink className="h-4 w-4 text-[var(--text-muted)]" />
             </Link>
           ))}
           {salesDomains.length === 0 && (
-            <p className="text-slate-400 dark:text-[var(--text-muted)] text-sm">No domains with Sales Agent persona found.</p>
+            <p className="text-[var(--text-muted)] dark:text-[var(--text-muted)] text-sm">No domains with Sales Agent persona found.</p>
           )}
         </div>
       </div>
@@ -108,11 +108,11 @@ export default async function SalesPipelinePage({ searchParams }: Props) {
           <h1 className="text-xl md:text-3xl font-bold text-[var(--text-primary)]">Sales Pipeline</h1>
           <div className="flex items-center gap-3 mt-1">
             {domain && (
-              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-[var(--border-accent)]">
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[var(--primary)] dark:bg-[var(--primary)] text-[var(--primary)] dark:text-[var(--primary)] border border-[var(--primary)] dark:border-[var(--border-accent)]">
                 {domain.name}
               </span>
             )}
-            <span className="text-sm text-slate-500 dark:text-[var(--text-secondary)]">{customers.length} leads total</span>
+            <span className="text-sm text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">{customers.length} leads total</span>
           </div>
         </div>
         {salesDomains.length > 1 && (
@@ -124,8 +124,8 @@ export default async function SalesPipelinePage({ searchParams }: Props) {
                 className={cn(
                   'text-xs px-3 py-1.5 rounded-lg border font-medium transition-all',
                   d.id === domainId
-                    ? 'bg-indigo-500 text-white border-slate-900 dark:border-white'
-                    : 'border-[var(--border-default)] dark:border-[var(--border-strong)] text-[var(--text-secondary)] hover:border-slate-400'
+                    ? 'bg-[var(--primary)] text-white border-[var(--border-strong)] dark:border-white'
+                    : 'border-[var(--border-default)] dark:border-[var(--border-strong)] text-[var(--text-secondary)] hover:border-[var(--border-default)]'
                 )}
               >
                 {d.name}
@@ -147,10 +147,10 @@ export default async function SalesPipelinePage({ searchParams }: Props) {
                 </span>
               </div>
 
-              <div className={cn('rounded-xl border-2 min-h-[200px] p-2 flex flex-col gap-2', stage.color, 'bg-slate-50/50 dark:bg-[var(--bg-page)]/30')}>
+              <div className={cn('rounded-xl border-2 min-h-[200px] p-2 flex flex-col gap-2', stage.color, 'bg-[var(--bg-surface)]/50 dark:bg-[var(--bg-page)]/30')}>
                 {leads.length === 0 && (
                   <div className="flex-1 flex items-center justify-center border-2 border-dashed border-[var(--border-default)] rounded-lg p-6">
-                    <span className="text-xs text-slate-400 dark:text-[var(--text-secondary)] text-center">No leads in this stage</span>
+                    <span className="text-xs text-[var(--text-muted)] dark:text-[var(--text-secondary)] text-center">No leads in this stage</span>
                   </div>
                 )}
                 {leads.map(lead => {
@@ -165,16 +165,16 @@ export default async function SalesPipelinePage({ searchParams }: Props) {
                         <span className="text-sm font-semibold text-[var(--text-primary)] truncate">
                           {lead.email ?? 'Anonymous'}
                         </span>
-                        <GripVertical className="h-4 w-4 text-slate-300 dark:text-[var(--text-secondary)] flex-shrink-0" />
+                        <GripVertical className="h-4 w-4 text-[var(--text-muted)] dark:text-[var(--text-secondary)] flex-shrink-0" />
                       </div>
                       {lastMsg && (
-                        <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] line-clamp-2">
+                        <p className="text-xs text-[var(--text-secondary)] dark:text-[var(--text-secondary)] line-clamp-2">
                           {lastMsg.slice(0, 60)}{lastMsg.length > 60 ? '…' : ''}
                         </p>
                       )}
                       <div className="flex items-center justify-between mt-1">
                         {room?.updatedAt && (
-                          <span className="text-[10px] text-slate-400 dark:text-[var(--text-secondary)]">
+                          <span className="text-[10px] text-[var(--text-muted)] dark:text-[var(--text-secondary)]">
                             {formatDistanceToNow(new Date(room.updatedAt), { addSuffix: true })}
                           </span>
                         )}

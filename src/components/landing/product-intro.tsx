@@ -26,7 +26,7 @@ const steps = [
 export const ProductIntro = () => {
   return (
     <section className="relative px-4 py-16 md:py-24 overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#020617] via-slate-900/60 to-[#020617]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#020617] via-[var(--bg-card)] to-[#020617]" />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mb-16 md:mb-20 text-center animate-fade-in-up">
@@ -35,7 +35,7 @@ export const ProductIntro = () => {
               How it works
             </span>
           </div>
-          <h2 className="mb-4 text-3xl md:text-5xl font-bold text-slate-50">
+          <h2 className="mb-4 text-3xl md:text-5xl font-bold text-[var(--text-primary)]">
             Set up your AI chatbot in minutes
           </h2>
           <p className="mx-auto max-w-2xl text-base md:text-xl text-[var(--text-muted)]">
@@ -50,7 +50,7 @@ export const ProductIntro = () => {
               Simple setup
             </span>
           </div>
-          <h3 className="text-2xl md:text-3xl font-bold text-slate-50">
+          <h3 className="text-2xl md:text-3xl font-bold text-[var(--text-primary)]">
             From sign-up to live chatbot in 3 steps
           </h3>
           <p className="mt-2 text-base text-[var(--text-muted)]">
@@ -71,7 +71,7 @@ export const ProductIntro = () => {
                   <div className="pointer-events-none absolute top-12 left-[60%] hidden h-0.5 w-full bg-gradient-to-r from-sky-500 to-violet-500 opacity-30 md:block" />
                 )}
 
-                <div className="relative rounded-2xl border-2 border-slate-700 bg-[var(--bg-page)]/60 p-6 md:p-8 transition-all duration-300 hover:border-sky-500/70 hover:shadow-[0_0_30px_rgba(59,130,246,0.35)]">
+                <div className="relative rounded-2xl border-2 border-[var(--border-strong)] bg-[var(--bg-page)]/60 p-6 md:p-8 transition-all duration-300 hover:border-sky-500/70 hover:shadow-[0_0_30px_rgba(59,130,246,0.35)]">
                   <div className="mb-4 flex items-center gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-500/15 transition-transform group-hover:scale-110">
                       <Icon className="h-6 w-6 text-sky-400" />
@@ -80,7 +80,7 @@ export const ProductIntro = () => {
                       {i + 1}
                     </span>
                   </div>
-                  <h4 className="mb-2 md:mb-3 text-lg md:text-xl font-semibold text-slate-50">
+                  <h4 className="mb-2 md:mb-3 text-lg md:text-xl font-semibold text-[var(--text-primary)]">
                     {step.title}
                   </h4>
                   <p className="text-sm md:text-base text-[var(--text-muted)]">

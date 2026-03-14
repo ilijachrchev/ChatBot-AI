@@ -17,7 +17,7 @@ const ChangePassword = (props: Props) => {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 md:gap-8">
         <div className="lg:col-span-1">
           <div className="flex items-start gap-3 mb-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-rose-600 text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--danger)] text-white">
               <Lock className="h-5 w-5" />
             </div>
             <div>
@@ -78,12 +78,12 @@ const ChangePassword = (props: Props) => {
             <div className="pt-2">
               <Button 
                 className={cn(
-                  'bg-gradient-to-r from-indigo-500 to-indigo-600',
-                  'hover:from-blue-600 hover:to-blue-700',
+                  'bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)]',
+                  'hover:from-[var(--primary)] hover:to-[var(--primary-light)]',
                   'text-white font-semibold',
-                  'shadow-lg shadow-blue-500/30',
+                  'shadow-lg shadow-[var(--primary)]',
                   'transition-all duration-200',
-                  'hover:shadow-xl hover:shadow-blue-500/40'
+                  'hover:shadow-xl hover:shadow-[var(--primary)]'
                 )}
               >
                 <Loader loading={loading}>Update Password</Loader>

@@ -50,8 +50,8 @@ export const CustomerTable = ({
                 className={cn(
                   'flex h-5 w-5 items-center justify-center rounded-md border-2 transition-all duration-200',
                   select.includes(c.email as string)
-                    ? 'bg-indigo-500 border-indigo-500 text-white'
-                    : 'border-[var(--border-strong)] hover:border-slate-500 dark:hover:border-slate-500'
+                    ? 'bg-[var(--primary)] border-[var(--primary)] text-white'
+                    : 'border-[var(--border-strong)] hover:border-[var(--border-default)]'
                 )}
               >
                 {select.includes(c.email as string) && (
@@ -78,7 +78,7 @@ export const CustomerTable = ({
                       'text-[var(--text-secondary)]',
                       'hover:text-[var(--text-primary)]',
                       'border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-                      'hover:border-[var(--border)] dark:hover:border-slate-500'
+                      'hover:border-[var(--border)]'
                     )}
                     onClick={() => onId(c.id)}
                   >

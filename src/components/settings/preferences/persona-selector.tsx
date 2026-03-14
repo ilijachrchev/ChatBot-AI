@@ -99,12 +99,12 @@ export const PersonaSelector = ({
                 'relative p-4 rounded-xl border-2 text-left transition-all duration-200',
                 'hover:shadow-lg hover:-translate-y-0.5',
                 isSelected
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30 shadow-md'
-                  : 'border-[var(--border-default)] hover:border-blue-300 dark:hover:border-blue-700'
+                  ? 'border-[var(--primary)] bg-[var(--primary)] dark:bg-[var(--primary)] shadow-md'
+                  : 'border-[var(--border-default)] hover:border-[var(--primary)] dark:hover:border-[var(--primary)]'
               )}
             >
               {isSelected && (
-                <div className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-indigo-500 text-white">
+                <div className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary)] text-white">
                   <Check className="h-3 w-3" />
                 </div>
               )}
@@ -129,14 +129,14 @@ export const PersonaSelector = ({
       </div>
 
       {selectedPersonaData && selectedPersona !== 'CUSTOM' && (
-        <div className="p-4 rounded-lg border border-blue-200 dark:border-[var(--border-accent)] bg-blue-50 dark:bg-blue-950/30">
+        <div className="p-4 rounded-lg border border-[var(--primary)] dark:border-[var(--border-accent)] bg-[var(--primary)] dark:bg-[var(--primary)]">
           <div className="flex items-start gap-2">
             <Info className="h-4 w-4 text-[var(--text-accent)] mt-0.5 flex-shrink-0" />
             <div>
-              <p className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+              <p className="font-medium text-[var(--primary)] dark:text-[var(--primary)] mb-1">
                 {selectedPersonaData.name} Selected
               </p>
-              <p className="text-sm text-blue-700 dark:text-blue-300">
+              <p className="text-sm text-[var(--primary)] dark:text-[var(--primary)]">
                 {selectedPersonaData.description}
               </p>
             </div>
@@ -171,20 +171,20 @@ You are a friendly tech support assistant for a SaaS company. Always be patient,
           type="button"
           onClick={handleSave}
           disabled={saving || !hasChanges}
-          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg shadow-blue-500/30"
+          className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] hover:from-[var(--primary)] hover:to-[var(--primary-light)] text-white font-semibold shadow-lg shadow-[var(--primary)]"
         >
           <Save className="h-4 w-4 mr-2" />
           <Loader loading={saving}>Save Persona</Loader>
         </Button>
         
         {hasChanges && !saving && (
-          <p className="text-sm text-amber-600 dark:text-amber-400">
+          <p className="text-sm text-[var(--warning)] dark:text-[var(--warning)]">
             ⚠️ You have unsaved changes
           </p>
         )}
         
         {!hasChanges && !saving && (
-          <p className="text-sm text-green-600 dark:text-green-400">
+          <p className="text-sm text-[var(--success)] dark:text-[var(--success)]">
             ✅ All changes saved
           </p>
         )}

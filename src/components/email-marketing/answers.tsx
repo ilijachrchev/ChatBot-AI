@@ -23,7 +23,7 @@ const Answers = ({ id }: Props) => {
                     className="p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)]"
                   >
                     <div className="flex items-start gap-3 mb-2">
-                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--primary)] dark:bg-[var(--primary)]">
                         <MessageSquare className="h-4 w-4 text-[var(--text-accent)]" />
                       </div>
                       <div className="flex-1">

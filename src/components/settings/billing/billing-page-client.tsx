@@ -142,7 +142,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
               <CardTitle className="flex items-center justify-between">
                 <span>Plan Details</span>
                 {planDetails.recommended && (
-                  <Badge className="bg-[var(--bg-page)] text-white dark:bg-indigo-500 dark:text-white">
+                  <Badge className="bg-[var(--bg-page)] text-white dark:bg-[var(--primary)] dark:text-white">
                     Recommended
                   </Badge>
                 )}
@@ -205,13 +205,13 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                 {!isHighestPlan ? (
                   <Button
                     onClick={handleUpgradeClick}
-                    className="bg-indigo-500 hover:bg-indigo-600 text-white"
+                    className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white"
                   >
                     <Sparkles className="w-4 h-4 mr-2" />
                     Upgrade to {nextPlan && PRICING_CONFIG[nextPlan].displayName}
                   </Button>
                 ) : (
-                  <Button disabled className="bg-[var(--bg-page)] text-white dark:bg-indigo-500 dark:text-white">
+                  <Button disabled className="bg-[var(--bg-page)] text-white dark:bg-[var(--primary)] dark:text-white">
                     <Crown className="w-4 h-4 mr-2" />
                     You&apos;re on the best plan!
                   </Button>
@@ -255,7 +255,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
                     <li key={key} className="flex items-start gap-3">
                       <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${
                         isAvailable 
-                          ? 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' 
+                          ? 'bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)]' 
                           : 'bg-[var(--bg-card)] text-[var(--text-muted)]'
                       }`}>
                         {isAvailable ? (
@@ -386,7 +386,7 @@ export function BillingPageClient({ billingData, paymentMethods: initialPaymentM
               <Button
                 size="sm"
                 onClick={() => setAddPaymentModalOpen(true)}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white"
+                className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Card

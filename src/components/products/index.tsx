@@ -29,11 +29,11 @@ const ProductTable = ({ id, products }: Props) => {
       <div className='rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6'>
         <div className='flex items-center justify-between mb-6'>
           <div className='flex items-center gap-3'>
-            <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--success)] text-white'>
               <Package className='h-5 w-5' />
             </div>
             <div>
-              <h2 className='text-lg font-bold text-slate-950 dark:text-[var(--text-primary)]'>
+              <h2 className='text-lg font-bold text-[var(--text-primary)]'>
                 Products
               </h2>
               <p className='text-sm text-[var(--text-secondary)]'>
@@ -49,12 +49,12 @@ const ProductTable = ({ id, products }: Props) => {
               <div className={cn(
                 'inline-flex items-center justify-center gap-2',
                 'px-4 py-2 rounded-lg cursor-pointer',
-                'bg-gradient-to-r from-indigo-500 to-indigo-600',
-                'hover:from-blue-600 hover:to-blue-700',
+                'bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)]',
+                'hover:from-[var(--primary)] hover:to-[var(--primary-light)]',
                 'text-white font-semibold text-sm',
-                'shadow-lg shadow-blue-500/30',
+                'shadow-lg shadow-[var(--primary)]',
                 'transition-all duration-200',
-                'hover:shadow-xl hover:shadow-blue-500/40'
+                'hover:shadow-xl hover:shadow-[var(--primary)]'
               )}>
                 <Plus className='h-4 w-4' />
                 Add Product
@@ -91,11 +91,11 @@ const ProductTable = ({ id, products }: Props) => {
                         />
                       </div>
                     </TableCell>
-                    <TableCell className='font-medium text-slate-950 dark:text-[var(--text-primary)]'>
+                    <TableCell className='font-medium text-[var(--text-primary)]'>
                       {product.name}
                     </TableCell>
                     <TableCell>
-                      <span className='inline-flex items-center px-2.5 py-1 rounded-md bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm font-semibold'>
+                      <span className='inline-flex items-center px-2.5 py-1 rounded-md bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] text-sm font-semibold'>
                         ${product.price}
                       </span>
                     </TableCell>
@@ -110,10 +110,10 @@ const ProductTable = ({ id, products }: Props) => {
                 <TableRow>
                   <TableCell colSpan={4} className="text-center py-12">
                     <div className='flex flex-col items-center'>
-                      <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-4'>
+                      <div className='inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] mb-4'>
                         <Package className='h-8 w-8 text-[var(--text-muted)]' />
                       </div>
-                      <p className='text-lg font-semibold text-slate-950 dark:text-[var(--text-primary)] mb-1'>
+                      <p className='text-lg font-semibold text-[var(--text-primary)] mb-1'>
                         No Products Yet
                       </p>
                       <p className='text-sm text-[var(--text-secondary)]'>

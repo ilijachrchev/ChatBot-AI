@@ -16,7 +16,7 @@ const BillingPlan = async (props: Props) => {
   return (
     <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
       <div className="flex items-center gap-3 mb-6">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500 to-emerald-600 text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--success)] text-white">
           <CreditCard className="h-5 w-5" />
         </div>
         <div>
@@ -70,7 +70,7 @@ const BillingPlan = async (props: Props) => {
         </p>
         <div className="flex items-center justify-between p-4 rounded-lg border border-[var(--border-default)] bg-[var(--bg-card)]">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-14 rounded bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+            <div className="h-10 w-14 rounded bg-gradient-to-br from-[var(--primary)] to-[var(--info)] flex items-center justify-center">
               <CreditCard className="h-5 w-5 text-white" />
             </div>
             <div>

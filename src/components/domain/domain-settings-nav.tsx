@@ -111,7 +111,7 @@ export const DomainSettingsNav = ({ domain }: DomainSettingsNavProps) => {
                   'hover:text-[var(--text-primary)]',
                   'border-b-2 -mb-[1px]',
                   isActive(item.path)
-                    ? 'text-[var(--text-primary)] border-slate-900 dark:border-white'
+                    ? 'text-[var(--text-primary)] border-[var(--border-strong)] dark:border-white'
                     : 'text-[var(--text-muted)] border-transparent'
                 )}
               >

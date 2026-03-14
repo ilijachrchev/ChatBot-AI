@@ -22,7 +22,7 @@ const ChangePasswordCard = () => {
   return (
     <Card className="border-[var(--border-default)]">
       <CardHeader className="flex flex-row items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-rose-600 text-white">
+        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--danger)] text-white">
           <Lock className="h-5 w-5" />
         </div>
         <div>
@@ -47,7 +47,7 @@ const ChangePasswordCard = () => {
               {...register('password')}
             />
             {errors.password && (
-              <p className="text-sm text-red-500">
+              <p className="text-sm text-[var(--danger)]">
                 {String(errors.password.message)}
               </p>
             )}
@@ -74,7 +74,7 @@ const ChangePasswordCard = () => {
               {...register('confirmPassword')}
             />
             {errors.confirmPassword && (
-              <p className="text-sm text-red-500">
+              <p className="text-sm text-[var(--danger)]">
                 {String(errors.confirmPassword.message)}
               </p>
             )}
@@ -85,10 +85,10 @@ const ChangePasswordCard = () => {
               type="submit"
               disabled={loading}
               className={cn(
-                'gap-2 bg-gradient-to-r from-blue-600 to-blue-700',
-                'hover:from-blue-700 hover:to-blue-800',
+                'gap-2 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)]',
+                'hover:from-[var(--primary)] hover:to-[var(--primary-light)]',
                 'disabled:opacity-50 disabled:cursor-not-allowed',
-                'shadow-lg shadow-blue-500/30',
+                'shadow-lg shadow-[var(--primary)]',
                 'transition-all duration-200'
               )}
             >

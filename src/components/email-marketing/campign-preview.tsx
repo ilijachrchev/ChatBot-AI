@@ -53,7 +53,7 @@ export const CampaignPreview = ({
                   className="flex items-center justify-between p-3 rounded-lg bg-[var(--bg-card)] hover:bg-[var(--bg-hover)] transition-colors"
                 >
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-slate-700 to-slate-900 dark:from-indigo-900 dark:to-indigo-700 text-white text-sm font-semibold flex-shrink-0">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] dark:from-[var(--primary)] dark:to-[var(--primary-light)] text-white text-sm font-semibold flex-shrink-0">
                       {customer.email?.[0]?.toUpperCase() || '?'}
                     </div>
 
@@ -81,7 +81,7 @@ export const CampaignPreview = ({
                       <button
                         type="button"
                         onClick={() => onRemoveCustomer(customer.email!)}
-                        className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-red-50 dark:bg-red-950/40 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/60 transition-colors"
+                        className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-[var(--danger)] dark:bg-[var(--danger)] text-[var(--danger)] hover:bg-[var(--danger)] dark:hover:bg-[var(--danger)] transition-colors"
                       >
                         <X className="h-3 w-3" />
                       </button>

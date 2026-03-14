@@ -89,7 +89,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
       )}
       style={{ transition: 'opacity 0.4s ease, max-height 0.4s ease, margin-bottom 0.4s ease' }}
     >
-      <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 dark:from-blue-800 dark:via-blue-700 dark:to-indigo-800 p-5">
+      <div className="bg-gradient-to-r from-[var(--primary)] via-[var(--primary)] to-[var(--primary-light)] dark:from-[var(--primary)] dark:via-[var(--primary)] dark:to-[var(--primary-light)] p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
@@ -97,7 +97,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
             </div>
             <div>
               <h2 className="font-semibold text-white text-base leading-snug">Getting Started</h2>
-              <p className="text-blue-100 text-xs mt-0.5">
+              <p className="text-[var(--primary)] text-xs mt-0.5">
                 Complete these steps to get the most out of SendWise AI
               </p>
             </div>
@@ -157,13 +157,13 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
               key={step.key}
               className={cn(
                 'flex items-center gap-4 px-5 py-4 transition-colors duration-150',
-                !done && 'hover:bg-muted/50 cursor-pointer group'
+                !done && 'hover:bg-[var(--primary-light)] cursor-pointer group'
               )}
               onClick={() => !done && router.push(step.href)}
             >
               <div className="flex-shrink-0">
                 {done ? (
-                  <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center transition-all duration-300 scale-100">
+                  <div className="w-6 h-6 rounded-full bg-[var(--success)] flex items-center justify-center transition-all duration-300 scale-100">
                     <svg
                       width="12"
                       height="12"
@@ -181,7 +181,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
                     </svg>
                   </div>
                 ) : (
-                  <div className="w-6 h-6 rounded-full border-2 border-muted-foreground/30 group-hover:border-indigo-500 transition-colors duration-200" />
+                  <div className="w-6 h-6 rounded-full border-2 border-muted-foreground/30 group-hover:border-[var(--primary)] transition-colors duration-200" />
                 )}
               </div>
 
@@ -192,7 +192,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
                       'text-sm font-medium transition-colors duration-200',
                       done
                         ? 'line-through text-muted-foreground'
-                        : 'text-foreground group-hover:text-indigo-500 dark:group-hover:text-indigo-400'
+                        : 'text-foreground group-hover:text-[var(--primary)] dark:group-hover:text-[var(--primary)]'
                     )}
                   >
                     {step.title}
@@ -210,7 +210,7 @@ export const GettingStartedCard = ({ progress, firstDomainSlug }: Props) => {
 
               <div className="flex-shrink-0">
                 {done ? (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-950/40 text-green-700 dark:text-green-400 text-xs font-medium">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] text-xs font-medium">
                     Done
                   </span>
                 ) : (

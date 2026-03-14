@@ -51,38 +51,38 @@ type MinMenuProps = {
 const PERSONA_ICON_MAP: Record<string, { icon: React.ReactNode; bg: string; text: string }> = {
   BRIEFCASE: {
     icon: <Briefcase className="w-3.5 h-3.5" />,
-    bg: 'bg-blue-100 dark:bg-blue-950/50',
-    text: 'text-indigo-500',
+    bg: 'bg-[var(--primary)] dark:bg-[var(--primary)]',
+    text: 'text-[var(--primary)]',
   },
   HEADPHONES: {
     icon: <Headphones className="w-3.5 h-3.5" />,
-    bg: 'bg-green-100 dark:bg-green-950/50',
-    text: 'text-green-600',
+    bg: 'bg-[var(--success)] dark:bg-[var(--success)]',
+    text: 'text-[var(--success)]',
   },
   HOME: {
     icon: <Home className="w-3.5 h-3.5" />,
-    bg: 'bg-orange-100 dark:bg-orange-950/50',
-    text: 'text-orange-600',
+    bg: 'bg-[rgba(224,155,26,0.15)]',
+    text: 'text-[var(--warning)]',
   },
   UTENSILS: {
     icon: <Utensils className="w-3.5 h-3.5" />,
-    bg: 'bg-yellow-100 dark:bg-yellow-950/50',
-    text: 'text-yellow-600',
+    bg: 'bg-[rgba(224,155,26,0.15)]',
+    text: 'text-[var(--warning)]',
   },
   STETHOSCOPE: {
     icon: <Stethoscope className="w-3.5 h-3.5" />,
-    bg: 'bg-cyan-100 dark:bg-cyan-950/50',
-    text: 'text-cyan-600',
+    bg: 'bg-[rgba(61,184,130,0.15)]',
+    text: 'text-[var(--success)]',
   },
   CALENDAR: {
     icon: <Calendar className="w-3.5 h-3.5" />,
-    bg: 'bg-purple-100 dark:bg-purple-950/50',
-    text: 'text-purple-600',
+    bg: 'bg-[var(--primary-light)]',
+    text: 'text-[var(--primary)]',
   },
   SHOPPING_BAG: {
     icon: <ShoppingBag className="w-3.5 h-3.5" />,
-    bg: 'bg-pink-100 dark:bg-pink-950/50',
-    text: 'text-pink-600',
+    bg: 'bg-[rgba(224,85,85,0.15)]',
+    text: 'text-[var(--danger)]',
   },
 }
 
@@ -165,7 +165,7 @@ export const MinMenu = ({
                 {stepsCompleted < 4 && (
                   <span
                     className={cn(
-                      'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-indigo-500 border-2 border-[var(--bg-surface)]',
+                      'absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[var(--primary)] border-2 border-[var(--bg-surface)]',
                       stepsCompleted === 0 && 'animate-pulse'
                     )}
                   />
@@ -173,12 +173,12 @@ export const MinMenu = ({
               </div>
 
               {isOnboardingActive && (
-                <div className="absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full" />
+                <div className="absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] rounded-full" />
               )}
 
               <div
                 className={`
-                  absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs
+                  absolute left-full ml-2 px-2 py-1 rounded-md bg-[var(--bg-page)] dark:bg-[var(--bg-active)] text-white text-xs
                   whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50
                   flex items-center gap-1.5
                 `}
@@ -220,7 +220,7 @@ export const MinMenu = ({
                     {iconConfig.icon}
                   </div>
                 )}
-                <div className="absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
+                <div className="absolute left-full ml-2 px-2 py-1 rounded-md bg-[var(--bg-page)] dark:bg-[var(--bg-active)] text-white text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50">
                   {item.label} — {item.domainName}
                 </div>
               </Link>
@@ -233,14 +233,14 @@ export const MinMenu = ({
             onClick={onSignOut}
             className={`
               flex flex-col items-center justify-center rounded-lg py-2 md:py-2 text-[var(--text-secondary)]
-              hover:bg-rose-950/20 hover:text-rose-400
+              hover:bg-[rgba(224,85,85,0.1)] hover:text-[var(--danger)]
               transition-all duration-200 group relative
             `}
           >
             <LogOut className="md:w-5 md:h-5 h-4 w-4 group-hover:scale-110 transition-transform" />
             <div
               className={`
-                absolute left-full ml-2 px-2 py-1 rounded-md bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs
+                absolute left-full ml-2 px-2 py-1 rounded-md bg-[var(--bg-page)] dark:bg-[var(--bg-active)] text-white text-xs
                 whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 z-50
               `}
             >

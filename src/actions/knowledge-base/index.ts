@@ -3,6 +3,7 @@
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { mkdir, unlink, writeFile } from 'fs/promises'
+import { SCRAPER_URL } from '@/lib/config'
 import { join, resolve } from 'path'
 
 export const getKnowledgeBaseFiles = async (domainId?: string) => {

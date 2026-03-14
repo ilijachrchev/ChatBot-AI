@@ -18,14 +18,14 @@ type EnhancedPlanUsageProps = {
 
 const PLAN_BADGE: Record<string, string> = {
   STANDARD: 'bg-[var(--bg-card)] text-[var(--text-muted)]',
-  PRO: 'bg-indigo-500/10 text-blue-700 dark:text-[var(--text-accent)]',
-  ULTIMATE: 'bg-amber-500/10 text-amber-700 dark:text-amber-400',
+  PRO: 'bg-[var(--primary)] text-[var(--primary)] dark:text-[var(--text-accent)]',
+  ULTIMATE: 'bg-[var(--warning)] text-[var(--warning)] dark:text-[var(--warning)]',
 }
 
 const PLAN_BUTTON: Record<string, string> = {
   STANDARD:
-    'bg-zinc-900 hover:bg-zinc-700 text-white dark:bg-[var(--bg-hover)] dark:hover:bg-zinc-200 dark:text-zinc-900',
-  PRO: 'bg-indigo-600 hover:bg-blue-700 text-white',
+    'bg-[var(--text-primary)] hover:bg-[var(--text-secondary)] text-white dark:bg-[var(--bg-hover)] dark:hover:bg-[var(--bg-surface)] dark:text-[var(--text-primary)]',
+  PRO: 'bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white',
   ULTIMATE:
     'bg-[var(--bg-card)] text-[var(--text-muted)] hover:bg-[var(--bg-card)]',
 }
@@ -48,10 +48,10 @@ export const EnhancedPlanUsage = ({
 
   const barColor =
     conversationPercentage >= 90
-      ? '[&>div]:bg-red-500'
+      ? '[&>div]:bg-[var(--danger)]'
       : conversationPercentage >= 70
-      ? '[&>div]:bg-amber-500'
-      : '[&>div]:bg-emerald-500'
+      ? '[&>div]:bg-[var(--warning)]'
+      : '[&>div]:bg-[var(--success)]'
 
   const remaining = Math.max(0, creditLimit - conversationsUsed)
 
@@ -64,7 +64,7 @@ export const EnhancedPlanUsage = ({
     >
       <div className="flex items-start justify-between mb-5">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] text-white shadow-lg shadow-[var(--primary)]">
             <Activity className="h-5 w-5" />
           </div>
           <div>
@@ -101,7 +101,7 @@ export const EnhancedPlanUsage = ({
           </div>
           <Progress
             value={isUltimate ? 0 : conversationPercentage}
-            className={cn('h-2', isUltimate ? '[&>div]:bg-emerald-500' : barColor)}
+            className={cn('h-2', isUltimate ? '[&>div]:bg-[var(--success)]' : barColor)}
           />
           <p className="text-xs text-[var(--text-muted)]">
             {isUltimate

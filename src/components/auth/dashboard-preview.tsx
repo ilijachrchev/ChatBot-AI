@@ -21,7 +21,7 @@ const DashboardPreview = () => {
               <span className="font-semibold text-white">Dashboard</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              <div className="w-2 h-2 rounded-full bg-[var(--success)] animate-pulse" />
               <span className="text-xs text-[var(--text-muted)]">Live</span>
             </div>
           </div>
@@ -42,7 +42,7 @@ const DashboardPreview = () => {
                 >
                   <p className="text-xs text-[var(--text-muted)]">{stat.label}</p>
                   <p className="text-lg font-semibold text-white mt-1">{stat.value}</p>
-                  <p className="text-xs text-green-500 mt-0.5">{stat.change}</p>
+                  <p className="text-xs text-[var(--success)] mt-0.5">{stat.change}</p>
                 </motion.div>
               ))}
             </div>

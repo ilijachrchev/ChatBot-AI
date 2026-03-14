@@ -28,8 +28,8 @@ type RoomStatus = 'OPEN' | 'PENDING' | 'RESOLVED'
 const STATUS_OPTIONS: RoomStatus[] = ['OPEN', 'PENDING', 'RESOLVED']
 
 const STATUS_COLORS: Record<RoomStatus, string> = {
-  OPEN: 'text-emerald-600',
-  PENDING: 'text-amber-600',
+  OPEN: 'text-[var(--success)]',
+  PENDING: 'text-[var(--warning)]',
   RESOLVED: 'text-[var(--text-muted)]',
 }
 
@@ -135,7 +135,7 @@ const Messenger = (_props: Props) => {
   return (
     <div className="flex-1 flex flex-col h-0 relative">
       {roomInfo && (
-        <div className="flex items-center justify-between gap-4 px-5 py-2 border-b bg-muted/30 text-xs text-muted-foreground flex-wrap">
+        <div className="flex items-center justify-between gap-4 px-5 py-2 border-b bg-[var(--bg-surface)] text-xs text-muted-foreground flex-wrap">
           <div className="flex items-center gap-3 flex-wrap">
             <span className="font-medium text-foreground">{roomInfo.email ?? 'Anonymous'}</span>
             <span>·</span>
@@ -162,12 +162,12 @@ const Messenger = (_props: Props) => {
             <button
               type="button"
               onClick={handleToggleStar}
-              className="p-1 rounded hover:bg-muted transition-colors"
+              className="p-1 rounded hover:bg-[var(--primary-light)] transition-colors"
             >
               <Star
                 className={cn(
                   'h-3.5 w-3.5',
-                  roomInfo.starred ? 'fill-amber-400 text-amber-400' : 'text-muted-foreground'
+                  roomInfo.starred ? 'fill-amber-400 text-[var(--warning)]' : 'text-muted-foreground'
                 )}
               />
             </button>
@@ -175,14 +175,14 @@ const Messenger = (_props: Props) => {
         </div>
       )}
 
-      <div className="flex items-center justify-between px-5 py-3 border-b bg-gradient-to-r from-background to-muted">
+      <div className="flex items-center justify-between px-5 py-3 border-b bg-gradient-to-r from-[var(--bg-card)] to-[var(--bg-surface)]">
         <div className="flex items-center gap-3">
           <div
             className={cn(
               'w-3 h-3 rounded-full',
               isRealtime
-                ? 'bg-green-500 animate-pulse shadow-lg shadow-green-500/50'
-                : 'bg-gray-400'
+                ? 'bg-[var(--success)] animate-pulse shadow-lg shadow-[var(--success)]/50'
+                : 'bg-[var(--text-secondary)]'
             )}
           />
           <div className="flex flex-col">
@@ -203,8 +203,8 @@ const Messenger = (_props: Props) => {
           className={cn(
             'shrink-0 font-medium px-4 py-2 rounded-md border',
             isRealtime
-              ? 'bg-red-500 text-white hover:bg-red-600'
-              : 'bg-emerald-500 text-white hover:bg-emerald-600'
+              ? 'bg-[var(--danger)] text-white hover:bg-[var(--danger)]'
+              : 'bg-[var(--success)] text-white hover:bg-[var(--success)]'
           )}
         >
           {toggling ? (
@@ -249,7 +249,7 @@ const Messenger = (_props: Props) => {
 
       <form
         onSubmit={handleFormSubmit}
-        className="flex px-3 pt-3 pb-4 flex-col backdrop-blur-sm bg-muted w-full gap-2"
+        className="flex px-3 pt-3 pb-4 flex-col backdrop-blur-sm bg-[var(--bg-surface)] w-full gap-2"
       >
         <div className="flex justify-between">
           <Input
@@ -260,7 +260,7 @@ const Messenger = (_props: Props) => {
             }}
             onKeyDown={handleKeyDown}
             placeholder="Type your message... (Ctrl+Enter to send)"
-            className="focus-visible:ring-0 flex-1 p-0 focus-visible:ring-offset-0 bg-muted rounded-none outline-none border-none"
+            className="focus-visible:ring-0 flex-1 p-0 focus-visible:ring-offset-0 bg-[var(--bg-surface)] rounded-none outline-none border-none"
           />
           <Button type="submit" className="mt-3 px-7" disabled={!chatRoom}>
             Send
@@ -278,7 +278,7 @@ const Messenger = (_props: Props) => {
                 variant="outline"
                 size="sm"
                 onClick={() => handleStatusChange('RESOLVED')}
-                className="text-xs h-7 px-3 text-emerald-600 border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
+                className="text-xs h-7 px-3 text-[var(--success)] border-[var(--success)] hover:bg-[var(--success)] hover:text-[var(--success)]"
               >
                 Mark resolved ✓
               </Button>

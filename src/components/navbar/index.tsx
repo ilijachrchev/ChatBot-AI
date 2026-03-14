@@ -52,7 +52,7 @@ export default function NavBar() {
               className="object-contain drop-shadow-[0_0_12px_rgba(59,130,246,0.7)]"
             />
           </div>
-          <span className="bg-gradient-to-r from-sky-300 via-sky-400 to-purple-400 bg-clip-text text-lg font-semibold tracking-tight text-transparent md:text-xl">
+          <span className="bg-gradient-to-r from-[var(--primary)] via-[var(--primary)] to-[var(--info)] bg-clip-text text-lg font-semibold tracking-tight text-transparent md:text-xl">
             SendWise-AI
           </span>
         </Link>

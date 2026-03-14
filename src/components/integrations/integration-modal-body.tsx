@@ -29,7 +29,7 @@ export const IntegrationModalBody = ({
               key={key}
               className="flex gap-2 items-center pl-3"
             >
-              <CheckCircle2Icon className='text-green-600 w-5 h-5' />
+              <CheckCircle2Icon className='text-[var(--success)] w-5 h-5' />
               <p className='text-[var(--text-primary)]'>{item}</p>
             </div>
           ))}

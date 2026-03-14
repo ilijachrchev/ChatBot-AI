@@ -34,7 +34,7 @@ const Modal = ({
                                 alt='SendWise-AI'
                             />
                         </div>
-                        <div className='text-gray-400'>
+                        <div className='text-muted-foreground'>
                             <ArrowLeft size={20} />
                             <ArrowRight size={20} />
                         </div>

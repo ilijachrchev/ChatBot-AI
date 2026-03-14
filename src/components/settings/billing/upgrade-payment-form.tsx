@@ -143,8 +143,8 @@ export function UpgradePaymentForm({
                   key={card.id}
                   className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
                     paymentMethod === 'saved' && selectedCard === card.id
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                      : 'border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
+                      ? 'border-[var(--primary)] bg-[var(--primary)] dark:bg-[var(--primary)]'
+                      : 'border-[var(--border-default)] hover:border-[var(--border-strong)]'
                   }`}
                   onClick={() => {
                     setPaymentMethod('saved')
@@ -163,7 +163,7 @@ export function UpgradePaymentForm({
                       </p>
                     </div>
                     {card.isDefault && (
-                      <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded">
+                      <span className="text-xs bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] px-2 py-1 rounded">
                         Default
                       </span>
                     )}
@@ -174,8 +174,8 @@ export function UpgradePaymentForm({
               <div
                 className={`flex items-center space-x-3 p-4 rounded-lg border-2 cursor-pointer transition-colors ${
                   paymentMethod === 'new'
-                    ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                    : 'border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
+                    ? 'border-[var(--primary)] bg-[var(--primary)] dark:bg-[var(--primary)]'
+                    : 'border-[var(--border-default)] hover:border-[var(--border-strong)]'
                 }`}
                 onClick={() => setPaymentMethod('new')}
               >
@@ -213,7 +213,7 @@ export function UpgradePaymentForm({
         <Button
           type="submit"
           disabled={!stripe || processing || (paymentMethod === 'saved' && !selectedCard)}
-          className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+          className="flex-1 bg-gradient-to-r from-[var(--primary)] to-[var(--info)] hover:from-[var(--primary)] hover:to-[var(--info)]"
         >
           {processing ? (
             <>

@@ -7,18 +7,18 @@ import { Bot, Send, CheckCircle2 } from "lucide-react";
 export const Hero = () => {
   return (
     <section className="relative overflow-hidden pt-24 pb-24">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#020617] to-slate-950" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#020617] to-[var(--bg-page)]" />
       <div className="pointer-events-none absolute -top-40 -left-20 h-72 w-72 rounded-full bg-sky-500/30 blur-3xl opacity-70" />
       <div className="pointer-events-none absolute top-0 right-[-80px] h-72 w-72 rounded-full bg-violet-500/30 blur-3xl opacity-70" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-16">
         <div className="flex-1 text-center lg:text-left space-y-6">
           <span className="inline-flex items-center gap-2 text-xs font-semibold text-sky-300 bg-sky-500/10 border border-sky-500/40 px-3 py-1 rounded-full">
-            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="h-2 w-2 rounded-full bg-[var(--success)] animate-pulse" />
             AI-powered customer service platform
           </span>
 
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-slate-50">
+          <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-[var(--text-primary)]">
             Your website deserves
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-violet-400">
               a smarter chatbot.
@@ -63,7 +63,7 @@ export const Hero = () => {
                   </div>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="h-2 w-2 rounded-full bg-[var(--success)] animate-pulse" />
                   <span className="text-xs text-white/80">Online</span>
                 </div>
               </div>
@@ -74,7 +74,7 @@ export const Hero = () => {
                     <Bot className="h-3 w-3 text-sky-400" />
                   </div>
                   <div>
-                    <div className="bg-[var(--bg-surface)] text-slate-100 rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
+                    <div className="bg-[var(--bg-surface)] text-[var(--text-primary)] rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
                       Hi! 👋 How can I help you today?
                     </div>
                     <p className="text-[10px] text-[var(--text-muted)] mt-1">just now</p>
@@ -93,7 +93,7 @@ export const Hero = () => {
                     <Bot className="h-3 w-3 text-sky-400" />
                   </div>
                   <div>
-                    <div className="bg-[var(--bg-surface)] text-slate-100 rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
+                    <div className="bg-[var(--bg-surface)] text-[var(--text-primary)] rounded-2xl rounded-tl-sm p-3 text-sm max-w-[80%]">
                       We have 3 plans starting from free! Would you like me to
                       walk you through them?
                     </div>
@@ -107,15 +107,15 @@ export const Hero = () => {
                   </div>
                   <div className="bg-[var(--bg-surface)] rounded-2xl p-3">
                     <div className="flex gap-1 items-center h-4">
-                      <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" />
-                      <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-150" />
-                      <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce delay-300" />
+                      <span className="w-1.5 h-1.5 bg-[var(--bg-card)] rounded-full animate-bounce" />
+                      <span className="w-1.5 h-1.5 bg-[var(--bg-card)] rounded-full animate-bounce delay-150" />
+                      <span className="w-1.5 h-1.5 bg-[var(--bg-card)] rounded-full animate-bounce delay-300" />
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-[var(--bg-page)] border-t border-slate-800 px-4 py-3 flex items-center gap-2">
+              <div className="bg-[var(--bg-page)] border-t border-[var(--border-strong)] px-4 py-3 flex items-center gap-2">
                 <div className="flex-1 bg-[var(--bg-surface)] rounded-full px-4 py-2 text-sm text-[var(--text-muted)]">
                   Type a message...
                 </div>
@@ -125,9 +125,9 @@ export const Hero = () => {
               </div>
             </div>
 
-            <div className="absolute -bottom-4 -right-4 bg-[var(--bg-page)] border border-slate-700 rounded-xl shadow-lg px-3 py-2 flex items-center gap-1.5">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-              <span className="text-xs font-semibold text-slate-100">
+            <div className="absolute -bottom-4 -right-4 bg-[var(--bg-page)] border border-[var(--border-strong)] rounded-xl shadow-lg px-3 py-2 flex items-center gap-1.5">
+              <CheckCircle2 className="h-3.5 w-3.5 text-[var(--success)]" />
+              <span className="text-xs font-semibold text-[var(--text-primary)]">
                 AI handled
               </span>
             </div>

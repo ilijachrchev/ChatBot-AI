@@ -13,7 +13,7 @@ export const Responding = ({ botIcon }: { botIcon?: string | null }) => {
               src="https://github.com/shadcn.png"
               alt="@shadcn"
             />
-            <AvatarFallback className="bg-indigo-100 text-indigo-600 text-[10px]">
+            <AvatarFallback className="bg-[var(--primary)] text-[var(--primary)] text-[10px]">
               AI
             </AvatarFallback>
           </>

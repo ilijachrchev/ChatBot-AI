@@ -56,7 +56,7 @@ export const ActivityChart = ({ data }: ActivityChartProps) => {
               Conversation Activity
             </h3>
             {weekTotal > 0 && (
-              <span className="inline-flex items-center mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/10 text-[var(--text-accent)]">
+              <span className="inline-flex items-center mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[var(--primary)] text-[var(--text-accent)]">
                 {weekTotal.toLocaleString()} this {periodLabel}
               </span>
             )}

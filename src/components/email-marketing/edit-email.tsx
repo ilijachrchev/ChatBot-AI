@@ -54,7 +54,7 @@ export const EditEmail = ({
 
         <Button 
           type="submit"
-          className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold"
+          className="w-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] hover:from-[var(--primary)] hover:to-[var(--primary-light)] text-white font-semibold"
         >
           <Save className="h-4 w-4 mr-2" />
           Save Template

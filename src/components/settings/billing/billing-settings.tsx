@@ -18,7 +18,7 @@ const BillingSettings = async (props: Props) => {
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
       <div className="lg:col-span-2">
         <div className="flex items-start gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-lg">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--success)] text-white shadow-lg">
             <CreditCard className="h-6 w-6" />
           </div>
           <div>
@@ -33,7 +33,7 @@ const BillingSettings = async (props: Props) => {
       </div>
 
       <div className="lg:col-span-3 space-y-6">
-        <div className="rounded-xl bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-blue-950 dark:via-indigo-950 dark:to-purple-950 p-6 border border-blue-200 dark:border-[var(--border-accent)]">
+        <div className="rounded-xl bg-gradient-to-br from-[var(--primary)] via-[var(--primary)] to-[var(--primary-light)] p-6 border border-[var(--primary)]">
           <div className="flex items-center justify-between mb-6">
             <div>
               <div className="flex items-center gap-2 mb-1">
@@ -73,14 +73,14 @@ const BillingSettings = async (props: Props) => {
             </Button>
           </div>
 
-          <div className="pt-4 border-t border-blue-200 dark:border-[var(--border-accent)]">
+          <div className="pt-4 border-t border-[var(--primary)]">
             <div className="flex flex-col gap-2">
               {planFeatures.slice(0, 3).map((feature) => (
                 <div
                   key={feature}
                   className="flex gap-2 items-start"
                 >
-                  <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-4 w-4 text-[var(--success)] dark:text-[var(--success)] flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-[var(--text-secondary)]">{feature}</p>
                 </div>
               ))}
@@ -94,7 +94,7 @@ const BillingSettings = async (props: Props) => {
           </label>
           <div className="flex items-center justify-between p-4 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)]">
             <div className="flex items-center gap-4">
-              <div className="h-12 w-16 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+              <div className="h-12 w-16 rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--info)] flex items-center justify-center">
                 <CreditCard className="h-6 w-6 text-white" />
               </div>
               <div>

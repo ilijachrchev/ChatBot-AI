@@ -161,36 +161,36 @@ const Page = async (props: Props) => {
           />
           <div className={cn(
             'relative overflow-hidden rounded-xl border border-[var(--border-default)] dark:border-[var(--border-strong)]',
-            'bg-white dark:bg-[var(--bg-surface)] p-5 md:p-6',
+            'bg-[var(--bg-surface)] p-5 md:p-6',
             'shadow-sm'
           )}>
             {/* ICON — uncomment to show icon
-            <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 mb-4 w-fit">
+            <div className="p-2.5 rounded-lg bg-[var(--warning)] text-[var(--warning)] dark:text-[var(--warning)] mb-4 w-fit">
               <Star className="h-5 w-5" strokeWidth={2} />
             </div>
             */}
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-[var(--text-secondary)] mb-2">
+            <p className="text-xs font-semibold uppercase tracking-wider text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-2">
               Satisfaction Rate
             </p>
             <p className={cn(
               'text-3xl font-bold tracking-tight',
               ratingsData.total < 3
-                ? 'text-slate-400 dark:text-[var(--text-secondary)]'
+                ? 'text-[var(--text-muted)] dark:text-[var(--text-secondary)]'
                 : ratingsData.satisfactionRate >= 80
-                ? 'text-emerald-600 dark:text-emerald-400'
+                ? 'text-[var(--success)] dark:text-[var(--success)]'
                 : ratingsData.satisfactionRate >= 60
-                ? 'text-amber-600 dark:text-amber-400'
-                : 'text-rose-600 dark:text-rose-400'
+                ? 'text-[var(--warning)] dark:text-[var(--warning)]'
+                : 'text-[var(--danger)]'
             )}>
               {ratingsData.total < 3 ? 'N/A' : `${ratingsData.satisfactionRate}%`}
             </p>
-            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-2">
+            <p className="text-xs text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mt-2">
               {ratingsData.positive} of {ratingsData.total} rated helpful
             </p>
             {ratingsData.total > 0 && (
-              <div className="mt-3 h-1.5 w-full bg-rose-200 dark:bg-rose-900/40 rounded-full overflow-hidden">
+              <div className="mt-3 h-1.5 w-full bg-[rgba(224,85,85,0.15)] rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                  className="h-full bg-[var(--success)] rounded-full transition-all duration-500"
                   style={{ width: `${ratingsData.satisfactionRate}%` }}
                 />
               </div>

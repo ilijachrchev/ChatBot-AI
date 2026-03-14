@@ -52,7 +52,7 @@ const PERSONAS = [
     name: 'Sales Agent',
     icon: Briefcase,
     description: 'Handles objections, qualifies leads, and recommends products/services',
-    color: 'from-indigo-500 to-indigo-600',
+    color: 'from-[var(--primary)] to-[var(--primary-light)]',
     traits: ['Persuasive', 'Goal-oriented', 'Professional'],
   },
   {
@@ -60,7 +60,7 @@ const PERSONAS = [
     name: 'Appointment Setter',
     icon: Calendar,
     description: 'Focuses on booking calls and meetings efficiently',
-    color: 'from-purple-500 to-purple-600',
+    color: 'from-[var(--primary)] to-[var(--info)]',
     traits: ['Scheduling expert', 'Time-conscious', 'Organized'],
   },
   {
@@ -68,7 +68,7 @@ const PERSONAS = [
     name: 'Customer Support',
     icon: Heart,
     description: 'Answers FAQs and provides troubleshooting with patience',
-    color: 'from-emerald-500 to-emerald-600',
+    color: 'from-[var(--success)] to-[var(--success)]',
     traits: ['Patient', 'Helpful', 'Empathetic'],
   },
   {
@@ -76,7 +76,7 @@ const PERSONAS = [
     name: 'Shopping Assistant',
     icon: ShoppingCart,
     description: 'Helps find products, compares options, suggests upsells',
-    color: 'from-amber-500 to-amber-600',
+    color: 'from-[var(--warning)] to-[var(--warning)]',
     traits: ['Product expert', 'Attentive', 'Suggestive'],
   },
   {
@@ -84,7 +84,7 @@ const PERSONAS = [
     name: 'Real Estate Agent',
     icon: GraduationCap,
     description: 'Property expert who understands market trends and buyer needs',
-    color: 'from-rose-500 to-rose-600',
+    color: 'from-[var(--danger)] to-[var(--danger)]',
     traits: ['Market-savvy', 'Consultative', 'Detailed'],
   },
   {
@@ -92,7 +92,7 @@ const PERSONAS = [
     name: 'Medical Intake',
     icon: Stethoscope,
     description: 'Collects patient information and schedules appointments',
-    color: 'from-cyan-500 to-cyan-600',
+    color: 'from-[var(--success)] to-[var(--info)]',
     traits: ['Professional', 'Confidential', 'Precise'],
   },
   {
@@ -100,7 +100,7 @@ const PERSONAS = [
     name: 'Restaurant Host',
     icon: Utensils,
     description: 'Takes reservations and answers menu questions warmly',
-    color: 'from-orange-500 to-orange-600',
+    color: 'from-[var(--warning)] to-[var(--warning)]',
     traits: ['Welcoming', 'Friendly', 'Efficient'],
   },
   {
@@ -108,7 +108,7 @@ const PERSONAS = [
     name: 'Custom Persona',
     icon: Settings,
     description: 'Create your own unique AI assistant personality',
-    color: 'from-slate-500 to-slate-600',
+    color: 'from-[var(--bg-page)] to-[var(--bg-page)]',
     traits: ['Customizable', 'Flexible', 'Unique'],
   },
 ]
@@ -191,7 +191,7 @@ export const AIPersonaForm = ({
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-white dark:to-slate-100">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] dark:from-white dark:to-[var(--bg-page)]">
                 <Sparkles className="h-6 w-6 text-[var(--text-primary)]" />
               </div>
               <div>
@@ -204,13 +204,13 @@ export const AIPersonaForm = ({
               </div>
             </div>
 
-            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
-              <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+            <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--success)] dark:bg-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]">
+              <CheckCircle2 className="h-4 w-4 text-[var(--success)] dark:text-[var(--success)]" />
               <div className="flex flex-col">
-                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider">
+                <span className="text-[10px] font-bold text-[var(--success)] dark:text-[var(--success)] uppercase tracking-wider">
                   Active
                 </span>
-                <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                <span className="text-xs font-semibold text-[var(--success)] dark:text-[var(--success)]">
                   {currentPersonaName}
                 </span>
               </div>
@@ -218,22 +218,22 @@ export const AIPersonaForm = ({
           </div>
         </div>
 
-        <div className="md:hidden flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
-          <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+        <div className="md:hidden flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--success)] dark:bg-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]">
+          <CheckCircle2 className="h-4 w-4 text-[var(--success)] dark:text-[var(--success)] flex-shrink-0" />
           <div className="flex-1">
-            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-[var(--success)] dark:text-[var(--success)] uppercase tracking-wider block">
               Currently Active
             </span>
-            <span className="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+            <span className="text-sm font-semibold text-[var(--success)] dark:text-[var(--success)]">
               {currentPersonaName}
             </span>
           </div>
         </div>
 
-        <div className="relative overflow-hidden rounded-2xl border-2 border-[var(--border-default)] bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 p-6">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-slate-200/30 to-transparent dark:from-slate-700/20 rounded-full blur-3xl" />
+        <div className="relative overflow-hidden rounded-2xl border-2 border-[var(--border-default)] bg-gradient-to-br from-[var(--bg-page)] to-white dark:from-[var(--bg-page)] dark:to-[var(--bg-page)] p-6">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[var(--bg-page)] to-transparent dark:from-[var(--bg-page)] rounded-full blur-3xl" />
           <div className="relative z-10 flex items-start gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 dark:bg-white flex-shrink-0">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--bg-page)] dark:bg-white flex-shrink-0">
               <Zap className="h-5 w-5 text-[var(--text-primary)]" />
             </div>
             <div>
@@ -262,8 +262,8 @@ export const AIPersonaForm = ({
                   'group relative overflow-hidden rounded-2xl border-2 transition-all duration-300 text-left',
                   'hover:shadow-lg hover:scale-[1.02]',
                   isSelected
-                    ? 'border-slate-900 dark:border-white bg-slate-900 dark:bg-white'
-                    : 'border-[var(--border-default)] bg-[var(--bg-page)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
+                    ? 'border-[var(--border-strong)] dark:border-white bg-[var(--bg-page)] dark:bg-white'
+                    : 'border-[var(--border-default)] bg-[var(--bg-page)] hover:border-[var(--border-strong)]'
                 )}
               >
                 <div
@@ -300,9 +300,9 @@ export const AIPersonaForm = ({
 
                     <div className="flex flex-col items-end gap-1.5">
                       {isCurrent && !isSelected && (
-                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-emerald-100 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-900">
-                          <CheckCircle2 className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
-                          <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-300 uppercase tracking-wider">
+                        <div className="flex items-center gap-1 px-2 py-1 rounded-md bg-[var(--success)] dark:bg-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]">
+                          <CheckCircle2 className="h-3 w-3 text-[var(--success)] dark:text-[var(--success)]" />
+                          <span className="text-[9px] font-bold text-[var(--success)] dark:text-[var(--success)] uppercase tracking-wider">
                             Active
                           </span>
                         </div>
@@ -361,17 +361,17 @@ export const AIPersonaForm = ({
         </div>
 
         {selectedPersona === 'SALES_AGENT' && (
-          <div className="rounded-2xl border-2 border-blue-200 dark:border-blue-900 bg-gradient-to-br from-blue-50/50 to-white dark:from-blue-950/20 dark:to-slate-950 p-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="rounded-2xl border-2 border-[var(--primary)] dark:border-[var(--primary)] bg-gradient-to-br from-[var(--primary)] to-white dark:from-[var(--primary)] dark:to-[var(--bg-page)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-lg shadow-blue-500/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] shadow-lg shadow-[var(--primary)]">
                   <Briefcase className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Sales Agent Features
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-[var(--border-accent)] uppercase tracking-wider mt-0.5">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--primary)] dark:bg-[var(--primary)] text-[var(--primary)] dark:text-[var(--primary)] border border-[var(--primary)] dark:border-[var(--border-accent)] uppercase tracking-wider mt-0.5">
                     Exclusive to this persona
                   </span>
                 </div>
@@ -386,9 +386,9 @@ export const AIPersonaForm = ({
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-blue-100 dark:border-blue-900/50"
+                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-[var(--primary)] dark:border-[var(--primary)]"
                 >
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950/50 flex-shrink-0 mt-0.5">
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary)] dark:bg-[var(--primary)] flex-shrink-0 mt-0.5">
                     <Check className="h-3 w-3 text-[var(--text-accent)]" />
                   </div>
                   <span className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
@@ -398,7 +398,7 @@ export const AIPersonaForm = ({
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-blue-50/80 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/50">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-[var(--primary)] dark:bg-[var(--primary)] border border-[var(--primary)] dark:border-[var(--primary)]">
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
                 Add your products in Domain Settings → Products to enable automatic product recommendations in chat conversations.
               </p>
@@ -407,7 +407,7 @@ export const AIPersonaForm = ({
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="border-blue-300 dark:border-blue-700 text-blue-700 dark:text-blue-300 hover:bg-indigo-950/20 dark:hover:bg-blue-950/50 whitespace-nowrap flex-shrink-0"
+                  className="border-[var(--primary)] dark:border-[var(--primary)] text-[var(--primary)] dark:text-[var(--primary)] hover:bg-[var(--primary-hover)] dark:hover:bg-[var(--primary-hover)] whitespace-nowrap flex-shrink-0"
                 >
                   Manage Products
                   <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
@@ -418,17 +418,17 @@ export const AIPersonaForm = ({
         )}
 
         {selectedPersona === 'APPOINTMENT_SETTER' && (
-          <div className="rounded-2xl border-2 border-purple-200 dark:border-purple-900 bg-gradient-to-br from-purple-50/50 to-white dark:from-purple-950/20 dark:to-slate-950 p-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="rounded-2xl border-2 border-[var(--border-strong)] bg-[var(--bg-card)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg shadow-purple-500/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--primary)]">
                   <Calendar className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Appointment Setter Features
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 dark:bg-purple-950/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 uppercase tracking-wider mt-0.5">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[var(--primary-light)] text-[var(--primary)] border border-[var(--border-strong)] uppercase tracking-wider mt-0.5">
                     Exclusive to this persona
                   </span>
                 </div>
@@ -443,10 +443,10 @@ export const AIPersonaForm = ({
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-purple-100 dark:border-purple-900/50"
+                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-[var(--border-default)]"
                 >
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-purple-100 dark:bg-purple-950/50 flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-purple-600 dark:text-purple-400" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary-light)] flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-[var(--primary)]" />
                   </div>
                   <span className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
                     {feature}
@@ -455,7 +455,7 @@ export const AIPersonaForm = ({
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-purple-50/80 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/50">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)]">
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
                 Your appointment booking portal is automatically shared with customers when they ask to schedule. View all bookings in the Appointments section.
               </p>
@@ -464,7 +464,7 @@ export const AIPersonaForm = ({
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="border-purple-300 dark:border-purple-700 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-950/50 whitespace-nowrap flex-shrink-0"
+                  className="border-[var(--border-strong)] text-[var(--primary)] hover:bg-[var(--primary-light)] whitespace-nowrap flex-shrink-0"
                 >
                   View Appointments
                   <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
@@ -475,17 +475,17 @@ export const AIPersonaForm = ({
         )}
 
         {selectedPersona === 'CUSTOMER_SUPPORT' && (
-          <div className="rounded-2xl border-2 border-green-200 dark:border-green-900 bg-gradient-to-br from-green-50/50 to-white dark:from-green-950/20 dark:to-slate-950 p-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="rounded-2xl border-2 border-[var(--border-strong)] bg-[var(--bg-card)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-green-500 to-green-600 shadow-lg shadow-green-500/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--success)]">
                   <Headphones className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Customer Support Features
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 dark:bg-green-950/50 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-900 uppercase tracking-wider mt-0.5">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[rgba(61,184,130,0.15)] text-[var(--success)] border border-[var(--border-default)] uppercase tracking-wider mt-0.5">
                     Exclusive to this persona
                   </span>
                 </div>
@@ -501,10 +501,10 @@ export const AIPersonaForm = ({
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-green-100 dark:border-green-900/50"
+                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-[var(--border-default)]"
                 >
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-green-100 dark:bg-green-950/50 flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-green-600 dark:text-green-400" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(61,184,130,0.15)] flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-[var(--success)]" />
                   </div>
                   <span className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
                     {feature}
@@ -513,7 +513,7 @@ export const AIPersonaForm = ({
               ))}
             </div>
 
-            <div className="p-4 rounded-xl bg-green-50/80 dark:bg-green-950/20 border border-green-100 dark:border-green-900/50 mb-3">
+            <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] mb-3">
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                 Your knowledge base and helpdesk FAQs are automatically provided to the support bot. The more you add in Bot Training, the smarter your support gets.
               </p>
@@ -525,7 +525,7 @@ export const AIPersonaForm = ({
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 hover:bg-green-50 dark:hover:bg-green-950/50 whitespace-nowrap"
+                  className="border-[var(--border-strong)] text-[var(--success)] hover:bg-[rgba(61,184,130,0.1)] whitespace-nowrap"
                 >
                   Manage Knowledge Base
                   <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
@@ -547,17 +547,17 @@ export const AIPersonaForm = ({
         )}
 
         {selectedPersona === 'ECOMMERCE_RECOMMENDER' && (
-          <div className="rounded-2xl border-2 border-pink-200 dark:border-pink-900 bg-gradient-to-br from-pink-50/50 to-white dark:from-pink-950/20 dark:to-slate-950 p-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="rounded-2xl border-2 border-[var(--border-strong)] bg-[var(--bg-card)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-pink-500 to-amber-500 shadow-lg shadow-pink-500/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--warning)]">
                   <ShoppingBag className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Shopping Assistant Features
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-pink-100 dark:bg-pink-950/50 text-pink-700 dark:text-pink-300 border border-pink-200 dark:border-pink-800 uppercase tracking-wider mt-0.5">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[rgba(224,155,26,0.15)] text-[var(--warning)] border border-[var(--border-default)] uppercase tracking-wider mt-0.5">
                     Exclusive to this persona
                   </span>
                 </div>
@@ -573,10 +573,10 @@ export const AIPersonaForm = ({
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-pink-100 dark:border-pink-900/50"
+                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-[var(--border-default)]"
                 >
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-950/50 flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-pink-600 dark:text-pink-400" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(224,155,26,0.15)] flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-[var(--warning)]" />
                   </div>
                   <span className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
                     {feature}
@@ -585,7 +585,7 @@ export const AIPersonaForm = ({
               ))}
             </div>
 
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-pink-50/80 dark:bg-pink-950/20 border border-pink-100 dark:border-pink-900/50">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)]">
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed flex-1">
                 Products added in Domain Settings → Products are automatically shown to the shopping assistant. The bot will recommend, compare, and guide customers to the right product.
               </p>
@@ -594,7 +594,7 @@ export const AIPersonaForm = ({
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="border-pink-300 dark:border-pink-700 text-pink-700 dark:text-pink-300 hover:bg-pink-50 dark:hover:bg-pink-950/50 whitespace-nowrap flex-shrink-0"
+                  className="border-[var(--border-strong)] text-[var(--warning)] hover:bg-[rgba(224,155,26,0.1)] whitespace-nowrap flex-shrink-0"
                 >
                   Manage Products
                   <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
@@ -605,17 +605,17 @@ export const AIPersonaForm = ({
         )}
 
         {selectedPersona === 'REAL_ESTATE_QUALIFIER' && (
-          <div className="rounded-2xl border-2 border-orange-200 dark:border-orange-900 bg-gradient-to-br from-orange-50/50 to-white dark:from-orange-950/20 dark:to-slate-950 p-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="rounded-2xl border-2 border-[var(--border-strong)] bg-[var(--bg-card)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-rose-500 shadow-lg shadow-orange-500/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--danger)]">
                   <Home className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Real Estate Features
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-orange-100 dark:bg-orange-950/50 text-orange-700 dark:text-orange-300 border border-orange-200 dark:border-orange-800 uppercase tracking-wider mt-0.5">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[rgba(224,85,85,0.15)] text-[var(--danger)] border border-[var(--border-default)] uppercase tracking-wider mt-0.5">
                     Exclusive to this persona
                   </span>
                 </div>
@@ -632,10 +632,10 @@ export const AIPersonaForm = ({
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-orange-100 dark:border-orange-900/50"
+                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-[var(--border-default)]"
                 >
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-950/50 flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-orange-600 dark:text-orange-400" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(224,85,85,0.15)] flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-[var(--danger)]" />
                   </div>
                   <span className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
                     {feature}
@@ -644,7 +644,7 @@ export const AIPersonaForm = ({
               ))}
             </div>
 
-            <div className="p-4 rounded-xl bg-orange-50/80 dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/50 mb-3">
+            <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] mb-3">
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                 Every qualified lead from real estate conversations is automatically saved to your Leads section with their property requirements — budget, location, size, and timeline.
               </p>
@@ -656,7 +656,7 @@ export const AIPersonaForm = ({
                   type="button"
                   variant="outline"
                   size="sm"
-                  className="border-orange-300 dark:border-orange-700 text-orange-700 dark:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-950/50 whitespace-nowrap"
+                  className="border-[var(--border-strong)] text-[var(--danger)] hover:bg-[rgba(224,85,85,0.1)] whitespace-nowrap"
                 >
                   View Properties
                   <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
@@ -678,17 +678,17 @@ export const AIPersonaForm = ({
         )}
 
         {selectedPersona === 'HEALTHCARE_INTAKE' && (
-          <div className="rounded-2xl border-2 border-cyan-200 dark:border-cyan-900 bg-gradient-to-br from-cyan-50/50 to-white dark:from-cyan-950/20 dark:to-slate-950 p-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="rounded-2xl border-2 border-[var(--border-strong)] bg-[var(--bg-card)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-cyan-600 shadow-lg shadow-cyan-500/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--success)]">
                   <Stethoscope className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Medical Intake Features
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-cyan-100 dark:bg-cyan-950/50 text-cyan-700 dark:text-cyan-300 border border-cyan-200 dark:border-cyan-800 uppercase tracking-wider mt-0.5">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[rgba(61,184,130,0.15)] text-[var(--success)] border border-[var(--border-default)] uppercase tracking-wider mt-0.5">
                     Exclusive to this persona
                   </span>
                 </div>
@@ -704,10 +704,10 @@ export const AIPersonaForm = ({
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-cyan-100 dark:border-cyan-900/50"
+                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-[var(--border-default)]"
                 >
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-cyan-100 dark:bg-cyan-950/50 flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-cyan-600 dark:text-cyan-400" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(61,184,130,0.15)] flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-[var(--success)]" />
                   </div>
                   <span className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
                     {feature}
@@ -716,8 +716,8 @@ export const AIPersonaForm = ({
               ))}
             </div>
 
-            <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900 rounded-xl p-3 mb-4">
-              <p className="text-sm text-red-700 dark:text-red-400 leading-relaxed">
+            <div className="bg-[rgba(224,85,85,0.08)] border border-[rgba(224,85,85,0.3)] rounded-xl p-3 mb-4">
+              <p className="text-sm text-[var(--danger)] leading-relaxed">
                 ⚠️ This persona includes critical safety rules. The bot will never provide medical diagnoses and will always direct emergency situations to emergency services immediately.
               </p>
             </div>
@@ -727,7 +727,7 @@ export const AIPersonaForm = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="border-cyan-300 dark:border-cyan-700 text-cyan-700 dark:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-950/50 whitespace-nowrap"
+                className="border-[var(--border-strong)] text-[var(--success)] hover:bg-[rgba(61,184,130,0.1)] whitespace-nowrap"
               >
                 View Patient Intake
                 <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
@@ -737,17 +737,17 @@ export const AIPersonaForm = ({
         )}
 
         {selectedPersona === 'RESTAURANT_RESERVATION' && (
-          <div className="rounded-2xl border-2 border-yellow-200 dark:border-yellow-900 bg-gradient-to-br from-yellow-50/50 to-white dark:from-yellow-950/20 dark:to-slate-950 p-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="rounded-2xl border-2 border-[var(--border-strong)] bg-[var(--bg-card)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-start justify-between mb-5">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-yellow-500 to-orange-500 shadow-lg shadow-yellow-500/25">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--warning)]">
                   <Utensils className="h-5 w-5 text-white" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-[var(--text-primary)]">
                     Restaurant Features
                   </h3>
-                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-yellow-100 dark:bg-yellow-950/50 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 uppercase tracking-wider mt-0.5">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-[rgba(224,155,26,0.15)] text-[var(--warning)] border border-[var(--border-default)] uppercase tracking-wider mt-0.5">
                     Exclusive to this persona
                   </span>
                 </div>
@@ -763,10 +763,10 @@ export const AIPersonaForm = ({
               ].map((feature) => (
                 <div
                   key={feature}
-                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-yellow-100 dark:border-yellow-900/50"
+                  className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--bg-page)]/50 border border-[var(--border-default)]"
                 >
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-yellow-100 dark:bg-yellow-950/50 flex-shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-yellow-600 dark:text-yellow-400" />
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[rgba(224,155,26,0.15)] flex-shrink-0 mt-0.5">
+                    <Check className="h-3 w-3 text-[var(--warning)]" />
                   </div>
                   <span className="text-xs font-medium text-[var(--text-secondary)] leading-relaxed">
                     {feature}
@@ -775,7 +775,7 @@ export const AIPersonaForm = ({
               ))}
             </div>
 
-            <div className="p-4 rounded-xl bg-yellow-50/80 dark:bg-yellow-950/20 border border-yellow-100 dark:border-yellow-900/50 mb-3">
+            <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] mb-3">
               <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                 Reservations booked through the chatbot appear in your Reservations section with full guest details, party size, and any special requests.
               </p>
@@ -786,7 +786,7 @@ export const AIPersonaForm = ({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="border-yellow-300 dark:border-yellow-700 text-yellow-700 dark:text-yellow-300 hover:bg-yellow-50 dark:hover:bg-yellow-950/50 whitespace-nowrap"
+                className="border-[var(--border-strong)] text-[var(--warning)] hover:bg-[rgba(224,155,26,0.1)] whitespace-nowrap"
               >
                 View Reservations
                 <ExternalLink className="h-3.5 w-3.5 ml-1.5" />
@@ -798,7 +798,7 @@ export const AIPersonaForm = ({
         {selectedPersona === 'CUSTOM' && (
           <div className="rounded-2xl border-2 border-[var(--border-default)] bg-[var(--bg-page)] p-6 animate-in slide-in-from-top-2 duration-300">
             <div className="flex items-center gap-3 mb-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 dark:bg-white">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--bg-page)] dark:bg-white">
                 <Bot className="h-5 w-5 text-[var(--text-primary)]" />
               </div>
               <div>
@@ -815,7 +815,7 @@ export const AIPersonaForm = ({
               value={customPrompt}
               onChange={(e) => setCustomPrompt(e.target.value)}
               placeholder="Example: You are a professional financial advisor specializing in retirement planning. Be knowledgeable, trustworthy, and always prioritize the client's best interests..."
-              className="min-h-[200px] text-sm leading-relaxed resize-none border-2 focus:ring-2 focus:ring-slate-900 dark:focus:ring-white"
+              className="min-h-[200px] text-sm leading-relaxed resize-none border-2 focus:ring-2 focus:ring-[var(--border-strong)] dark:focus:ring-white"
             />
 
             <div className="mt-4 p-4 rounded-lg bg-[var(--bg-card)] border border-[var(--border-default)]">
@@ -847,12 +847,12 @@ export const AIPersonaForm = ({
               </span>
             </div>
           ) : (
-            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
+            <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--warning)] dark:bg-[var(--warning)] border border-[var(--warning)] dark:border-[var(--warning)]">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--warning)] opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--warning)]"></span>
               </span>
-              <span className="text-sm font-medium text-amber-700 dark:text-amber-300">
+              <span className="text-sm font-medium text-[var(--warning)] dark:text-[var(--warning)]">
                 Unsaved changes
               </span>
             </div>
@@ -865,7 +865,7 @@ export const AIPersonaForm = ({
               'h-11 px-8 font-bold shadow-lg transition-all duration-300',
               isSaveDisabled
                 ? 'bg-[var(--bg-card)] text-[var(--text-muted)] cursor-not-allowed hover:shadow-lg'
-                : 'bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:shadow-xl'
+                : 'bg-[var(--bg-page)] dark:bg-white hover:bg-[var(--bg-page)] dark:hover:bg-[var(--bg-hover)] text-[var(--text-primary)] hover:shadow-xl'
             )}
           >
             <Save className="h-4 w-4 mr-2" />
@@ -890,17 +890,17 @@ export const AIPersonaForm = ({
               <span className="font-semibold text-[var(--text-primary)]">{pendingPersonaName}</span>.
             </p>
 
-            <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
-              <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-              <p className="text-sm text-amber-800 dark:text-amber-300 leading-relaxed">
+            <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--warning)] dark:bg-[var(--warning)] border border-[var(--warning)] dark:border-[var(--warning)]">
+              <AlertTriangle className="h-4 w-4 text-[var(--warning)] dark:text-[var(--warning)] flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-[var(--warning)] dark:text-[var(--warning)] leading-relaxed">
                 This will reset your chatbot's behavior immediately for all new conversations. Existing conversations are not affected.
               </p>
             </div>
 
             {currentPersona === 'CUSTOM' && currentCustomPrompt && (
-              <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900">
-                <AlertTriangle className="h-4 w-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
-                <p className="text-sm text-red-800 dark:text-red-300 leading-relaxed font-medium">
+              <div className="flex items-start gap-3 p-4 rounded-xl bg-[var(--danger)] dark:bg-[var(--danger)] border border-[var(--danger)] dark:border-[var(--danger)]">
+                <AlertTriangle className="h-4 w-4 text-[var(--danger)] dark:text-[var(--danger)] flex-shrink-0 mt-0.5" />
+                <p className="text-sm text-[var(--danger)] dark:text-[var(--danger)] leading-relaxed font-medium">
                   Your custom instructions will be cleared.
                 </p>
               </div>
@@ -921,7 +921,7 @@ export const AIPersonaForm = ({
             </AlertDialogCancel>
             <Button
               onClick={handleConfirm}
-              className="bg-indigo-500 hover:bg-indigo-600 text-white"
+              className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white"
             >
               Confirm Switch
             </Button>

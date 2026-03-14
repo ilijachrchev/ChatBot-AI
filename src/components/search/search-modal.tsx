@@ -32,19 +32,19 @@ import { Skeleton } from '@/components/ui/skeleton'
 type SearchResults = Awaited<ReturnType<typeof globalSearch>>
 
 const PAGE_ICONS: Record<string, React.ReactNode> = {
-  '/dashboard': <LayoutDashboard className="h-4 w-4 text-sky-500" />,
-  '/conversations': <MessagesSquare className="h-4 w-4 text-violet-500" />,
-  '/leads': <Users className="h-4 w-4 text-emerald-500" />,
-  '/feedback': <Star className="h-4 w-4 text-amber-500" />,
-  '/playground': <FlaskConical className="h-4 w-4 text-pink-500" />,
-  '/integrations': <Plug className="h-4 w-4 text-orange-500" />,
-  '/email-marketing': <Mail className="h-4 w-4 text-blue-500" />,
-  '/getting-started': <Rocket className="h-4 w-4 text-rose-500" />,
-  '/knowledge-base': <BookOpen className="h-4 w-4 text-teal-500" />,
-  '/account': <UserCircle className="h-4 w-4 text-indigo-500" />,
-  '/account/security': <Shield className="h-4 w-4 text-purple-500" />,
-  '/billing': <CreditCard className="h-4 w-4 text-green-500" />,
-  '/account/notifications': <Bell className="h-4 w-4 text-yellow-500" />,
+  '/dashboard': <LayoutDashboard className="h-4 w-4 text-[var(--primary)]" />,
+  '/conversations': <MessagesSquare className="h-4 w-4 text-[var(--info)]" />,
+  '/leads': <Users className="h-4 w-4 text-[var(--success)]" />,
+  '/feedback': <Star className="h-4 w-4 text-[var(--warning)]" />,
+  '/playground': <FlaskConical className="h-4 w-4 text-[var(--danger)]" />,
+  '/integrations': <Plug className="h-4 w-4 text-[var(--warning)]" />,
+  '/email-marketing': <Mail className="h-4 w-4 text-[var(--primary)]" />,
+  '/getting-started': <Rocket className="h-4 w-4 text-[var(--danger)]" />,
+  '/knowledge-base': <BookOpen className="h-4 w-4 text-[var(--success)]" />,
+  '/account': <UserCircle className="h-4 w-4 text-[var(--primary)]" />,
+  '/account/security': <Shield className="h-4 w-4 text-[var(--primary)]" />,
+  '/billing': <CreditCard className="h-4 w-4 text-[var(--success)]" />,
+  '/account/notifications': <Bell className="h-4 w-4 text-[var(--warning)]" />,
   '/account/preferences': <Settings className="h-4 w-4 text-[var(--text-muted)]" />,
 }
 
@@ -76,7 +76,7 @@ function flattenResults(results: SearchResults): FlatResult[] {
       id: `domain-${d.id}`,
       title: d.name,
       subtitle: 'Domain',
-      icon: <Globe className="h-4 w-4 text-blue-500" />,
+      icon: <Globe className="h-4 w-4 text-[var(--primary)]" />,
       href: `/settings/${d.name.split('.')[0]}`,
       category: 'Domains',
     })
@@ -87,7 +87,7 @@ function flattenResults(results: SearchResults): FlatResult[] {
       id: `conv-${c.id}`,
       title: c.Customer?.email ?? 'Unknown visitor',
       subtitle: c.Domain?.name ?? 'Conversation',
-      icon: <MessageSquare className="h-4 w-4 text-purple-500" />,
+      icon: <MessageSquare className="h-4 w-4 text-[var(--info)]" />,
       href: `/conversations?chatroom=${c.id}`,
       category: 'Conversations',
     })
@@ -98,7 +98,7 @@ function flattenResults(results: SearchResults): FlatResult[] {
       id: `lead-${l.id}`,
       title: l.email ?? 'Unknown lead',
       subtitle: l.Domain?.name ?? 'Lead',
-      icon: <User className="h-4 w-4 text-emerald-500" />,
+      icon: <User className="h-4 w-4 text-[var(--success)]" />,
       href: `/leads`,
       category: 'Leads',
     })
@@ -109,7 +109,7 @@ function flattenResults(results: SearchResults): FlatResult[] {
       id: `file-${f.id}`,
       title: f.filename,
       subtitle: f.Domain?.name ? `${f.Domain.name} · ${f.fileType}` : f.fileType,
-      icon: <FileText className="h-4 w-4 text-amber-500" />,
+      icon: <FileText className="h-4 w-4 text-[var(--warning)]" />,
       href: f.domainId ? `/settings/${f.domainId}/knowledge-base` : `/knowledge-base`,
       category: 'Knowledge Base',
     })
@@ -231,7 +231,7 @@ export function SearchModal({ open, onClose }: Props) {
           />
           <button
             onClick={onClose}
-            className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground hover:bg-[var(--primary-light)] transition-colors"
           >
             <X className="h-4 w-4" />
           </button>
@@ -278,10 +278,10 @@ export function SearchModal({ open, onClose }: Props) {
                           onClick={() => navigate(item.href)}
                           className={cn(
                             'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors',
-                            isActive ? 'bg-muted' : 'hover:bg-muted/50'
+                            isActive ? 'bg-[var(--primary-light)]' : 'hover:bg-[var(--primary-light)]'
                           )}
                         >
-                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-muted">
+                          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[var(--bg-surface)]">
                             {item.icon}
                           </div>
                           <div className="flex-1 min-w-0">

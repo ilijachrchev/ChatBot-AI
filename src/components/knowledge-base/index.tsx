@@ -290,7 +290,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
               <h3 className="text-sm font-semibold text-[var(--text-primary)]">
                 Website Scraping
               </h3>
-              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
+              <span className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-medium bg-[var(--warning)] dark:bg-[var(--warning)] text-[var(--warning)] dark:text-[var(--warning)] border border-[var(--warning)] dark:border-[var(--warning)]">
                 Ultimate Plan
               </span>
             </div>
@@ -359,7 +359,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                 )}
               </Button>
             </div>
-            <p className="text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-2">
+            <p className="text-xs text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mt-2">
               Enter a URL and the number of pages to crawl (max&nbsp;20). The scraped content
               will be saved and ingested into your knowledge base.
             </p>
@@ -400,11 +400,11 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
           className={cn(
             'rounded-xl border-2 border-dashed',
             'border-[var(--border-default)]',
-            'bg-slate-50/50 dark:bg-[var(--bg-page)]/30',
+            'bg-[var(--bg-surface)]/50 dark:bg-[var(--bg-page)]/30',
             'p-8 md:p-12',
             'transition-all duration-200',
-            'hover:border-blue-300 dark:hover:border-blue-700',
-            'hover:bg-slate-100/50 dark:hover:bg-[var(--bg-hover)]/50',
+            'hover:border-[var(--primary)] dark:hover:border-[var(--primary)]',
+            'hover:bg-[var(--bg-surface)]/50 dark:hover:bg-[var(--bg-hover)]/50',
             uploading && 'opacity-50 pointer-events-none'
           )}
         >
@@ -412,7 +412,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
             <div
               className={cn(
                 'inline-flex h-16 w-16 items-center justify-center rounded-full',
-                'bg-blue-100 dark:bg-blue-900/30',
+                'bg-[var(--primary)] dark:bg-[var(--primary)]',
                 'mb-4'
               )}
             >
@@ -475,7 +475,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                   file.status === 'DISABLED' && 'opacity-60'
                 )}
               >
-                <TableCell className="font-medium text-slate-950 dark:text-[var(--text-primary)]">
+                <TableCell className="font-medium text-[var(--text-primary)]">
                   <div className="flex items-center gap-2">
                     <FileText className="h-4 w-4 text-[var(--text-muted)] flex-shrink-0" />
                     <span className="truncate max-w-[300px]">{file.filename}</span>
@@ -501,13 +501,13 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                     className={cn(
                       'inline-flex items-center px-2.5 py-1 rounded-md text-sm font-medium',
                       file.status === 'READY' &&
-                        'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+                        'bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)]',
                       file.status === 'PROCESSING' &&
-                        'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300',
+                        'bg-[var(--primary)] dark:bg-[var(--primary)] text-[var(--primary)] dark:text-[var(--primary)]',
                       file.status === 'DISABLED' &&
                         'bg-[var(--bg-card)] text-[var(--text-secondary)]',
                       file.status === 'FAILED' &&
-                        'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300'
+                        'bg-[var(--danger)] dark:bg-[var(--danger)] text-[var(--danger)] dark:text-[var(--danger)]'
                     )}
                   >
                     {file.status}
@@ -526,7 +526,7 @@ const KnowledgeBaseContent = ({ initialFiles, domainId, userPlan }: Props) => {
                         title="Reprocess"
                       >
                         {reprocessingId === file.id ? (
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--primary)] border-t-transparent" />
                         ) : (
                           <RefreshCw className="h-4 w-4 text-[var(--text-accent)]" />
                         )}

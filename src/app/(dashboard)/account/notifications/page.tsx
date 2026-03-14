@@ -17,10 +17,10 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
 const TYPE_DOT: Record<string, string> = {
-  INFO: 'bg-indigo-500',
-  SUCCESS: 'bg-green-500',
-  WARNING: 'bg-amber-500',
-  ERROR: 'bg-red-500',
+  INFO: 'bg-[var(--primary)]',
+  SUCCESS: 'bg-[var(--success)]',
+  WARNING: 'bg-[var(--warning)]',
+  ERROR: 'bg-[var(--danger)]',
 }
 
 function timeAgo(date: Date): string {
@@ -74,13 +74,13 @@ export default async function NotificationsPage() {
         <CardContent>
           {notifications.length === 0 ? (
             <div className='flex flex-col items-center justify-center py-16 text-center'>
-              <div className='w-14 h-14 rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] flex items-center justify-center mb-4'>
+              <div className='w-14 h-14 rounded-full bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] flex items-center justify-center mb-4'>
                 <Bell className='w-7 h-7 text-[var(--text-muted)]' />
               </div>
               <p className='text-sm font-semibold text-[var(--text-primary)] mb-1'>
                 No notifications yet
               </p>
-              <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] max-w-xs'>
+              <p className='text-xs text-[var(--text-secondary)] dark:text-[var(--text-secondary)] max-w-xs'>
                 Activity like new conversations, billing events, and system
                 alerts will appear here
               </p>
@@ -96,7 +96,7 @@ export default async function NotificationsPage() {
                     <span
                       className={cn(
                         'block w-2 h-2 rounded-full',
-                        TYPE_DOT[n.type] ?? 'bg-slate-400'
+                        TYPE_DOT[n.type] ?? 'bg-[var(--bg-card)]'
                       )}
                     />
                   </div>
@@ -104,7 +104,7 @@ export default async function NotificationsPage() {
                     <p className='text-sm font-medium text-[var(--text-primary)]'>
                       {n.title}
                     </p>
-                    <p className='text-xs text-slate-500 dark:text-[var(--text-secondary)] mt-0.5'>
+                    <p className='text-xs text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mt-0.5'>
                       {n.message}
                     </p>
                   </div>

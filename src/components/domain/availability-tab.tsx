@@ -86,7 +86,7 @@ export function AvailabilityTab({
       <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center'>
+            <div className='w-10 h-10 rounded-lg bg-[var(--primary)] dark:bg-[var(--primary)] flex items-center justify-center'>
               <Clock className='w-5 h-5 text-[var(--text-accent)]' />
             </div>
             <div>
@@ -175,8 +175,8 @@ export function AvailabilityTab({
                       className={cn(
                         'px-4 py-2 rounded-lg text-sm font-medium transition-all border-2',
                         formData.activeDays.includes(day.value)
-                          ? 'bg-indigo-600 text-white border-blue-600'
-                          : 'bg-[var(--bg-page)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-blue-300 dark:hover:border-blue-700'
+                          ? 'bg-[var(--primary)] text-white border-[var(--primary)]'
+                          : 'bg-[var(--bg-page)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-[var(--primary)] dark:hover:border-[var(--primary)]'
                       )}
                     >
                       {day.label}
@@ -192,8 +192,8 @@ export function AvailabilityTab({
       <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center'>
-              <Settings className='w-5 h-5 text-purple-600 dark:text-purple-400' />
+            <div className='w-10 h-10 rounded-lg bg-[var(--primary-light)] flex items-center justify-center'>
+              <Settings className='w-5 h-5 text-[var(--primary)]' />
             </div>
             <div>
               <CardTitle className='text-lg'>Offline Behavior</CardTitle>
@@ -247,8 +247,8 @@ export function AvailabilityTab({
       <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center'>
-              <Users className='w-5 h-5 text-green-600 dark:text-green-400' />
+            <div className='w-10 h-10 rounded-lg bg-[var(--success)] dark:bg-[var(--success)] flex items-center justify-center'>
+              <Users className='w-5 h-5 text-[var(--success)] dark:text-[var(--success)]' />
             </div>
             <div>
               <CardTitle className='text-lg'>Human Handoff</CardTitle>
@@ -339,7 +339,7 @@ export function AvailabilityTab({
             size='lg'
             onClick={handleSave}
             disabled={saving}
-            className='bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700'
+            className='bg-[var(--primary)] hover:bg-[var(--primary-hover)]'
           >
             {saving ? (
               <>

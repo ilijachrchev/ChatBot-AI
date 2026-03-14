@@ -205,7 +205,7 @@ const PlaygroundPage = () => {
                       <button
                         type="button"
                         onClick={() => setShowSystemPrompt((p) => !p)}
-                        className="text-xs text-indigo-500 hover:text-blue-700 underline"
+                        className="text-xs text-[var(--primary)] hover:text-[var(--primary)] underline"
                       >
                         {showSystemPrompt ? 'Hide' : 'Show'} system prompt
                       </button>
@@ -233,9 +233,9 @@ const PlaygroundPage = () => {
                     </Button>
                   </div>
 
-                  <div className="flex items-start gap-2 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
-                    <Info className="h-3.5 w-3.5 text-indigo-500 flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-blue-700 dark:text-blue-300">
+                  <div className="flex items-start gap-2 p-3 bg-[var(--primary)] dark:bg-[var(--primary)] rounded-lg">
+                    <Info className="h-3.5 w-3.5 text-[var(--primary)] flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-[var(--primary)] dark:text-[var(--primary)]">
                       Test conversations don&apos;t count toward your monthly limit
                     </p>
                   </div>
@@ -245,7 +245,7 @@ const PlaygroundPage = () => {
 
             <div className="flex flex-col items-center gap-3">
               <div className="flex items-center gap-2 self-start flex-wrap">
-                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[var(--success)] text-[var(--success)] dark:bg-[var(--success)] dark:text-[var(--success)]">
                   Live Preview
                 </span>
                 <span className="text-xs text-muted-foreground">

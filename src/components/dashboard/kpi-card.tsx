@@ -17,19 +17,19 @@ type KpiCardProps = {
 }
 
 const iconColorClasses = {
-  blue: 'bg-indigo-500/10 text-[var(--text-accent)]',
-  green: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
-  purple: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
-  amber: 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
-  rose: 'bg-rose-500/10 text-rose-600 dark:text-rose-400',
+  blue: 'bg-[var(--primary-light)] text-[var(--primary)]',
+  green: 'bg-[rgba(61,184,130,0.15)] text-[var(--success)]',
+  purple: 'bg-[var(--primary-light)] text-[var(--primary)]',
+  amber: 'bg-[rgba(224,155,26,0.15)] text-[var(--warning)]',
+  rose: 'bg-[rgba(224,85,85,0.15)] text-[var(--danger)]',
 }
 
 const sparklineColors = {
-  blue: 'rgb(59, 130, 246)',
-  green: 'rgb(16, 185, 129)',
-  purple: 'rgb(168, 85, 247)',
-  amber: 'rgb(245, 158, 11)',
-  rose: 'rgb(244, 63, 94)',
+  blue: 'var(--primary)',
+  green: 'var(--success)',
+  purple: 'var(--primary)',
+  amber: 'var(--warning)',
+  rose: 'var(--danger)',
 }
 
 export const KpiCard = ({
@@ -73,12 +73,12 @@ export const KpiCard = ({
       {trend && typeof value === 'number' && value > 0 && (
         <div className="mt-3 flex items-center gap-1.5">
           {isPositive && (
-            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[rgba(61,184,130,0.15)] text-[var(--success)]">
               +{trend.value}%
             </span>
           )}
           {isNegative && (
-            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-rose-500/10 text-rose-600 dark:text-rose-400">
+            <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-[rgba(224,85,85,0.15)] text-[var(--danger)]">
               {trend.value}%
             </span>
           )}

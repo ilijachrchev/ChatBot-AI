@@ -3,6 +3,7 @@
 import { client as db } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { Prisma } from '@prisma/client'
+import { SOCKET_SERVER_URL } from '@/lib/config'
 
 export const onGetCurrentUserId = async () => {
   const clerkUser = await currentUser()

@@ -7,7 +7,7 @@ const stats = [
 
 export const StatsBar = () => {
   return (
-    <section className="bg-[var(--bg-page)]/50 border-y border-slate-800 py-12">
+    <section className="bg-[var(--bg-page)]/50 border-y border-[var(--border-strong)] py-12">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row items-center">
           {stats.map((stat, i) => (

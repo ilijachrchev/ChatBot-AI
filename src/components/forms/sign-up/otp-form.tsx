@@ -18,7 +18,7 @@ const OTPForm = ({ onOTP, setOTP }: Props) => {
       className='space-y-6'
     >
       <div className='flex justify-center'>
-        <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center'>
+        <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--info)] flex items-center justify-center'>
           <Mail className='w-8 h-8 text-white' />
         </div>
       </div>
@@ -40,7 +40,7 @@ const OTPForm = ({ onOTP, setOTP }: Props) => {
       <div className='text-center'>
         <p className='text-sm text-[var(--text-muted)]'>
           Didn't receive the code?{' '}
-          <button className='text-indigo-500 hover:text-indigo-400 font-semibold transition-colors'>
+          <button className='text-[var(--primary)] hover:text-[var(--primary)] font-semibold transition-colors'>
             Resend
           </button>
         </p>

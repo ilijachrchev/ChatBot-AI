@@ -128,7 +128,7 @@ export const RecurringCampaignModal = ({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Weekly Newsletter"
-              className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+              className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[var(--border-strong)] dark:focus-visible:border-white"
             />
           </div>
 
@@ -153,7 +153,7 @@ export const RecurringCampaignModal = ({
               value={template}
               onChange={(e) => setTemplate(e.target.value)}
               placeholder="Write your email message..."
-              className="min-h-[140px] resize-none border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+              className="min-h-[140px] resize-none border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[var(--border-strong)] dark:focus-visible:border-white"
             />
             <div className="text-right text-xs text-[var(--text-muted)]">{template.length} characters</div>
           </div>
@@ -171,7 +171,7 @@ export const RecurringCampaignModal = ({
                   className={cn(
                     'flex-1 py-2 text-sm font-medium transition-all',
                     frequency === f
-                      ? 'bg-indigo-500 text-white'
+                      ? 'bg-[var(--primary)] text-white'
                       : 'bg-[var(--bg-page)] text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                   )}
                 >
@@ -189,7 +189,7 @@ export const RecurringCampaignModal = ({
               type="time"
               value={sendTime}
               onChange={(e) => setSendTime(e.target.value)}
-              className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+              className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[var(--border-strong)] dark:focus-visible:border-white"
             />
           </div>
 
@@ -207,8 +207,8 @@ export const RecurringCampaignModal = ({
                     className={cn(
                       'px-3 py-1.5 rounded-full text-sm font-medium transition-all border',
                       selectedDay === i
-                        ? 'bg-indigo-500 text-white border-slate-900 dark:border-white'
-                        : 'bg-[var(--bg-page)] text-[var(--text-secondary)] border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
+                        ? 'bg-[var(--primary)] text-white border-[var(--border-strong)] dark:border-white'
+                        : 'bg-[var(--bg-page)] text-[var(--text-secondary)] border-[var(--border-default)] hover:border-[var(--border-default)]'
                     )}
                   >
                     {day}
@@ -231,7 +231,7 @@ export const RecurringCampaignModal = ({
                 onChange={(e) =>
                   setMonthlyDay(Math.min(31, Math.max(1, parseInt(e.target.value) || 1)))
                 }
-                className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+                className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[var(--border-strong)] dark:focus-visible:border-white"
               />
             </div>
           )}
@@ -247,7 +247,7 @@ export const RecurringCampaignModal = ({
           <Button
             onClick={handleSubmit}
             disabled={!isValid || loading || selectedCount === 0}
-            className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold h-11"
+            className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold h-11"
           >
             <Loader loading={loading}>
               <Calendar className="h-4 w-4 mr-2" />

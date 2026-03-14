@@ -35,7 +35,7 @@ export function LandingNavbar() {
         <div className="bg-gradient-to-r from-sky-500/20 to-violet-500/20 border-b border-sky-500/20">
           <div className="mx-auto max-w-6xl px-4 py-2 flex items-center">
             <div className="flex-1" />
-            <p className="text-xs text-slate-200 text-center">
+            <p className="text-xs text-[var(--text-muted)] text-center">
               🚀 SendWise AI is now live — Start free, no credit card needed
               <a
                 href="#pricing"
@@ -49,7 +49,7 @@ export function LandingNavbar() {
                 type="button"
                 aria-label="Dismiss announcement"
                 onClick={dismissBar}
-                className="text-[var(--text-muted)] hover:text-slate-200 transition-colors"
+                className="text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -58,7 +58,7 @@ export function LandingNavbar() {
         </div>
       )}
 
-      <div className="border-b border-slate-800/80 bg-[var(--bg-page)]/80 backdrop-blur-xl">
+      <div className="border-b border-[var(--border-strong)]/80 bg-[var(--bg-page)]/80 backdrop-blur-xl">
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
           <Link href="/" className="flex items-center gap-2">
             <Image
@@ -78,7 +78,7 @@ export function LandingNavbar() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-slate-300 hover:text-sky-300 transition-colors"
+                className="text-sm font-medium text-[var(--text-muted)] hover:text-sky-300 transition-colors"
               >
                 {link.label}
               </a>
@@ -88,7 +88,7 @@ export function LandingNavbar() {
           <div className="hidden items-center gap-3 md:flex">
             <Link
               href="/auth/sign-in"
-              className="text-sm text-slate-300 hover:text-sky-300 transition-colors"
+              className="text-sm text-[var(--text-muted)] hover:text-sky-300 transition-colors"
             >
               Log in
             </Link>
@@ -101,7 +101,7 @@ export function LandingNavbar() {
             type="button"
             aria-label="Toggle navigation"
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-slate-700 bg-[var(--bg-page)] text-slate-100 md:hidden"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] md:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -109,7 +109,7 @@ export function LandingNavbar() {
 
         <div
           className={cn(
-            "md:hidden border-t border-slate-800/80 bg-[var(--bg-page)]/95 backdrop-blur-xl shadow-lg transition-[max-height,opacity] duration-200 overflow-hidden",
+            "md:hidden border-t border-[var(--border-strong)]/80 bg-[var(--bg-page)]/95 backdrop-blur-xl shadow-lg transition-[max-height,opacity] duration-200 overflow-hidden",
             open ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
           )}
         >
@@ -119,7 +119,7 @@ export function LandingNavbar() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-2 text-sm font-medium text-slate-200 hover:bg-[var(--bg-surface)]/80"
+                className="rounded-md px-2 py-2 text-sm font-medium text-[var(--text-muted)] hover:bg-[var(--bg-surface)]/80"
               >
                 {link.label}
               </a>
@@ -129,7 +129,7 @@ export function LandingNavbar() {
               <Link
                 href="/auth/sign-in"
                 onClick={() => setOpen(false)}
-                className="flex-1 rounded-md px-2 py-2 text-center text-sm font-medium text-slate-200 hover:bg-[var(--bg-surface)]/80"
+                className="flex-1 rounded-md px-2 py-2 text-center text-sm font-medium text-[var(--text-muted)] hover:bg-[var(--bg-surface)]/80"
               >
                 Log in
               </Link>

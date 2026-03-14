@@ -49,32 +49,32 @@ const notificationIcon = (type: NotificationType) => {
   switch (type) {
     case 'LIVE_CHAT_REQUEST':
       return (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-950">
-          <MessageSquare className={cn(base, 'text-red-600 dark:text-red-400')} />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--danger)] dark:bg-[var(--danger)]">
+          <MessageSquare className={cn(base, 'text-white')} />
         </div>
       )
     case 'NEW_LEAD':
       return (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-950">
-          <User className={cn(base, 'text-[var(--text-accent)]')} />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--primary)] dark:bg-[var(--primary)]">
+          <User className={cn(base, 'text-white')} />
         </div>
       )
     case 'CONVERSATION_LIMIT':
       return (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-950">
-          <AlertTriangle className={cn(base, 'text-amber-600 dark:text-amber-400')} />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--warning)] dark:bg-[var(--warning)]">
+          <AlertTriangle className={cn(base, 'text-white')} />
         </div>
       )
     case 'SCRAPING_COMPLETE':
       return (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-950">
-          <CheckCircle className={cn(base, 'text-green-600 dark:text-green-400')} />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--success)] dark:bg-[var(--success)]">
+          <CheckCircle className={cn(base, 'text-white')} />
         </div>
       )
     case 'PAYMENT_FAILED':
       return (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 dark:bg-red-950">
-          <CreditCard className={cn(base, 'text-red-600 dark:text-red-400')} />
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--danger)] dark:bg-[var(--danger)]">
+          <CreditCard className={cn(base, 'text-white')} />
         </div>
       )
   }
@@ -90,8 +90,8 @@ const NotificationItem = ({
   <div
     className={cn(
       'group relative flex w-full items-start gap-3 px-4 py-3',
-      'cursor-default transition-colors hover:bg-muted/50',
-      !notification.read && 'border-l-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/10'
+      'cursor-default transition-colors hover:bg-[var(--primary-light)]',
+      !notification.read && 'border-l-2 border-[var(--primary)] bg-[var(--primary-light)]'
     )}
   >
     {notificationIcon(notification.type as NotificationType)}
@@ -114,7 +114,7 @@ const NotificationItem = ({
         e.stopPropagation()
         onDelete(notification.id)
       }}
-      className="opacity-0 transition-opacity group-hover:opacity-100 shrink-0 rounded p-0.5 hover:bg-muted"
+      className="opacity-0 transition-opacity group-hover:opacity-100 shrink-0 rounded p-0.5 hover:bg-[var(--bg-surface)]"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +204,7 @@ const InfoBar = (props: Props) => {
         <DropdownMenu open={open} onOpenChange={(v) => (v ? onOpen() : onClose())}>
           <DropdownMenuTrigger asChild>
             <div className="relative">
-              <button className="h-9 w-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+              <button className="h-9 w-9 flex items-center justify-center rounded-md text-muted-foreground hover:text-foreground hover:bg-[var(--primary-light)] transition-colors">
                 <Bell className="h-4 w-4" />
               </button>
               {unreadCount > 0 && (
@@ -212,7 +212,7 @@ const InfoBar = (props: Props) => {
                   className={cn(
                     'absolute -top-1 -right-1',
                     'h-4 min-w-[16px] px-0.5 rounded-full',
-                    'bg-rose-500 text-white text-[10px] font-semibold',
+                    'bg-[var(--danger)] text-white text-[10px] font-semibold',
                     'flex items-center justify-center',
                     'ring-2 ring-background'
                   )}
@@ -229,7 +229,7 @@ const InfoBar = (props: Props) => {
               {unreadCount > 0 && (
                 <button
                   onClick={onOpen}
-                  className="text-xs text-indigo-500 hover:text-indigo-500 transition-colors"
+                  className="text-xs text-[var(--primary)] hover:text-[var(--primary)] transition-colors"
                 >
                   Mark all read
                 </button>
@@ -286,13 +286,13 @@ const InfoBar = (props: Props) => {
               className={cn(
                 'h-9 w-9',
                 'ring-2 ring-offset-2 ring-border',
-                'hover:ring-blue-500/40',
+                'hover:ring-[var(--primary)]',
                 'transition-all cursor-pointer',
                 'ring-offset-background'
               )}
             >
               <AvatarImage src={avatarUrl || undefined} alt={displayName || 'User'} className="object-cover" />
-              <AvatarFallback className="bg-gradient-to-br from-slate-700 to-slate-800 text-white font-semibold">
+              <AvatarFallback className="bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] text-white font-semibold">
                 {displayName.charAt(0) ||
                   user?.emailAddresses[0]?.emailAddress.charAt(0) ||
                   'U'}
@@ -305,7 +305,7 @@ const InfoBar = (props: Props) => {
               <div className="flex items-center gap-3">
                 <Avatar className="w-12 h-12">
                   <AvatarImage src={avatarUrl || undefined} alt={displayName || 'User'} className="object-cover" />
-                  <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-500 text-white font-semibold text-lg">
+                  <AvatarFallback className="bg-gradient-to-br from-[var(--primary)] to-[var(--info)] text-white font-semibold text-lg">
                     {displayName.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
@@ -322,8 +322,8 @@ const InfoBar = (props: Props) => {
 
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/account/profile" className="flex items-center gap-3 px-2 py-2.5 rounded-md">
-                <div className="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center">
-                  <User className="w-4 h-4 text-[var(--text-accent)]" />
+                <div className="w-8 h-8 rounded-lg bg-[var(--primary)] flex items-center justify-center">
+                  <User className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Profile</span>
@@ -334,8 +334,8 @@ const InfoBar = (props: Props) => {
 
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/account/security" className="flex items-center gap-3 px-2 py-2.5 rounded-md">
-                <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                <div className="w-8 h-8 rounded-lg bg-[var(--primary-light)] flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-[var(--primary)]" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Security</span>
@@ -346,8 +346,8 @@ const InfoBar = (props: Props) => {
 
             <DropdownMenuItem asChild className="cursor-pointer">
               <Link href="/account/preferences" className="flex items-center gap-3 px-2 py-2.5 rounded-md">
-                <div className="w-8 h-8 rounded-lg bg-amber-500/10 flex items-center justify-center">
-                  <SettingsIcon className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <div className="w-8 h-8 rounded-lg bg-[var(--warning)] flex items-center justify-center">
+                  <SettingsIcon className="w-4 h-4 text-white" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-sm font-medium">Preferences</span>
@@ -363,8 +363,8 @@ const InfoBar = (props: Props) => {
               className="cursor-pointer text-destructive focus:text-destructive focus:bg-destructive/10"
             >
               <div className="flex items-center gap-3 px-2 py-2.5 w-full rounded-md">
-                <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
-                  <LogOut className="w-4 h-4 text-red-600 dark:text-red-400" />
+                <div className="w-8 h-8 rounded-lg bg-[var(--danger)] flex items-center justify-center">
+                  <LogOut className="w-4 h-4 text-white" />
                 </div>
                 <span className="text-sm font-medium">Sign Out</span>
               </div>

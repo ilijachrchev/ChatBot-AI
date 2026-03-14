@@ -29,7 +29,7 @@ export const RecentTransactionsCard = ({ transactions }: RecentTransactionsCardP
         )}>
             <div className="flex items-center justify-between mb-5 md:mb-6">
                 <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-rose-500 to-rose-600 text-white shadow-lg shadow-rose-500/30">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--danger)] text-white shadow-lg">
                         <Receipt className="h-5 w-5" />
                     </div>
                     <div>
@@ -43,7 +43,7 @@ export const RecentTransactionsCard = ({ transactions }: RecentTransactionsCardP
                 </div>
 
                 {hasTransactions && (
-                    <button className="flex items-center gap-1 text-sm font-medium text-indigo-500 hover:text-blue-700 dark:text-[var(--text-accent)] dark:hover:text-blue-300 transition-colors group p-1">
+                    <button className="flex items-center gap-1 text-sm font-medium text-[var(--primary)] hover:text-[var(--primary)] dark:text-[var(--text-accent)] dark:hover:text-[var(--primary)] transition-colors group p-1">
                         View All
                         <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </button>
@@ -52,15 +52,15 @@ export const RecentTransactionsCard = ({ transactions }: RecentTransactionsCardP
 
             <div className="space-y-2 flex-grow">
                 {hasTransactions ? (
-                    <div className="divide-y divide-slate-200 dark:divide-[var(--border-default)]">
+                    <div className="divide-y divide-[var(--border-default)] dark:divide-[var(--border-default)]">
                         {transactions.slice(0, 5).map((transaction) => (
                             <div
                                 key={transaction.id}
                                 className="flex items-center justify-between py-3 first:pt-0 last:pb-0 hover:bg-[var(--bg-hover)] -mx-2 px-2 rounded-lg transition-colors group"
                             >
                                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-500/10 to-emerald-600/10 dark:from-emerald-500/20 dark:to-emerald-600/20 flex items-center justify-center flex-shrink-0">
-                                        <DollarSign className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                                    <div className="h-9 w-9 rounded-full bg-[rgba(61,184,130,0.15)] flex items-center justify-center flex-shrink-0">
+                                        <DollarSign className="h-4 w-4 text-[var(--success)] dark:text-[var(--success)]" />
                                     </div>
 
                                     <div className="min-w-0 flex-1">

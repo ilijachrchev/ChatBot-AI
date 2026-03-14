@@ -28,11 +28,11 @@ interface PaymentMethodCardProps {
 }
 
 const cardBrandColors: Record<string, string> = {
-  visa: 'from-blue-600 to-blue-800',
-  mastercard: 'from-orange-600 to-red-600',
-  amex: 'from-teal-600 to-cyan-600',
-  discover: 'from-orange-500 to-orange-700',
-  default: 'from-slate-900 to-slate-800',
+  visa: 'from-[var(--primary)] to-[var(--primary-light)]',
+  mastercard: 'from-[var(--danger)] to-[var(--warning)]',
+  amex: 'from-[var(--info)] to-[var(--primary)]',
+  discover: 'from-[var(--warning)] to-[var(--danger)]',
+  default: 'from-[var(--bg-page)] to-[var(--bg-page)]',
 }
 
 const cardBrandLogos: Record<string, string> = {
@@ -91,7 +91,7 @@ export function PaymentMethodCard({
     <>
       <div className={`relative p-4 rounded-xl border-2 ${isDefault ? 'border-white/50' : 'border-[var(--border-default)]'} bg-gradient-to-br ${cardColor} text-white shadow-lg`}>
         {isDefault && (
-          <Badge className="absolute top-3 right-3 bg-white text-slate-900 border border-[var(--border-default)] text-xs">
+          <Badge className="absolute top-3 right-3 bg-white text-[var(--text-primary)] border border-[var(--border-default)] text-xs">
             Default
           </Badge>
         )}
@@ -161,7 +161,7 @@ export function PaymentMethodCard({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
-              className="bg-red-600 hover:bg-red-700"
+              className="bg-[var(--danger)] hover:bg-[var(--danger)]"
             >
               {loadingDelete ? (
                 <>

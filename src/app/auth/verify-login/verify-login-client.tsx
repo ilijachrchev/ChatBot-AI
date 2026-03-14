@@ -102,7 +102,7 @@ export function VerifyLoginClient({ token }: Props) {
       className='space-y-6'
     >
       <div className='flex justify-center'>
-        <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shadow-lg shadow-blue-500/25'>
+        <div className='w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--info)] flex items-center justify-center shadow-lg shadow-[var(--primary)]'>
           <Mail className='w-8 h-8 text-white' />
         </div>
       </div>
@@ -113,7 +113,7 @@ export function VerifyLoginClient({ token }: Props) {
           We've sent a 6-digit code to
         </p>
         {email && (
-          <p className='text-indigo-400 font-medium'>{email}</p>
+          <p className='text-[var(--primary)] font-medium'>{email}</p>
         )}
       </div>
 
@@ -128,7 +128,7 @@ export function VerifyLoginClient({ token }: Props) {
         type='button'
         onClick={onVerify}
         disabled={loading || otp.length !== 6}
-        className='w-full h-12 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-500/25 transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+        className='w-full h-12 bg-gradient-to-r from-[var(--primary)] to-[var(--info)] hover:from-[var(--primary)] hover:to-[var(--info)] text-white font-semibold rounded-xl shadow-lg shadow-[var(--primary)] transition-all disabled:opacity-50 disabled:cursor-not-allowed'
       >
         {loading ? (
           <div className='w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin' />
@@ -145,7 +145,7 @@ export function VerifyLoginClient({ token }: Props) {
               type='button'
               onClick={handleResend}
               disabled={loading || resending}
-              className='text-indigo-500 hover:text-indigo-400 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
+              className='text-[var(--primary)] hover:text-[var(--primary)] font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed'
             >
               {resending ? 'Sending...' : 'Resend'}
             </button>
@@ -164,8 +164,8 @@ export function VerifyLoginClient({ token }: Props) {
         </div>
       </div>
 
-      <div className='mt-6 p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl'>
-        <p className='text-sm text-amber-400 text-center'>
+      <div className='mt-6 p-4 bg-[var(--warning)] border border-[var(--warning)] rounded-xl'>
+        <p className='text-sm text-[var(--warning)] text-center'>
           <strong>⚠️ Security Alert:</strong> We detected a login from a new device or location.
         </p>
       </div>

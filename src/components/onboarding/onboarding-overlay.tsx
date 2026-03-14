@@ -86,7 +86,7 @@ export const OnboardingOverlay = () => {
       <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto py-8 px-4">
         <div className="absolute inset-0 bg-background" />
         <div
-          className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-neutral-950 dark:via-[#0d0d0d] dark:to-neutral-900 anim-gradient"
+          className="absolute inset-0 bg-gradient-to-br from-[var(--bg-page)] via-[var(--bg-surface)] to-[var(--bg-page)] anim-gradient"
         />
 
         <div
@@ -107,7 +107,7 @@ export const OnboardingOverlay = () => {
                 />
                 <div className="w-full bg-border rounded-full h-1.5 mb-2 overflow-hidden">
                   <div
-                    className="h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-indigo-600 transition-all duration-1000 ease-out"
+                    className="h-1.5 rounded-full bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] transition-all duration-1000 ease-out"
                     style={{ width: '0%' }}
                   />
                 </div>
@@ -116,7 +116,7 @@ export const OnboardingOverlay = () => {
 
               <div className="flex flex-col items-center mb-8 text-center">
                 <Globe
-                  className="w-8 h-8 text-indigo-500 mb-4"
+                  className="w-8 h-8 text-[var(--primary)] mb-4"
                   style={{ animation: 'bounce 2s infinite' }}
                 />
                 <h1 className="text-3xl font-bold text-foreground mb-3">

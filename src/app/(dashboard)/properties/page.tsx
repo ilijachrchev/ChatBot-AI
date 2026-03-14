@@ -53,9 +53,9 @@ const EMPTY_FORM: FormData = {
 }
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
-  AVAILABLE: { label: 'Available', className: 'bg-green-100 dark:bg-green-950/50 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800' },
-  UNDER_OFFER: { label: 'Under Offer', className: 'bg-amber-100 dark:bg-amber-950/50 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800' },
-  SOLD: { label: 'Sold', className: 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)]' },
+  AVAILABLE: { label: 'Available', className: 'bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] border-[var(--success)] dark:border-[var(--success)]' },
+  UNDER_OFFER: { label: 'Under Offer', className: 'bg-[var(--warning)] dark:bg-[var(--warning)] text-[var(--warning)] dark:text-[var(--warning)] border-[var(--warning)] dark:border-[var(--warning)]' },
+  SOLD: { label: 'Sold', className: 'bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)]' },
 }
 
 const TYPE_CONFIG: Record<string, string> = {
@@ -140,8 +140,8 @@ export default function PropertiesPage() {
   if (!domainId) {
     return (
       <div className="p-6 md:p-8 flex flex-col items-center justify-center min-h-[60vh] gap-4">
-        <Home className="h-12 w-12 text-slate-300 dark:text-[var(--text-secondary)]" />
-        <p className="text-slate-500 dark:text-[var(--text-secondary)] text-center">
+        <Home className="h-12 w-12 text-[var(--text-muted)] dark:text-[var(--text-secondary)]" />
+        <p className="text-[var(--text-secondary)] dark:text-[var(--text-secondary)] text-center">
           No domain selected. Use the sidebar to navigate to a domain&apos;s properties.
         </p>
       </div>
@@ -156,30 +156,30 @@ export default function PropertiesPage() {
           <div className="flex flex-wrap gap-3 mt-3">
             {[
               { label: 'Total', value: properties.length, color: 'text-[var(--text-secondary)]' },
-              { label: 'Available', value: available, color: 'text-green-600 dark:text-green-400' },
-              { label: 'Under Offer', value: underOffer, color: 'text-amber-600 dark:text-amber-400' },
+              { label: 'Available', value: available, color: 'text-[var(--success)] dark:text-[var(--success)]' },
+              { label: 'Under Offer', value: underOffer, color: 'text-[var(--warning)] dark:text-[var(--warning)]' },
               { label: 'Sold', value: sold, color: 'text-[var(--text-muted)]' },
             ].map(stat => (
               <div key={stat.label} className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[var(--bg-page)] border border-[var(--border-default)]">
                 <span className={cn('text-lg font-bold', stat.color)}>{stat.value}</span>
-                <span className="text-xs text-slate-500 dark:text-[var(--text-secondary)]">{stat.label}</span>
+                <span className="text-xs text-[var(--text-secondary)] dark:text-[var(--text-secondary)]">{stat.label}</span>
               </div>
             ))}
           </div>
         </div>
-        <Button onClick={openCreate} className="bg-indigo-500 hover:bg-indigo-600 text-white">
+        <Button onClick={openCreate} className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white">
           <Plus className="h-4 w-4 mr-2" /> Add Property
         </Button>
       </div>
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--border-default)] dark:border-[var(--border-strong)] border-t-slate-900 dark:border-t-white" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--border-default)] border-t-[var(--text-primary)]" />
         </div>
       ) : properties.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-16 gap-4">
-          <Home className="h-12 w-12 text-slate-300 dark:text-[var(--text-secondary)]" />
-          <p className="text-slate-400 dark:text-[var(--text-secondary)] text-sm">No properties listed yet</p>
+          <Home className="h-12 w-12 text-[var(--text-muted)] dark:text-[var(--text-secondary)]" />
+          <p className="text-[var(--text-muted)] dark:text-[var(--text-secondary)] text-sm">No properties listed yet</p>
           <Button onClick={openCreate} variant="outline">Add your first property</Button>
         </div>
       ) : (
@@ -188,12 +188,12 @@ export default function PropertiesPage() {
             const statusCfg = STATUS_CONFIG[p.status] ?? STATUS_CONFIG.AVAILABLE
             return (
               <div key={p.id} className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-page)] overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="h-36 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 relative overflow-hidden">
+                <div className="h-36 bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] dark:from-[var(--bg-page)] dark:to-[var(--bg-page)] relative overflow-hidden">
                   {p.imageUrl ? (
                     <img src={p.imageUrl} alt={p.title} className="w-full h-full object-cover" />
                   ) : (
                     <div className="flex items-center justify-center h-full">
-                      <Home className="h-10 w-10 text-slate-300 dark:text-[var(--text-secondary)]" />
+                      <Home className="h-10 w-10 text-[var(--text-muted)] dark:text-[var(--text-secondary)]" />
                     </div>
                   )}
                   <div className="absolute top-2 right-2 flex gap-1.5">
@@ -208,7 +208,7 @@ export default function PropertiesPage() {
 
                 <div className="p-4">
                   <h3 className="font-bold text-[var(--text-primary)] text-sm mb-0.5 truncate">{p.title}</h3>
-                  {p.location && <p className="text-xs text-slate-400 dark:text-[var(--text-muted)] mb-2 truncate">{p.location}</p>}
+                  {p.location && <p className="text-xs text-[var(--text-muted)] dark:text-[var(--text-muted)] mb-2 truncate">{p.location}</p>}
                   {p.price && (
                     <p className="text-lg font-bold text-[var(--text-primary)] mb-2">
                       ${p.price.toLocaleString()}
@@ -216,12 +216,12 @@ export default function PropertiesPage() {
                   )}
                   <div className="flex gap-2 mb-3">
                     {p.bedrooms && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]">
                         {p.bedrooms} bd
                       </span>
                     )}
                     {p.bathrooms && (
-                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]">
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-md bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]">
                         {p.bathrooms} ba
                       </span>
                     )}
@@ -230,7 +230,7 @@ export default function PropertiesPage() {
                     <Button onClick={() => openEdit(p)} variant="outline" size="sm" className="flex-1 h-8 text-xs">
                       <Pencil className="h-3 w-3 mr-1" /> Edit
                     </Button>
-                    <Button onClick={() => setDeleteId(p.id)} variant="ghost" size="sm" className="h-8 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20">
+                    <Button onClick={() => setDeleteId(p.id)} variant="ghost" size="sm" className="h-8 text-xs text-[var(--danger)] dark:text-[var(--danger)] hover:bg-[var(--danger)] dark:hover:bg-[var(--danger)]">
                       <Trash2 className="h-3 w-3" />
                     </Button>
                   </div>
@@ -262,7 +262,7 @@ export default function PropertiesPage() {
                   value={form[field.key as keyof FormData]}
                   onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
                   placeholder={field.placeholder}
-                  className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-slate-400 dark:focus:border-slate-600"
+                  className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--border-default)] dark:focus:border-[var(--border-default)]"
                 />
               </div>
             ))}
@@ -273,7 +273,7 @@ export default function PropertiesPage() {
                 onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
                 placeholder="Property description..."
                 rows={3}
-                className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-slate-400 dark:focus:border-slate-600 resize-none"
+                className="px-3 py-2 text-sm rounded-lg border border-[var(--border-default)] dark:border-[var(--border-strong)] bg-[var(--bg-page)] text-[var(--text-primary)] placeholder:text-[var(--text-muted)] outline-none focus:border-[var(--border-default)] dark:focus:border-[var(--border-default)] resize-none"
               />
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -307,7 +307,7 @@ export default function PropertiesPage() {
               <Button
                 onClick={handleSave}
                 disabled={!form.title.trim() || isPending}
-                className="flex-1 bg-indigo-500 text-white"
+                className="flex-1 bg-[var(--primary)] text-white"
               >
                 {isPending ? 'Saving...' : editingId ? 'Update Property' : 'Add Property'}
               </Button>
@@ -330,7 +330,7 @@ export default function PropertiesPage() {
             <Button
               onClick={() => deleteId && handleDelete(deleteId)}
               disabled={isPending}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-[var(--danger)] hover:bg-[var(--danger)] text-white"
             >
               Delete
             </Button>

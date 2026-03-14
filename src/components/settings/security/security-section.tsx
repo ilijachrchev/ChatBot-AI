@@ -146,7 +146,7 @@ export function SecuritySection() {
       <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center'>
+            <div className='w-12 h-12 rounded-xl bg-[var(--bg-page)] dark:bg-white flex items-center justify-center'>
               <Shield className='w-6 h-6 text-[var(--text-primary)]' />
             </div>
             <div>
@@ -173,7 +173,7 @@ export function SecuritySection() {
 
             <div className='p-4 bg-[var(--bg-card)] rounded-xl border border-[var(--border-default)]'>
               <div className='flex items-center gap-3 mb-2'>
-                <Key className='w-5 h-5 text-green-600 dark:text-green-400' />
+                <Key className='w-5 h-5 text-[var(--success)] dark:text-[var(--success)]' />
                 <h4 className='text-sm font-semibold text-[var(--text-primary)]'>
                   Password
                 </h4>
@@ -238,7 +238,7 @@ export function SecuritySection() {
                   variant='outline'
                   size='sm'
                   disabled={loading}
-                  className='text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/20 border-red-200 dark:border-red-800'
+                  className='text-[var(--danger)] hover:text-[var(--danger)] hover:bg-[var(--danger)] dark:hover:bg-[var(--danger)] border-[var(--danger)] dark:border-[var(--danger)]'
                 >
                   <LogOut className='w-4 h-4 mr-2' />
                   Revoke All Others
@@ -250,7 +250,7 @@ export function SecuritySection() {
         <CardContent>
           {loading ? (
             <div className='text-center py-8'>
-              <div className='w-8 h-8 border-2 border-slate-900 dark:border-white border-t-transparent rounded-full animate-spin mx-auto' />
+              <div className='w-8 h-8 border-2 border-[var(--border-strong)] dark:border-white border-t-transparent rounded-full animate-spin mx-auto' />
               <p className='text-sm text-[var(--text-secondary)] mt-3'>
                 Loading sessions...
               </p>
@@ -278,8 +278,8 @@ export function SecuritySection() {
                     className={cn(
                       'flex items-center justify-between p-4 rounded-xl border transition-all',
                       isCurrentSession
-                        ? 'bg-slate-900 dark:bg-white border-slate-900 dark:border-white'
-                        : 'bg-[var(--bg-card)] border-[var(--border-default)] hover:border-[var(--border-strong)] dark:hover:border-slate-700'
+                        ? 'bg-[var(--bg-page)] dark:bg-white border-[var(--border-strong)] dark:border-white'
+                        : 'bg-[var(--bg-card)] border-[var(--border-default)] hover:border-[var(--border-strong)]'
                     )}
                   >
                     <div className='flex items-center gap-4'>
@@ -338,10 +338,10 @@ export function SecuritySection() {
                         variant='ghost'
                         size='sm'
                         disabled={isRevoking}
-                        className='text-[var(--text-secondary)] hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20'
+                        className='text-[var(--text-secondary)] hover:text-[var(--danger)] hover:bg-[var(--danger)] dark:hover:bg-[var(--danger)]'
                       >
                         {isRevoking ? (
-                          <div className='w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin' />
+                          <div className='w-4 h-4 border-2 border-[var(--danger)] border-t-transparent rounded-full animate-spin' />
                         ) : (
                           <LogOut className='w-4 h-4' />
                         )}
@@ -358,8 +358,8 @@ export function SecuritySection() {
       <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-10 h-10 rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30 flex items-center justify-center'>
-              <Lock className='w-5 h-5 text-amber-600 dark:text-amber-400' />
+            <div className='w-10 h-10 rounded-lg bg-[rgba(224,155,26,0.15)] flex items-center justify-center'>
+              <Lock className='w-5 h-5 text-[var(--warning)] dark:text-[var(--warning)]' />
             </div>
             <div>
               <CardTitle className='text-lg'>Two-Factor Authentication</CardTitle>

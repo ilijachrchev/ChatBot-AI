@@ -23,7 +23,7 @@ const DashboardCard = ({
   className
 }: Props) => {
 
-  const iconColorClass = sales ? 'text-amber-500' : 'text-indigo-500';
+  const iconColorClass = sales ? 'text-[var(--warning)]' : 'text-[var(--primary)]';
 
   const shouldDisplayTrend = trend && value > 0;
 
@@ -58,7 +58,7 @@ const DashboardCard = ({
         {shouldDisplayTrend ? (
           <div className={cn(
             'flex items-center gap-1 text-sm font-semibold',
-            trend.isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'
+            trend.isPositive ? 'text-[var(--success)]' : 'text-[var(--danger)]'
           )}>
             {trend.isPositive ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />}
             {trend.value}%

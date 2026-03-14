@@ -93,29 +93,29 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
                 dataKey="period"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: 'rgb(148, 163, 184)', fontSize: 11 }}
+                tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
                 dy={10}
               />
               <YAxis
                 axisLine={false}
                 tickLine={false}
-                tick={{ fill: 'rgb(148, 163, 184)', fontSize: 11 }}
+                tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
                 dx={-10}
               />
               <Tooltip
                 content={<CustomTooltip />}
-                cursor={{ fill: 'rgb(148 163 184 / 0.1)' }}
+                cursor={{ fill: 'rgba(var(--text-muted), 0.1)' }}
               />
               <Bar
                 dataKey="ai"
-                fill="rgb(59, 130, 246)"
+                fill="var(--primary)"
                 radius={[4, 4, 0, 0]}
                 name="AI"
                 barSize={28}
               />
               <Bar
                 dataKey="human"
-                fill="rgb(168, 85, 247)"
+                fill="var(--info)"
                 radius={[4, 4, 0, 0]}
                 name="Human"
                 barSize={28}
@@ -126,11 +126,11 @@ export const AIResolutionChart = ({ data, resolutionRate }: AIResolutionChartPro
 
         <div className="flex items-center justify-center gap-6 mt-4 pt-4 border-t border-[var(--border-default)] dark:border-[var(--border-strong)]">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-sm bg-indigo-500" />
+            <div className="h-3 w-3 rounded-sm bg-[var(--primary)]" />
             <span className="text-sm text-[var(--text-secondary)]">AI Resolved</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-sm bg-purple-500" />
+            <div className="h-3 w-3 rounded-sm bg-[var(--info)]" />
             <span className="text-sm text-[var(--text-secondary)]">Human Handled</span>
           </div>
         </div>

@@ -34,7 +34,7 @@ export const PlanUsageCard = ({
     )}>
       <div className="flex items-start justify-between mb-5 md:mb-6">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] text-white shadow-lg shadow-[var(--primary)]">
             <Activity className="h-5 w-5" />
           </div>
           <div>
@@ -49,7 +49,7 @@ export const PlanUsageCard = ({
         
         <Link 
             href="/account/billing" 
-            className="flex items-center gap-1 text-sm font-medium text-indigo-500 hover:text-blue-700 dark:text-[var(--text-accent)] dark:hover:text-blue-300 transition-colors group p-1"
+            className="flex items-center gap-1 text-sm font-medium text-[var(--primary)] hover:text-[var(--primary)] dark:text-[var(--text-accent)] dark:hover:text-[var(--primary)] transition-colors group p-1"
         >
             {isUltimate ? 'Manage Plan' : 'Upgrade'}
             <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />

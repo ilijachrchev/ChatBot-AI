@@ -108,13 +108,13 @@ const formatDateShort = (date: Date) =>
 const getStatusBadge = (status?: string) => {
   switch (status) {
     case 'SCHEDULED':
-      return { text: 'Scheduled', className: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' }
+      return { text: 'Scheduled', className: 'bg-[var(--warning)] dark:bg-[var(--warning)] text-[var(--warning)] dark:text-[var(--warning)]' }
     case 'SENT':
-      return { text: 'Sent', className: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400' }
+      return { text: 'Sent', className: 'bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)]' }
     case 'SENDING':
-      return { text: 'Sending', className: 'bg-slate-900 dark:bg-[var(--bg-hover)] text-[var(--text-primary)]', pulse: true }
+      return { text: 'Sending', className: 'bg-[var(--bg-page)] dark:bg-[var(--bg-hover)] text-[var(--text-primary)]', pulse: true }
     case 'FAILED':
-      return { text: 'Failed', className: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400' }
+      return { text: 'Failed', className: 'bg-[var(--danger)] dark:bg-[var(--danger)] text-[var(--danger)] dark:text-[var(--danger)]' }
     case 'CANCELLED':
       return { text: 'Cancelled', className: 'bg-[var(--bg-card)] text-[var(--text-muted)]' }
     default:
@@ -239,7 +239,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
     <div className="w-full flex-1 overflow-y-auto px-4 md:px-6 pb-8 space-y-6">
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 flex-shrink-0">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] dark:from-white dark:to-[var(--bg-page)] flex-shrink-0">
             <Mail className="h-6 w-6 text-[var(--text-primary)]" />
           </div>
           <div>
@@ -280,7 +280,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             <div className="flex items-center gap-2">
               <h2 className="text-lg font-bold text-[var(--text-primary)]">Customers</h2>
               {isSelected.length > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-indigo-500 text-white text-xs font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-[var(--primary)] text-white text-xs font-bold">
                   {isSelected.length} selected
                 </span>
               )}
@@ -309,8 +309,8 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             className={cn(
               'w-full font-bold h-11 transition-all',
               isSelected.length > 0 && campaignId
-                ? 'bg-indigo-500 hover:bg-indigo-600 text-white'
-                : 'opacity-40 cursor-not-allowed bg-indigo-500 text-white'
+                ? 'bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white'
+                : 'opacity-40 cursor-not-allowed bg-[var(--primary)] text-white'
             )}
           >
             <Plus className="h-4 w-4 mr-2" />
@@ -336,7 +336,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
               <Button
                 size="sm"
                 onClick={() => setCreateModalOpen(true)}
-                className="bg-indigo-500 hover:bg-indigo-600 text-white font-semibold"
+                className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold"
               >
                 <Plus className="h-3.5 w-3.5 mr-1.5" />
                 New Campaign
@@ -359,8 +359,8 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                       className={cn(
                         'cursor-pointer transition-all duration-200 hover:shadow-md',
                         campaignId === camp.id
-                          ? 'border-slate-900 dark:border-white'
-                          : 'border-[var(--border-default)] hover:border-slate-400 dark:hover:border-slate-600'
+                          ? 'border-[var(--border-strong)] dark:border-white'
+                          : 'border-[var(--border-default)] hover:border-[var(--border-default)]'
                       )}
                       onClick={() => onSelectCampaign(camp.id)}
                     >
@@ -527,7 +527,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-8 w-8 p-0 text-[var(--text-muted)] hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30 transition-colors"
+                                className="h-8 w-8 p-0 text-[var(--text-muted)] hover:text-[var(--danger)] hover:bg-[var(--danger)] dark:hover:bg-[var(--danger)] transition-colors"
                                 onClick={(e) => {
                                   e.stopPropagation()
                                   setDeletingId(camp.id)
@@ -577,7 +577,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDeleteConfirm}
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-[var(--danger)] hover:bg-[var(--danger)] text-white"
             >
               Delete
             </AlertDialogAction>
@@ -603,8 +603,8 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                 className={cn(
                   'flex-1 h-1 rounded-full transition-all duration-300',
                   createStep >= s
-                    ? 'bg-slate-900 dark:bg-white'
-                    : 'bg-slate-200 dark:bg-[var(--bg-surface)]'
+                    ? 'bg-[var(--bg-page)] dark:bg-white'
+                    : 'bg-[var(--bg-card)] dark:bg-[var(--bg-surface)]'
                 )}
               />
             ))}
@@ -620,13 +620,13 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                   value={createName}
                   onChange={(e) => setCreateName(e.target.value)}
                   placeholder="e.g., Summer Sale 2024"
-                  className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+                  className="border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[var(--border-strong)] dark:focus-visible:border-white"
                 />
               </div>
               <Button
                 onClick={() => setCreateStep(2)}
                 disabled={!createName.trim()}
-                className="w-full bg-indigo-500 hover:bg-indigo-600 text-white font-semibold"
+                className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold"
               >
                 Next
               </Button>
@@ -656,7 +656,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                   value={createTemplate}
                   onChange={(e) => setCreateTemplate(e.target.value)}
                   placeholder="Write your email message..."
-                  className="min-h-[160px] resize-none border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-slate-900 dark:focus-visible:border-white"
+                  className="min-h-[160px] resize-none border-[var(--border-default)] bg-[var(--bg-page)] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-[var(--border-strong)] dark:focus-visible:border-white"
                 />
                 <div className="text-right text-xs text-[var(--text-muted)]">
                   {createTemplate.length} characters
@@ -673,7 +673,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                 <Button
                   onClick={() => setCreateStep(3)}
                   disabled={!createTemplate.trim()}
-                  className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold"
+                  className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold"
                 >
                   Next
                 </Button>
@@ -712,7 +712,7 @@ const EmailMarketing = ({ campaign, domains, subscription, userTimezone }: Props
                 <Button
                   onClick={handleCreateAndSend}
                   disabled={creating || isSelected.length === 0}
-                  className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white font-semibold"
+                  className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold"
                 >
                   <Loader loading={creating}>
                     <Send className="h-4 w-4 mr-2" />

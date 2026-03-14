@@ -22,11 +22,11 @@ const testimonials = [
 export const Testimonials = () => {
   return (
     <section className="py-24 px-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-slate-900/60 to-[#020617]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[var(--bg-card)] to-[#020617]" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-50 mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--text-primary)] mb-4">
             Trusted by businesses like yours
           </h2>
           <p className="text-lg text-[var(--text-muted)]">
@@ -42,15 +42,15 @@ export const Testimonials = () => {
               style={{ animationDelay: `${i * 100}ms` }}
             >
               <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 to-violet-500/10 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <div className="relative bg-[var(--bg-page)]/70 border border-slate-700 rounded-2xl p-6 hover:border-sky-500/50 transition-all duration-300 h-full flex flex-col">
-                <span className="text-amber-400 text-sm tracking-wide mb-4">
+              <div className="relative bg-[var(--bg-page)]/70 border border-[var(--border-strong)] rounded-2xl p-6 hover:border-sky-500/50 transition-all duration-300 h-full flex flex-col">
+                <span className="text-[var(--warning)] text-sm tracking-wide mb-4">
                   ★★★★★
                 </span>
-                <blockquote className="italic text-slate-300 text-sm leading-relaxed flex-grow mb-6">
+                <blockquote className="italic text-[var(--text-muted)] text-sm leading-relaxed flex-grow mb-6">
                   &ldquo;{t.quote}&rdquo;
                 </blockquote>
                 <div>
-                  <p className="font-semibold text-slate-100 text-sm">
+                  <p className="font-semibold text-[var(--text-primary)] text-sm">
                     {t.author}
                   </p>
                   <p className="text-[var(--text-muted)] text-xs mt-0.5">{t.role}</p>

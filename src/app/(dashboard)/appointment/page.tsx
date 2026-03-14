@@ -60,7 +60,7 @@ const Page = async ({ searchParams }: Props) => {
         <InfoBar />
 
         {activeDomain && (
-          <div className="mx-4 md:mx-6 mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[var(--bg-page)]/50 border border-[var(--border-default)]">
+          <div className="mx-4 md:mx-6 mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--bg-surface)] dark:bg-[var(--bg-page)]/50 border border-[var(--border-default)]">
             <Globe className="h-4 w-4 text-[var(--text-muted)]" />
             <span className="text-sm font-medium text-[var(--text-secondary)]">
               {activeDomain.name}
@@ -69,15 +69,15 @@ const Page = async ({ searchParams }: Props) => {
         )}
 
         {userDomains.length > 0 && !hasAppointmentSetterDomain && (
-          <div className="mx-4 md:mx-6 mt-4 flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
-            <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+          <div className="mx-4 md:mx-6 mt-4 flex items-start gap-3 px-4 py-3 rounded-xl bg-[var(--warning)] dark:bg-[var(--warning)] border border-[var(--warning)] dark:border-[var(--warning)]">
+            <AlertTriangle className="h-4 w-4 text-[var(--warning)] dark:text-[var(--warning)] flex-shrink-0 mt-0.5" />
             <div className="flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-              <p className="text-sm text-amber-800 dark:text-amber-300">
+              <p className="text-sm text-[var(--warning)] dark:text-[var(--warning)]">
                 Your chatbot is not set to Appointment Setter persona. Appointments will not be automatically collected.
               </p>
               <Link
                 href={`/settings/${userDomains[0]?.name}/persona`}
-                className="text-sm font-semibold text-amber-700 dark:text-amber-400 hover:underline whitespace-nowrap"
+                className="text-sm font-semibold text-[var(--warning)] dark:text-[var(--warning)] hover:underline whitespace-nowrap"
               >
                 Switch to Appointment Setter →
               </Link>
@@ -87,7 +87,7 @@ const Page = async ({ searchParams }: Props) => {
 
         <div className="flex items-center justify-center h-[400px]">
           <div className="text-center">
-            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-4">
+            <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] mb-4">
               <Calendar className="h-8 w-8 text-[var(--text-muted)]" />
             </div>
             <p className="text-lg font-semibold text-[var(--text-primary)] mb-1">
@@ -115,7 +115,7 @@ const Page = async ({ searchParams }: Props) => {
       <InfoBar />
 
       {activeDomain && (
-        <div className="mx-4 md:mx-6 mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-50 dark:bg-[var(--bg-page)]/50 border border-[var(--border-default)]">
+        <div className="mx-4 md:mx-6 mt-4 flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--bg-surface)] dark:bg-[var(--bg-page)]/50 border border-[var(--border-default)]">
           <Globe className="h-4 w-4 text-[var(--text-muted)]" />
           <span className="text-sm font-medium text-[var(--text-secondary)]">
             {activeDomain.name}
@@ -124,23 +124,23 @@ const Page = async ({ searchParams }: Props) => {
       )}
 
       {hasAppointmentSetterDomain ? (
-        <div className="mx-4 md:mx-6 mt-4 flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900">
-          <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
-          <p className="text-sm text-emerald-800 dark:text-emerald-300">
+        <div className="mx-4 md:mx-6 mt-4 flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--success)] dark:bg-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]">
+          <CheckCircle2 className="h-4 w-4 text-[var(--success)] dark:text-[var(--success)] flex-shrink-0" />
+          <p className="text-sm text-[var(--success)] dark:text-[var(--success)]">
             Appointments are automatically collected by your{' '}
             <span className="font-semibold">Appointment Setter</span> chatbot persona.
           </p>
         </div>
       ) : (
-        <div className="mx-4 md:mx-6 mt-4 flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900">
-          <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
+        <div className="mx-4 md:mx-6 mt-4 flex items-start gap-3 px-4 py-3 rounded-xl bg-[var(--warning)] dark:bg-[var(--warning)] border border-[var(--warning)] dark:border-[var(--warning)]">
+          <AlertTriangle className="h-4 w-4 text-[var(--warning)] dark:text-[var(--warning)] flex-shrink-0 mt-0.5" />
           <div className="flex-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <p className="text-sm text-amber-800 dark:text-amber-300">
+            <p className="text-sm text-[var(--warning)] dark:text-[var(--warning)]">
               Your chatbot is not set to Appointment Setter persona. Appointments will not be automatically collected.
             </p>
             <Link
               href={`/settings/${userDomains[0]?.name}/persona`}
-              className="text-sm font-semibold text-amber-700 dark:text-amber-400 hover:underline whitespace-nowrap"
+              className="text-sm font-semibold text-[var(--warning)] dark:text-[var(--warning)] hover:underline whitespace-nowrap"
             >
               Switch to Appointment Setter →
             </Link>
@@ -177,15 +177,15 @@ const Page = async ({ searchParams }: Props) => {
                     'rounded-xl border border-[var(--border-default)]',
                     'bg-[var(--bg-page)]/50',
                     'transition-all duration-300',
-                    'hover:shadow-card-hover hover:border-blue-200 dark:hover:border-blue-800'
+                    'hover:shadow-card-hover hover:border-[var(--primary)] dark:hover:border-[var(--primary)]'
                   )}
                 >
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[var(--primary)] to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
                   <div className="relative z-10 flex">
-                    <div className="w-24 md:w-28 bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 flex flex-col items-center justify-center py-6 border-r border-blue-200 dark:border-[var(--border-accent)]">
+                    <div className="w-24 md:w-28 bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] dark:from-[var(--primary)] dark:to-[var(--primary-light)] flex flex-col items-center justify-center py-6 border-r border-[var(--primary)] dark:border-[var(--border-accent)]">
                       <Clock className="w-5 h-5 text-[var(--text-accent)] mb-2" />
-                      <p className="text-lg md:text-xl font-bold text-blue-900 dark:text-blue-100 text-center">
+                      <p className="text-lg md:text-xl font-bold text-[var(--primary)] dark:text-[var(--primary)] text-center">
                         {booking.slot}
                       </p>
                     </div>
@@ -202,7 +202,7 @@ const Page = async ({ searchParams }: Props) => {
                         </div>
 
                         {booking.Customer?.Domain?.name && (
-                          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)]">
+                          <div className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)]">
                             <Globe className="w-3 h-3" />
                             <span className="truncate max-w-[100px]">
                               {booking.Customer.Domain.name}
@@ -215,7 +215,7 @@ const Page = async ({ searchParams }: Props) => {
 
                       <div className="flex items-center gap-3">
                         <Avatar className="h-9 w-9 border-2 border-[var(--border-default)] dark:border-[var(--border-strong)]">
-                          <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-indigo-600 text-white text-sm font-semibold">
+                          <AvatarFallback className="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] text-white text-sm font-semibold">
                             {booking.email[0].toUpperCase()}
                           </AvatarFallback>
                         </Avatar>
@@ -232,7 +232,7 @@ const Page = async ({ searchParams }: Props) => {
               ))
             ) : (
               <div className="text-center py-12 px-4 rounded-xl border border-dashed border-[var(--border-default)]">
-                <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 dark:bg-[var(--bg-surface)] mb-3">
+                <div className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] mb-3">
                   <Calendar className="h-7 w-7 text-[var(--text-muted)]" />
                 </div>
                 <p className="text-sm font-medium text-[var(--text-primary)] mb-1">

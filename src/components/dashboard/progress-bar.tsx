@@ -33,9 +33,9 @@ export const ProgressBar = ({
         <span className={cn(
           'text-sm font-semibold tabular-nums',
           isOverLimit
-            ? 'text-rose-600 dark:text-rose-400'
+            ? 'text-[var(--danger)]'
             : isNearLimit
-            ? 'text-amber-600 dark:text-amber-400'
+            ? 'text-[var(--warning)] dark:text-[var(--warning)]'
             : 'text-[var(--text-primary)]' 
         )}>
           {displayValue}
@@ -47,17 +47,17 @@ export const ProgressBar = ({
           className={cn(
             'h-full rounded-full transition-all duration-500 ease-out relative',
             isOverLimit
-              ? 'bg-rose-500' 
+              ? 'bg-[var(--danger)]'
               : isNearLimit
-              ? 'bg-amber-500' 
-              : 'bg-indigo-500' 
+              ? 'bg-[var(--warning)]' 
+              : 'bg-[var(--primary)]' 
           )}
           style={{ width: `${percentage}%` }}
         />
       </div>
       
       {isOverLimit && (
-        <p className="text-xs text-rose-600 dark:text-rose-400 font-medium pt-1">
+        <p className="text-xs text-[var(--danger)] font-medium pt-1">
           ⚠️ Limit reached - consider upgrading your plan.
         </p>
       )}

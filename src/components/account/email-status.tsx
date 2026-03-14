@@ -18,7 +18,7 @@ const EmailStatus = () => {
         <span
           className={cn(
             'inline-block h-2 w-2 rounded-full',
-            verified ? 'bg-green-500' : 'bg-amber-500'
+            verified ? 'bg-[var(--success)]' : 'bg-[var(--warning)]'
           )}
         />
 

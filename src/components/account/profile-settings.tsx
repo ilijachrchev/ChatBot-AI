@@ -177,7 +177,7 @@ const ProfileSettings = ({ user }: Props) => {
       <Card className='border-[var(--border-default)]'>
         <CardHeader>
           <div className='flex items-center gap-3'>
-            <div className='w-12 h-12 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center'>
+            <div className='w-12 h-12 rounded-xl bg-[var(--bg-page)] dark:bg-white flex items-center justify-center'>
               <UserIcon className='w-6 h-6 text-[var(--text-primary)]' />
             </div>
             <div>
@@ -200,13 +200,13 @@ const ProfileSettings = ({ user }: Props) => {
         <CardContent>
           <div className='flex flex-col md:flex-row items-start md:items-center gap-6'>
             <div className='relative group'>
-              <Avatar className='w-28 h-28 ring-4 ring-slate-100 dark:ring-[var(--border-default)]'>
+              <Avatar className='w-28 h-28 ring-4 ring-[var(--border-strong)] dark:ring-[var(--border-default)]'>
                 <AvatarImage
                   src={avatarPreview}
                   alt={user.fullname}
                   className='object-cover'
                 />
-                <AvatarFallback className='text-3xl bg-indigo-500 text-white font-semibold'>
+                <AvatarFallback className='text-3xl bg-[var(--primary)] text-white font-semibold'>
                   {user.fullname.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
@@ -215,7 +215,7 @@ const ProfileSettings = ({ user }: Props) => {
                 htmlFor='avatar-upload'
                 className={cn(
                   'absolute bottom-0 right-0',
-                  'bg-[var(--bg-page)] hover:bg-slate-800 dark:bg-white dark:hover:bg-[var(--bg-hover)]',
+                  'bg-[var(--bg-page)] hover:bg-[var(--bg-page)] dark:bg-white dark:hover:bg-[var(--bg-hover)]',
                   'text-[var(--text-accent)] p-3 rounded-full',
                   'cursor-pointer transition-all',
                   'shadow-lg hover:scale-110',
@@ -289,7 +289,7 @@ const ProfileSettings = ({ user }: Props) => {
                   className={cn(
                     'h-11 pr-10',
                     isNameLocked && 'bg-[var(--bg-card)] cursor-not-allowed',
-                    errors.fullname && 'border-red-500 focus-visible:ring-red-500'
+                    errors.fullname && 'border-[var(--danger)] focus-visible:ring-[var(--danger)]'
                   )}
                 />
                 {isNameLocked && (
@@ -299,12 +299,12 @@ const ProfileSettings = ({ user }: Props) => {
                 )}
               </div>
               {errors.fullname && (
-                <p className='text-sm text-red-500 flex items-center gap-1'>
+                <p className='text-sm text-[var(--danger)] flex items-center gap-1'>
                   {errors.fullname.message}
                 </p>
               )}
               {isNameLocked ? (
-                <p className='text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1'>
+                <p className='text-xs text-[var(--warning)] dark:text-[var(--warning)] flex items-center gap-1'>
                   <Lock className='w-3 h-3' />
                   You can change your name again in {daysRemaining} day{daysRemaining !== 1 ? 's' : ''}
                 </p>
@@ -320,7 +320,7 @@ const ProfileSettings = ({ user }: Props) => {
                 type='submit'
                 disabled={loading || !isDirty || isNameLocked}
                 className={cn(
-                  'gap-2 bg-indigo-500 hover:bg-indigo-600 text-white',
+                  'gap-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white',
                   'disabled:opacity-50 disabled:cursor-not-allowed',
                   'transition-all duration-200'
                 )}
@@ -369,8 +369,8 @@ const ProfileSettings = ({ user }: Props) => {
               <span className='text-sm font-medium text-[var(--text-secondary)]'>
                 Account Status
               </span>
-              <span className='text-sm font-semibold text-green-600 dark:text-green-400 flex items-center gap-2'>
-                <span className='w-2 h-2 rounded-full bg-green-600 dark:bg-green-400 animate-pulse' />
+              <span className='text-sm font-semibold text-[var(--success)] dark:text-[var(--success)] flex items-center gap-2'>
+                <span className='w-2 h-2 rounded-full bg-[var(--success)] dark:bg-[var(--success)] animate-pulse' />
                 Active
               </span>
             </div>

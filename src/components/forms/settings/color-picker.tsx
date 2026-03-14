@@ -50,8 +50,8 @@ export const ColorPicker = ({ defaultColor = '#3B82F6', setValue }: ColorPickerP
             <div
               className={`h-12 w-full rounded-lg border-2 transition-all duration-200 hover:scale-105 ${
                 selectedColor === color.value
-                  ? 'border-slate-900 dark:border-white ring-2 ring-offset-2 ring-slate-900 dark:ring-white'
-                  : 'border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-[var(--border-strong)] dark:hover:border-slate-600'
+                  ? 'border-[var(--border-strong)] dark:border-white ring-2 ring-offset-2 ring-[var(--border-strong)] dark:ring-white'
+                  : 'border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-[var(--border-strong)]'
               }`}
               style={{ backgroundColor: color.value }}
             />

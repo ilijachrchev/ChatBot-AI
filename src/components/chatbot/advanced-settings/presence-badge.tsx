@@ -51,19 +51,19 @@ export function PresenceBadge({ domainId, showBadge = true, className }: Presenc
 
   const colorClasses = {
     green: {
-      bg: 'bg-green-100 dark:bg-green-900/30',
-      text: 'text-green-700 dark:text-green-300',
-      dot: 'bg-green-500',
+      bg: 'bg-[var(--success)] dark:bg-[var(--success)]',
+      text: 'text-[var(--success)] dark:text-[var(--success)]',
+      dot: 'bg-[var(--success)]',
     },
     yellow: {
-      bg: 'bg-yellow-100 dark:bg-yellow-900/30',
-      text: 'text-yellow-700 dark:text-yellow-300',
-      dot: 'bg-yellow-500',
+      bg: 'bg-[rgba(224,155,26,0.15)]',
+      text: 'text-[var(--warning)]',
+      dot: 'bg-[var(--warning)]',
     },
     red: {
-      bg: 'bg-red-100 dark:bg-red-900/30',
-      text: 'text-red-700 dark:text-red-300',
-      dot: 'bg-red-500',
+      bg: 'bg-[var(--danger)] dark:bg-[var(--danger)]',
+      text: 'text-[var(--danger)] dark:text-[var(--danger)]',
+      dot: 'bg-[var(--danger)]',
     },
   }
 

@@ -82,7 +82,7 @@ export function SettingsSidebar({
           >
             {!collapsed && (
               <div className='flex items-center gap-3'>
-                <div className='w-10 h-10 rounded-xl bg-slate-900 dark:bg-white flex items-center justify-center'>
+                <div className='w-10 h-10 rounded-xl bg-[var(--bg-page)] dark:bg-white flex items-center justify-center'>
                   <Settings className='w-5 h-5 text-[var(--text-primary)]' />
                 </div>
                 <div>
@@ -144,7 +144,7 @@ export function SettingsSidebar({
                                 'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all duration-200',
                                 collapsed ? 'justify-center' : 'justify-start',
                                 isActive
-                                  ? 'bg-indigo-500 text-white font-semibold'
+                                  ? 'bg-[var(--primary)] text-white font-semibold'
                                   : 'font-medium text-[var(--text-secondary)] hover:bg-[var(--bg-hover)] hover:text-[var(--text-primary)]'
                               )}
                               title={collapsed ? item.label : undefined}
@@ -167,7 +167,7 @@ export function SettingsSidebar({
           {!collapsed && (
             <div className='p-4 border-t border-[var(--border-default)]'>
               <div className='flex items-center gap-3 p-3 rounded-xl bg-[var(--bg-card)] border border-[var(--border-default)]'>
-                <div className='w-10 h-10 rounded-full bg-slate-900 dark:bg-white flex items-center justify-center text-[var(--text-primary)] font-semibold text-sm flex-shrink-0'>
+                <div className='w-10 h-10 rounded-full bg-[var(--bg-page)] dark:bg-white flex items-center justify-center text-[var(--text-primary)] font-semibold text-sm flex-shrink-0'>
                   {userName.charAt(0).toUpperCase()}
                 </div>
                 <div className='flex-1 min-w-0'>

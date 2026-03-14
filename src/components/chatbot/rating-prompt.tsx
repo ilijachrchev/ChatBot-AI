@@ -61,7 +61,7 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
         ) : (
           <>
             <AvatarImage src="https://github.com/shadcn.png" alt="bot" />
-            <AvatarFallback className="bg-indigo-100 text-indigo-600 text-[10px]">AI</AvatarFallback>
+            <AvatarFallback className="bg-[var(--primary)] text-[var(--primary)] text-[10px]">AI</AvatarFallback>
           </>
         )}
       </Avatar>
@@ -76,8 +76,8 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
               className={cn(
                 'bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150',
                 selected === 'POSITIVE'
-                  ? 'bg-green-500 text-white border-green-500'
-                  : 'hover:border-green-400 hover:bg-green-50'
+                  ? 'bg-[var(--success)] text-white border-[var(--success)]'
+                  : 'hover:border-[var(--success)] hover:bg-[var(--success)]'
               )}
             >
               👍 Yes
@@ -88,8 +88,8 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
               className={cn(
                 'bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl px-4 py-2 text-sm font-medium transition-all duration-150',
                 selected === 'NEGATIVE'
-                  ? 'bg-red-500 text-white border-red-500'
-                  : 'hover:border-red-400 hover:bg-red-50'
+                  ? 'bg-[var(--danger)] text-white border-[var(--danger)]'
+                  : 'hover:border-[var(--danger)] hover:bg-[var(--danger)]'
               )}
             >
               👎 No
@@ -103,7 +103,7 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
           <p className="text-sm font-medium text-[var(--text-primary)]">👎 Sorry to hear that!</p>
           <p className="text-xs text-[var(--text-muted)] mt-1">What could we improve?</p>
           <textarea
-            className="mt-3 w-full text-sm bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg px-3 py-2 resize-none focus:ring-2 focus:ring-red-200 focus:border-red-300 outline-none"
+            className="mt-3 w-full text-sm bg-[var(--bg-surface)] border border-[var(--border)] rounded-lg px-3 py-2 resize-none focus:ring-2 focus:ring-[var(--danger)] focus:border-[var(--danger)] outline-none"
             rows={3}
             placeholder="Tell us what went wrong or what information was missing..."
             value={feedback}
@@ -123,7 +123,7 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
               type="button"
               onClick={handleSubmitFeedback}
               disabled={submitting}
-              className="bg-red-500 text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-red-600 disabled:opacity-60 transition-colors"
+              className="bg-[var(--danger)] text-white rounded-lg px-4 py-2 text-sm font-medium hover:bg-[var(--danger)] disabled:opacity-60 transition-colors"
             >
               {submitting ? 'Submitting...' : 'Submit feedback'}
             </button>
@@ -136,12 +136,12 @@ const RatingPrompt = ({ chatRoomId, domainId, botIcon, onRated }: Props) => {
           className={cn(
             'border rounded-xl rounded-bl-sm px-4 py-3 max-w-[85%] animate-in fade-in-0 slide-in-from-bottom-2 duration-500',
             selected === 'POSITIVE'
-              ? 'bg-green-50 border-green-200'
+              ? 'bg-[var(--success)] border-[var(--success)]'
               : 'bg-[var(--bg-card)] border-[var(--border)]'
           )}
         >
           {selected === 'POSITIVE' ? (
-            <p className="text-sm font-medium text-green-700">🎉 Thank you for the feedback!</p>
+            <p className="text-sm font-medium text-[var(--success)]">🎉 Thank you for the feedback!</p>
           ) : (
             <>
               <p className="text-sm font-medium text-[var(--text-primary)]">Thank you for letting us know.</p>

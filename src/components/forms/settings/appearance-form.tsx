@@ -136,8 +136,8 @@ const PlanBadge = ({ label, color }: { label: string; color: 'blue' | 'amber' })
   <span className={cn(
     'inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold',
     color === 'blue'
-      ? 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
-      : 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300'
+      ? 'bg-[var(--primary)] text-[var(--primary)] dark:bg-[var(--primary)] dark:text-[var(--primary)]'
+      : 'bg-[var(--warning)] text-[var(--warning)] dark:bg-[var(--warning)] dark:text-[var(--warning)]'
   )}>
     {label}
   </span>
@@ -220,7 +220,7 @@ const TeaserSection = ({
                 key={suggestion}
                 type="button"
                 onClick={() => handleMessageChange(suggestion)}
-                className="px-3 py-1 rounded-full text-xs border border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-slate-400 dark:hover:border-slate-500 hover:bg-[var(--bg-hover)] cursor-pointer transition-all"
+                className="px-3 py-1 rounded-full text-xs border border-[var(--border-default)] dark:border-[var(--border-strong)] hover:border-[var(--border-default)] hover:bg-[var(--bg-hover)] cursor-pointer transition-all"
               >
                 {suggestion}
               </button>
@@ -242,8 +242,8 @@ const TeaserSection = ({
                 className={cn(
                   'px-4 py-2 rounded-lg text-sm font-medium border transition-all',
                   delay === opt.value
-                    ? 'bg-indigo-500 text-white border-slate-900 dark:border-white'
-                    : 'bg-[var(--bg-page)] border-[var(--border-default)] text-[var(--text-secondary)] hover:border-slate-400'
+                    ? 'bg-[var(--primary)] text-white border-[var(--border-strong)] dark:border-white'
+                    : 'bg-[var(--bg-page)] border-[var(--border-default)] text-[var(--text-secondary)] hover:border-[var(--border-default)]'
                 )}
               >
                 {opt.label}
@@ -310,7 +310,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
         <div className="space-y-4">
           <SectionCard
             icon={<MessageSquare className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-indigo-500 to-indigo-600"
+            iconBg="bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)]"
             title="Basic Settings"
             subtitle="Core appearance settings"
             plan={plan}
@@ -331,7 +331,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
 
           <SectionCard
             icon={<Layout className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-green-500 to-green-600"
+            iconBg="bg-[var(--success)]"
             title="Widget Layout"
             subtitle="Size and position of your chat widget"
             plan={plan}
@@ -342,9 +342,9 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
                   Chat Position
                 </p>
                 <ChatPositionSelector setValue={sv} currentValue={chatBot?.chatPosition} />
-                <div className="mt-3 flex items-start gap-2 px-3 py-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900">
-                  <Info className="h-3.5 w-3.5 text-indigo-500 mt-0.5 flex-shrink-0" />
-                  <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed">
+                <div className="mt-3 flex items-start gap-2 px-3 py-2.5 rounded-lg bg-[var(--primary-light)] border border-[var(--border-strong)]">
+                  <Info className="h-3.5 w-3.5 text-[var(--primary)] mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-[var(--text-secondary)] leading-relaxed">
                     Position changes take effect when you re-embed the widget. Re-copy your embed code after changing position.
                   </p>
                 </div>
@@ -360,7 +360,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
 
           <SectionCard
             icon={<Sparkles className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-purple-500 to-purple-600"
+            iconBg="bg-[var(--primary)]"
             title="Widget Style"
             subtitle="Visual style of the chat window"
             badge={<PlanBadge label="Pro" color="blue" />}
@@ -373,7 +373,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
 
           <SectionCard
             icon={<Type className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-amber-500 to-amber-600"
+            iconBg="bg-[var(--warning)]"
             title="Header & Branding"
             subtitle="Customize your chatbot's identity"
             badge={<PlanBadge label="Pro" color="blue" />}
@@ -396,7 +396,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
 
           <SectionCard
             icon={<MessageSquare className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-rose-500 to-rose-600"
+            iconBg="bg-[var(--danger)]"
             title="Message Bubbles"
             subtitle="Colors and style of chat messages"
             badge={<PlanBadge label="Pro" color="blue" />}
@@ -438,7 +438,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
 
           <SectionCard
             icon={<Code className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-slate-500 to-slate-700"
+            iconBg="bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)]"
             title="Advanced"
             subtitle="Custom CSS for power users"
             badge={<PlanBadge label="Ultimate" color="amber" />}
@@ -451,7 +451,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
 
           <SectionCard
             icon={<MessageSquare className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-teal-500 to-teal-600"
+            iconBg="bg-[var(--info)]"
             title="Chat Bubble Teaser"
             subtitle="Show an attention-grabbing message next to the chat button to invite visitors to start a conversation"
             plan={plan}
@@ -492,7 +492,7 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
       <div className="flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-[var(--border-default)]">
         <Button
           type="submit"
-          className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 px-8"
+          className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] hover:from-[var(--primary)] hover:to-[var(--primary-light)] text-white font-semibold shadow-lg shadow-[var(--primary)] px-8"
         >
           <Save className="h-4 w-4 mr-2" />
           <Loader loading={loading}>Save Changes</Loader>

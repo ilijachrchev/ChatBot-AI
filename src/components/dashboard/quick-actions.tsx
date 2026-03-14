@@ -17,28 +17,28 @@ const accentClasses: Record<
   { iconBg: string; iconText: string; hoverBorder: string; chevron: string }
 > = {
   blue: {
-    iconBg: 'bg-indigo-500/10 dark:bg-indigo-500/15',
+    iconBg: 'bg-[var(--primary)] dark:bg-[var(--primary)]',
     iconText: 'text-[var(--text-accent)]',
-    hoverBorder: 'hover:border-blue-200 dark:hover:border-blue-800',
-    chevron: 'group-hover:text-indigo-500 dark:group-hover:text-indigo-400',
+    hoverBorder: 'hover:border-[var(--primary)] dark:hover:border-[var(--primary)]',
+    chevron: 'group-hover:text-[var(--primary)] dark:group-hover:text-[var(--primary)]',
   },
   green: {
-    iconBg: 'bg-emerald-500/10 dark:bg-emerald-500/15',
-    iconText: 'text-emerald-600 dark:text-emerald-400',
-    hoverBorder: 'hover:border-emerald-200 dark:hover:border-emerald-800',
-    chevron: 'group-hover:text-emerald-500 dark:group-hover:text-emerald-400',
+    iconBg: 'bg-[var(--success)] dark:bg-[var(--success)]',
+    iconText: 'text-[var(--success)] dark:text-[var(--success)]',
+    hoverBorder: 'hover:border-[var(--success)] dark:hover:border-[var(--success)]',
+    chevron: 'group-hover:text-[var(--success)] dark:group-hover:text-[var(--success)]',
   },
   purple: {
-    iconBg: 'bg-purple-500/10 dark:bg-purple-500/15',
-    iconText: 'text-purple-600 dark:text-purple-400',
-    hoverBorder: 'hover:border-purple-200 dark:hover:border-purple-800',
-    chevron: 'group-hover:text-purple-500 dark:group-hover:text-purple-400',
+    iconBg: 'bg-[var(--primary-light)]',
+    iconText: 'text-[var(--primary)]',
+    hoverBorder: 'hover:border-[var(--primary)]',
+    chevron: 'group-hover:text-[var(--primary)]',
   },
   amber: {
-    iconBg: 'bg-amber-500/10 dark:bg-amber-500/15',
-    iconText: 'text-amber-600 dark:text-amber-400',
-    hoverBorder: 'hover:border-amber-200 dark:hover:border-amber-800',
-    chevron: 'group-hover:text-amber-500 dark:group-hover:text-amber-400',
+    iconBg: 'bg-[var(--warning)] dark:bg-[var(--warning)]',
+    iconText: 'text-[var(--warning)] dark:text-[var(--warning)]',
+    hoverBorder: 'hover:border-[var(--warning)] dark:hover:border-[var(--warning)]',
+    chevron: 'group-hover:text-[var(--warning)] dark:group-hover:text-[var(--warning)]',
   },
 }
 

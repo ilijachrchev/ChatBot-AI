@@ -62,11 +62,11 @@ const IntegrationsList = ({ connections }: Props) => {
                 'bg-[var(--bg-page)]/50',
                 'p-5 md:p-6',
                 'transition-all duration-300',
-                'hover:shadow-card-hover hover:border-blue-200 dark:hover:border-blue-800',
+                'hover:shadow-card-hover hover:border-[var(--primary)] dark:hover:border-[var(--primary)]',
                 'hover:-translate-y-1'
               )}
             >
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-indigo-500/10 to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--primary)] to-transparent rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="relative z-10 flex flex-col h-full">
                 <div className='flex w-full justify-between items-start mb-4'>
@@ -90,8 +90,8 @@ const IntegrationsList = ({ connections }: Props) => {
                   <div className={cn(
                     'flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold flex-shrink-0',
                     isConnected
-                      ? 'bg-emerald-100 dark:bg-emerald-950/30 text-emerald-700 dark:text-emerald-400'
-                      : 'bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]'
+                      ? 'bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)]'
+                      : 'bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-[var(--text-secondary)]'
                   )}>
                     {isConnected ? (
                       <>
@@ -131,7 +131,7 @@ const IntegrationsList = ({ connections }: Props) => {
             className={cn(
               'relative overflow-hidden',
               'rounded-xl border border-[var(--border-default)]',
-              'bg-slate-50 dark:bg-[var(--bg-page)]/30',
+              'bg-[var(--bg-surface)] dark:bg-[var(--bg-page)]/30',
               'p-5 md:p-6',
               'opacity-60'
             )}
@@ -139,7 +139,7 @@ const IntegrationsList = ({ connections }: Props) => {
             <div className="flex flex-col h-full">
               <div className='flex w-full justify-between items-start mb-4'>
                 <div className='flex items-center gap-3'>
-                  <div className='w-12 h-12 md:w-14 md:h-14 rounded-xl bg-slate-100 dark:bg-[var(--bg-surface)] border-2 border-[var(--border-default)] dark:border-[var(--border-strong)] flex items-center justify-center flex-shrink-0'>
+                  <div className='w-12 h-12 md:w-14 md:h-14 rounded-xl bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] border-2 border-[var(--border-default)] dark:border-[var(--border-strong)] flex items-center justify-center flex-shrink-0'>
                     <span className="text-2xl md:text-3xl">{integration.icon}</span>
                   </div>
                   <div>
@@ -149,7 +149,7 @@ const IntegrationsList = ({ connections }: Props) => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-200 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] text-xs font-semibold flex-shrink-0">
+                <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--bg-card)] dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] text-xs font-semibold flex-shrink-0">
                   <Lock className="w-3.5 h-3.5" />
                   Coming Soon
                 </div>
@@ -165,7 +165,7 @@ const IntegrationsList = ({ connections }: Props) => {
                 disabled
                 className={cn(
                   'w-full py-2.5 rounded-lg',
-                  'bg-slate-200 dark:bg-[var(--bg-surface)]',
+                  'bg-[var(--bg-card)] dark:bg-[var(--bg-surface)]',
                   'text-[var(--text-muted)]',
                   'text-sm font-semibold',
                   'cursor-not-allowed'

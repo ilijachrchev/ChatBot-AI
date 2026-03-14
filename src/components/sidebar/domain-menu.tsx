@@ -26,12 +26,12 @@ type Props = {
 const getVerificationIcon = (status?: string) => {
   switch (status) {
     case 'VERIFIED':
-      return <CheckCircle2 className="w-3 h-3 text-green-500" />
+      return <CheckCircle2 className="w-3 h-3 text-[var(--success)]" />
     case 'FAILED':
-      return <XCircle className="w-3 h-3 text-red-500" />
+      return <XCircle className="w-3 h-3 text-[var(--danger)]" />
     case 'PENDING':
     default:
-      return <Clock className="w-3 h-3 text-amber-500" />
+      return <Clock className="w-3 h-3 text-[var(--warning)]" />
   }
 }
 
@@ -58,7 +58,7 @@ const DomainMenu = ({ domains, min }: Props) => {
                 'w-8 h-8 rounded-lg',
                 'border-2 border-dashed border-[var(--border-strong)]',
                 'text-[var(--text-muted)] dark:text-[var(--text-secondary)]',
-                'hover:border-indigo-400 hover:text-indigo-400 hover:bg-indigo-950/30',
+                'hover:border-[var(--primary)] hover:text-[var(--primary)] hover:bg-[var(--primary-hover)]',
                 'transition-all duration-200',
                 'cursor-pointer'
               )}>
@@ -127,7 +127,7 @@ const DomainMenu = ({ domains, min }: Props) => {
                       'font-semibold text-[var(--text-primary)]',
                       'shadow-sm',
                       'before:absolute before:left-0 before:top-0 before:bottom-0',
-                      'before:w-1 before:bg-gradient-to-b before:from-indigo-500 before:to-indigo-600',
+                      'before:w-1 before:bg-gradient-to-b before:from-[var(--primary)] before:to-[var(--primary-light)]',
                       'before:rounded-l-lg'
                     ],
                     
@@ -146,7 +146,7 @@ const DomainMenu = ({ domains, min }: Props) => {
                     
                     isActive 
                       ? 'border-[var(--border-accent)] shadow-sm' 
-                      : 'border-[var(--border-default)] group-hover:border-indigo-400'
+                      : 'border-[var(--border-default)] group-hover:border-[var(--primary)]'
                   )}>
                     <img
                       src={iconSrc}
@@ -165,7 +165,7 @@ const DomainMenu = ({ domains, min }: Props) => {
                   {getVerificationIcon(domain.verificationStatus)}
 
                   {!isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   )}
                 </Link>
               )
@@ -198,7 +198,7 @@ const DomainMenu = ({ domains, min }: Props) => {
                   
                   isActive 
                     ? 'border-[var(--border-accent)]' 
-                    : 'border-[var(--border-default)] group-hover:border-indigo-400'
+                    : 'border-[var(--border-default)] group-hover:border-[var(--primary)]'
                 )}>
                   <img
                     src={iconSrc}
@@ -214,12 +214,12 @@ const DomainMenu = ({ domains, min }: Props) => {
                 </div>
 
                 {isActive && (
-                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full" />
+                  <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] rounded-full" />
                 )}
 
                 <div className={cn(
                   'absolute left-full ml-2 px-2 py-1 rounded-md',
-                  'bg-slate-900 dark:bg-[var(--bg-active)] text-white text-xs whitespace-nowrap',
+                  'bg-[var(--bg-page)] dark:bg-[var(--bg-active)] text-white text-xs whitespace-nowrap',
                   'opacity-0 group-hover:opacity-100 pointer-events-none',
                   'transition-opacity duration-200 z-50'
                 )}>

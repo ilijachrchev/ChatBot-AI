@@ -12,7 +12,7 @@ export const DomainUpdate = ({ name, register, errors }: DomainUpdateProps) => {
   return (
     <div className="flex flex-col gap-4">
       <div className="relative group">
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-200 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--bg-page)] to-[var(--bg-page)] dark:from-[var(--bg-page)] dark:to-[var(--bg-page)] rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10" />
         
         <div className="relative flex items-center gap-3 p-5 rounded-xl border-2 border-[var(--border-default)] bg-[var(--bg-page)] transition-all duration-300">
           <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-[var(--bg-card)] flex-shrink-0">
@@ -38,11 +38,11 @@ export const DomainUpdate = ({ name, register, errors }: DomainUpdateProps) => {
         </div>
       </div>
 
-      <div className="flex items-start gap-2 p-4 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-900">
-        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900 flex-shrink-0 mt-0.5">
-          <span className="text-xs font-bold text-amber-700 dark:text-amber-300">!</span>
+      <div className="flex items-start gap-2 p-4 rounded-lg bg-[var(--warning)] dark:bg-[var(--warning)] border border-[var(--warning)] dark:border-[var(--warning)]">
+        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--warning)] dark:bg-[var(--warning)] flex-shrink-0 mt-0.5">
+          <span className="text-xs font-bold text-[var(--warning)] dark:text-[var(--warning)]">!</span>
         </div>
-        <p className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
+        <p className="text-xs text-[var(--warning)] dark:text-[var(--warning)] leading-relaxed">
           <span className="font-bold">Security Notice:</span> Domain changes require verification. Contact support to update your domain name.
         </p>
       </div>

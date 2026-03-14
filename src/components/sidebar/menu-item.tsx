@@ -31,7 +31,7 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props)
               'font-semibold text-[var(--text-primary)]',
               'shadow-sm',
               'before:absolute before:left-0 before:top-0 before:bottom-0',
-              'before:w-1 before:bg-gradient-to-b before:from-indigo-500 before:to-indigo-600',
+              'before:w-1 before:bg-gradient-to-b before:from-[var(--primary)] before:to-[var(--primary-light)]',
               'before:rounded-l-lg',
             ],
 
@@ -53,13 +53,13 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props)
           <span className='text-sm flex-1'>{label}</span>
 
           {badge !== undefined && badge > 0 && (
-            <span className="ml-auto h-5 min-w-5 px-1 rounded-full bg-indigo-500 text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
+            <span className="ml-auto h-5 min-w-5 px-1 rounded-full bg-[var(--primary)] text-white text-xs font-bold flex items-center justify-center flex-shrink-0">
               {badge > 99 ? '99+' : badge}
             </span>
           )}
 
           {!isActive && (
-            <div className='absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+            <div className='absolute inset-0 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
           )}
         </Link>
       )
@@ -93,13 +93,13 @@ const MenuItem = ({ size, path, icon, label, current, onSignOut, badge }: Props)
           )}>
             {icon}
             {badge !== undefined && badge > 0 && (
-              <span className="absolute -top-1 -right-1 h-4 min-w-4 px-0.5 rounded-full bg-indigo-500 text-white text-[10px] font-bold flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 h-4 min-w-4 px-0.5 rounded-full bg-[var(--primary)] text-white text-[10px] font-bold flex items-center justify-center">
                 {badge > 99 ? '99+' : badge}
               </span>
             )}
           </div>
           {isActive && (
-            <div className='absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-full'></div>
+            <div className='absolute md:bottom-1 bottom-0.5 left-1/2 -translate-x-1/2 w-6 h-1 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] rounded-full'></div>
           )}
         </Link>
       )

@@ -55,38 +55,38 @@ type Props = {
 const PERSONA_ICON_MAP: Record<string, { icon: React.ReactNode; bg: string; text: string }> = {
   BRIEFCASE: {
     icon: <Briefcase className="w-3.5 h-3.5" />,
-    bg: 'bg-blue-100 dark:bg-indigo-950/60',
-    text: 'text-indigo-500 dark:text-indigo-400',
+    bg: 'bg-[var(--primary)] dark:bg-[var(--primary)]',
+    text: 'text-[var(--primary)] dark:text-[var(--primary)]',
   },
   HEADPHONES: {
     icon: <Headphones className="w-3.5 h-3.5" />,
-    bg: 'bg-green-100 dark:bg-emerald-950/60',
-    text: 'text-green-600 dark:text-emerald-400',
+    bg: 'bg-[var(--success)] dark:bg-[var(--success)]',
+    text: 'text-[var(--success)] dark:text-[var(--success)]',
   },
   HOME: {
     icon: <Home className="w-3.5 h-3.5" />,
-    bg: 'bg-orange-100 dark:bg-orange-950/60',
-    text: 'text-orange-600 dark:text-orange-400',
+    bg: 'bg-[rgba(224,155,26,0.15)]',
+    text: 'text-[var(--warning)]',
   },
   UTENSILS: {
     icon: <Utensils className="w-3.5 h-3.5" />,
-    bg: 'bg-yellow-100 dark:bg-yellow-950/60',
-    text: 'text-yellow-600 dark:text-yellow-400',
+    bg: 'bg-[rgba(224,155,26,0.15)]',
+    text: 'text-[var(--warning)]',
   },
   STETHOSCOPE: {
     icon: <Stethoscope className="w-3.5 h-3.5" />,
-    bg: 'bg-cyan-100 dark:bg-cyan-950/60',
-    text: 'text-cyan-600 dark:text-cyan-400',
+    bg: 'bg-[rgba(61,184,130,0.15)]',
+    text: 'text-[var(--success)]',
   },
   CALENDAR: {
     icon: <Calendar className="w-3.5 h-3.5" />,
-    bg: 'bg-purple-100 dark:bg-purple-950/60',
-    text: 'text-purple-600 dark:text-purple-400',
+    bg: 'bg-[var(--primary-light)]',
+    text: 'text-[var(--primary)]',
   },
   SHOPPING_BAG: {
     icon: <ShoppingBag className="w-3.5 h-3.5" />,
-    bg: 'bg-pink-100 dark:bg-pink-950/60',
-    text: 'text-pink-600 dark:text-pink-400',
+    bg: 'bg-[rgba(224,85,85,0.15)]',
+    text: 'text-[var(--danger)]',
   },
 }
 
@@ -173,7 +173,7 @@ const MaxMenu = ({
                         'font-semibold text-[var(--text-primary)]',
                         'shadow-sm',
                         'before:absolute before:left-0 before:top-0 before:bottom-0',
-                        'before:w-1 before:bg-gradient-to-b before:from-indigo-500 before:to-indigo-600',
+                        'before:w-1 before:bg-gradient-to-b before:from-[var(--primary)] before:to-[var(--primary-light)]',
                         'before:rounded-l-lg',
                       ]
                     : [
@@ -187,7 +187,7 @@ const MaxMenu = ({
                   className={cn(
                     'flex items-center justify-center md:w-5 w-4 md:h-5 h-4 transition-transform duration-200',
                     'group-hover:scale-110',
-                    isOnboardingActive && 'text-indigo-400'
+                    isOnboardingActive && 'text-[var(--primary)]'
                   )}
                 >
                   <Rocket />
@@ -201,7 +201,7 @@ const MaxMenu = ({
                 ) : (
                   <span
                     className={cn(
-                      'inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-indigo-500 text-white flex-shrink-0',
+                      'inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-[var(--primary)] text-white flex-shrink-0',
                       stepsCompleted === 0 && 'animate-pulse'
                     )}
                   >
@@ -210,7 +210,7 @@ const MaxMenu = ({
                 )}
 
                 {!isOnboardingActive && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[var(--primary)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 )}
               </Link>
             )}
@@ -283,7 +283,7 @@ const MaxMenu = ({
           <button
             onClick={onSignOut}
             className="flex items-center gap-2 md:gap-3 px-2 md:px-3 py-1.5 md:py-2.5 rounded-lg text-[var(--text-secondary)]
-              hover:bg-rose-950/20 hover:text-rose-400
+              hover:bg-[rgba(224,85,85,0.1)] hover:text-[var(--danger)]
               transition-all duration-200 group"
           >
             <LogOut className="w-4 h-4 md:w-5 md:h-5 group-hover:scale-110 transition-transform" />

@@ -36,7 +36,7 @@ const WIDGET_SIZES: SizeOption[] = [
 
 const WIDGET_STYLES: WidgetStyleOption[] = [
   { id: 'SOLID', name: 'Solid', description: 'Clean background', gradient: 'bg-[var(--bg-surface)] border-2 border-[var(--border)]' },
-  { id: 'SOFT', name: 'Soft', description: 'Subtle backdrop', gradient: 'bg-gradient-to-br from-white/90 to-gray-100/90 border-2 border-[var(--border)]/50' },
+  { id: 'SOFT', name: 'Soft', description: 'Subtle backdrop', gradient: 'bg-gradient-to-br from-[var(--bg-surface)] to-[var(--bg-card)] border-2 border-[var(--border)]/50' },
   { id: 'GLASS', name: 'Glass', description: 'Frosted glass', gradient: 'bg-gradient-to-br from-white/60 to-white/40 backdrop-blur-sm border-2 border-white/20 shadow-xl' },
 ]
 
@@ -47,7 +47,7 @@ const CHAT_POSITIONS = [
     diagram: (
       <svg viewBox="0 0 40 28" className="w-10 h-7" fill="none">
         <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-[var(--text-muted)]" />
-        <circle cx="33" cy="22" r="3.5" fill="currentColor" className="text-indigo-500" />
+        <circle cx="33" cy="22" r="3.5" fill="currentColor" className="text-[var(--primary)]" />
       </svg>
     ),
   },
@@ -57,7 +57,7 @@ const CHAT_POSITIONS = [
     diagram: (
       <svg viewBox="0 0 40 28" className="w-10 h-7" fill="none">
         <rect x="1" y="1" width="38" height="26" rx="3" stroke="currentColor" strokeWidth="1.5" className="text-[var(--text-muted)]" />
-        <circle cx="7" cy="22" r="3.5" fill="currentColor" className="text-indigo-500" />
+        <circle cx="7" cy="22" r="3.5" fill="currentColor" className="text-[var(--primary)]" />
       </svg>
     ),
   },
@@ -106,8 +106,8 @@ export const ChatPositionSelector = ({ setValue, currentValue }: ChatPositionSel
           className={cn(
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md flex flex-col items-center gap-2',
             selected === pos.id
-              ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 ring-2 ring-indigo-500/20'
-              : 'border-[var(--border-default)] hover:border-indigo-300'
+              ? 'border-[var(--primary)] bg-[var(--primary)] dark:bg-[var(--primary)] ring-2 ring-[var(--primary)]'
+              : 'border-[var(--border-default)] hover:border-[var(--primary)]'
           )}
         >
           {pos.diagram}
@@ -138,8 +138,8 @@ export const WidgetSizeSelector = ({ setValue, currentValue }: WidgetSizeSelecto
           className={cn(
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === size.id
-              ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-950/30 ring-2 ring-indigo-500/20'
-              : 'border-[var(--border-default)] hover:border-indigo-300'
+              ? 'border-[var(--primary)] bg-[var(--primary)] dark:bg-[var(--primary)] ring-2 ring-[var(--primary)]'
+              : 'border-[var(--border-default)] hover:border-[var(--primary)]'
           )}
         >
           <div className="flex flex-col items-center gap-2">
@@ -173,8 +173,8 @@ export const WidgetStyleSelector = ({ setValue, currentValue }: WidgetStyleSelec
           className={cn(
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === style.id
-              ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30 ring-2 ring-purple-500/20'
-              : 'border-[var(--border-default)] hover:border-purple-300'
+              ? 'border-[var(--primary)] bg-[var(--primary-light)] ring-2 ring-[var(--primary)]/20'
+              : 'border-[var(--border-default)] hover:border-[var(--primary)]'
           )}
         >
           <div className="flex flex-col items-center gap-3">
@@ -210,13 +210,13 @@ export const BubbleStyleSelector = ({ setValue, currentValue }: BubbleStyleSelec
           className={cn(
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === style.id
-              ? 'border-purple-500 bg-purple-50 dark:bg-purple-950/30'
-              : 'border-[var(--border-default)] hover:border-purple-300'
+              ? 'border-[var(--primary)] bg-[var(--primary-light)]'
+              : 'border-[var(--border-default)] hover:border-[var(--primary)]'
           )}
         >
           <div className="flex flex-col items-center gap-2">
             <div className="flex gap-1">
-              <div className={cn('w-12 h-8 bg-indigo-500', style.preview)} />
+              <div className={cn('w-12 h-8 bg-[var(--primary)]', style.preview)} />
               <div className={cn('w-12 h-8 bg-[var(--border)]', style.preview)} />
             </div>
             <span className="text-xs font-medium text-[var(--text-secondary)]">{style.name}</span>
@@ -247,12 +247,12 @@ export const ButtonStyleSelector = ({ setValue, currentValue }: ButtonStyleSelec
           className={cn(
             'p-4 rounded-lg border-2 transition-all duration-200 hover:shadow-md',
             selected === style.id
-              ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/30'
-              : 'border-[var(--border-default)] hover:border-blue-300'
+              ? 'border-[var(--primary)] bg-[var(--primary)] dark:bg-[var(--primary)]'
+              : 'border-[var(--border-default)] hover:border-[var(--primary)]'
           )}
         >
           <div className="flex flex-col items-center gap-2">
-            <div className={cn('w-16 h-10 bg-indigo-500 flex items-center justify-center text-white text-xs font-medium', style.preview)}>
+            <div className={cn('w-16 h-10 bg-[var(--primary)] flex items-center justify-center text-white text-xs font-medium', style.preview)}>
               Button
             </div>
             <span className="text-xs font-medium text-[var(--text-secondary)]">{style.name}</span>
@@ -355,7 +355,7 @@ export const HeaderFields = ({ register, errors, currentValues }: HeaderFieldsPr
         defaultValue={currentValues?.chatbotTitle || 'SendWise-AI'}
         placeholder="SendWise-AI"
       />
-      {errors.chatbotTitle && <p className="text-sm text-red-500">{errors.chatbotTitle.message}</p>}
+      {errors.chatbotTitle && <p className="text-sm text-[var(--danger)]">{errors.chatbotTitle.message}</p>}
     </div>
     <div className="space-y-2">
       <Label htmlFor="chatbotSubtitle" className="text-sm font-medium">Subtitle</Label>
@@ -365,7 +365,7 @@ export const HeaderFields = ({ register, errors, currentValues }: HeaderFieldsPr
         defaultValue={currentValues?.chatbotSubtitle || 'Your AI assistant'}
         placeholder="Your AI assistant"
       />
-      {errors.chatbotSubtitle && <p className="text-sm text-red-500">{errors.chatbotSubtitle.message}</p>}
+      {errors.chatbotSubtitle && <p className="text-sm text-[var(--danger)]">{errors.chatbotSubtitle.message}</p>}
     </div>
   </div>
 )

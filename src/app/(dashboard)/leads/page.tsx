@@ -12,23 +12,23 @@ import InfoBar from '@/components/infobar'
 export const dynamic = 'force-dynamic'
 
 const AVATAR_COLORS = [
-  'bg-indigo-500',
-  'bg-violet-500',
-  'bg-emerald-500',
-  'bg-amber-500',
-  'bg-rose-500',
+  'bg-[var(--primary)]',
+  'bg-[var(--info)]',
+  'bg-[var(--success)]',
+  'bg-[var(--warning)]',
+  'bg-[var(--danger)]',
 ]
 
 const DOMAIN_COLORS = [
-  'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-  'bg-violet-100 text-violet-700 dark:bg-violet-900/40 dark:text-violet-300',
-  'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300',
-  'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300',
-  'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300',
+  'bg-[var(--primary-light)] text-[var(--text-primary)]',
+  'bg-[var(--primary-light)] text-[var(--text-primary)]',
+  'bg-[rgba(61,184,130,0.15)] text-[var(--success)]',
+  'bg-[rgba(224,155,26,0.15)] text-[var(--warning)]',
+  'bg-[rgba(224,85,85,0.15)] text-[var(--danger)]',
 ]
 
 function getAvatarColor(email: string): string {
-  const code = (email || '').charCodeAt(0) || 0
+  const code = (email || '').charCodeAt(0) || 0                                                                                                                                                                                                                 
   return AVATAR_COLORS[code % 5]
 }
 
@@ -202,7 +202,7 @@ const LeadsPage = () => {
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-muted-foreground px-3 py-1.5 rounded-full bg-muted">
+              <span className="text-sm text-muted-foreground px-3 py-1.5 rounded-full bg-[var(--bg-surface)]">
                 {stats.total} total leads
               </span>
               <Button variant="outline" size="sm" onClick={handleExportAll} className="gap-2">
@@ -216,7 +216,7 @@ const LeadsPage = () => {
             {statCards.map((card) => (
               <div
                 key={card.label}
-                className="bg-background border rounded-xl p-4 space-y-1"
+                className="bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl p-4 space-y-1"
               >
                 <p className="text-2xl font-bold">{card.value}</p>
                 <p className="text-sm text-muted-foreground">{card.label}</p>
@@ -228,7 +228,7 @@ const LeadsPage = () => {
             <select
               value={domainFilter}
               onChange={(e) => { setDomainFilter(e.target.value); setPage(1) }}
-              className="text-sm border rounded-md px-3 py-1.5 bg-background focus:outline-none focus:ring-2 focus:ring-ring"
+              className="text-sm border border-[var(--border-default)] rounded-md px-3 py-1.5 bg-[var(--bg-card)] focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All domains</option>
               {domains.map((d) => (
@@ -263,7 +263,7 @@ const LeadsPage = () => {
           </div>
 
           {selectedIds.size > 0 && (
-            <div className="flex items-center gap-3 px-4 py-2 bg-muted rounded-lg">
+            <div className="flex items-center gap-3 px-4 py-2 bg-[var(--bg-surface)] rounded-lg">
               <span className="text-sm font-medium">{selectedIds.size} selected</span>
               <Button variant="outline" size="sm" onClick={handleExportSelected} className="h-7 text-xs gap-1">
                 <Download className="h-3 w-3" />
@@ -280,7 +280,7 @@ const LeadsPage = () => {
             </div>
           )}
 
-          <div className="bg-background border rounded-xl overflow-hidden">
+          <div className="bg-[var(--bg-card)] border border-[var(--border-default)] rounded-xl overflow-hidden">
             {loading ? (
               <div className="flex items-center justify-center py-20 text-muted-foreground text-sm">
                 Loading leads...
@@ -292,14 +292,14 @@ const LeadsPage = () => {
                 <p className="text-sm text-muted-foreground max-w-xs">
                   Leads appear here when visitors interact with your chatbots
                 </p>
-                <Link href="/conversation" className="text-sm text-indigo-500 hover:underline mt-1">
+                <Link href="/conversation" className="text-sm text-[var(--primary)] hover:underline mt-1">
                   Go to Conversations →
                 </Link>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <div className="min-w-[860px]">
-                  <div className="grid grid-cols-[24px_1fr_140px_72px_2fr_110px_110px_90px] gap-3 px-4 py-2.5 border-b text-xs font-medium text-muted-foreground bg-muted/40">
+                  <div className="grid grid-cols-[24px_1fr_140px_72px_2fr_110px_110px_90px] gap-3 px-4 py-2.5 border-b text-xs font-medium text-muted-foreground bg-[var(--bg-surface)]">
                     <input
                       type="checkbox"
                       className="mt-0.5"
@@ -318,7 +318,7 @@ const LeadsPage = () => {
                   {paginatedLeads.map((lead) => (
                     <div
                       key={lead.id}
-                      className="grid grid-cols-[24px_1fr_140px_72px_2fr_110px_110px_90px] gap-3 px-4 py-3.5 border-b last:border-0 hover:bg-muted/30 items-center transition-all duration-150"
+                      className="grid grid-cols-[24px_1fr_140px_72px_2fr_110px_110px_90px] gap-3 px-4 py-3.5 border-b last:border-0 hover:bg-[var(--primary-light)] items-center transition-all duration-150"
                     >
                       <input
                         type="checkbox"
@@ -352,7 +352,7 @@ const LeadsPage = () => {
                       </div>
 
                       <div>
-                        <span className="text-xs font-semibold bg-muted px-2 py-0.5 rounded-full">
+                        <span className="text-xs font-semibold bg-[var(--bg-surface)] px-2 py-0.5 rounded-full">
                           {lead.conversationCount}
                         </span>
                       </div>
@@ -374,7 +374,7 @@ const LeadsPage = () => {
 
                       <Link
                         href="/conversation"
-                        className="text-xs text-indigo-500 hover:text-blue-700 hover:underline whitespace-nowrap"
+                        className="text-xs text-[var(--primary)] hover:text-[var(--primary)] hover:underline whitespace-nowrap"
                       >
                         View chat →
                       </Link>

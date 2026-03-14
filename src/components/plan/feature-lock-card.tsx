@@ -17,14 +17,14 @@ export const FeatureLockCard = ({ planRequired, feature }: Props) => {
         <div className={cn(
           'h-12 w-12 rounded-full flex items-center justify-center',
           isPro
-            ? 'bg-blue-100 dark:bg-blue-950'
-            : 'bg-amber-100 dark:bg-amber-950'
+            ? 'bg-[var(--primary)] dark:bg-[var(--primary)]'
+            : 'bg-[var(--warning)] dark:bg-[var(--warning)]'
         )}>
           <Lock className={cn(
             'h-6 w-6',
             isPro
               ? 'text-[var(--text-accent)]'
-              : 'text-amber-600 dark:text-amber-400'
+              : 'text-[var(--warning)] dark:text-[var(--warning)]'
           )} />
         </div>
 
@@ -42,8 +42,8 @@ export const FeatureLockCard = ({ planRequired, feature }: Props) => {
           className={cn(
             'w-full inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold text-white transition-all duration-200 hover:opacity-90',
             isPro
-              ? 'bg-gradient-to-r from-indigo-500 to-indigo-600'
-              : 'bg-gradient-to-r from-amber-500 to-amber-600'
+              ? 'bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)]'
+              : 'bg-gradient-to-r from-[var(--warning)] to-[var(--warning)]'
           )}
         >
           {isPro ? 'Upgrade to Pro →' : 'Upgrade to Ultimate →'}

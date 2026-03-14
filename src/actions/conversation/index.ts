@@ -2,6 +2,7 @@
 
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
+import { SOCKET_SERVER_URL } from '@/lib/config'
 
 
 export const onToggleRealtime = async (id: string, state: boolean) => {

@@ -25,7 +25,7 @@ export const PERSONAS: Persona[] = [
     name: 'Sales Agent',
     description: 'Handles objections, qualifies leads, and recommends products/services.',
     icon: '💼',
-    color: 'from-indigo-500 to-indigo-600',
+    color: 'from-[var(--primary)] to-[var(--primary-light)]',
     systemPrompt: `You are an elite sales representative for {{DOMAIN_NAME}}.
 
 ROLE: Close deals, qualify leads, overcome objections, and guide prospects to a buying decision or next step.
@@ -333,7 +333,7 @@ ${HUMAN_HANDOFF_PROTOCOL}`
     name: 'Custom Persona',
     description: 'Define your own system prompt with complete control.',
     icon: '⚙️',
-    color: 'from-slate-500 to-slate-600',
+    color: 'from-[var(--bg-page)] to-[var(--bg-page)]',
     systemPrompt: `${HUMAN_HANDOFF_PROTOCOL}`
   }
 ]

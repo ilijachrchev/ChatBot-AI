@@ -5,7 +5,22 @@
       "Bash(find /d/Projects/chatbot-ai/src/app/\\\\\\(dashboard\\\\\\)/settings/[domain] -type f)",
       "Bash(find /d/Projects/chatbot-ai/src/app/\\\\\\(dashboard\\\\\\)/settings/[domain] -name \"*.tsx\" -o -name \"*.ts\")",
       "Bash(xargs grep:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(node scripts/refactor-colors.mjs)",
+      "Bash(grep -v \":0$\")",
+      "Bash(grep -rn \"purple\\\\|pink\\\\|rose\\\\|violet\\\\|indigo\\\\|amber\\\\|emerald\\\\|green-\\\\|blue-\\\\|cyan\\\\|teal\\\\|sky\\\\|orange\\\\|yellow\\\\|slate\" --include=*.tsx --include=*.ts src/components/settings/billing/ src/components/settings/security/ src/components/settings/shared/ src/components/onboarding/ src/components/auth/ src/components/domain/ src/components/email-marketing/ src/components/chatbot/)",
+      "Bash(grep -v \"//.*purple\\\\|//.*pink\\\\|//.*rose\")",
+      "Bash(grep -rn \"purple\\\\|pink\\\\|rose\\\\|violet\\\\|indigo\\\\|amber\\\\|emerald\\\\|green-\\\\|blue-\\\\|cyan\\\\|teal\\\\|sky\\\\|orange\\\\|yellow\\\\|slate\" --include=*.tsx --include=*.ts src/components/email-marketing/ src/components/chatbot/)",
+      "Bash(grep -v \"//.*\")",
+      "Bash(grep -rn \"purple\\\\|pink\\\\|rose\\\\|violet\\\\|indigo\\\\|amber\\\\|emerald\\\\|green-\\\\|blue-\\\\|cyan\\\\|teal\\\\|sky\\\\|orange\\\\|yellow\\\\|slate\" --include=*.tsx --include=*.ts src/components/email-marketing/)",
+      "Bash(grep -rn \"purple\\\\|pink\\\\|rose\\\\|violet\\\\|indigo\\\\|amber\\\\|emerald\\\\|green-\\\\|blue-\\\\|cyan\\\\|teal\\\\|sky\\\\|orange\\\\|yellow\\\\|slate\" --include=*.tsx --include=*.ts src/components/onboarding/ src/components/auth/dashboard-preview.tsx src/app/not-found.tsx)",
+      "Bash(grep -rn \"purple\\\\|pink\\\\|rose\\\\|violet\\\\|indigo\\\\|amber\\\\|emerald\\\\|green-\\\\|blue-[0-9]\\\\|cyan\\\\|teal\\\\|sky\\\\|orange\\\\|yellow\\\\|slate\" --include=*.tsx --include=*.ts src/)",
+      "Bash(grep -v \"node_modules\\\\|landing\\\\|//.*purple\\\\|//.*pink\")",
+      "Bash(grep -rn \"from.*navbar\\\\|components/navbar\" --include=*.tsx src/)",
+      "Bash(grep -rn navbar --include=*.tsx src/)",
+      "Bash(grep -n orange src/tailwind.config.* tailwind.config.*)",
+      "Bash(grep -rn \"purple-\\\\|pink-\\\\|rose-\\\\|violet-\\\\|indigo-\\\\|amber-\\\\|emerald-\\\\|green-[0-9]\\\\|blue-[0-9]\\\\|cyan-\\\\|teal-\\\\|sky-\\\\|orange-\\\\|yellow-[0-9]\\\\|slate-\" --include=*.tsx --include=*.ts src/)",
+      "Bash(grep -v \"node_modules\\\\|/landing/\\\\|//.*\")"
     ]
   }
 }

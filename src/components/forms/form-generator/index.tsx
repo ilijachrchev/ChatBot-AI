@@ -51,15 +51,15 @@ const FormGenerator = ({
             form={form}
             defaultValue={defaultValue}
             {...register(name)}
-            className='h-12 rounded-xl border border-[var(--border-default)] bg-white text-slate-900 placeholder:text-[var(--text-muted)]
-                       focus:border-blue-500 focus:bg-slate-50 transition-all
-                       dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:placeholder:text-slate-500 dark:focus:bg-white/10'
+            className='h-12 rounded-xl border border-[var(--border-default)] bg-white text-[var(--text-primary)] placeholder:text-[var(--text-muted)]
+                       focus:border-[var(--primary)] focus:bg-[var(--bg-surface)] transition-all
+                       dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:placeholder:text-[var(--text-secondary)] dark:focus:bg-white/10'
           />
           <ErrorMessage
             errors={errors}
             name={name}
             render={({ message }) => (
-              <p className='text-red-400 text-sm mt-1'>{message}</p>
+              <p className='text-[var(--danger)] text-sm mt-1'>{message}</p>
             )}
           />
         </div>
@@ -80,15 +80,15 @@ const FormGenerator = ({
             form={form}
             defaultValue={defaultValue}
             {...register(name)}
-            className='h-12 rounded-xl px-4 border border-[var(--border-default)] bg-white text-slate-900
-                       focus:border-blue-500 focus:bg-slate-50 transition-all
+            className='h-12 rounded-xl px-4 border border-[var(--border-default)] bg-white text-[var(--text-primary)]
+                       focus:border-[var(--primary)] focus:bg-[var(--bg-surface)] transition-all
                        dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:focus:bg-white/10'
           >
             {options?.map((option) => (
               <option
                 key={option.id}
                 value={option.value}
-                className='bg-white text-slate-900 dark:bg-[var(--bg-surface)] dark:text-[var(--text-primary)]'
+                className='bg-white text-[var(--text-primary)] dark:bg-[var(--bg-surface)] dark:text-[var(--text-primary)]'
               >
                 {option.label}
               </option>
@@ -98,7 +98,7 @@ const FormGenerator = ({
             errors={errors}
             name={name}
             render={({ message }) => (
-              <p className='text-red-400 text-sm mt-1'>{message}</p>
+              <p className='text-[var(--danger)] text-sm mt-1'>{message}</p>
             )}
           />
         </div>
@@ -121,15 +121,15 @@ const FormGenerator = ({
             form={form}
             defaultValue={defaultValue}
             {...register(name)}
-            className='rounded-xl px-4 py-3 resize-none border border-[var(--border-default)] bg-white text-slate-900
-                       placeholder:text-[var(--text-muted)] focus:border-blue-500 focus:bg-slate-50 transition-all
-                       dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:placeholder:text-slate-500 dark:focus:bg-white/10'
+            className='rounded-xl px-4 py-3 resize-none border border-[var(--border-default)] bg-white text-[var(--text-primary)]
+                       placeholder:text-[var(--text-muted)] focus:border-[var(--primary)] focus:bg-[var(--bg-surface)] transition-all
+                       dark:bg-white/5 dark:text-[var(--text-primary)] dark:border-white/10 dark:placeholder:text-[var(--text-secondary)] dark:focus:bg-white/10'
           />
           <ErrorMessage
             errors={errors}
             name={name}
             render={({ message }) => (
-              <p className='text-red-400 text-sm mt-1'>{message}</p>
+              <p className='text-[var(--danger)] text-sm mt-1'>{message}</p>
             )}
           />
         </div>

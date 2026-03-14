@@ -96,7 +96,7 @@ export function SubscriptionPaymentForm({
         <Button
           type="submit"
           disabled={!stripe || !elements || processing}
-          className="flex-1 bg-indigo-500 hover:bg-indigo-600 text-white"
+          className="flex-1 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white"
         >
           {processing ? (
             <>

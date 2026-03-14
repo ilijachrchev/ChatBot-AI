@@ -34,20 +34,20 @@ export function OfflineMessage({
     <div
       className={cn(
         'p-4 rounded-xl border-2 border-dashed bg-gradient-to-br',
-        'border-amber-200 dark:border-amber-800',
-        'from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20',
+        'border-[var(--warning)] dark:border-[var(--warning)]',
+        'from-[rgba(224,155,26,0.08)] to-[rgba(224,155,26,0.15)]',
         className
       )}
     >
       <div className='flex items-start gap-3 mb-3'>
-        <div className='w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center flex-shrink-0'>
-          <Clock className='w-4 h-4 text-amber-600 dark:text-amber-400' />
+        <div className='w-8 h-8 rounded-lg bg-[var(--warning)] dark:bg-[var(--warning)] flex items-center justify-center flex-shrink-0'>
+          <Clock className='w-4 h-4 text-[var(--warning)] dark:text-[var(--warning)]' />
         </div>
         <div className='flex-1'>
-          <h4 className='text-sm font-semibold text-amber-900 dark:text-amber-100 mb-1'>
+          <h4 className='text-sm font-semibold text-[var(--warning)] dark:text-[var(--warning)] mb-1'>
             We're Currently Offline
           </h4>
-          <p className='text-xs text-amber-700 dark:text-amber-300 whitespace-pre-line'>
+          <p className='text-xs text-[var(--warning)] dark:text-[var(--warning)] whitespace-pre-line'>
             {message}
           </p>
         </div>
@@ -57,20 +57,20 @@ export function OfflineMessage({
         <form onSubmit={handleSubmit} className='mt-3'>
           <div className='flex gap-2'>
             <div className='relative flex-1'>
-              <Mail className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-amber-500' />
+              <Mail className='absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--warning)]' />
               <Input
                 type='email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='your@email.com'
                 required
-                className='pl-9 h-9 text-sm border-amber-200 dark:border-amber-800 focus:border-amber-400 dark:focus:border-amber-600'
+                className='pl-9 h-9 text-sm border-[var(--warning)] dark:border-[var(--warning)] focus:border-[var(--warning)] dark:focus:border-[var(--warning)]'
               />
             </div>
             <Button
               type='submit'
               size='sm'
-              className='h-9 bg-amber-600 hover:bg-amber-700 text-white'
+              className='h-9 bg-[var(--warning)] hover:bg-[var(--warning)] text-white'
             >
               <Send className='w-3.5 h-3.5 mr-1.5' />
               Send
@@ -80,8 +80,8 @@ export function OfflineMessage({
       )}
 
       {submitted && (
-        <div className='mt-3 p-3 rounded-lg bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800'>
-          <p className='text-xs text-green-700 dark:text-green-300 font-medium'>
+        <div className='mt-3 p-3 rounded-lg bg-[var(--success)] dark:bg-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]'>
+          <p className='text-xs text-[var(--success)] dark:text-[var(--success)] font-medium'>
             ✓ Thanks! We'll contact you at {email} during business hours.
           </p>
         </div>

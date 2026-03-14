@@ -193,18 +193,18 @@ function ProductsContent() {
   const statusBadge = (status: string) => {
     if (status === 'ACTIVE')
       return (
-        <Badge className="bg-emerald-100 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800 hover:bg-emerald-100">
+        <Badge className="bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] border-[var(--success)] dark:border-[var(--success)] hover:bg-[var(--success)]">
           Active
         </Badge>
       )
     if (status === 'OUT_OF_STOCK')
       return (
-        <Badge className="bg-red-100 dark:bg-red-950/50 text-red-700 dark:text-red-300 border-red-200 dark:border-red-800 hover:bg-red-100">
+        <Badge className="bg-[var(--danger)] dark:bg-[var(--danger)] text-[var(--danger)] dark:text-[var(--danger)] border-[var(--danger)] dark:border-[var(--danger)] hover:bg-[var(--danger)]">
           Out of Stock
         </Badge>
       )
     return (
-      <Badge className="bg-slate-100 dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)] hover:bg-slate-100">
+      <Badge className="bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-[var(--text-secondary)] border-[var(--border-default)] dark:border-[var(--border-strong)] hover:bg-[var(--bg-surface)]">
         Draft
       </Badge>
     )
@@ -217,7 +217,7 @@ function ProductsContent() {
       <div className="px-4 md:px-6 py-6 flex-1 overflow-y-auto">
         <div className="flex items-start justify-between mb-6 gap-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-white dark:to-slate-100 flex-shrink-0">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] dark:from-white dark:to-[var(--bg-page)] flex-shrink-0">
               <ShoppingBag className="h-6 w-6 text-[var(--text-primary)]" />
             </div>
             <div>
@@ -225,7 +225,7 @@ function ProductsContent() {
                 Products
               </h1>
               {domainName && (
-                <span className="inline-flex items-center px-2 py-0.5 mt-0.5 rounded-md bg-slate-100 dark:bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)]">
+                <span className="inline-flex items-center px-2 py-0.5 mt-0.5 rounded-md bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] text-xs font-medium text-[var(--text-secondary)]">
                   {domainName}
                 </span>
               )}
@@ -233,7 +233,7 @@ function ProductsContent() {
           </div>
           <Button
             onClick={openAdd}
-            className="bg-indigo-500 hover:bg-indigo-600 text-white"
+            className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white"
           >
             <Plus className="w-4 h-4 mr-1.5" />
             Add Product
@@ -254,7 +254,7 @@ function ProductsContent() {
               key={stat.label}
               className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-4"
             >
-              <p className="text-xs font-medium text-slate-500 dark:text-[var(--text-secondary)] mb-1">
+              <p className="text-xs font-medium text-[var(--text-secondary)] dark:text-[var(--text-secondary)] mb-1">
                 {stat.label}
               </p>
               <p className="text-2xl font-bold text-[var(--text-primary)]">{stat.value}</p>
@@ -273,18 +273,18 @@ function ProductsContent() {
           </div>
         ) : products.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-slate-100 dark:bg-[var(--bg-surface)] mb-5">
+            <div className="inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-[var(--bg-surface)] dark:bg-[var(--bg-surface)] mb-5">
               <ShoppingBag className="h-10 w-10 text-[var(--text-muted)]" />
             </div>
             <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-2">
               No products yet
             </h3>
-            <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] max-w-xs mb-6">
+            <p className="text-sm text-[var(--text-secondary)] dark:text-[var(--text-secondary)] max-w-xs mb-6">
               Add your first product to enable AI-powered recommendations
             </p>
             <Button
               onClick={openAdd}
-              className="bg-indigo-500 hover:bg-indigo-600 text-white"
+              className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white"
             >
               <Plus className="w-4 h-4 mr-1.5" />
               Add Product
@@ -297,7 +297,7 @@ function ProductsContent() {
                 key={product.id}
                 className="group rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 overflow-hidden hover:shadow-md transition-shadow duration-200"
               >
-                <div className="relative h-44 bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 flex items-center justify-center overflow-hidden">
+                <div className="relative h-44 bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] dark:from-[var(--bg-page)] dark:to-[var(--bg-page)] flex items-center justify-center overflow-hidden">
                   {product.image ? (
                     <Image
                       src={product.image}
@@ -319,7 +319,7 @@ function ProductsContent() {
                   </div>
 
                   {product.description && (
-                    <p className="text-sm text-slate-500 dark:text-[var(--text-secondary)] line-clamp-2 mb-2">
+                    <p className="text-sm text-[var(--text-secondary)] dark:text-[var(--text-secondary)] line-clamp-2 mb-2">
                       {product.description}
                     </p>
                   )}
@@ -341,7 +341,7 @@ function ProductsContent() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="h-8 w-8 p-0 border-red-200 dark:border-red-900 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30"
+                      className="h-8 w-8 p-0 border-[var(--danger)] dark:border-[var(--danger)] text-[var(--danger)] dark:text-[var(--danger)] hover:bg-[var(--danger)] dark:hover:bg-[var(--danger)]"
                       onClick={() => setDeleteTarget(product)}
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -366,7 +366,7 @@ function ProductsContent() {
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="name">
-                Name <span className="text-red-500">*</span>
+                Name <span className="text-[var(--danger)]">*</span>
               </Label>
               <Input
                 id="name"
@@ -432,7 +432,7 @@ function ProductsContent() {
               <Button
                 className={cn(
                   'flex-1 bg-[var(--bg-page)] hover:bg-[var(--bg-surface)]',
-                  'dark:bg-indigo-500 dark:hover:bg-indigo-600 dark:text-white text-white'
+                  'dark:bg-[var(--primary)] dark:hover:bg-[var(--primary-hover)] dark:text-white text-white'
                 )}
                 onClick={handleSave}
                 disabled={saving}
@@ -463,7 +463,7 @@ function ProductsContent() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-[var(--danger)] hover:bg-[var(--danger)] text-white"
               onClick={handleDelete}
             >
               Delete

@@ -56,7 +56,7 @@ export const DomainConfigurationForm = ({
       <form className="flex flex-col gap-8" onSubmit={onUpdateSettings}>
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900 dark:bg-white">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--bg-page)] dark:bg-white">
               <Globe className="h-6 w-6 text-[var(--text-primary)]" />
             </div>
             <div>
@@ -78,13 +78,13 @@ export const DomainConfigurationForm = ({
         />
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          <div className="group relative overflow-hidden rounded-2xl border-2 border-[var(--border-default)] bg-[var(--bg-page)] transition-all duration-300 hover:border-[var(--border-strong)] dark:hover:border-slate-700 hover:shadow-xl">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-slate-100 to-transparent dark:from-slate-900 dark:to-transparent opacity-50 rounded-full blur-3xl -z-0" />
+          <div className="group relative overflow-hidden rounded-2xl border-2 border-[var(--border-default)] bg-[var(--bg-page)] transition-all duration-300 hover:border-[var(--border-strong)] hover:shadow-xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[var(--bg-page)] to-transparent dark:from-[var(--bg-page)] dark:to-transparent opacity-50 rounded-full blur-3xl -z-0" />
             
             <div className="relative z-10 p-8">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-900 dark:bg-white transition-transform group-hover:scale-110">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--bg-page)] dark:bg-white transition-transform group-hover:scale-110">
                     <Globe className="h-5 w-5 text-[var(--text-primary)]" />
                   </div>
                   <div>
@@ -98,9 +98,9 @@ export const DomainConfigurationForm = ({
                 </div>
                 
                 {verificationStatus === 'VERIFIED' && (
-                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800">
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-300">
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--success)] dark:bg-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-[var(--success)] dark:text-[var(--success)]" />
+                    <span className="text-xs font-semibold text-[var(--success)] dark:text-[var(--success)]">
                       Verified
                     </span>
                   </div>
@@ -140,11 +140,11 @@ export const DomainConfigurationForm = ({
             </div>
           </div>
 
-          <div className="group relative overflow-hidden rounded-2xl border-2 border-slate-900 dark:border-white bg-slate-900 dark:bg-white transition-all duration-300 hover:shadow-2xl hover:shadow-slate-500/20">
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-900 to-black dark:from-slate-100 dark:via-white dark:to-slate-50 opacity-90" />
+          <div className="group relative overflow-hidden rounded-2xl border-2 border-[var(--border-strong)] dark:border-white bg-[var(--bg-page)] dark:bg-white transition-all duration-300 hover:shadow-2xl hover:shadow-[var(--border-default)]">
+            <div className="absolute inset-0 bg-gradient-to-br from-[var(--bg-page)] via-[var(--bg-card)] to-black dark:from-[var(--bg-page)] dark:via-white dark:to-[var(--bg-page)] opacity-90" />
             
-            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent dark:from-slate-900/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/5 to-transparent dark:from-slate-900/5 rounded-full blur-3xl" />
+            <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-white/5 to-transparent dark:from-[var(--bg-page)] rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-white/5 to-transparent dark:from-[var(--bg-page)] rounded-full blur-3xl" />
             
             <div className="relative z-10 p-8 h-full flex flex-col">
               <div className="flex items-start justify-between mb-6">
@@ -227,7 +227,7 @@ export const DomainConfigurationForm = ({
 
         <div className="rounded-2xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6">
           <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 dark:bg-blue-950/50 flex-shrink-0">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--primary)] dark:bg-[var(--primary)] flex-shrink-0">
               <AlertCircle className="h-5 w-5 text-[var(--text-accent)]" />
             </div>
             <div className="flex-1">
@@ -247,7 +247,7 @@ export const DomainConfigurationForm = ({
             onClick={onDeleteDomain}
             type="button"
             variant="ghost"
-            className="w-full sm:w-auto border-2 border-rose-200 dark:border-rose-900 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 hover:border-rose-300 dark:hover:border-rose-800 font-semibold h-11"
+            className="w-full sm:w-auto border-2 border-[rgba(224,85,85,0.3)] text-[var(--danger)] hover:bg-[rgba(224,85,85,0.08)] hover:border-[rgba(224,85,85,0.5)] font-semibold h-11"
           >
             <Trash2 className="h-4 w-4 mr-2" />
             <Loader loading={deleting}>Delete Domain</Loader>
@@ -256,7 +256,7 @@ export const DomainConfigurationForm = ({
           <Button
             type="submit"
             disabled={loading}
-            className="w-full sm:w-auto h-11 px-8 bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-bold shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-full sm:w-auto h-11 px-8 bg-[var(--bg-page)] dark:bg-white hover:bg-[var(--bg-page)] dark:hover:bg-[var(--bg-hover)] text-[var(--text-primary)] font-bold shadow-lg hover:shadow-xl transition-all duration-300"
           >
             <Save className="h-4 w-4 mr-2" />
             <Loader loading={loading}>Save Changes</Loader>

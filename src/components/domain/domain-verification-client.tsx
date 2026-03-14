@@ -99,25 +99,25 @@ export function DomainVerificationClient({
       <div className='rounded-2xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6 shadow-xl'>
         <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-4'>
           <div className='flex items-center gap-4'>
-            <div className='p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-lg shadow-blue-500/30'>
+            <div className='p-3 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] shadow-lg shadow-[var(--primary)]'>
               <Globe className='w-6 h-6 text-white' />
             </div>
             <div>
               <h1 className='text-2xl font-bold text-[var(--text-primary)]'>{domainName}</h1>
               <div className='flex items-center gap-2 mt-1'>
                 {verificationStatus === 'VERIFIED' ? (
-                  <span className='px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 bg-green-50 dark:bg-green-950/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'>
+                  <span className='px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]'>
                     <CheckCircle2 className='w-3 h-3' />
                     Verified
                   </span>
                 ) : verificationStatus === 'FAILED' ? (
-                  <span className='px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 bg-red-50 dark:bg-red-950/30 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'>
+                  <span className='px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 bg-[var(--danger)] dark:bg-[var(--danger)] text-[var(--danger)] dark:text-[var(--danger)] border border-[var(--danger)] dark:border-[var(--danger)]'>
                     <XCircle className='w-3 h-3' />
                     Failed
                   </span>
                 ) : (
-                  <span className='px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 bg-amber-50 dark:bg-amber-950/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800'>
-                    <span className='w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse' />
+                  <span className='px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1.5 bg-[var(--warning)] dark:bg-[var(--warning)] text-[var(--warning)] dark:text-[var(--warning)] border border-[var(--warning)] dark:border-[var(--warning)]'>
+                    <span className='w-1.5 h-1.5 rounded-full bg-[var(--warning)] animate-pulse' />
                     Pending Verification
                   </span>
                 )}
@@ -168,7 +168,7 @@ export function DomainVerificationClient({
               >
                 {copiedField === 'token' ? (
                   <>
-                    <Check className='w-4 h-4 text-green-600' />
+                    <Check className='w-4 h-4 text-[var(--success)]' />
                   </>
                 ) : (
                   <>
@@ -231,13 +231,13 @@ export function DomainVerificationClient({
 
       <div className='rounded-2xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6 shadow-xl space-y-4'>
         {status === 'success' && (
-          <div className='flex items-start gap-3 p-4 rounded-xl bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 animate-fade-in'>
-            <CheckCircle2 className='w-5 h-5 text-green-600 dark:text-green-400 shrink-0 mt-0.5' />
+          <div className='flex items-start gap-3 p-4 rounded-xl bg-[var(--success)] dark:bg-[var(--success)] border border-[var(--success)] dark:border-[var(--success)] animate-fade-in'>
+            <CheckCircle2 className='w-5 h-5 text-[var(--success)] dark:text-[var(--success)] shrink-0 mt-0.5' />
             <div>
-              <p className='font-medium text-green-900 dark:text-green-100'>
+              <p className='font-medium text-[var(--success)] dark:text-[var(--success)]'>
                 Domain verified successfully!
               </p>
-              <p className='text-sm text-green-700 dark:text-green-300 mt-0.5'>
+              <p className='text-sm text-[var(--success)] dark:text-[var(--success)] mt-0.5'>
                 Your domain is now connected and ready to use with SendWise-AI.
               </p>
             </div>
@@ -245,15 +245,15 @@ export function DomainVerificationClient({
         )}
 
         {status === 'error' && (
-          <div className='flex items-start gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 animate-fade-in'>
-            <XCircle className='w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5' />
+          <div className='flex items-start gap-3 p-4 rounded-xl bg-[var(--danger)] dark:bg-[var(--danger)] border border-[var(--danger)] dark:border-[var(--danger)] animate-fade-in'>
+            <XCircle className='w-5 h-5 text-[var(--danger)] dark:text-[var(--danger)] shrink-0 mt-0.5' />
             <div className='flex-1'>
-              <p className='font-medium text-red-900 dark:text-red-100'>Verification failed</p>
-              <p className='text-sm text-red-700 dark:text-red-300 mt-0.5'>
+              <p className='font-medium text-[var(--danger)] dark:text-[var(--danger)]'>Verification failed</p>
+              <p className='text-sm text-[var(--danger)] dark:text-[var(--danger)] mt-0.5'>
                 We could not verify your domain ownership. Please check your setup and try again.
               </p>
               {errorDetails && (
-                <pre className='text-xs text-red-600 dark:text-red-400 mt-2 p-2 bg-red-100 dark:bg-red-900/20 rounded overflow-x-auto'>
+                <pre className='text-xs text-[var(--danger)] dark:text-[var(--danger)] mt-2 p-2 bg-[var(--danger)] dark:bg-[var(--danger)] rounded overflow-x-auto'>
                   {errorDetails}
                 </pre>
               )}
@@ -262,11 +262,11 @@ export function DomainVerificationClient({
         )}
 
         {(status === 'idle' || status === 'error') && (
-          <div className='flex items-start gap-3 p-4 rounded-xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-[var(--border-accent)]'>
+          <div className='flex items-start gap-3 p-4 rounded-xl bg-[var(--primary)] dark:bg-[var(--primary)] border border-[var(--primary)] dark:border-[var(--border-accent)]'>
             <AlertTriangle className='w-5 h-5 text-[var(--text-accent)] shrink-0 mt-0.5' />
             <div>
-              <p className='font-medium text-blue-900 dark:text-blue-100'>Troubleshooting tips</p>
-              <ul className='text-sm text-blue-700 dark:text-blue-300 mt-1 space-y-1 list-disc list-inside'>
+              <p className='font-medium text-[var(--primary)] dark:text-[var(--primary)]'>Troubleshooting tips</p>
+              <ul className='text-sm text-[var(--primary)] dark:text-[var(--primary)] mt-1 space-y-1 list-disc list-inside'>
                 <li>DNS changes can take up to 48 hours to propagate</li>
                 <li>Clear your browser cache and try again</li>
                 <li>Ensure there are no typos in the verification token</li>
@@ -290,7 +290,7 @@ export function DomainVerificationClient({
               size='lg'
               onClick={handleVerify}
               disabled={status === 'verifying'}
-              className='flex-1 bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700'
+              className='flex-1 bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] hover:from-[var(--primary)] hover:to-[var(--primary-light)]'
             >
               {status === 'verifying' ? (
                 <>
@@ -341,7 +341,7 @@ function VerificationMethodCard({
           <div className='flex items-center gap-2'>
             <h3 className='font-semibold text-[var(--text-primary)]'>{title}</h3>
             {recommended && (
-              <span className='px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-950/30 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'>
+              <span className='px-2 py-0.5 rounded-full text-xs font-medium bg-[var(--success)] dark:bg-[var(--success)] text-[var(--success)] dark:text-[var(--success)] border border-[var(--success)] dark:border-[var(--success)]'>
                 Recommended
               </span>
             )}
@@ -372,7 +372,7 @@ function VerificationMethodCard({
                 className='shrink-0'
               >
                 {copiedField === field.field ? (
-                  <Check className='w-4 h-4 text-green-600' />
+                  <Check className='w-4 h-4 text-[var(--success)]' />
                 ) : (
                   <Copy className='w-4 h-4' />
                 )}
@@ -384,8 +384,8 @@ function VerificationMethodCard({
 
       {codeBlock && codeField && (
         <div className='relative'>
-          <pre className='p-4 rounded-lg bg-slate-900 dark:bg-[var(--bg-page)] border border-slate-800 overflow-x-auto'>
-            <code className='text-sm text-slate-100 font-mono'>{codeBlock}</code>
+          <pre className='p-4 rounded-lg bg-[var(--bg-page)] dark:bg-[var(--bg-page)] border border-[var(--border-strong)] overflow-x-auto'>
+            <code className='text-sm text-[var(--text-primary)] font-mono'>{codeBlock}</code>
           </pre>
           <Button
             variant='ghost'
@@ -394,7 +394,7 @@ function VerificationMethodCard({
             className='absolute top-2 right-2 bg-[var(--bg-surface)] hover:bg-[var(--bg-active)]'
           >
             {copiedField === codeField ? (
-              <Check className='w-4 h-4 text-green-400' />
+              <Check className='w-4 h-4 text-[var(--success)]' />
             ) : (
               <Copy className='w-4 h-4 text-[var(--text-muted)]' />
             )}

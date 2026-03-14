@@ -122,7 +122,7 @@ const SettingsForm = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="rounded-xl border border-[var(--border-default)] bg-[var(--bg-page)]/50 p-6">
               <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] text-white">
                   <Globe className="h-5 w-5" />
                 </div>
                 <div>
@@ -137,12 +137,12 @@ const SettingsForm = ({
               <DomainUpdate name={name} register={register} errors={errors} />
             </div>
 
-            <div className="group relative rounded-xl border border-[var(--border-default)] bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900/50 dark:via-slate-900/30 dark:to-slate-800/50 p-6 overflow-hidden transition-all hover:shadow-lg hover:shadow-purple-500/10">
-              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              
+            <div className="group relative rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] p-6 overflow-hidden transition-all hover:shadow-lg">
+              <div className="absolute inset-0 bg-[var(--primary-light)] opacity-0 group-hover:opacity-30 transition-opacity" />
+
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/30">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--primary)] text-white shadow-lg">
                     <Code className="h-5 w-5" />
                   </div>
                   <div className="flex-1">
@@ -163,24 +163,24 @@ const SettingsForm = ({
 
                 <div className="space-y-4">
                   <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
-                    Get ready-to-use code snippets in <span className="font-semibold text-purple-600 dark:text-purple-400">15 different languages</span> and frameworks including JavaScript, React, Next.js, Vue, Python, and more.
+                    Get ready-to-use code snippets in <span className="font-semibold text-[var(--primary)]">15 different languages</span> and frameworks including JavaScript, React, Next.js, Vue, Python, and more.
                   </p>
 
                   <div className="grid grid-cols-2 gap-2">
                     <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
-                      <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
                       <span>Syntax highlighting</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
-                      <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
                       <span>One-click copy</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
-                      <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
                       <span>Installation steps</span>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-[var(--text-secondary)]">
-                      <div className="h-1.5 w-1.5 rounded-full bg-purple-500" />
+                      <div className="h-1.5 w-1.5 rounded-full bg-[var(--primary)]" />
                       <span>Live preview</span>
                     </div>
                   </div>
@@ -188,7 +188,7 @@ const SettingsForm = ({
                   <Link href={`/settings/${name.replace(/\.(com|net|org|io)$/, '')}/embed`}>
                     <Button 
                       type="button"
-                      className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-semibold shadow-lg shadow-purple-500/30 group/btn"
+                      className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-semibold shadow-lg group/btn"
                     >
                       <Code className="h-4 w-4 mr-2" />
                       View Embed Instructions
@@ -219,7 +219,7 @@ const SettingsForm = ({
             )}>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500 to-amber-600 text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--warning)] text-white">
                     <Palette className="h-5 w-5" />
                   </div>
                   <div>
@@ -233,8 +233,8 @@ const SettingsForm = ({
                 </div>
 
                 {plan !== 'STANDARD' && (
-                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950 dark:to-amber-900 border border-amber-200 dark:border-amber-800">
-                    <span className="text-xs font-bold text-amber-900 dark:text-amber-100">
+                  <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[rgba(224,155,26,0.15)] border border-[var(--warning)]">
+                    <span className="text-xs font-bold text-[var(--warning)] dark:text-[var(--warning)]">
                       ✨ PREMIUM
                     </span>
                   </div>
@@ -347,12 +347,12 @@ const SettingsForm = ({
           </div>
         </section>
 
-        <div className="flex gap-3 justify-end sticky bottom-0 bg-background/95 backdrop-blur-sm py-4 border-t border-[var(--border-default)]">
+        <div className="flex gap-3 justify-end sticky bottom-0 bg-[var(--bg-page)]/95 backdrop-blur-sm py-4 border-t border-[var(--border-default)]">
           <Button
             onClick={onDeleteDomain}
             type="button"
             variant="outline"
-            className="border-rose-300 dark:border-rose-700 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20"
+            className="border-[rgba(224,85,85,0.3)] text-[var(--danger)] hover:bg-[rgba(224,85,85,0.08)]"
           >
             <Trash2 className="h-4 w-4 mr-2" />
             <Loader loading={deleting}>Delete Domain</Loader>
@@ -360,7 +360,7 @@ const SettingsForm = ({
 
           <Button
             type="submit"
-            className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold shadow-lg shadow-blue-500/30 px-8"
+            className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-light)] hover:from-[var(--primary)] hover:to-[var(--primary-light)] text-white font-semibold shadow-lg shadow-[var(--primary)] px-8"
           >
             <Save className="h-4 w-4 mr-2" />
             <Loader loading={loading}>Save All Changes</Loader>

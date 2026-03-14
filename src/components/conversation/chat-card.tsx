@@ -17,11 +17,11 @@ type Props = {
 }
 
 const AVATAR_COLORS = [
-  'bg-indigo-500',
-  'bg-violet-500',
-  'bg-emerald-500',
-  'bg-amber-500',
-  'bg-rose-500',
+  'bg-[var(--primary)]',
+  'bg-[var(--info)]',
+  'bg-[var(--success)]',
+  'bg-[var(--warning)]',
+  'bg-[var(--danger)]',
 ]
 
 function getAvatarColor(email: string): string {
@@ -55,9 +55,9 @@ const ChatCard = ({
       className={cn(
         'group relative flex items-center gap-3 w-full py-3 px-4 cursor-pointer',
         'transition-all duration-150',
-        'hover:bg-muted/50',
+        'hover:bg-[var(--primary-light)]',
         isUnread
-          ? 'border-l-2 border-l-blue-500 bg-blue-50/50 dark:bg-blue-950/10'
+          ? 'border-l-2 border-l-[var(--primary)] bg-[var(--primary-light)]'
           : 'border-l-2 border-l-transparent'
       )}
     >
@@ -71,7 +71,7 @@ const ChatCard = ({
           {initial}
         </div>
         {urgent && !seen && (
-          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse border-2 border-background" />
+          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--danger)] animate-pulse border-2 border-background" />
         )}
       </div>
 
@@ -94,15 +94,15 @@ const ChatCard = ({
           <span className="text-xs text-muted-foreground truncate">{preview}</span>
           <div className="flex items-center gap-1 flex-shrink-0">
             {isUnread && (
-              <span className="w-2 h-2 rounded-full bg-indigo-500 flex-shrink-0" />
+              <span className="w-2 h-2 rounded-full bg-[var(--primary)] flex-shrink-0" />
             )}
             {status === 'RESOLVED' && (
-              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400">
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-[rgba(61,184,130,0.15)] text-[var(--success)]">
                 Resolved
               </span>
             )}
             {status === 'PENDING' && (
-              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400">
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-[rgba(224,155,26,0.15)] text-[var(--warning)]">
                 Pending
               </span>
             )}
@@ -112,7 +112,7 @@ const ChatCard = ({
 
       {starred && !onStar && (
         <div className="absolute right-3 top-2">
-          <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+          <Star className="h-3 w-3 fill-[var(--warning)] text-[var(--warning)]" />
         </div>
       )}
 
@@ -126,14 +126,14 @@ const ChatCard = ({
           className={cn(
             'absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded transition-all duration-150',
             starred
-              ? 'text-amber-400'
-              : 'opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-amber-400'
+              ? 'text-[var(--warning)]'
+              : 'opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-[var(--warning)]'
           )}
         >
           <Star
             className={cn(
               'h-3.5 w-3.5',
-              starred && 'fill-amber-400'
+              starred && 'fill-[var(--warning)]'
             )}
           />
         </button>
