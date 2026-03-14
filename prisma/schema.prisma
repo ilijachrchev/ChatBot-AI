@@ -22,6 +22,7 @@ model User {
   keepMeLoggedIn       Boolean             @default(false)
   onboardingCompleted  Boolean             @default(false)
   onboardingDismissed  Boolean             @default(false)
+  blockedUntil         DateTime?
   billingAddress       BillingAddress?
   subscription       Billings?
   campaign           Campaign[]
@@ -36,6 +37,7 @@ model User {
   preferences          UserPreferences?
   onboardingProgress   OnboardingProgress?
   notifications        Notification[]
+  aiUsageLogs          AIUsageLog[]
 }
 
 model Domain {
@@ -569,4 +571,25 @@ enum KnowledgeBaseFileStatus {
   PROCESSING
   DISABLED
   FAILED
+}
+
+model AIUsageLog {
+  id               String   @id @default(cuid())
+  userId           String   @db.Uuid
+  domainId         String?  @db.Uuid
+  ipAddress        String
+  promptTokens     Int
+  completionTokens Int
+  totalTokens      Int
+  estimatedCostUsd Float
+  responseTimeMs   Int
+  model            String
+  blocked          Boolean  @default(false)
+  blockReason      String?
+  createdAt        DateTime @default(now())
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([ipAddress])
 }

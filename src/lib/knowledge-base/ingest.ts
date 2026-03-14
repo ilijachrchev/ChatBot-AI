@@ -8,7 +8,7 @@ import { client } from '@/lib/prisma'
 import OpenAi from 'openai'
 
 const openai = new OpenAi({
-  apiKey: process.env.OPEN_AI_KEY,
+  apiKey: process.env.OPENAI_API_KEY,
 })
 
 const CHUNK_SIZE_TOKENS = 1000 

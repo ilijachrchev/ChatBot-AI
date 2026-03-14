@@ -4,7 +4,8 @@
       "Bash(ls -la /d/Projects/chatbot-ai/src/app/\\\\\\(dashboard\\\\\\)/settings/)",
       "Bash(find /d/Projects/chatbot-ai/src/app/\\\\\\(dashboard\\\\\\)/settings/[domain] -type f)",
       "Bash(find /d/Projects/chatbot-ai/src/app/\\\\\\(dashboard\\\\\\)/settings/[domain] -name \"*.tsx\" -o -name \"*.ts\")",
-      "Bash(xargs grep:*)"
+      "Bash(xargs grep:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

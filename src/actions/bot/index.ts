@@ -5,17 +5,13 @@ import { extractEmailsFromString, extractURLfromString } from "@/lib/utils"
 import { onRealTimeChat, onNotifyDashboardNewLiveConversation } from "../conversation"
 import { clerkClient } from "@clerk/nextjs/server"
 import { onMailer } from "../mailer"
-import OpenAi from "openai"
 import { getPersonaSystemPrompt } from "@/constants/personas"
+import { callOpenAIWithProtection, isError } from "@/lib/openai-client"
 import { onGetChatbotPresence } from "../chatbot/presence"
 import { getKnowledgeBaseContext } from "@/lib/knowledge-base/retrieve"
 import { checkAndIncrementConversation } from "@/lib/conversation-usage"
 import { sendLiveChatNotification } from "@/lib/email"
 import { onCreateNotification } from "@/actions/notifications"
-
-const openai = new OpenAi({
-    apiKey: process.env.OPEN_AI_KEY,
-})
 
 async function maybeSendHandoffEmail(chatRoomId: string, lastMessage: string) {
   try {
@@ -435,18 +431,15 @@ export const onAiChatBotAssistant = async (
           systemMessage += `\n\nKNOWLEDGE BASE CONTEXT:\nUse the following information to answer questions. If not covered, say you don't know.\n\n${knowledgeBaseContext}`
         }
 
-        const statelessMessages: any[] = [
-          { role: 'assistant', content: systemMessage },
-          ...chat,
-          { role: 'user', content: message },
-        ]
-
-        const completion = await openai.chat.completions.create({
-          messages: statelessMessages,
-          model: 'gpt-3.5-turbo',
+        const completionResult = await callOpenAIWithProtection({
+          userId: chatBotConfig.userId,
+          domainId: id,
+          ipAddress: 'server-action',
+          systemPrompt: systemMessage,
+          messages: [...chat, { role: 'user' as const, content: message }],
         })
 
-        const rawContent = completion.choices[0].message.content ?? ''
+        const rawContent = isError(completionResult) ? '' : completionResult.content
         const cleanContent = rawContent
           .replace(/\(handoff:none\)/gi, '')
           .replace(/\(handoff:suggest\)/gi, '')
@@ -969,34 +962,16 @@ ${knowledgeBaseContext}
 IMPORTANT: Use the knowledge base context above if it's relevant to the user's question. If the question is not covered in the context, politely say you don't have that information in your knowledge base.`
             }
 
-            const messages: any[] = [
-              {
-                role: 'assistant',
-                content: systemMessage,
-              },
-            ]
-
-            // Add knowledge base context as a separate message if available (alternative approach)
-            if (knowledgeBaseContext) {
-              messages.push({
-                role: 'system',
-                content: `Knowledge Base Context:\n${knowledgeBaseContext}`,
-              })
-            }
-
-            messages.push(...chat)
-            messages.push({
-              role: 'user',
-              content: message,
+            const chatCompletionResult = await callOpenAIWithProtection({
+              userId: chatBotDomain.userId,
+              domainId: id,
+              ipAddress: 'server-action',
+              systemPrompt: systemMessage,
+              messages: [...chat, { role: 'user' as const, content: message }],
             })
 
-            const chatCompletion = await openai.chat.completions.create({
-              messages,
-              model: 'gpt-3.5-turbo',
-            })
-
-        if (chatCompletion.choices[0].message.content) {
-          const assistantResponse = chatCompletion.choices[0].message.content;
+        if (!isError(chatCompletionResult) && chatCompletionResult.content) {
+          const assistantResponse = chatCompletionResult.content;
 
           const requireHandoff = assistantResponse.includes('(handoff:require)');
           
@@ -1097,7 +1072,7 @@ IMPORTANT: Use the knowledge base context above if it's relevant to the user's q
           }
         }
 
-        if (chatCompletion) {
+        if (chatCompletionResult.content) {
           const generatedLink = extractURLfromString(
             cleanResponse
           )
@@ -1175,35 +1150,18 @@ ${knowledgeBaseContext}
 IMPORTANT: Use the knowledge base context above if it's relevant to the user's question. If the question is not covered in the context, politely say you don't have that information in your knowledge base.`
       }
 
-      const messages: any[] = [
-        {
-          role: 'assistant',
-          content: systemMessage,
-        },
-      ]
-
-      if (knowledgeBaseContext) {
-        messages.push({
-          role: 'system',
-          content: `Knowledge Base Context:\n${knowledgeBaseContext}`,
-        })
-      }
-
-      messages.push(...chat)
-      messages.push({
-        role: 'user',
-        content: message,
+      const newCustomerResult = await callOpenAIWithProtection({
+        userId: chatBotDomain.userId,
+        domainId: id,
+        ipAddress: 'server-action',
+        systemPrompt: systemMessage,
+        messages: [...chat, { role: 'user' as const, content: message }],
       })
 
-      const chatCompletion = await openai.chat.completions.create({
-        messages,
-        model: 'gpt-3.5-turbo',
-      })
-
-      if (chatCompletion) {
+      if (!isError(newCustomerResult) && newCustomerResult.content) {
         const response = {
           role: 'assistant',
-          content: chatCompletion.choices[0].message.content,
+          content: newCustomerResult.content,
         }
 
         await onStoreConversations(
