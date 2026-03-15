@@ -144,7 +144,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
           return 'rounded-full'
         case 'ROUNDED':
         default:
-          return 'rounded-md'
+          return 'rounded-lg'
       }
     }
     const getSizeClasses = () => {
@@ -193,7 +193,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
     }
 
     const displayTitle = chatbotTitle || 'SendWise-AI'
-    const displaySubtitle = chatbotSubtitle || 'Your AI assistant'
+    const displaySubtitle = chatbotSubtitle || 'SendWise-AI'
 
     const handleEmailSubmit = async (email: string) => {
       console.log('Email collected:', email)
@@ -248,6 +248,14 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               <p className="text-xs opacity-90 truncate">{displaySubtitle}</p>
             </div>
           </div>
+
+          {showAvatars && (
+            <div className="flex -space-x-2">
+              <div className="h-7 w-7 rounded-full border-2 border-white/30 bg-white/20 flex items-center justify-center text-white text-[10px] font-bold">A</div>
+              <div className="h-7 w-7 rounded-full border-2 border-white/30 bg-white/20 flex items-center justify-center text-white text-[10px] font-bold">B</div>
+              <div className="h-7 w-7 rounded-full border-2 border-white/30 bg-white/20 flex items-center justify-center text-white text-[10px] font-bold">C</div>
+            </div>
+          )}
 
           {realtimeMode?.mode && (
             <div className="bg-white/20 backdrop-blur-sm px-2.5 py-1 rounded-full">

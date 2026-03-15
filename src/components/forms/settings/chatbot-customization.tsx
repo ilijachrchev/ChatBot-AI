@@ -3,7 +3,6 @@ import React from 'react'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
-import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/utils'
 
 type StyleOption = { id: string; name: string; preview: string }
@@ -81,7 +80,6 @@ export type ChatbotSectionValues = {
   widgetStyle?: string | null
   chatPosition?: string | null
   removeBranding?: boolean | null
-  customCss?: string | null
 }
 
 type ChatPositionSelectorProps = SharedProps & {
@@ -367,25 +365,6 @@ export const HeaderFields = ({ register, errors, currentValues }: HeaderFieldsPr
       />
       {errors.chatbotSubtitle && <p className="text-sm text-[var(--danger)]">{errors.chatbotSubtitle.message}</p>}
     </div>
-  </div>
-)
-
-type CustomCssFieldProps = {
-  register: (name: string) => object
-  currentValue?: string | null
-}
-
-export const CustomCssField = ({ register, currentValue }: CustomCssFieldProps) => (
-  <div className="space-y-2">
-    <Label htmlFor="customCss" className="text-sm font-medium">Custom CSS</Label>
-    <p className="text-xs text-[var(--text-muted)]">Inject custom CSS directly into the chat widget</p>
-    <Textarea
-      id="customCss"
-      {...register('customCss')}
-      defaultValue={currentValue || ''}
-      placeholder={`.chat-widget {\n  /* your styles here */\n}`}
-      className="min-h-[160px] font-mono text-sm"
-    />
   </div>
 )
 

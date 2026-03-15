@@ -185,7 +185,6 @@ export const onGetCurrentDomainInfo = async (domain: string) => {
                 widgetStyle: true,
                 removeBranding: true,
                 chatPosition: true,
-                customCss: true,
                 presenceMode: true,
                 offlineBehavior: true,
                 offlineCustomMessage: true,
@@ -910,7 +909,6 @@ export const onUpdateChatbotCustomization = async (
     widgetStyle?: string
     removeBranding?: boolean
     chatPosition?: string
-    customCss?: string
     teaserEnabled?: boolean
     teaserMessage?: string
     teaserDelay?: number

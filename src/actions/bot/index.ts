@@ -200,7 +200,6 @@ export const onGetCurrentChatBot = async (id: string) => {
                         widgetStyle: true,
                         chatPosition: true,
                         removeBranding: true,
-                        customCss: true,
                         presenceMode: true,
                         offlineBehavior: true,
                         offlineCustomMessage: true,

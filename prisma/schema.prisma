@@ -101,7 +101,6 @@ model ChatBot {
   widgetStyle          String? @default("SOLID")
   removeBranding       Boolean @default(false)
   chatPosition         String? @default("BOTTOM_RIGHT")
-  customCss            String? @db.Text
   presenceMode         String  @default("AUTO")
   offlineBehavior      String  @default("SHOW_HOURS_AND_EMAIL")
   offlineCustomMessage String?

@@ -40,10 +40,10 @@ const Bubble = ({
         case 'SQUARE':
           return 'rounded-none'
         case 'PILL':
-          return 'rounded-2xl'
+          return 'rounded-full'
         case 'ROUNDED':
         default:
-          return 'rounded-xl'
+          return 'rounded-2xl'
       }
     }
 

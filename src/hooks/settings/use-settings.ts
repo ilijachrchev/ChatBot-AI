@@ -81,7 +81,6 @@ export const useSettings = (id: string, chatBotId: string) => {
         register('widgetStyle')
         register('removeBranding')
         register('chatPosition')
-        register('customCss')
         register('teaserEnabled')
         register('teaserMessage')
         register('teaserDelay')
@@ -103,7 +102,6 @@ export const useSettings = (id: string, chatBotId: string) => {
     const watchedWidgetStyle = watch('widgetStyle')
     const watchedRemoveBranding = watch('removeBranding')
     const watchedChatPosition = watch('chatPosition')
-    const watchedCustomCss = watch('customCss')
     const watchedTeaserEnabled = watch('teaserEnabled')
     const watchedTeaserMessage = watch('teaserMessage')
     const watchedTeaserDelay = watch('teaserDelay')
@@ -140,7 +138,6 @@ export const useSettings = (id: string, chatBotId: string) => {
         const widgetStyle = values.widgetStyle
         const removeBranding = values.removeBranding
         const chatPosition = values.chatPosition
-        const customCss = values.customCss
         const teaserEnabled = values.teaserEnabled
         const teaserMessage = values.teaserMessage
         const teaserDelay = values.teaserDelay
@@ -203,7 +200,6 @@ export const useSettings = (id: string, chatBotId: string) => {
             widgetStyle ||
             removeBranding !== undefined ||
             chatPosition ||
-            customCss !== undefined ||
             teaserEnabled !== undefined ||
             teaserMessage !== undefined ||
             teaserDelay !== undefined
@@ -222,7 +218,6 @@ export const useSettings = (id: string, chatBotId: string) => {
                 widgetStyle,
                 removeBranding,
                 chatPosition,
-                customCss,
                 teaserEnabled,
                 teaserMessage,
                 teaserDelay,
@@ -276,7 +271,6 @@ export const useSettings = (id: string, chatBotId: string) => {
         watchedWidgetStyle,
         watchedRemoveBranding,
         watchedChatPosition,
-        watchedCustomCss,
         watchedTeaserEnabled,
         watchedTeaserMessage,
         watchedTeaserDelay,

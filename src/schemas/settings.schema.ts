@@ -85,7 +85,6 @@ export const DomainSettingsSchema = z
     widgetStyle: z.string().optional(),
     removeBranding: z.boolean().optional(),
     chatPosition: z.string().optional(),
-    customCss: z.string().optional(),
     teaserEnabled: z.boolean().optional(),
     teaserMessage: z.string().max(80).optional(),
     teaserDelay: z.number().optional(),

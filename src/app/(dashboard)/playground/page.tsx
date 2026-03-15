@@ -233,9 +233,9 @@ const PlaygroundPage = () => {
                     </Button>
                   </div>
 
-                  <div className="flex items-start gap-2 p-3 bg-[var(--primary)] dark:bg-[var(--primary)] rounded-lg">
-                    <Info className="h-3.5 w-3.5 text-[var(--primary)] flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-[var(--primary)] dark:text-[var(--primary)]">
+                  <div className="flex items-start gap-2 p-3 bg-[var(--primary-light)] rounded-lg">
+                    <Info className="h-3.5 w-3.5 text-[var(--primary-hover)] flex-shrink-0 mt-0.5" />
+                    <p className="text-xs text-[var(--text-secondary)]">
                       Test conversations don&apos;t count toward your monthly limit
                     </p>
                   </div>
@@ -245,7 +245,7 @@ const PlaygroundPage = () => {
 
             <div className="flex flex-col items-center gap-3">
               <div className="flex items-center gap-2 self-start flex-wrap">
-                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[var(--success)] text-[var(--success)] dark:bg-[var(--success)] dark:text-[var(--success)]">
+                <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[var(--success)] text-white">
                   Live Preview
                 </span>
                 <span className="text-xs text-muted-foreground">
