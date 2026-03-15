@@ -4,6 +4,8 @@ import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 
 export const onDomainCustomerResponses = async (customerId: string) => {
+  const user = await currentUser()
+  if (!user) return null
   try {
     const customerQuestions = await client.customer.findUnique({
       where: {
@@ -30,6 +32,8 @@ export const onDomainCustomerResponses = async (customerId: string) => {
 }
 
 export const onGetAllDomainBookings = async (domainId: string) => {
+  const user = await currentUser()
+  if (!user) return null
   try {
     const bookings = await client.bookings.findMany({
       where: {
@@ -49,6 +53,8 @@ export const onGetAllDomainBookings = async (domainId: string) => {
   }
 }
 
+// NOTE: This action is called from the public chatbot widget.
+// Authentication is handled at the domain/chatbot level, not Clerk.
 export const onBookNewAppointment = async (
   domainId: string,
   customerId: string,
@@ -81,6 +87,8 @@ export const onBookNewAppointment = async (
   }
 }
 
+// NOTE: This action is called from the public chatbot widget.
+// Authentication is handled at the domain/chatbot level, not Clerk.
 export const saveAnswers = async (
   questions: Record<string, string>,
   customerId: string
@@ -112,14 +120,16 @@ export const saveAnswers = async (
   }
 }
 
-export const onGetAllBookingsForCurrentUser = async (clerkId: string) => {
+export const onGetAllBookingsForCurrentUser = async () => {
+  const user = await currentUser()
+  if (!user) return null
   try {
     const bookings = await client.bookings.findMany({
       where: {
         Customer: {
           Domain: {
             User: {
-              clerkId,
+              clerkId: user.id,
             },
           },
         },

@@ -1,7 +1,7 @@
 import { cn, getMonthName } from '@/lib/utils'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { Link, User } from 'lucide-react'
+import { User } from 'lucide-react'
 
 type Props = {
     message: {
@@ -32,8 +32,9 @@ const Bubble = ({
 }: Props) => {
     let d = new Date()
 
-    const isImageUrl = message.content.match(/\.(jpg|jpeg|png|gif|webp)$/i) || 
-                        message.content.includes('/uploads/')
+    const isImageUrl =
+      /^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)(\?.*)?$/i.test(message.content) ||
+      /^\/uploads\/[^/]+\.(jpg|jpeg|png|gif|webp)$/i.test(message.content)
 
     const getBubbleClass = () => {
       switch (bubbleStyle) {
@@ -114,9 +115,10 @@ const Bubble = ({
 
           {isImageUrl ? (
               <div className='relative w-full max-w-[200px] h-[180px] rounded-lg overflow-hidden bg-[var(--bg-card)] border border-[var(--border)]'>
-                  <img 
+                  <img
                       src={message.content}
                       alt="Uploaded Image"
+                      crossOrigin="anonymous"
                       className='w-full h-full object-cover'
                   />
               </div>
@@ -124,18 +126,19 @@ const Bubble = ({
               <p className='text-sm leading-relaxed break-words whitespace-pre-wrap'>
                   {message.content.replace('(complete)', '')}
                   {message.link && (
-                      <Link
+                      <a
                           className="inline-flex items-center gap-1 underline font-medium ml-1 hover:opacity-80 transition-opacity"
                           href={message.link}
                           target='_blank'
-                          style={{ 
-                              color: message.role === 'assistant' 
-                                  ? finalBotTextColor 
-                                  : finalUserTextColor 
+                          rel="noopener noreferrer"
+                          style={{
+                              color: message.role === 'assistant'
+                                  ? finalBotTextColor
+                                  : finalUserTextColor
                           }}
                       >
                           Your Link
-                      </Link>
+                      </a>
                   )}
               </p>
           )}

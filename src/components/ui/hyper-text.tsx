@@ -13,7 +13,7 @@ import {
   type DOMMotionComponents,
   type HTMLMotionProps,
   type MotionProps,
-} from "motion/react"
+} from "framer-motion"
 
 import { cn } from "@/lib/utils"
 

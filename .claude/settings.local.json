@@ -21,7 +21,11 @@
       "Bash(grep -n orange src/tailwind.config.* tailwind.config.*)",
       "Bash(grep -rn \"purple-\\\\|pink-\\\\|rose-\\\\|violet-\\\\|indigo-\\\\|amber-\\\\|emerald-\\\\|green-[0-9]\\\\|blue-[0-9]\\\\|cyan-\\\\|teal-\\\\|sky-\\\\|orange-\\\\|yellow-[0-9]\\\\|slate-\" --include=*.tsx --include=*.ts src/)",
       "Bash(grep -v \"node_modules\\\\|/landing/\\\\|//.*\")",
-      "Bash(find d:/Projects/chatbot-ai -maxdepth 4 -not -path */node_modules/* -not -path */.next/* -name Dockerfile -o -name docker-compose*)"
+      "Bash(find d:/Projects/chatbot-ai -maxdepth 4 -not -path */node_modules/* -not -path */.next/* -name Dockerfile -o -name docker-compose*)",
+      "Bash(pnpm remove:*)",
+      "Bash(pnpm install:*)",
+      "Bash(npx prisma:*)",
+      "Bash(pnpm run:*)"
     ]
   }
 }

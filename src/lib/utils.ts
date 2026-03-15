@@ -42,6 +42,11 @@ export const getSocketClient = () => {
         console.warn('Socket connection failed — realtime features unavailable')
       }
     })
+
+    socketClient.on('reconnect_failed', () => {
+      socketClient = null
+      connectionAttempted = false
+    })
   }
   return socketClient
 }

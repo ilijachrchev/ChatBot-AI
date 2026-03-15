@@ -292,7 +292,7 @@ const InfoBar = (props: Props) => {
               )}
             >
               <AvatarImage src={avatarUrl || undefined} alt={displayName || 'User'} className="object-cover" />
-              <AvatarFallback className="bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)] text-white font-semibold">
+              <AvatarFallback className="bg-[var(--primary)] text-white font-semibold">
                 {displayName.charAt(0) ||
                   user?.emailAddresses[0]?.emailAddress.charAt(0) ||
                   'U'}

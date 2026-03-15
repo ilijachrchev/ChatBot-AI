@@ -1,17 +1,10 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  NewTwitterIcon,   
-  InstagramIcon,
-  YoutubeIcon,
-  Linkedin01Icon,
-} from "@hugeicons/core-free-icons";
 
 type FooterLink = {
   title: string;
@@ -38,7 +31,6 @@ const footerLinks: FooterSection[] = [
   {
     label: "Company",
     links: [
-      { title: "About Us",        href: "#" },
       { title: "Privacy Policy",  href: "/privacy" },
       { title: "Terms of Service", href: "/terms" },
       { title: "Contact",         href: "mailto:support@sendwiseai.com", external: true },
@@ -51,31 +43,6 @@ const footerLinks: FooterSection[] = [
       { title: "Sign Up",  href: "/auth/sign-up" },
       { title: "Dashboard", href: "/dashboard" },
       { title: "Help Center", href: "#faq" },
-    ],
-  },
-  {
-    label: "Social",
-    links: [
-      {
-        title: "Twitter / X",
-        href: "#",
-        icon: <HugeiconsIcon icon={NewTwitterIcon} strokeWidth={2} />,
-      },
-      {
-        title: "Instagram",
-        href: "#",
-        icon: <HugeiconsIcon icon={InstagramIcon} strokeWidth={2} />,
-      },
-      {
-        title: "YouTube",
-        href: "#",
-        icon: <HugeiconsIcon icon={YoutubeIcon} strokeWidth={2} />,
-      },
-      {
-        title: "LinkedIn",
-        href: "#",
-        icon: <HugeiconsIcon icon={Linkedin01Icon} strokeWidth={2} />,
-      },
     ],
   },
 ];

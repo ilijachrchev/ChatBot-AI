@@ -18,7 +18,8 @@ import {
   ArrowRight,
   Loader2,
 } from 'lucide-react'
-import { PRICING_CONFIG, type PlanType, getPlanDetails } from '@/lib/pricing-config'
+import { type PlanType } from '@/constants/pricing'
+import { getPlanDetails } from '@/lib/pricing-config'
 import { onCreateSubscription } from '@/actions/stripe'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'

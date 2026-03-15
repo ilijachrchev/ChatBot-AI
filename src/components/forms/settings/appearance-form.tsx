@@ -12,7 +12,6 @@ import {
   Layout,
   Sparkles,
   Type,
-  Code,
   Save,
   Info,
 } from 'lucide-react'
@@ -28,7 +27,6 @@ import {
   ShowAvatarsToggle,
   RemoveBrandingToggle,
   HeaderFields,
-  CustomCssField,
 } from './chatbot-customization'
 import { useSettings } from '@/hooks/settings/use-settings'
 import { FeatureLockCard } from '@/components/plan/feature-lock-card'
@@ -434,19 +432,6 @@ export const AppearanceForm = ({ id, plan, chatBot }: Props) => {
               </div>
               <ShowAvatarsToggle setValue={sv} currentValue={chatBot?.showAvatars} />
             </div>
-          </SectionCard>
-
-          <SectionCard
-            icon={<Code className="h-4 w-4" />}
-            iconBg="bg-gradient-to-br from-[var(--bg-page)] to-[var(--bg-page)]"
-            title="Advanced"
-            subtitle="Custom CSS for power users"
-            badge={<PlanBadge label="Ultimate" color="amber" />}
-            plan={plan}
-            planRequired="ULTIMATE"
-            lockFeatureText="Custom CSS injection is available on the Ultimate plan"
-          >
-            <CustomCssField register={reg} currentValue={chatBot?.customCss} />
           </SectionCard>
 
           <SectionCard

@@ -13,8 +13,8 @@ const Page = async (props: Props) => {
   const user = await currentUser()
 
   if (!user) return null
-  const customers = await onGetAllCustomers(user.id)
-  const campaigns = await onGetAllCampaigns(user.id)
+  const customers = await onGetAllCustomers()
+  const campaigns = await onGetAllCampaigns()
   const userTimezone = await onGetUserTimezone()
 
   return (

@@ -37,47 +37,34 @@ export const checkAndIncrementConversation = async (
   const month = now.getMonth() + 1
   const year = now.getFullYear()
 
-  const existing = await db.conversationUsage.findUnique({
-    where: { domainId_month_year: { domainId, month, year } },
-    select: { count: true },
+  const result = await db.conversationUsage.updateMany({
+    where: {
+      domainId,
+      month,
+      year,
+      count: { lt: limit },
+    },
+    data: { count: { increment: 1 } },
   })
 
-  const currentCount = existing?.count ?? 0
-
-  if (currentCount >= limit) {
-    return { allowed: false, count: currentCount, limit }
-  }
-
-  const updated = await db.conversationUsage.upsert({
-    where: { domainId_month_year: { domainId, month, year } },
-    create: { domainId, month, year, count: 1 },
-    update: { count: { increment: 1 } },
-    select: { count: true },
-  })
-
-  const newCount = updated.count
-
-  if (options?.userId && options?.domainName) {
-    const eightyPercent = Math.floor(limit * 0.8)
-
-    if (newCount === limit) {
-      onCreateNotification(
-        options.userId,
-        'CONVERSATION_LIMIT',
-        '🚫 Conversation limit reached',
-        `Your chatbot on ${options.domainName} has stopped responding — upgrade to restore`,
-        { domainId, count: newCount, limit }
-      ).catch(console.error)
-    } else if (newCount === eightyPercent) {
-      onCreateNotification(
-        options.userId,
-        'CONVERSATION_LIMIT',
-        '⚠️ Usage at 80%',
-        `You've used 80% of your monthly conversations on ${options.domainName}`,
-        { domainId, count: newCount, limit }
-      ).catch(console.error)
+  if (result.count === 0) {
+    try {
+      await db.conversationUsage.create({
+        data: { domainId, month, year, count: 1 },
+      })
+      return { allowed: true, count: 1, limit }
+    } catch {
+      const current = await db.conversationUsage.findUnique({
+        where: { domainId_month_year: { domainId, month, year } },
+        select: { count: true },
+      })
+      return {
+        allowed: false,
+        count: current?.count ?? limit,
+        limit,
+      }
     }
   }
 
-  return { allowed: true, count: newCount, limit }
+  return { allowed: true, count: result.count, limit }
 }

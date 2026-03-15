@@ -19,13 +19,27 @@ import { onGetAllAccountDomains } from '@/actions/settings'
 import { onGetAllDomainsRatings } from '@/actions/ratings'
 import { GettingStartedCard } from '@/components/onboarding/getting-started-card'
 import { KpiCard } from '@/components/dashboard/kpi-card'
-import { ActivityChart } from '@/components/dashboard/activity-chart'
-import { AIResolutionChart } from '@/components/dashboard/ai-resolution-chart'
+import nextDynamic from 'next/dynamic'
+
+const ActivityChart = nextDynamic(
+  () => import('@/components/dashboard/activity-chart').then(m => ({ default: m.ActivityChart })),
+  {
+    loading: () => <div className="h-[300px] rounded-xl bg-[var(--bg-surface)] animate-pulse" />,
+  }
+)
+
+const AIResolutionChart = nextDynamic(
+  () => import('@/components/dashboard/ai-resolution-chart').then(m => ({ default: m.AIResolutionChart })),
+  {
+    loading: () => <div className="h-[300px] rounded-xl bg-[var(--bg-surface)] animate-pulse" />,
+  }
+)
 import { EnhancedPlanUsage } from '@/components/dashboard/enhanced-plan-usage'
 import { QuickActions } from '@/components/dashboard/quick-actions'
 import InfoBar from '@/components/infobar'
 import { MessageSquare, TrendingUp, DollarSign, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { PLAN_LIMITS, type PlanType } from '@/constants/pricing'
 import React from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -70,13 +84,7 @@ const Page = async (props: Props) => {
 
   const pipelineValue = (products ?? 0) * (clients ?? 0)
 
-  const PLAN_LIMITS: Record<string, { credits: number; domains: number; clients: number }> = {
-    STANDARD: { credits: 10, domains: 1, clients: 10 },
-    PRO: { credits: 50, domains: 2, clients: 50 },
-    ULTIMATE: { credits: 500, domains: 100, clients: 500 },
-  }
-
-  const currentPlan = plan?.plan || 'STANDARD'
+  const currentPlan = (plan?.plan || 'STANDARD') as PlanType
   const limits = PLAN_LIMITS[currentPlan]
 
   const defaultActivityData = [

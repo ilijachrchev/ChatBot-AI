@@ -2,13 +2,14 @@ import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from 'next/server'
 
 const isPublic = createRouteMatcher([
-  "/",          
-  "/auth(.*)",   
+  "/",
+  "/auth(.*)",
   "/portal(.*)",
   "/images(.*)",
   "/chatbot(.*)",
-  "/api/widget(.*)",  
-  "/api/mobile(.*)",  
+  "/api/widget(.*)",
+  "/api/mobile(.*)",
+  "/api/webhooks(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
@@ -33,14 +34,15 @@ export default clerkMiddleware(async (auth, req) => {
         const result = await onOAuthLogin(user.id, email)
 
         if (result.requireOtp && result.userId) {
-          const token = btoa(JSON.stringify({
+          const { signOtpToken } = await import('@/lib/otp-token')
+          const token = await signOtpToken({
             userId: result.userId,
-            email: result.email,
+            email: result.email ?? '',
             keepMeLoggedIn: true,
-          }))
-          
+          })
           const otpUrl = new URL('/auth/verify-login', req.url)
-          otpUrl.searchParams.set('token', token)
+          otpUrl.searchParams.set('token', encodeURIComponent(token))
+          otpUrl.searchParams.set('email', encodeURIComponent(result.email ?? ''))
           return NextResponse.redirect(otpUrl)
         }
       }

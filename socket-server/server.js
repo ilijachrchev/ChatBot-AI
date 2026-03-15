@@ -50,11 +50,9 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: [
-      'http://localhost:3000',
-      'https://your-vercel-domain.vercel.app',
-      'https://*.vercel.app',
-    ],
+    origin: process.env.NODE_ENV === 'production'
+      ? [process.env.ALLOWED_ORIGIN].filter(Boolean)
+      : ['http://localhost:3000', process.env.ALLOWED_ORIGIN].filter(Boolean),
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -62,6 +60,25 @@ const io = new Server(httpServer, {
 
 app.get('/', (req, res) => {
   res.json({ status: 'Socket.IO server is running' });
+});
+
+io.use((socket, next) => {
+  const secret = socket.handshake.auth?.secret;
+  const origin = socket.handshake.headers?.origin;
+  const allowedOrigin = process.env.ALLOWED_ORIGIN || 'http://localhost:3000';
+  if (secret === process.env.SOCKET_SHARED_SECRET) {
+    socket.data.isOwner = true;
+    return next();
+  }
+  if (origin && allowedOrigin.includes(origin)) {
+    socket.data.isOwner = false;
+    return next();
+  }
+  if (process.env.NODE_ENV !== 'production') {
+    socket.data.isOwner = false;
+    return next();
+  }
+  next(new Error('Unauthorized'));
 });
 
 io.on('connection', (socket) => {
@@ -83,39 +100,33 @@ io.on('connection', (socket) => {
 });
 
 
-app.post('/api/upload', upload.single('file'), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: 'No file uploaded' });
-    }
-
-    const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
-    
-    console.log('📁 File uploaded:', req.file.filename);
-    
-    res.json({
-      success: true,
-      url: fileUrl,
-      filename: req.file.filename
-    });
-  } catch (error) {
-    console.error('Upload error:', error);
-    res.status(500).json({ error: 'Upload failed' });
+app.post('/api/upload', (req, res, next) => {
+  const secret = req.headers['x-socket-secret'];
+  if (!secret || secret !== process.env.SOCKET_SHARED_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
   }
+  next();
+}, upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  const fileUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+  console.log('📁 File uploaded:', req.file.filename);
+  res.json({ success: true, url: fileUrl, filename: req.file.filename });
 });
 
 
 app.post('/api/trigger', (req, res) => {
+  const secret = req.headers['x-socket-secret'];
+  if (!secret || secret !== process.env.SOCKET_SHARED_SECRET) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
   const { chatroomId, event, data } = req.body;
-
   if (!chatroomId || !event || !data) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
-
   io.to(chatroomId).emit(event, data);
-  
   console.log(`📨 Triggered event "${event}" in chatroom: ${chatroomId}`);
-  
   res.json({ success: true, message: 'Event triggered' });
 });
 

@@ -7,11 +7,13 @@ import nodemailer from 'nodemailer'
 import { onGetUserTimezone } from '../preferences'
 import { convertUserTimezoneToUTC } from '@/lib/timezone-utils'
 
-export const onGetAllCustomers = async (id: string) => {
+export const onGetAllCustomers = async () => {
+  const user = await currentUser()
+  if (!user) return null
   try {
     const customers = await client.user.findUnique({
       where: {
-        clerkId: id,
+        clerkId: user.id,
       },
       select: {
         subscription: {
@@ -44,11 +46,13 @@ export const onGetAllCustomers = async (id: string) => {
   } catch (error) {}
 }
 
-export const onGetAllCampaigns = async (id: string) => {
+export const onGetAllCampaigns = async () => {
+  const user = await currentUser()
+  if (!user) return null
   try {
     const campaigns = await client.user.findUnique({
       where: {
-        clerkId: id,
+        clerkId: user.id,
       },
       select: {
         campaign: {
@@ -463,9 +467,15 @@ export const onGetScheduledCampaigns = async () => {
     const user = await currentUser()
     if (!user) return null
 
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
+    })
+    if (!dbUser) return null
+
     const scheduled = await client.campaign.findMany({
       where: {
-        userId: user.id,
+        userId: dbUser.id,
         status: 'SCHEDULED',
         scheduledAt: {
           gte: new Date(), 
@@ -494,10 +504,16 @@ export const onCancelScheduledCampaign = async (campaignId: string) => {
     const user = await currentUser()
     if (!user) return { status: 400, message: 'User not found' }
 
+    const dbUser = await client.user.findUnique({
+      where: { clerkId: user.id },
+      select: { id: true },
+    })
+    if (!dbUser) return { status: 404, message: 'User not found' }
+
     const campaign = await client.campaign.update({
       where: {
         id: campaignId,
-        userId: user.id,
+        userId: dbUser.id,
       },
       data: {
         status: 'CANCELLED',

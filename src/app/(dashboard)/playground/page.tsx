@@ -91,7 +91,7 @@ const PlaygroundPage = () => {
   const onChat = async () => {
   const content = watch('content')
   if (!selectedDomainId || !content?.trim()) return
-  setChats((prev) => [...prev, { role: 'assistant' as const, content: content! }])
+  setChats((prev) => [...prev, { role: 'user' as const, content: content! }])
   reset()
   setResponding(true)
   setMessageCount((prev) => prev + 1)
@@ -108,7 +108,7 @@ const PlaygroundPage = () => {
 
   setResponding(false)
   if (response?.response) {
-    setChats((prev) => [...prev, { role: 'user' as const, content: content as string }])
+    setChats((prev) => [...prev, { role: 'assistant' as const, content: response.response.content }])
   }
 }
 

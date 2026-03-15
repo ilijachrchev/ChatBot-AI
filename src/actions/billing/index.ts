@@ -3,13 +3,9 @@
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import { PRICING_CONFIG, type PlanType } from '@/lib/pricing-config'
-import Stripe from 'stripe'
+import { stripe } from '@/lib/stripe'
 import { onUpdateSubscription } from '../stripe'
 import { sendSubscriptionReceipt } from '@/lib/email'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET!, {
-  typescript: true,
-})
 
 export const onGetBillingInfo = async () => {
   try {

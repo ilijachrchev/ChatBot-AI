@@ -20,7 +20,7 @@ const CustomerSignUpForm = async ({ params }: Props) => {
 
   return (
     <PortalForm 
-      bookings={bookings}
+      bookings={bookings ?? undefined}
       email={questions.email!}
       domainid={domainid}
       customerId={customerid}

@@ -3,24 +3,12 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: '**',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'jxx473cnu8.ucarecdn.net', 
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'jxx473cnu8.ucarecd.net', 
-        port: '',
-        pathname: '/**',
-      },
+      { protocol: 'https', hostname: 'ucarecdn.com' },
+      { protocol: 'https', hostname: 'jxx473cnu8.ucarecdn.net' },
+      { protocol: 'https', hostname: 'jxx473cnu8.ucarecd.net' },
+      { protocol: 'https', hostname: 'img.clerk.com' },
+      { protocol: 'https', hostname: 'images.clerk.dev' },
+      { protocol: 'https', hostname: 'uploadcare.com' },
     ],
   },
   

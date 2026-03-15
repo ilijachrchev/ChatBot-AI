@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { onSaveKeepMeLoggedInOnLogin } from '@/actions/settings'
-import { onCheckLoginRisk } from '@/actions/auth'
+import { onCheckLoginRisk, onCreateOtpToken } from '@/actions/auth'
 import Cookies from 'js-cookie'
 
 export const useSignInForm = () => {
@@ -51,21 +51,22 @@ export const useSignInForm = () => {
 
         let deviceId = Cookies.get('device_id')
         if (!deviceId) {
-          deviceId = `device_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
-          Cookies.set('device_id', deviceId, { expires: 365 })
+          deviceId = `device_${crypto.randomUUID()}`
+          Cookies.set('device_id', deviceId, { expires: 365, secure: true, sameSite: 'strict' })
         }
 
         const riskCheck = await onCheckLoginRisk(clerkId, values.email, deviceId)
 
         if (riskCheck.requireOtp && riskCheck.userId) {
-          const token = btoa(JSON.stringify({
+          const token = await onCreateOtpToken({
             userId: riskCheck.userId,
             email: values.email,
-            sessionId: authenticated.createdSessionId,
+            sessionId: authenticated.createdSessionId ?? null,
             keepMeLoggedIn: values.keepMeLoggedIn,
-          }))
-
-          router.push(`/auth/verify-login?token=${token}`)
+          })
+          router.push(
+            `/auth/verify-login?token=${encodeURIComponent(token)}&email=${encodeURIComponent(values.email)}`
+          )
           return
         }
 

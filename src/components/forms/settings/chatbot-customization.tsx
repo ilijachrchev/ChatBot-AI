@@ -89,6 +89,10 @@ type ChatPositionSelectorProps = SharedProps & {
 export const ChatPositionSelector = ({ setValue, currentValue }: ChatPositionSelectorProps) => {
   const [selected, setSelected] = React.useState(currentValue || 'BOTTOM_RIGHT')
 
+  React.useEffect(() => {
+    if (currentValue) setSelected(currentValue)
+  }, [currentValue])
+
   const handle = (id: string) => {
     setSelected(id)
     setValue('chatPosition', id, { shouldDirty: true })
@@ -120,6 +124,10 @@ type WidgetSizeSelectorProps = SharedProps & { currentValue?: string | null }
 
 export const WidgetSizeSelector = ({ setValue, currentValue }: WidgetSizeSelectorProps) => {
   const [selected, setSelected] = React.useState(currentValue || 'MEDIUM')
+
+  React.useEffect(() => {
+    if (currentValue) setSelected(currentValue)
+  }, [currentValue])
 
   const handle = (id: string) => {
     setSelected(id)
@@ -155,6 +163,10 @@ type WidgetStyleSelectorProps = SharedProps & { currentValue?: string | null }
 
 export const WidgetStyleSelector = ({ setValue, currentValue }: WidgetStyleSelectorProps) => {
   const [selected, setSelected] = React.useState(currentValue || 'SOLID')
+
+  React.useEffect(() => {
+    if (currentValue) setSelected(currentValue)
+  }, [currentValue])
 
   const handle = (id: string) => {
     setSelected(id)
@@ -193,6 +205,10 @@ type BubbleStyleSelectorProps = SharedProps & { currentValue?: string | null }
 export const BubbleStyleSelector = ({ setValue, currentValue }: BubbleStyleSelectorProps) => {
   const [selected, setSelected] = React.useState(currentValue || 'ROUNDED')
 
+  React.useEffect(() => {
+    if (currentValue) setSelected(currentValue)
+  }, [currentValue])
+
   const handle = (id: string) => {
     setSelected(id)
     setValue('bubbleStyle', id, { shouldDirty: true })
@@ -229,6 +245,10 @@ type ButtonStyleSelectorProps = SharedProps & { currentValue?: string | null }
 
 export const ButtonStyleSelector = ({ setValue, currentValue }: ButtonStyleSelectorProps) => {
   const [selected, setSelected] = React.useState(currentValue || 'ROUNDED')
+
+  React.useEffect(() => {
+    if (currentValue) setSelected(currentValue)
+  }, [currentValue])
 
   const handle = (id: string) => {
     setSelected(id)

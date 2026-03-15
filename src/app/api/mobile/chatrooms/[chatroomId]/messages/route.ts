@@ -3,7 +3,7 @@ import { requireAuth } from '../../../_utils'
 import { client } from '@/lib/prisma'
 
 type Params = {
-  params: { chatroomId: string }
+  params: Promise<{ chatroomId: string }>
 }
 
 async function verifyChatroomOwnership(chatroomId: string, clerkId: string) {
@@ -22,7 +22,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
   const { user, response } = await requireAuth()
   if (response) return response
 
-  const { chatroomId } = params
+  const { chatroomId } = await params
 
   if (!chatroomId) {
     return NextResponse.json(
@@ -95,7 +95,7 @@ export async function POST(req: NextRequest, { params }: Params) {
   const { user, response } = await requireAuth()
   if (response) return response
 
-  const { chatroomId } = params
+  const { chatroomId } = await params
   if (!chatroomId) {
     return NextResponse.json(
       { error: 'chatroomId is required' },

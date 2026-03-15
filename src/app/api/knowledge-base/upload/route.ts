@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { randomUUID } from 'crypto'
 import { currentUser } from '@clerk/nextjs/server'
 import { createKnowledgeBaseFile } from '@/actions/knowledge-base'
 
-export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const ALLOWED_TYPES = [
   'application/pdf',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   'text/plain',
 ]
 
@@ -37,11 +33,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate file type - stricter validation
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase()
     const isValidType = ALLOWED_TYPES.includes(file.type)
     const isValidExtension = ALLOWED_EXTENSIONS.includes(fileExtension)
-    
+
     if (!isValidType || !isValidExtension) {
       return NextResponse.json(
         { error: 'Invalid file type. Only PDF, DOCX, and TXT files are allowed.' },
@@ -49,8 +44,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Validate file size (10MB limit)
-    const maxSize = 10 * 1024 * 1024 // 10MB
+    const maxSize = 10 * 1024 * 1024
     if (file.size > maxSize) {
       return NextResponse.json(
         { error: 'File size must be less than 10MB' },
@@ -58,45 +52,51 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Save file to disk
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    const pubKey = process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY
+    if (!pubKey) {
+      return NextResponse.json(
+        { error: 'Upload service not configured' },
+        { status: 500 }
+      )
+    }
 
-    const ext = file.name.split('.').pop()?.toLowerCase() || 'txt'
-    const filename = `${randomUUID()}.${ext}`
+    const upload = new FormData()
+    upload.append('UPLOADCARE_PUB_KEY', pubKey)
+    upload.append('UPLOADCARE_STORE', '1')
+    upload.append('file', file, file.name)
 
-    const uploadDir = join(process.cwd(), 'public', 'uploads', 'knowledge-base')
-    await mkdir(uploadDir, { recursive: true })
+    const ucRes = await fetch('https://upload.uploadcare.com/base/', {
+      method: 'POST',
+      body: upload,
+    })
 
-    const filepath = join(uploadDir, filename)
-    await writeFile(filepath, buffer)
+    if (!ucRes.ok) {
+      const text = await ucRes.text()
+      console.error('Uploadcare error:', text)
+      return NextResponse.json(
+        { error: 'Failed to upload file' },
+        { status: 500 }
+      )
+    }
 
-    const url = `/uploads/knowledge-base/${filename}`
+    const ucData = await ucRes.json() as { file: string }
+    const url = `https://ucarecdn.com/${ucData.file}/`
 
-    // Save file record to database with PROCESSING status
     const result = await createKnowledgeBaseFile(
       file.name,
-      file.type || `application/${ext}`,
+      file.type || `application/${fileExtension.slice(1)}`,
       url,
       file.size,
       domainId || undefined
     )
 
     if (result.status !== 200) {
-      // Clean up file if database save failed
-      try {
-        await import('fs/promises').then((fs) => fs.unlink(filepath))
-      } catch (cleanupError) {
-        console.error('Failed to cleanup file:', cleanupError)
-      }
-
       return NextResponse.json(
         { error: result.message || 'Failed to save file record' },
         { status: result.status }
       )
     }
 
-    // Trigger ingestion in background (fire-and-forget)
     if (result.file?.id) {
       const { ingestKnowledgeBaseFile } = await import('@/lib/knowledge-base/ingest')
       ingestKnowledgeBaseFile(result.file.id).catch((error) => {
@@ -118,4 +118,3 @@ export async function POST(request: NextRequest) {
     )
   }
 }
-

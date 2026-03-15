@@ -45,7 +45,13 @@ export async function DELETE(request: Request) {
     }
 
     const clerk = await clerkClient()
-    
+
+    const sessionList = await clerk.sessions.getSessionList({ userId })
+    const owns = sessionList.data.some(s => s.id === sessionId)
+    if (!owns) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
+
     await clerk.sessions.revokeSession(sessionId)
 
     return NextResponse.json({ success: true })

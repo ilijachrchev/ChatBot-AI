@@ -12,24 +12,14 @@ import Cookies from 'js-cookie'
 
 type Props = {
   token: string
+  email: string
 }
 
-export function VerifyLoginClient({ token }: Props) {
+export function VerifyLoginClient({ token, email }: Props) {
   const [otp, setOtp] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
   const [resending, setResending] = useState<boolean>(false)
   const router = useRouter()
-
-  const getEmailFromToken = () => {
-    try {
-      const decoded = JSON.parse(atob(token))
-      return decoded.email || ''
-    } catch {
-      return ''
-    }
-  }
-
-  const email = getEmailFromToken()
 
   const onVerify = async () => {
     if (otp.length !== 6) {

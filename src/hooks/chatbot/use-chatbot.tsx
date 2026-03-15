@@ -271,7 +271,7 @@ export const useChatBot = () => {
                 const formData = new FormData()
                 formData.append('file', values.image[0])
 
-                const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'https://localhost:4000'
+                const socketUrl = process.env.NEXT_PUBLIC_UPLOAD_URL || process.env.NEXT_PUBLIC_SOCKET_URL
                 const uploadResponse = await fetch(`${socketUrl}/api/upload`, {
                     method: 'POST',
                     body: formData,

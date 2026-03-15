@@ -58,6 +58,12 @@
 
     --success-hsl:          158 55%  40%;
     --success-foreground:   0   0%  100%;
+
+    --bg-hover:       rgba(0,0,0,0.04);
+    --bg-active:      rgba(129,166,198,0.12);
+    --text-accent:    #1B3C53;
+    --border-accent:  #81A6C6;
+    --status-success: #2D9E6B;
   }
 
   .dark {
@@ -113,6 +119,12 @@
 
     --success-hsl:          158 52%  47%;
     --success-foreground:   0   0%  100%;
+
+    --bg-hover:       rgba(255,255,255,0.05);
+    --bg-active:      rgba(170,205,220,0.12);
+    --text-accent:    #AACDDC;
+    --border-accent:  #456882;
+    --status-success: #3DB882;
   }
 
   * {

@@ -27,18 +27,18 @@ const CodeSnippet = ({ id }: Props) => {
         }
     ')
     
-    iframe.src = "http://localhost:3000/chatbot"
+    iframe.src = "${process.env.NEXT_PUBLIC_APP_URL}/chatbot"
     iframe.classList.add('chat-frame')
     document.body.appendChild(iframe)
     
     window.addEventListener("message", (e) => {
-        if(e.origin !== "http://localhost:3000") return null
+        if(e.origin !== "${process.env.NEXT_PUBLIC_APP_URL}") return null
         
         let data = e.data;
         
         if (data === 'ready') {
             iframe.contentWindow.postMessage("${id}",
-             "http://localhost:3000/");
+             "${process.env.NEXT_PUBLIC_APP_URL}/");
             return;
         }
         
@@ -52,7 +52,7 @@ const CodeSnippet = ({ id }: Props) => {
     iframe.onload = () => {
         setTimeout(() => {
             iframe.contentWindow.postMessage("${id}",
-             "http://localhost:3000/");
+             "${process.env.NEXT_PUBLIC_APP_URL}/");
         }, 500);
     }
         `

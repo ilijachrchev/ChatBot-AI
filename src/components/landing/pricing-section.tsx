@@ -3,6 +3,7 @@ import * as PricingCard from "@/components/ui/pricing-card";
 import { CheckmarkCircle04Icon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import Link from "next/link";
+import { PLAN_PRICES, PLAN_LIMITS } from "@/constants/pricing";
 
 export function PricingSection() {
   return (
@@ -116,7 +117,7 @@ const plans = [
     badge: undefined,
     features: [
       "1 domain & 1 chatbot",
-      "10 conversations / month",
+      `${PLAN_LIMITS.STANDARD.conversationsPerMonth} conversations / month`,
       "Basic AI responses",
       "Embed code (15 languages)",
       "1 email campaign / month",
@@ -126,13 +127,13 @@ const plans = [
   {
     name: "Pro",
     description: "For growing businesses that need real automation",
-    price: "$35",
+    price: PLAN_PRICES.PRO.amountDisplay,
     original: "$49",
     period: "/month",
     badge: "Popular",
     features: [
       "2 domains & 2 chatbots",
-      "2,000 conversations / month",
+      `${PLAN_LIMITS.PRO.conversationsPerMonth.toLocaleString()} conversations / month`,
       "Knowledge base (file uploads)",
       "Human handoff & live chat",
       "Custom AI persona & branding",
@@ -146,7 +147,7 @@ const plans = [
   {
     name: "Ultimate",
     description: "For agencies and power users — no limits",
-    price: "$55",
+    price: PLAN_PRICES.ULTIMATE.amountDisplay,
     original: "$79",
     period: "/month",
     badge: undefined,

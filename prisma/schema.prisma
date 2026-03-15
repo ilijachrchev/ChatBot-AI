@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -72,6 +73,7 @@ model Domain {
   ratings            ConversationRating[]
   properties         Property[]
   reservations       Reservation[]
+  bookings           Bookings[]
 
   @@index([userId])
   @@index([verificationStatus])
@@ -201,6 +203,9 @@ model Bookings {
   domainId   String?   @db.Uuid
   createdAt  DateTime  @default(now())
   Customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Domain     Domain?   @relation(fields: [domainId], references: [id], onDelete: SetNull)
+
+  @@index([domainId])
 }
 
 model Campaign {
@@ -485,6 +490,9 @@ model Notification {
   data      Json?
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
 }
 
 model ConversationRating {

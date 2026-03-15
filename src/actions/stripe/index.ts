@@ -1,13 +1,10 @@
 "use server"
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
-import Stripe from 'stripe'
 import { getPlanCredits, type PlanType } from '@/lib/pricing-config'
 import { getPlanPriceId } from '@/constants/pricing'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET!, {
-    typescript: true,
-})
+import { stripe } from '@/lib/stripe'
+import Stripe from 'stripe'
 
 function getSubscriptionPeriodEndUnix(sub: Stripe.Subscription): number | null {
   const ends = 
@@ -180,8 +177,8 @@ export const onCreateSubscription = async (plan: PlanType) => {
       where: { userId: profile.id },
       create: {
         userId: profile.id,
-        plan,
-        credits,
+        plan: 'STANDARD',
+        credits: getPlanCredits('STANDARD'),
         stripeSubscriptionId: subscription.id,
         stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
         stripePriceId: getPlanPriceId(plan),
@@ -189,11 +186,10 @@ export const onCreateSubscription = async (plan: PlanType) => {
         status: subscription.status,
       },
       update: {
-        plan,
-        credits,
         stripeSubscriptionId: subscription.id,
         stripeCurrentPeriodEnd: new Date(currentPeriodEnd * 1000),
         stripePriceId: getPlanPriceId(plan),
+        stripeCustomerId: stripeCustomerId,
         status: subscription.status,
       },
     })

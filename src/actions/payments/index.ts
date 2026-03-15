@@ -1,8 +1,11 @@
 'use server'
 
 import { client } from '@/lib/prisma'
+import { currentUser } from '@clerk/nextjs/server'
 
 export const onGetDomainProductsAndConnectedAccountId = async (id: string) => {
+  const user = await currentUser()
+  if (!user) return null
   try {
     const connectedAccount = await client.domain.findUnique({
       where: {

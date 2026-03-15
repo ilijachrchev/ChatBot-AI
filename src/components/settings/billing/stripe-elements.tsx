@@ -11,8 +11,10 @@ type StripeElementsProps = {
   payment: 'STANDARD' | 'PRO' | 'ULTIMATE'
 }
 
+const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY
+const StripePromise = key ? loadStripe(key) : null
+
 export const StripeElements = ({ payment }: StripeElementsProps) => {
-  const StripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISH_KEY!)
   const { stripeSecret, loadForm } = useStripeElements(payment)
   return (
     stripeSecret &&

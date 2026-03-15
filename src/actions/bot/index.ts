@@ -336,7 +336,7 @@ export const onAiChatBotAssistant = async (
         )
 
         if (chatBotConfig.chatBot?.persona === 'APPOINTMENT_SETTER') {
-          const appointmentLink = `${process.env.NEXT_PUBLIC_URL}/portal/${id}/appointment/portal`
+          const appointmentLink = `${process.env.NEXT_PUBLIC_APP_URL}/portal/${id}/appointment/portal`
           personaPrompt = personaPrompt.replace('[APPOINTMENT_LINK]', appointmentLink)
         }
 
@@ -368,7 +368,7 @@ export const onAiChatBotAssistant = async (
         }
 
         if (chatBotConfig.chatBot?.persona === 'REAL_ESTATE_QUALIFIER') {
-          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `${process.env.NEXT_PUBLIC_URL}/portal/${id}/booking`)
+          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `${process.env.NEXT_PUBLIC_APP_URL}/portal/${id}/booking`)
           const properties: Array<{ title: string; price: number | null; bedrooms: number | null; bathrooms: number | null; location: string | null; status: string }> = await (db as any).property.findMany({
             where: { domainId: id },
             select: { title: true, price: true, bedrooms: true, bathrooms: true, location: true, status: true },
@@ -673,8 +673,8 @@ export const onAiChatBotAssistant = async (
         if (chatBotDomain.chatBot?.persona === 'APPOINTMENT_SETTER') {
           const customerId = room.customerId ?? undefined
           const appointmentLink = customerId
-            ? `${process.env.NEXT_PUBLIC_URL}/portal/${id}/appointment/${customerId}`
-            : `${process.env.NEXT_PUBLIC_URL}/portal/${id}/appointment/portal`
+            ? `${process.env.NEXT_PUBLIC_APP_URL}/portal/${id}/appointment/${customerId}`
+            : `${process.env.NEXT_PUBLIC_APP_URL}/portal/${id}/appointment/portal`
           personaPrompt = personaPrompt.replace('[APPOINTMENT_LINK]', appointmentLink)
         }
 
@@ -706,7 +706,7 @@ export const onAiChatBotAssistant = async (
         }
 
         if (chatBotDomain.chatBot?.persona === 'REAL_ESTATE_QUALIFIER') {
-          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `${process.env.NEXT_PUBLIC_URL}/portal/${id}/booking`)
+          personaPrompt = personaPrompt.replace('[VIEWING_LINK]', `${process.env.NEXT_PUBLIC_APP_URL}/portal/${id}/booking`)
           const properties: Array<{ title: string; price: number | null; bedrooms: number | null; bathrooms: number | null; location: string | null; status: string }> = await (db as any).property.findMany({
             where: { domainId: id },
             select: { title: true, price: true, bedrooms: true, bathrooms: true, location: true, status: true },
@@ -940,8 +940,8 @@ export const onAiChatBotAssistant = async (
               
               Important Instructions:
               - When you ask a question from the qualification list, add the keyword (complete) at the end
-              - For appointments, direct them to: http://localhost:3000/portal/${id}/appointment/${checkCustomer?.customer[0].id}
-              - For purchases, direct them to: http://localhost:3000/portal/${id}/payment/${checkCustomer?.customer[0].id}
+              - For appointments, direct them to: ${process.env.NEXT_PUBLIC_APP_URL}/portal/${id}/appointment/${checkCustomer?.customer[0].id}
+              - For purchases, direct them to: ${process.env.NEXT_PUBLIC_APP_URL}/portal/${id}/payment/${checkCustomer?.customer[0].id}
               
               CRITICAL: You are ONLY a ${chatBotDomain.chatBot?.persona?.replace('_', ' ').toLowerCase() || ' agent'}.
               - DO NOT help with topics outside your specialization

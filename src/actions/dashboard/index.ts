@@ -2,11 +2,7 @@
 
 import { client } from "@/lib/prisma"
 import { currentUser } from "@clerk/nextjs/server"
-import Stripe from 'stripe'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET!, {
-    typescript: true,
-})
+import { stripe } from '@/lib/stripe'
 
 export const getUserClients = async () => {
     try {
@@ -115,7 +111,16 @@ export const getUserTransaction = async () => {
                     stripeAccount: connectedStripe.stripeId!,
                 })
                 if (transactions) {
-                    return transactions
+                    return {
+                        charges: transactions.data.map(c => ({
+                            id: c.id,
+                            amount: c.amount,
+                            currency: c.currency,
+                            status: c.status,
+                            created: c.created,
+                            last4: c.payment_method_details?.card?.last4 ?? null,
+                        }))
+                    }
                 }
             }
         }

@@ -193,11 +193,33 @@ export const scrapeWebsiteToKnowledgeBase = async (
     const user = await currentUser()
     if (!user) return { status: 401, message: 'Unauthorized' }
 
-    const scraperBase = process.env.SCRAPER_SERVICE_URL || 'http://localhost:3001'
-    const scrapeRes = await fetch(`${scraperBase}/scrape`, {
+    let parsed: URL
+    try {
+      parsed = new URL(url)
+    } catch {
+      return { status: 400, message: 'Invalid URL format' }
+    }
+    if (!['http:', 'https:'].includes(parsed.protocol)) {
+      return { status: 400, message: 'URL must use http or https' }
+    }
+    const blocked = [
+      'localhost', '127.', '10.', '192.168.',
+      '169.254.', '::1', '0.0.0.0', '[::1]',
+    ]
+    if (blocked.some(b =>
+      parsed.hostname === b.replace('.', '') ||
+      parsed.hostname.startsWith(b)
+    )) {
+      return { status: 400, message: 'URL points to a private network address' }
+    }
+
+    const scrapeRes = await fetch(`${SCRAPER_URL}/scrape`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url, maxPages }),
+      headers: {
+        'Content-Type': 'application/json',
+        'x-scraper-secret': process.env.SCRAPER_SECRET_KEY!,
+      },
+      body: JSON.stringify({ url, maxPages: Math.min(maxPages ?? 5, 20) }),
     })
 
     if (!scrapeRes.ok) {

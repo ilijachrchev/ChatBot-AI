@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import { client } from '@/lib/prisma'
 
 export function generateOTP(): string {
-  return Math.floor(100000 + Math.random() * 900000).toString()
+  return crypto.randomInt(100000, 1000000).toString()
 }
 
 export function hashOTP(code: string): string {
@@ -69,13 +69,7 @@ export async function verifyOTPCode(
   await client.otpCode.update({
     where: { id: otpCode.id },
     data: {
-      attempts: otpCode.attempts + 1,
-    },
-  })
-  
-  await client.otpCode.update({
-    where: { id: otpCode.id },
-    data: {
+      attempts: { increment: 1 },
       verifiedAt: new Date(),
     },
   })

@@ -4,11 +4,13 @@ import { VerifyLoginClient } from './verify-login-client'
 type Props = {
   searchParams: {
     token?: string
+    email?: string
   }
 }
 
 const VerifyLoginPage = async ({ searchParams }: Props) => {
   const token = searchParams.token
+  const email = searchParams.email ?? ''
 
   if (!token) {
     redirect('/auth/sign-in')
@@ -27,7 +29,7 @@ const VerifyLoginPage = async ({ searchParams }: Props) => {
         </div>
 
         <div className='rounded-2xl bg-[var(--bg-surface)]/50 backdrop-blur-xl border border-white/10 p-8 shadow-2xl'>
-          <VerifyLoginClient token={token} />
+          <VerifyLoginClient token={token} email={email} />
         </div>
       </div>
     </div>

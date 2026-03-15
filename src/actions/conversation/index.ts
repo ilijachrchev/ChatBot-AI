@@ -21,12 +21,11 @@ export const onToggleRealtime = async (id: string, state: boolean) => {
     })
 
     if (chatRoom) {
-      const socketUrl = process.env.SOCKET_SERVER_URL || 'http://localhost:4000'
-
-      await fetch(`${socketUrl}/api/trigger`, {
+      await fetch(`${SOCKET_SERVER_URL}/api/trigger`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-socket-secret': process.env.SOCKET_SHARED_SECRET!,
         },
         body: JSON.stringify({
           chatroomId: id,
@@ -175,12 +174,11 @@ export const onRealTimeChat = async (
   role: 'assistant' | 'user'
 ) => {
   try {
-    const socketUrl = process.env.SOCKET_SERVER_URL || 'http://localhost:4000'
-
-    const response = await fetch(`${socketUrl}/api/trigger`, {
+    const response = await fetch(`${SOCKET_SERVER_URL}/api/trigger`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'x-socket-secret': process.env.SOCKET_SHARED_SECRET!,
       },
       body: JSON.stringify({
         chatroomId,
@@ -337,10 +335,12 @@ export const onNotifyDashboardNewLiveConversation = async (
   customerEmail: string | null
 ) => {
   try {
-    const socketUrl = process.env.SOCKET_SERVER_URL || 'http://localhost:4000'
-    await fetch(`${socketUrl}/api/trigger`, {
+    await fetch(`${SOCKET_SERVER_URL}/api/trigger`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-socket-secret': process.env.SOCKET_SHARED_SECRET!,
+      },
       body: JSON.stringify({
         chatroomId: `dashboard-${domainId}`,
         event: 'new-live-conversation',
@@ -380,7 +380,7 @@ export const onGetSupportTickets = async (domainId: string) => {
       updatedAt: Date
       Customer: { email: string | null } | null
       message: Array<{ message: string; createdAt: Date }>
-    }> = await (client as any).chatRoom.findMany({
+    }> = await client.chatRoom.findMany({
       where: { domainId },
       select: {
         id: true,
@@ -416,7 +416,7 @@ export const onUpdateTicketStatus = async (chatRoomId: string, ticketStatus: str
   if (!user) return { status: 401, message: 'Unauthorized' }
 
   try {
-    await (client as any).chatRoom.update({
+    await client.chatRoom.update({
       where: { id: chatRoomId },
       data: { ticketStatus },
     })

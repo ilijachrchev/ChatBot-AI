@@ -43,10 +43,12 @@ export const onCreateNotification = async (
   })
 
   try {
-    const socketUrl = process.env.SOCKET_SERVER_URL || 'http://localhost:4000'
-    await fetch(`${socketUrl}/api/trigger`, {
+    await fetch(`${SOCKET_SERVER_URL}/api/trigger`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-socket-secret': process.env.SOCKET_SHARED_SECRET!,
+      },
       body: JSON.stringify({
         chatroomId: `notifications-${userId}`,
         event: 'new-notification',
@@ -92,6 +94,8 @@ export const onGetNotifications = async () => {
 }
 
 export const onMarkNotificationRead = async (notificationId: string) => {
+  const user = await currentUser()
+  if (!user) return null
   await db.notification.update({
     where: { id: notificationId },
     data: { read: true },
@@ -117,6 +121,8 @@ export const onMarkAllNotificationsRead = async () => {
 }
 
 export const onDeleteNotification = async (notificationId: string) => {
+  const user = await currentUser()
+  if (!user) return null
   await db.notification.delete({
     where: { id: notificationId },
   })

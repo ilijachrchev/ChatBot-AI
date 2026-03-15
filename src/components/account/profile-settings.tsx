@@ -130,7 +130,7 @@ const ProfileSettings = ({ user }: Props) => {
       const formData = new FormData()
       formData.append('file', file)
 
-      const uploadResponse = await fetch('http://localhost:4000/api/upload', {
+      const uploadResponse = await fetch(`${process.env.NEXT_PUBLIC_UPLOAD_URL}/api/upload`, {
         method: 'POST',
         body: formData,
       })

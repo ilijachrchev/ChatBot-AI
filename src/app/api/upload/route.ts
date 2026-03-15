@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
-import { randomUUID } from 'crypto'
 import { currentUser } from '@clerk/nextjs/server'
 
-export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
@@ -12,66 +8,69 @@ export async function POST(request: NextRequest) {
     const user = await currentUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    console.log('📥 Upload API called')
-    
     const formData = await request.formData()
     const file = formData.get('file') as File
 
     if (!file) {
-      console.log('❌ No file provided')
       return NextResponse.json(
         { error: 'No file provided' },
         { status: 400 }
       )
     }
 
-    console.log('📁 File received:', file.name, file.type, file.size)
-
     const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/webp']
     if (!allowedTypes.includes(file.type)) {
-      console.log('❌ Invalid file type:', file.type)
       return NextResponse.json(
         { error: 'Invalid file type. Only PNG, JPEG, JPG, and WEBP are allowed.' },
         { status: 400 }
       )
     }
 
-    const maxSize = 2 * 1024 * 1024 // 2MB
+    const maxSize = 2 * 1024 * 1024
     if (file.size > maxSize) {
-      console.log('❌ File too large:', file.size)
       return NextResponse.json(
         { error: 'File size must be less than 2MB' },
         { status: 400 }
       )
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    const pubKey = process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY
+    if (!pubKey) {
+      return NextResponse.json(
+        { error: 'Upload service not configured' },
+        { status: 500 }
+      )
+    }
 
-    const ext = file.name.split('.').pop()
-    const filename = `${randomUUID()}.${ext}`
+    const upload = new FormData()
+    upload.append('UPLOADCARE_PUB_KEY', pubKey)
+    upload.append('UPLOADCARE_STORE', '1')
+    upload.append('file', file, file.name)
 
-    const uploadDir = join(process.cwd(), 'public', 'uploads', 'domain-icons')
-    console.log('📂 Upload directory:', uploadDir)
-    
-    await mkdir(uploadDir, { recursive: true })
+    const ucRes = await fetch('https://upload.uploadcare.com/base/', {
+      method: 'POST',
+      body: upload,
+    })
 
-    const filepath = join(uploadDir, filename)
-    await writeFile(filepath, buffer)
+    if (!ucRes.ok) {
+      const text = await ucRes.text()
+      console.error('Uploadcare error:', text)
+      return NextResponse.json(
+        { error: 'Failed to upload file' },
+        { status: 500 }
+      )
+    }
 
-    console.log('✅ File saved to:', filepath)
-
-    const url = `/uploads/domain-icons/${filename}`
-
-    console.log('✅ Returning URL:', url)
+    const ucData = await ucRes.json() as { file: string }
+    const url = `https://ucarecdn.com/${ucData.file}/`
 
     return NextResponse.json({
       success: true,
       url,
-      filename,
+      filename: file.name,
     })
   } catch (error) {
-    console.error('❌ Upload error:', error)
+    console.error('Upload error:', error)
     return NextResponse.json(
       { error: 'Failed to upload file' },
       { status: 500 }

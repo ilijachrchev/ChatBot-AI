@@ -9,6 +9,7 @@ import { getGeoLocation } from '@/lib/security/ip-geolocation'
 import { assessLoginRisk } from '@/lib/security/risk-scoring' 
 import { createOTPCode, verifyOTPCode } from '@/lib/security/otp'
 import { sendOTPEmail } from '@/lib/security/email'
+import { signOtpToken, verifyOtpToken, type OtpTokenPayload } from '@/lib/otp-token'
 
 export const onCompleteUserRegistration = async (
   fullname: string,
@@ -252,7 +253,7 @@ export const onVerifyLoginOTPWithToken = async (
   deviceId: string | null
 ) => {
   try {
-    const decoded = JSON.parse(atob(token))
+    const decoded = await verifyOtpToken(token)
     const { userId, sessionId, keepMeLoggedIn } = decoded
 
     const verification = await verifyOTPCode(userId, code)
@@ -309,7 +310,7 @@ export const onVerifyLoginOTPWithToken = async (
       where: { userId },
     })
 
-    await onSaveKeepMeLoggedInOnLogin(keepMeLoggedIn)
+    await onSaveKeepMeLoggedInOnLogin(keepMeLoggedIn ?? false)
 
     return { success: true }
   } catch (error) {
@@ -323,7 +324,7 @@ export const onVerifyLoginOTPWithToken = async (
 
 export const onResendLoginOTP = async (token: string) => {
   try {
-    const decoded = JSON.parse(atob(token))
+    const decoded = await verifyOtpToken(token)
     const { userId, email } = decoded
 
     const user = await client.user.findUnique({
@@ -465,6 +466,10 @@ export const onOAuthLogin = async (clerkId: string, email: string) => {
       error: 'Failed to process OAuth login',
     }
   }
+}
+
+export const onCreateOtpToken = async (payload: OtpTokenPayload): Promise<string> => {
+  return signOtpToken(payload)
 }
 
 export const onUpdateUserTypeAfterOAuth = async (clerkId: string, type: string) => {

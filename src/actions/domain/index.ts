@@ -2,12 +2,13 @@
 
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
-import { 
-  validateAndNormalizeDomain, 
-  generateVerificationToken 
+import {
+  validateAndNormalizeDomain,
+  generateVerificationToken
 } from '@/lib/domain-utils'
 import { verifyDomainOwnership } from '@/lib/domain-verification'
 import { Domain } from '@prisma/client'
+import { PLAN_LIMITS, type PlanType } from '@/constants/pricing'
 
 
 export const onCreateDomain = async (
@@ -113,17 +114,12 @@ export const onCreateDomain = async (
       },
     })
 
-    const plan = subscription?.plan || 'STANDARD'
-    const limits: Record<string, number> = {
-      STANDARD: 1,
-      PRO: 5,
-      ULTIMATE: 10,
-    }
+    const plan = (subscription?.plan || 'STANDARD') as PlanType
 
-    if (existingDomains >= limits[plan]) {
+    if (existingDomains >= PLAN_LIMITS[plan].domains) {
       return {
         status: 403,
-        message: `You've reached your domain limit (${limits[plan]}) for the ${plan} plan`,
+        message: `You've reached your domain limit (${PLAN_LIMITS[plan].domains}) for the ${plan} plan`,
       }
     }
 

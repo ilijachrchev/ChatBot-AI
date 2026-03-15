@@ -38,7 +38,7 @@ const Page = async ({ searchParams }: Props) => {
   const { domain: domainId } = await searchParams
 
   const [domainBookings, userDomains] = await Promise.all([
-    onGetAllBookingsForCurrentUser(user.id),
+    onGetAllBookingsForCurrentUser(),
     getUserDomainPersonas(user.id),
   ])
 
