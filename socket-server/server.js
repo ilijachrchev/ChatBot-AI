@@ -9,7 +9,12 @@ const fs = require('fs');
 
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production'
+    ? [process.env.ALLOWED_ORIGIN].filter(Boolean)
+    : ['//sendwiseai.com', process.env.ALLOWED_ORIGIN].filter(Boolean),
+    credentials: true,
+}));
 app.use(express.json());
 
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -84,9 +89,11 @@ io.use((socket, next) => {
 io.on('connection', (socket) => {
   console.log('✅ Client connected:', socket.id);
 
-  socket.on('join-chatroom', (chatroomId) => {
+  socket.on('join-chatroom', (chatroomId, token) => {
+    if (!socket.data.isOwner && !verifyRoomToken(chatroomId, token)) {
+      return socket.emit('error', 'Unauthorized to join this chatroom');
+    }
     socket.join(chatroomId);
-    console.log(`🔌 Socket ${socket.id} joined chatroom: ${chatroomId}`);
   });
 
   socket.on('leave-chatroom', (chatroomId) => {

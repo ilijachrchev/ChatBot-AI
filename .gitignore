@@ -60,3 +60,4 @@ yarn-error.log*
 **/Local Settings/
 **/Ambiente de Rede/
 **/Recent/
+.vercel

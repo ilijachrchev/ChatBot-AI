@@ -10,70 +10,70 @@ datasource db {
 }
 
 model User {
-  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fullname           String
-  clerkId            String              @unique
-  type               String
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
-  lastNameChange     DateTime?
-  avatar             String?
-  stripeId           String?
-  stripeCustomerId   String?
-  keepMeLoggedIn       Boolean             @default(false)
-  onboardingCompleted  Boolean             @default(false)
-  onboardingDismissed  Boolean             @default(false)
-  blockedUntil         DateTime?
-  billingAddress       BillingAddress?
-  subscription       Billings?
-  campaign           Campaign[]
-  domains            Domain[]
-  knowledgeBaseFiles KnowledgeBaseFile[]
+  id                  String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullname            String
+  clerkId             String               @unique
+  type                String
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  lastNameChange      DateTime?
+  avatar              String?
+  stripeId            String?
+  stripeCustomerId    String?
+  keepMeLoggedIn      Boolean              @default(false)
+  onboardingCompleted Boolean              @default(false)
+  onboardingDismissed Boolean              @default(false)
+  blockedUntil        DateTime?
+  aiUsageLogs         AIUsageLog[]
+  billingAddress      BillingAddress?
+  subscription        Billings?
+  campaign            Campaign[]
+  domains             Domain[]
   knowledgeBaseChunks KnowledgeBaseChunk[]
-  loginAttempts      LoginAttempt[]
-  otpCodes           OtpCode[]
-  paymentHistory     PaymentHistory[]
-  pendingLogins      PendingLogin[]
-  trustedDevices     TrustedDevice[]
-  preferences          UserPreferences?
-  onboardingProgress   OnboardingProgress?
-  notifications        Notification[]
-  aiUsageLogs          AIUsageLog[]
+  knowledgeBaseFiles  KnowledgeBaseFile[]
+  loginAttempts       LoginAttempt[]
+  notifications       Notification[]
+  onboardingProgress  OnboardingProgress?
+  otpCodes            OtpCode[]
+  paymentHistory      PaymentHistory[]
+  pendingLogins       PendingLogin[]
+  trustedDevices      TrustedDevice[]
+  preferences         UserPreferences?
 }
 
 model Domain {
-  id                 String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name               String
-  icon               String
-  verificationToken  String              @default(dbgenerated("gen_random_uuid()"))
-  verificationStatus VerificationStatus  @default(PENDING)
-  verificationMethod String?
-  lastVerifiedAt     DateTime?
-  verifiedAt         DateTime?
-  userId             String              @db.Uuid
-  campaignId         String?             @db.Uuid
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @default(now()) @updatedAt
-  timezone                  String              @default("UTC")
-  realtimeEnabled           Boolean             @default(true)
-  liveNotificationsEnabled  Boolean             @default(false)
-  personaLastChangedAt      DateTime?
-  chatBot            ChatBot?
-  chatRooms          ChatRoom[]          @relation("DomainToChatRoooms")
-  customer           Customer[]
-  Campaign           Campaign?           @relation(fields: [campaignId], references: [id])
-  User               User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  filterQuestions    FilterQuestions[]
-  helpdesk           HelpDesk[]
-  knowledgeBaseFiles KnowledgeBaseFile[]
-  knowledgeBaseChunks KnowledgeBaseChunk[]
-  products           Product[]
-  workingHours       WorkingHours?
-  conversationUsage  ConversationUsage[]
-  ratings            ConversationRating[]
-  properties         Property[]
-  reservations       Reservation[]
-  bookings           Bookings[]
+  id                       String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                     String
+  icon                     String
+  verificationToken        String               @default(dbgenerated("gen_random_uuid()"))
+  verificationStatus       VerificationStatus   @default(PENDING)
+  verificationMethod       String?
+  lastVerifiedAt           DateTime?
+  verifiedAt               DateTime?
+  userId                   String               @db.Uuid
+  campaignId               String?              @db.Uuid
+  createdAt                DateTime             @default(now())
+  updatedAt                DateTime             @default(now()) @updatedAt
+  timezone                 String               @default("UTC")
+  realtimeEnabled          Boolean              @default(true)
+  liveNotificationsEnabled Boolean              @default(false)
+  personaLastChangedAt     DateTime?
+  bookings                 Bookings[]
+  chatBot                  ChatBot?
+  chatRooms                ChatRoom[]           @relation("DomainToChatRoooms")
+  ratings                  ConversationRating[]
+  conversationUsage        ConversationUsage[]
+  customer                 Customer[]
+  Campaign                 Campaign?            @relation(fields: [campaignId], references: [id])
+  User                     User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filterQuestions          FilterQuestions[]
+  helpdesk                 HelpDesk[]
+  knowledgeBaseChunks      KnowledgeBaseChunk[]
+  knowledgeBaseFiles       KnowledgeBaseFile[]
+  products                 Product[]
+  properties               Property[]
+  reservations             Reservation[]
+  workingHours             WorkingHours?
 
   @@index([userId])
   @@index([verificationStatus])
@@ -101,15 +101,15 @@ model ChatBot {
   showAvatars          Boolean @default(true)
   widgetSize           String? @default("MEDIUM")
   widgetStyle          String? @default("SOLID")
-  removeBranding       Boolean @default(false)
-  chatPosition         String? @default("BOTTOM_RIGHT")
   presenceMode         String  @default("AUTO")
   offlineBehavior      String  @default("SHOW_HOURS_AND_EMAIL")
   offlineCustomMessage String?
   showPresenceBadge    Boolean @default(true)
+  chatPosition         String? @default("BOTTOM_RIGHT")
+  removeBranding       Boolean @default(false)
+  teaserDelay          Int     @default(3)
   teaserEnabled        Boolean @default(false)
   teaserMessage        String? @default("Have a question? 💬")
-  teaserDelay          Int     @default(3)
   Domain               Domain? @relation(fields: [domainId], references: [id], onDelete: Cascade)
 }
 
@@ -128,15 +128,6 @@ model Billings {
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
   User                   User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model StripeEventLog {
-  id        String   @id @default(cuid())
-  eventId   String   @unique
-  type      String
-  createdAt DateTime @default(now())
-
-  @@index([createdAt])
 }
 
 model HelpDesk {
@@ -166,30 +157,30 @@ model CustomerResponses {
 model Customer {
   id                   String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   email                String?
+  domainId             String?             @db.Uuid
   propertyRequirements String?
   salesStage           String              @default("NEW")
-  domainId             String?             @db.Uuid
-  booking   Bookings[]
-  chatRoom  ChatRoom[]
-  Domain    Domain?             @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  questions CustomerResponses[]
+  booking              Bookings[]
+  chatRoom             ChatRoom[]
+  Domain               Domain?             @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  questions            CustomerResponses[]
 }
 
 model ChatRoom {
-  id           String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  live         Boolean              @default(false)
-  mailed       Boolean              @default(false)
-  starred      Boolean              @default(false)
-  status       String               @default("OPEN")
-  ticketStatus String               @default("OPEN")
-  createdAt    DateTime             @default(now())
-  updatedAt    DateTime             @updatedAt
-  domainId     String?              @db.Uuid
-  customerId   String?              @db.Uuid
+  id           String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  live         Boolean             @default(false)
+  mailed       Boolean             @default(false)
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  domainId     String?             @db.Uuid
+  customerId   String?             @db.Uuid
+  starred      Boolean             @default(false)
+  status       String              @default("OPEN")
+  ticketStatus String              @default("OPEN")
   message      ChatMessage[]
+  Customer     Customer?           @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Domain       Domain?             @relation("DomainToChatRoooms", fields: [domainId], references: [id], onDelete: Cascade)
   rating       ConversationRating?
-  Customer     Customer?            @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  Domain       Domain?              @relation("DomainToChatRoooms", fields: [domainId], references: [id], onDelete: Cascade)
 }
 
 model ChatMessage {
@@ -212,29 +203,29 @@ model Bookings {
   domainId   String?   @db.Uuid
   createdAt  DateTime  @default(now())
   Customer   Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  Domain     Domain?   @relation(fields: [domainId], references: [id], onDelete: SetNull)
+  Domain     Domain?   @relation(fields: [domainId], references: [id])
 
   @@index([domainId])
 }
 
 model Campaign {
-  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
-  customers   String[]
-  template    String?
-  userId      String?        @db.Uuid
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @default(now()) @updatedAt
-  scheduledAt DateTime?
-  status      CampaignStatus @default(DRAFT)
-  sentAt      DateTime?
+  id              String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  customers       String[]
+  template        String?
+  userId          String?        @db.Uuid
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @default(now()) @updatedAt
+  scheduledAt     DateTime?
+  status          CampaignStatus @default(DRAFT)
+  sentAt          DateTime?
   timezone        String?
-  recurringType   String?
-  recurringDay    Int?
-  recurringTime   String?
-  recurringActive Boolean        @default(false)
   lastSentAt      DateTime?
   nextSendAt      DateTime?
+  recurringActive Boolean        @default(false)
+  recurringDay    Int?
+  recurringTime   String?
+  recurringType   String?
   User            User?          @relation(fields: [userId], references: [id], onDelete: Cascade)
   domain          Domain[]
 }
@@ -244,10 +235,10 @@ model Product {
   name        String
   price       Int
   image       String   @default("")
-  description String?
-  status      String   @default("ACTIVE")
   createdAt   DateTime @default(now())
   domainId    String?  @db.Uuid
+  description String?
+  status      String   @default("ACTIVE")
   Domain      Domain?  @relation(fields: [domainId], references: [id], onDelete: Cascade)
 }
 
@@ -421,20 +412,20 @@ model PaymentHistory {
 }
 
 model KnowledgeBaseFile {
-  id          String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  filename    String
-  fileType    String
-  filePath    String
-  fileSize    Int
-  status      KnowledgeBaseFileStatus @default(READY)
-  errorMessage String?                @db.Text
-  userId      String                  @db.Uuid
-  domainId    String?                 @db.Uuid
-  createdAt   DateTime                @default(now())
-  updatedAt   DateTime                @updatedAt
-  Domain      Domain?                 @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  User        User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  chunks      KnowledgeBaseChunk[]
+  id           String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  filename     String
+  fileType     String
+  filePath     String
+  fileSize     Int
+  status       KnowledgeBaseFileStatus @default(READY)
+  userId       String                  @db.Uuid
+  domainId     String?                 @db.Uuid
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  errorMessage String?
+  chunks       KnowledgeBaseChunk[]
+  Domain       Domain?                 @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  User         User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([domainId])
@@ -442,17 +433,17 @@ model KnowledgeBaseFile {
 }
 
 model KnowledgeBaseChunk {
-  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  content    String   @db.Text
-  embedding  Unsupported("vector(1536)")
-  userId     String   @db.Uuid
-  domainId   String?  @db.Uuid
-  fileId     String   @db.Uuid
+  id         String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content    String
+  embedding  Unsupported("vector")
+  userId     String                @db.Uuid
+  domainId   String?               @db.Uuid
+  fileId     String                @db.Uuid
   chunkIndex Int
-  createdAt  DateTime @default(now())
-  User       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  Domain     Domain?  @relation(fields: [domainId], references: [id], onDelete: Cascade)
-  file       KnowledgeBaseFile @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  createdAt  DateTime              @default(now())
+  Domain     Domain?               @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  file       KnowledgeBaseFile     @relation(fields: [fileId], references: [id], onDelete: Cascade)
+  User       User                  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([domainId])
@@ -556,6 +547,27 @@ model Reservation {
   @@index([date])
 }
 
+model AIUsageLog {
+  id               String   @id @default(cuid())
+  userId           String   @db.Uuid
+  domainId         String?  @db.Uuid
+  ipAddress        String
+  promptTokens     Int
+  completionTokens Int
+  totalTokens      Int
+  estimatedCostUsd Float
+  responseTimeMs   Int
+  model            String
+  blocked          Boolean  @default(false)
+  blockReason      String?
+  createdAt        DateTime @default(now())
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@index([ipAddress])
+}
+
 enum VerificationStatus {
   PENDING
   VERIFIED
@@ -589,23 +601,4 @@ enum KnowledgeBaseFileStatus {
   FAILED
 }
 
-model AIUsageLog {
-  id               String   @id @default(cuid())
-  userId           String   @db.Uuid
-  domainId         String?  @db.Uuid
-  ipAddress        String
-  promptTokens     Int
-  completionTokens Int
-  totalTokens      Int
-  estimatedCostUsd Float
-  responseTimeMs   Int
-  model            String
-  blocked          Boolean  @default(false)
-  blockReason      String?
-  createdAt        DateTime @default(now())
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([userId])
-  @@index([createdAt])
-  @@index([ipAddress])
-}

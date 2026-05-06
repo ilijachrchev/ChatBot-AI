@@ -21,15 +21,29 @@ export async function POST(req: Request) {
   }
 
   let event
-  try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    )
-  } catch {
-    return new NextResponse('Invalid signature', { status: 400 })
-  }
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        sig,
+        process.env.STRIPE_WEBHOOK_SECRET
+      )
+    } catch {
+      return new NextResponse('Invalid signature', { status: 400 })
+    }
+
+    try {
+      await client.stripeEventLog.create({
+        data: {
+          eventId: event.id,
+          type: event.type,
+        },
+      })
+    } catch (err: any) {
+      if (err?.code === 'P2002') {
+        return new NextResponse('OK (duplicate)', { status: 200 })
+      }
+      return new NextResponse('Processing error', { status: 500 })
+    }
 
   try {
     switch (event.type) {

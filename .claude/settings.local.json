@@ -25,7 +25,8 @@
       "Bash(pnpm remove:*)",
       "Bash(pnpm install:*)",
       "Bash(npx prisma:*)",
-      "Bash(pnpm run:*)"
+      "Bash(pnpm run:*)",
+      "PowerShell(Get-ChildItem -Path \"D:\\\\Projects\\\\chatbot-ai\" -Recurse -Directory | Where-Object { $_.Name -match \"^\\(api|lib|server|middleware|socket|upload\\)\" } | Sort-Object FullName | Select-Object -ExpandProperty FullName)"
     ]
   }
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { currentUser } from '@clerk/nextjs/server'
 import { createKnowledgeBaseFile } from '@/actions/knowledge-base'
+import { client } from '@/lib/prisma'
 
 export const dynamic = 'force-dynamic'
 
@@ -50,6 +51,22 @@ export async function POST(request: NextRequest) {
         { error: 'File size must be less than 10MB' },
         { status: 400 }
       )
+    }
+
+    if (domainId) {
+      const ownedDomain = await client.domain.findFirst({
+        where: {
+          id: domainId,
+          User: { clerkId: user.id },
+        },
+        select: { id: true },
+      })
+      if (!ownedDomain) {
+        return NextResponse.json(
+          { error: 'Forbidden' },
+          { status: 403 }
+        )
+      }
     }
 
     const pubKey = process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY
