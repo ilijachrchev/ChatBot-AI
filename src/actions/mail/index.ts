@@ -1,11 +1,8 @@
 'use server'
-
-import { CampaignStatus } from '@/generated/prisma'
+import { CampaignStatus } from '@prisma/client'
 import { client } from '@/lib/prisma'
 import { currentUser } from '@clerk/nextjs/server'
 import nodemailer from 'nodemailer'
-import { onGetUserTimezone } from '../preferences'
-import { convertUserTimezoneToUTC } from '@/lib/timezone-utils'
 
 export const onGetAllCustomers = async () => {
   const user = await currentUser()
